@@ -84,11 +84,12 @@ if ( $articles_query->have_posts() ) {
 				$article->author = null;
 			}
 			
-			// Get excerpt (short description)
-			$article->description = get_the_excerpt( $post_id );
-			if ( empty( $article->description ) ) {
-				$article->description = wp_trim_words( get_the_content( null, false, $post_id ), 20, '...' );
+			// Get excerpt (short description) - always limit to few words for card display
+			$raw = get_the_excerpt( $post_id );
+			if ( empty( trim( $raw ) ) ) {
+				$raw = get_the_content( null, false, $post_id );
 			}
+			$article->description = wp_trim_words( wp_strip_all_tags( $raw ), 18, '...' );
 			
 			$context['articles'][] = $article;
 		}
