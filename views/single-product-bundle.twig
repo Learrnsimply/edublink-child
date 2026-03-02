@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ product_title }} - {{ site.name }}</title>
-    <link rel="stylesheet" href="{{ theme_uri }}/assets/global/styles.css" />
-    <link rel="stylesheet" href="{{ theme_uri }}/assets/single-product-bundle/style.css" />
+    {{ fn('wp_head') }}
   </head>
   <body class="learnsimply-homepage-body">
     
@@ -537,8 +536,7 @@
     </script>
     {% endif %}
     
-    <script src="{{ theme_uri }}/assets/global/script.js"></script>
-    <script src="{{ theme_uri }}/assets/single-product-bundle/script.js"></script>
+    {{ fn('wp_footer') }}
   </body>
 </html>
 

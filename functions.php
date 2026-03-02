@@ -262,10 +262,11 @@ function learnsimply_enqueue_promo_assets() {
 	}
 	$promo_css = get_stylesheet_directory() . '/assets/promo-banner/style.css';
 	if ( file_exists( $promo_css ) ) {
+		// لا اعتماد - لضمان التحميل على كل الصفحات حتى لو لم تُحمّل أنماط أخرى
 		wp_enqueue_style(
 			'learnsimply-promo-banner',
 			get_stylesheet_directory_uri() . '/assets/promo-banner/style.css',
-			array( 'edublink-child-style' ),
+			array(),
 			filemtime( $promo_css )
 		);
 	}
