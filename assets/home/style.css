@@ -153,6 +153,14 @@
    Shop Search Box Styles
    ============================================ */
 
+/* Remove all outlines from search elements */
+.shop-search-box *,
+.shop-search-box *:focus,
+.shop-search-box *:active,
+.shop-search-box *:focus-visible {
+	outline: none !important;
+}
+
 .shop-search-box {
 	margin-bottom: 40px;
 	max-width: 700px;
@@ -177,9 +185,12 @@
 	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
 				inset 0 1px 0 rgba(255, 255, 255, 0.03);
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	outline: none !important;
 }
 
+.search-input-wrapper:focus,
 .search-input-wrapper:focus-within {
+	outline: none !important;
 	border-color: rgba(64, 119, 243, 0.5);
 	background: rgba(20, 25, 36, 0.8);
 	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3),
@@ -213,11 +224,17 @@
 	padding: 14px 8px;
 	direction: rtl;
 	min-width: 0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 }
 
-.search-input:focus {
+.search-input:focus,
+.search-input:active,
+.search-input:focus-visible {
 	outline: none !important;
 	box-shadow: none !important;
+	border: none !important;
 }
 
 .search-input::placeholder {
