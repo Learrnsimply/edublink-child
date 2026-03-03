@@ -15,6 +15,35 @@
 	color: red;
 }
 
+/* Hero section typography overrides (home page) */
+.hero-wrapper .main-title {
+    color: #FFF;
+    text-align: right;
+    font-family: "Graphik Arabic";
+    font-size: 59px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.hero-wrapper .description {
+    color: #FFF;
+    text-align: right;
+    font-family: "Graphik Arabic";
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.hero-wrapper .check-text {
+    color: #FFF;
+    font-family: "Graphik Arabic";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
 /* ============================================
    Course Info Icons Fix
    ============================================ */
