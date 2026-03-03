@@ -10742,9 +10742,14 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .learning-card .section-title {
   font-size: 24px;
   font-weight: 600;
-  color: var(--learnsimply-text-white);
+  color: var(--learnsimply-text-white) !important;
   margin: 0;
   line-height: 1.2;
+}
+
+/* ensure learning-card titles are white in all contexts */
+.learning-card .section-header .section-title {
+    color: #fff !important;
 }
 
 .learning-grid {
