@@ -118,6 +118,40 @@ body.woocommerce-cart,
 }
 
 /* ─────────────────────────────────
+   3b. BOOTSTRAP / PARENT-THEME BACKGROUND RESET
+   Prevents .table thead, th, .btn, .btn-light, .btn-danger, .card,
+   .table-light, .bg-white from injecting white into the dark cart.
+───────────────────────────────── */
+.woocommerce-cart .table thead,
+.woocommerce-cart .table thead tr,
+.woocommerce-cart .table thead th,
+.woocommerce-cart .table th,
+.woocommerce-cart .table td,
+.woocommerce-cart .table-light,
+.woocommerce-cart .table-light th,
+.woocommerce-cart .table-light td {
+  background-color: transparent !important;
+  background: transparent !important;
+  color: inherit !important;
+}
+
+.woocommerce-cart .btn,
+.woocommerce-cart .btn-light,
+.woocommerce-cart .btn-danger {
+  background-color: transparent !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+
+.woocommerce-cart .bg-white,
+.woocommerce-cart .card,
+.woocommerce-cart .card-body {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* ─────────────────────────────────
    4. CART TABLE
 ───────────────────────────────── */
 .woocommerce-cart table.shop_table,
@@ -136,6 +170,15 @@ body.woocommerce-cart,
 /* Table header */
 .woocommerce-cart table.shop_table thead {
   background: rgba(64, 119, 243, 0.04) !important;
+  background-color: transparent !important;
+}
+
+/* kill Bootstrap / parent-theme white that lands on th */
+.woocommerce-cart table.shop_table thead tr,
+.woocommerce-cart table.shop_table thead th,
+.woocommerce-cart table.shop_table th {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 .woocommerce-cart table.shop_table thead th {
@@ -178,6 +221,15 @@ body.woocommerce-cart,
   text-align: center !important;
   padding-left: 8px !important;
   padding-right: 8px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* kill any Bootstrap btn / btn-danger / btn-light white that lands on the anchor */
+.woocommerce-cart table.shop_table td.product-remove a,
+.woocommerce-cart table.shop_table td.product-remove a.remove {
+  background: rgba(249, 106, 123, 0.06) !important;
+  background-color: rgba(249, 106, 123, 0.06) !important;
 }
 
 .woocommerce-cart table.shop_table td.product-remove a.remove {
