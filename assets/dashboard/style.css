@@ -971,9 +971,25 @@ body.tutor-screen-frontend-dashboard .entry-content {
 
 .tutor-wrap.tutor-dashboard .tutor-empty-state img,
 .tutor-wrap.tutor-dashboard .tutor-no-data-found img {
+    display: block !important;
     opacity: 0.5 !important;
     max-width: 180px !important;
+    margin-top: 0 !important;
     margin-bottom: 20px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Table empty-state cell — force center alignment so image + text stay centered on RTL */
+.tutor-wrap.tutor-dashboard .tutor-table .column-empty-state,
+.tutor-wrap.tutor-dashboard table.table-popular-courses .column-empty-state,
+.tutor-wrap.tutor-dashboard .tutor-table td.column-empty-state {
+    text-align: center !important;
+}
+
+.tutor-wrap.tutor-dashboard .tutor-empty-state,
+.tutor-wrap.tutor-dashboard .td-empty-state {
+    text-align: center !important;
 }
 
 .tutor-wrap.tutor-dashboard .tutor-empty-state p {
