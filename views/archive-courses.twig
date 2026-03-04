@@ -59,28 +59,12 @@
       <h3 class="courses-filter-title" style="font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 20px;">تصفية الدورات</h3>
       
       <!-- Search Box -->
-      <div class="filter-search-box" style="margin-bottom: 25px;">
-        <form method="get" action="{{ site.url }}/courses/" class="courses-search-form" style="display: flex; gap: 10px;">
-          <input 
-            type="text" 
-            name="s" 
-            id="course-search-input"
-            placeholder="ابحث عن دورة..." 
-            value="{{ search_query|default('') }}"
-            style="flex: 1; padding: 12px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: #fff; font-size: 16px; outline: none; transition: all 0.3s ease;"
-            onfocus="this.style.borderColor='rgba(64, 119, 243, 0.5)'; this.style.background='rgba(255, 255, 255, 0.08)'"
-            onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.background='rgba(255, 255, 255, 0.05)'"
-          />
-          <button 
-            type="submit" 
-            style="padding: 12px 30px; background: #4077F3; border: none; border-radius: 10px; color: #fff; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;"
-            onmouseover="this.style.background='#3566d9'"
-            onmouseout="this.style.background='#4077F3'"
-          >
-            بحث
-          </button>
-        </form>
-      </div>
+      {% include 'components/search-box.twig' with {
+        search_action: site.url ~ '/courses/',
+        search_placeholder: 'ابحث عن دورة...',
+        search_value: search_query|default(''),
+        search_clear_url: site.url ~ '/courses/'
+      } %}
 
       <!-- Categories Filter (Responsive) -->
       {% if course_categories and course_categories|length > 0 %}

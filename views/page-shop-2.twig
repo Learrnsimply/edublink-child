@@ -22,39 +22,15 @@
         </p>
 
         <!-- Search Box -->
-        <div class="shop-search-box">
-            <form class="shop-search-form" action="{{ site.url }}/shop-2/" method="get">
-                {% if product_cat %}
-                    <input type="hidden" name="product_cat" value="{{ product_cat }}" />
-                {% endif %}
-                <div class="search-input-wrapper">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <input 
-                        type="text" 
-                        name="s" 
-                        class="search-input" 
-                        placeholder="ابحث عن {{ product_cat == 'bundle' ? 'باقة' : 'منتج' }}..." 
-                        value="{{ search_term }}"
-                        autocomplete="off"
-                    />
-                    {% if search_term %}
-                        <a href="{{ site.url }}/shop-2/{% if product_cat %}?product_cat={{ product_cat }}{% endif %}" class="search-clear" aria-label="مسح البحث">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                    {% endif %}
-                    <button type="submit" class="search-button">
-                        بحث
-                    </button>
-                </div>
-            </form>
-            {% if search_term %}
-                <p class="search-results-info">نتائج البحث عن: "{{ search_term }}" ({{ products|length }} نتيجة)</p>
-            {% endif %}
-        </div>
+        {% include 'components/search-box.twig' with {
+            search_action: site.url ~ '/shop-2/',
+            search_placeholder: product_cat == 'bundle' ? 'ابحث عن باقة...' : 'ابحث عن منتج...',
+            search_value: search_term,
+            search_hidden_name: 'product_cat',
+            search_hidden_value: product_cat,
+            search_clear_url: site.url ~ '/shop-2/' ~ (product_cat ? '?product_cat=' ~ product_cat : ''),
+            search_results_text: search_term ? 'نتائج البحث عن: "' ~ search_term ~ '" (' ~ products|length ~ ' نتيجة)' : null
+        } %}
 
         <div class="learnsimply-{{ product_cat == 'bundle' ? 'courses' : 'books' }}-grid">
             {% if products and products|length > 0 %}

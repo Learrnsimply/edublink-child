@@ -1,0 +1,43 @@
+{#
+  Shared Search Box Component
+
+  Parameters:
+  - search_action      (string) Form action URL
+  - search_placeholder (string) Input placeholder text
+  - search_value       (string) Current search value
+  - search_clear_url   (string) URL to clear search (optional, shows X button when search_value is set)
+  - search_hidden_name (string) Hidden input field name (optional)
+  - search_hidden_value (string) Hidden input field value (optional)
+  - search_results_text (string) Results info text shown below the box (optional)
+#}
+<div class="unified-search-box">
+    <form class="unified-search-form" action="{{ search_action }}" method="get">
+        {% if search_hidden_name and search_hidden_value %}
+            <input type="hidden" name="{{ search_hidden_name }}" value="{{ search_hidden_value }}" />
+        {% endif %}
+        <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input
+                type="text"
+                name="s"
+                class="search-input"
+                placeholder="{{ search_placeholder }}"
+                value="{{ search_value }}"
+                autocomplete="off"
+            />
+            {% if search_value and search_clear_url %}
+                <a href="{{ search_clear_url }}" class="search-clear" aria-label="مسح البحث">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            {% endif %}
+            <button type="submit" class="search-button">بحث</button>
+        </div>
+    </form>
+    {% if search_results_text %}
+        <p class="search-results-info">{{ search_results_text }}</p>
+    {% endif %}
+</div>
