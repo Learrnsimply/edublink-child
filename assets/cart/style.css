@@ -1376,13 +1376,63 @@ body.woocommerce-cart,
    ========================================================================== */
 
 body.woocommerce-checkout,
-.woocommerce-checkout .woocommerce {
-    background: var(--db-bg) !important;
-    color: var(--db-white) !important;
+body.woocommerce-checkout body,
+.woocommerce-checkout .site-content,
+.woocommerce-checkout #page,
+.woocommerce-checkout .edublink-main-wrapper,
+.woocommerce-checkout .eb-container,
+.woocommerce-checkout .site-content-inner {
+    background-color: var(--db-bg) !important;
 }
 
+.woocommerce-checkout .woocommerce {
+    background: transparent !important;
+    color: var(--db-white) !important;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 130px 28px 80px;
+    direction: rtl;
+}
+
+/* Hide breadcrumbs on checkout page */
+.woocommerce-checkout .woocommerce-breadcrumb,
+.woocommerce-checkout .edublink-breadcrumb-area,
+.woocommerce-checkout .entry-header,
+.woocommerce-checkout .page-title-area {
+    display: none !important;
+}
+
+/* ALL text — soft white on checkout */
+.woocommerce-checkout .woocommerce,
+.woocommerce-checkout .woocommerce * {
+    font-family: var(--db-font) !important;
+    box-sizing: border-box;
+}
+
+/* Prevent Bootstrap / parent-theme white backgrounds on checkout */
+.woocommerce-checkout .bg-white,
+.woocommerce-checkout .card,
+.woocommerce-checkout .card-body,
+.woocommerce-checkout .table thead,
+.woocommerce-checkout .table thead tr,
+.woocommerce-checkout .table thead th,
+.woocommerce-checkout .table th,
+.woocommerce-checkout .table td,
+.woocommerce-checkout .table-light {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: inherit !important;
+}
+
+/* Checkout layout wrappers — transparent, no card styling */
 .woocommerce-checkout form.checkout,
-.woocommerce-checkout .col2-set,
+.woocommerce-checkout .col2-set {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Individual checkout cards */
 .woocommerce-checkout .woocommerce-billing-fields,
 .woocommerce-checkout .woocommerce-shipping-fields,
 .woocommerce-checkout .woocommerce-additional-fields,
@@ -1391,7 +1441,31 @@ body.woocommerce-checkout,
     background: var(--db-card) !important;
     border: 1px solid var(--db-border) !important;
     border-radius: var(--db-radius) !important;
-    padding: 24px !important;
+    padding: 28px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Card headings */
+.woocommerce-checkout .woocommerce-billing-fields h3,
+.woocommerce-checkout .woocommerce-shipping-fields h3,
+.woocommerce-checkout .woocommerce-additional-fields h3,
+.woocommerce-checkout .woocommerce-checkout-review-order h3,
+.woocommerce-checkout .woocommerce-checkout-payment h3 {
+    color: #ffffff !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 14px !important;
+    border-bottom: 1px solid var(--db-border) !important;
+}
+
+/* Reset white backgrounds on nested WooCommerce elements inside checkout cards */
+.woocommerce-checkout .woocommerce-billing-fields *,
+.woocommerce-checkout .woocommerce-additional-fields *,
+.woocommerce-checkout .woocommerce-checkout-review-order *,
+.woocommerce-checkout .woocommerce-checkout-payment * {
+    background-color: transparent;
 }
 
 .woocommerce-checkout label,

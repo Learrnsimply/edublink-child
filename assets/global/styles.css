@@ -24,6 +24,31 @@
     "Segoe UI", sans-serif;
   --learnsimply-font-code: "Consolas", "Courier New", monospace;
 
+  /* ─── Dark-base design tokens (used on checkout, dashboard, cart) ─── */
+  --db-bg:          #0a0f1a;
+  --db-card:        #141924;
+  --db-card-alt:    #1a2232;
+  --db-glass:       rgba(255, 255, 255, 0.04);
+  --db-glass-border:rgba(255, 255, 255, 0.08);
+  --db-glass-hover: rgba(255, 255, 255, 0.07);
+  --db-blue:        #4077f3;
+  --db-blue-soft:   rgba(64, 119, 243, 0.08);
+  --db-blue-active: rgba(64, 119, 243, 0.18);
+  --db-white:       #d0d4e0;
+  --db-gray:        #999eb2;
+  --db-gray-dim:    #6c7278;
+  --db-green:       #18a963;
+  --db-orange:      #ff8904;
+  --db-red:         #f96a7b;
+  --db-purple:      #c27aff;
+  --db-cyan:        #00d5be;
+  --db-border:      rgba(255, 255, 255, 0.08);
+  --db-radius:      20px;
+  --db-radius-lg:   24px;
+  --db-radius-sm:   10px;
+  --db-font:        "Graphik Arabic", "Cairo", "IBM Plex Sans Arabic", sans-serif;
+  --db-transition:  all 0.3s ease;
+
   --learnsimply-transition: all 0.3s ease;
   --learnsimply-border-radius-sm: 10px;
   --learnsimply-border-radius-md: 20px;
