@@ -981,10 +981,6 @@ function edublink_child_load_page_assets() {
 			wp_enqueue_script( 'edublink-' . $page_type . '-script', $assets_uri . '/' . $page_type . '/script.js', array( 'jquery' ), filemtime( $js_file ), true );
 		}
 
-		// Load Remix Icons for dashboard (modern icon replacements)
-		if ( $page_type === 'dashboard' ) {
-			wp_enqueue_style( 'remixicon', 'https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css', array(), '4.6.0' );
-		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'edublink_child_load_page_assets', 999 );
