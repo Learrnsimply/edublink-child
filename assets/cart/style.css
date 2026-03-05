@@ -133,6 +133,7 @@ body.woocommerce-cart,
   background-color: transparent !important;
   background: transparent !important;
   color: inherit !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
 }
 
 .woocommerce-cart .btn,
@@ -330,6 +331,8 @@ body.woocommerce-cart,
   box-sizing: border-box !important;
   line-height: 48px !important;
   display: block !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 /* button matches input height precisely */
@@ -343,7 +346,10 @@ body.woocommerce-cart,
   align-items: center !important;
   justify-content: center !important;
   border-radius: 0 14px 14px 0 !important;
-  align-self: stretch !important;
+  align-self: center !important;
+  vertical-align: middle !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 /* ─── Product thumbnail ─── */
@@ -610,12 +616,16 @@ body.woocommerce-cart,
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
+  border-collapse: collapse !important;
 }
 
 .woocommerce-cart .cart_totals table.shop_table th,
 .woocommerce-cart .cart_totals table.shop_table td {
   padding: 14px 4px !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
   background: transparent !important;
   font-size: 14px !important;
 }
@@ -1331,35 +1341,62 @@ body.woocommerce-cart,
 
 .elementor-21 .elementor-element.elementor-element-6831e288 .wpr-cart-section {
     background-color: #141924 !important;
-    border-style: solid;
-    /* border-color: #EDEDED; */
-    border-width: 2px 2px 2px 2px;
-    border-radius: 4px 4px 4px 4px;
-    padding: 15px 15px 15px 15px;
-}
-
-
-.elementor-21 .elementor-element.elementor-element-6831e288 .wpr-cart-section {
-    background-color: #141924 !important;
-    border-style: solid;
-    /* border-color: #EDEDED; */
-    border-width: 2px 2px 2px 2px;
+    border: none !important;
     border-radius: 4px 4px 4px 4px;
     padding: 15px 15px 15px 15px;
     margin-top: 10px;
-    border: none;
 }
+
+/* ─── Fix: kill ALL white borders inside WPR cart table & cart totals ─── */
+.woocommerce-cart table.shop_table,
+.woocommerce-cart table.shop_table thead,
+.woocommerce-cart table.shop_table thead tr,
+.woocommerce-cart table.shop_table thead th,
+.woocommerce-cart table.shop_table tbody tr,
+.woocommerce-cart table.shop_table tbody td,
+.woocommerce-cart table.shop_table tfoot tr,
+.woocommerce-cart table.shop_table tfoot th,
+.woocommerce-cart table.shop_table tfoot td {
+    border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.woocommerce-cart .cart_totals,
+.woocommerce-cart .cart_totals table,
+.woocommerce-cart .cart_totals table tr,
+.woocommerce-cart .cart_totals table th,
+.woocommerce-cart .cart_totals table td {
+    border-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* WPR widget inner table borders */
+.elementor-21 .elementor-element.elementor-element-6831e288 table,
+.elementor-21 .elementor-element.elementor-element-6831e288 table th,
+.elementor-21 .elementor-element.elementor-element-6831e288 table td,
+.elementor-21 .elementor-element.elementor-element-6831e288 table thead th,
+.elementor-21 .elementor-element.elementor-element-6831e288 table tbody td,
+.elementor-21 .elementor-element.elementor-element-6831e288 table tfoot th,
+.elementor-21 .elementor-element.elementor-element-6831e288 table tfoot td {
+    border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ─── Fix: coupon row flex alignment ─── */
+.elementor-21 .elementor-element.elementor-element-6831e288 {
+    align-items: center !important;
+}
+
+.elementor-21 .elementor-element.elementor-element-6831e288 .coupon-col-start,
+.elementor-21 .elementor-element.elementor-element-6831e288 .coupon-col-end {
+    display: flex !important;
+    align-items: center !important;
+}
+
 .elementor-21 .elementor-element.elementor-element-6831e288 .input-text {
     /* color: #333333; */
-    border-color: #EDEDED;
+    border-color: rgba(255, 255, 255, 0.08) !important;
     border-style: solid;
     border-width: 1px 1px 1px 1px;
     border-radius: 5px 5px 5px 5px;
     padding: 0px 0px 0px 0px;
-    /* background-color: currentcolor; */
-        /* background-color: currentcolor; */
-    /* background-color: currentcolor; */
-
 }
 
 .tutor-divider tutor-radius-12 tutor-overflow-hidden{
