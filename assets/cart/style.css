@@ -2081,3 +2081,7 @@ body.woocommerce-checkout body,
         font-size: 14px !important;
     }
 }
+
+.col-1{
+  border: none !important;
+}
