@@ -138,7 +138,6 @@ body.woocommerce-checkout body,
 
 /* ─── 5. CHECKOUT CARDS ─── */
 .woocommerce-checkout .woocommerce-billing-fields,
-.woocommerce-checkout .woocommerce-shipping-fields,
 .woocommerce-checkout .woocommerce-additional-fields,
 .woocommerce-checkout .woocommerce-checkout-payment,
 .woocommerce-checkout .woocommerce-checkout-review-order {
@@ -148,6 +147,11 @@ body.woocommerce-checkout body,
     padding: 28px 32px 32px !important;
     margin-bottom: 24px !important;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Hide shipping fields section */
+.woocommerce-checkout .woocommerce-shipping-fields {
+    display: none !important;
 }
 
 /* Card headings */
