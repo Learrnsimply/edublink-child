@@ -596,7 +596,9 @@
                   </div>
                 </div>
                 <div class="review-text">
-                  <p>{{ review.content|slice(0, 200) }}{% if review.content|length > 200 %}... <span class="show-more">عرض المزيد</span>{% endif %}</p>
+                  <p class="review-text-content" {% if review.content|length > 200 %}data-full="{{ review.content|e('html_attr') }}" data-short="{{ (review.content|slice(0, 200) ~ '...')|e('html_attr') }}"{% endif %}>
+                    {{ review.content|slice(0, 200) }}{% if review.content|length > 200 %}... <button type="button" class="show-more-review">عرض المزيد</button>{% endif %}
+                  </p>
                 </div>
               </div>
             </div>

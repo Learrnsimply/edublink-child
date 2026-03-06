@@ -507,6 +507,37 @@
     var timer = setInterval(tick, 1000);
   }
 
+  // ===== REVIEW "عرض المزيد" EXPAND/COLLAPSE =====
+
+  /**
+   * Initialize review "Show more" / "Show less" toggle
+   * Used on product, bundle, and course review cards
+   */
+  function initReviewShowMore() {
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest(".show-more-review");
+      if (!btn) return;
+
+      const p = btn.closest(".review-text-content");
+      if (!p) return;
+
+      const full = p.getAttribute("data-full");
+      const short = p.getAttribute("data-short");
+      if (!full) return;
+
+      e.preventDefault();
+
+      if (p.classList.contains("expanded")) {
+        p.innerHTML = (short || full.slice(0, 200) + "...") + ' <button type="button" class="show-more-review">عرض المزيد</button>';
+        p.classList.remove("expanded");
+      } else {
+        var escaped = full.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        p.innerHTML = escaped + ' <button type="button" class="show-more-review">عرض أقل</button>';
+        p.classList.add("expanded");
+      }
+    });
+  }
+
   // ===== INITIALIZE ALL FUNCTIONALITY =====
 
   /**
@@ -527,6 +558,7 @@
     initHeaderScrollEffect();
     setupMarquee();
     initPromoCountdown();
+    initReviewShowMore();
   }
 
   // Start initialization

@@ -38,3 +38,28 @@ body{
 }
 
 /* tutor-login-wrap background now handled by signup/style.css */
+
+/* Review "عرض المزيد" button - same style as show-more */
+.show-more-review {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #4077f3;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+}
+.show-more-review:hover {
+  color: #5a8cff;
+}
+.review-text-content.expanded {
+  white-space: pre-wrap;
+}
+
+/* Tutor LMS icons: restore icon font (global styles.css overrides *::before with Graphik Arabic) */
+[class^="tutor-icon-"],
+[class*=" tutor-icon-"],
+[class^="tutor-icon-"]::before,
+[class*=" tutor-icon-"]::before {
+  font-family: tutor !important;
+}
