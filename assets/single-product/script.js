@@ -35,54 +35,37 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 
-	// Custom star rating behavior for review form (hover + click to select)
-	const starWrappers = document.querySelectorAll(
-		".add-review-section p.stars"
-	);
-	starWrappers.forEach((wrapper) => {
-		const stars = wrapper.querySelectorAll("a");
-		const form = wrapper.closest("form");
-		if (!form || stars.length === 0) return;
-
-		const ratingSelect = form.querySelector("#rating");
-		let currentRating = parseInt(ratingSelect?.value || "0", 10) || 0;
-
-		const applyVisual = (value) => {
-			stars.forEach((star, index) => {
-				if (index < value) {
-					star.classList.add("is-active");
-				} else {
-					star.classList.remove("is-active");
-				}
+	// Product star rating: use course-like component (id="product-star-rating-input").
+	// Run after WooCommerce adds its p.stars so we can remove them and use our own.
+	const initProductStars = () => {
+		const productStarInput = document.getElementById("product-star-rating-input");
+		if (!productStarInput) return;
+		const container = productStarInput.closest(".comment-form-rating");
+		if (container) container.querySelectorAll("p.stars").forEach((el) => el.remove());
+		const stars = productStarInput.querySelectorAll(".star-icon");
+		const ratingSelect = document.getElementById("rating");
+		if (!stars.length || !ratingSelect) return;
+		let currentRating = parseInt(ratingSelect.value || "0", 10) || 0;
+		const updateStarsVisual = (rating, isHover = false) => {
+			stars.forEach((star) => {
+				const r = parseInt(star.dataset.rating, 10);
+				star.classList.remove("filled", "hovered");
+				if (r <= rating) star.classList.add(isHover ? "hovered" : "filled");
 			});
 		};
-
-		// Initial state
-		if (currentRating > 0) {
-			applyVisual(currentRating);
-		}
-
-		stars.forEach((star, index) => {
-			const value = index + 1;
-
-			star.addEventListener("mouseenter", () => {
-				applyVisual(value);
-			});
-
-			star.addEventListener("mouseleave", () => {
-				applyVisual(currentRating);
-			});
-
+		updateStarsVisual(currentRating);
+		stars.forEach((star) => {
+			star.addEventListener("mouseenter", () => updateStarsVisual(parseInt(star.dataset.rating, 10), true));
+			star.addEventListener("mouseleave", () => updateStarsVisual(currentRating));
 			star.addEventListener("click", (e) => {
 				e.preventDefault();
-				currentRating = value;
-				if (ratingSelect) {
-					ratingSelect.value = String(currentRating);
-				}
-				applyVisual(currentRating);
+				currentRating = parseInt(star.dataset.rating, 10);
+				ratingSelect.value = String(currentRating);
+				updateStarsVisual(currentRating);
 			});
 		});
-	});
+	};
+	setTimeout(initProductStars, 50);
 });
 
 // Share product function

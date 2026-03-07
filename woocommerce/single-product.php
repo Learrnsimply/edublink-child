@@ -222,13 +222,17 @@ if ( comments_open( $context['product_id'] ) ) {
 		'fields'               => array(),
 	);
 
-	// Custom rating + textarea structure. We only output the label and <select id="rating">.
-	// WooCommerce's single-product.js adds the star links via JS when it finds #rating.
-	// Including stars here would duplicate them because WooCommerce JS adds them anyway.
+	// Custom rating: use same star-rating-input structure as courses (works reliably).
+	// WooCommerce adds p.stars before #rating - we remove those and use our own.
 	if ( wc_review_ratings_enabled() ) {
+		$star_svg = '<path d="M12 2l2.9 6.26L21.9 9.27l-5 3.86L18 21l-6-3.16L6 21l1.1-7.87-5-3.86 6.99-0.99L12 2z" />';
 		$comment_form['comment_field']  = '<div class="comment-form-rating">';
-		// Arabic label: "تقييمك" with clarification about selecting number of stars
 		$comment_form['comment_field'] .= '<label for="rating" id="comment-form-rating-label">' . esc_html__( 'تقييمك (اختر عدد النجوم من 1 إلى 5)', 'woocommerce' ) . ( wc_review_ratings_required() ? '&nbsp;<span class="required">*</span>' : '' ) . '</label>';
+		$comment_form['comment_field'] .= '<div class="form-group star-rating-group"><div class="star-rating-input" id="product-star-rating-input">';
+		for ( $i = 1; $i <= 5; $i++ ) {
+			$comment_form['comment_field'] .= '<svg class="star-icon" data-rating="' . $i . '" viewBox="0 0 24 24" fill="none">' . $star_svg . '</svg>';
+		}
+		$comment_form['comment_field'] .= '</div>';
 		$comment_form['comment_field'] .= '<select name="rating" id="rating" required style="display:none;">';
 		$comment_form['comment_field'] .= '<option value="">' . esc_html__( 'Rate…', 'woocommerce' ) . '</option>';
 		$comment_form['comment_field'] .= '<option value="5">' . esc_html__( 'Perfect', 'woocommerce' ) . '</option>';
@@ -236,7 +240,7 @@ if ( comments_open( $context['product_id'] ) ) {
 		$comment_form['comment_field'] .= '<option value="3">' . esc_html__( 'Average', 'woocommerce' ) . '</option>';
 		$comment_form['comment_field'] .= '<option value="2">' . esc_html__( 'Not that bad', 'woocommerce' ) . '</option>';
 		$comment_form['comment_field'] .= '<option value="1">' . esc_html__( 'Very poor', 'woocommerce' ) . '</option>';
-		$comment_form['comment_field'] .= '</select>';
+		$comment_form['comment_field'] .= '</select></div>';
 		$comment_form['comment_field'] .= '</div>';
 	} else {
 		$comment_form['comment_field'] = '';
