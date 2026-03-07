@@ -63,3 +63,175 @@ body{
 [class*=" tutor-icon-"]::before {
   font-family: tutor !important;
 }
+
+/* ==========================================================================
+   TUTOR LMS SINGLE LESSON (SPOTLIGHT) DARK MODE
+   ========================================================================== */
+.tutor-course-spotlight-wrapper,
+.tutor-single-lesson-wrap {
+    background-color: #0a0f1a !important;
+}
+
+.tutor-course-spotlight-sidebar,
+.tutor-lesson-sidebar {
+    background-color: #141924 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Sidebar Titles */
+.tutor-course-spotlight-sidebar .tutor-course-title,
+.tutor-course-spotlight-sidebar h1, 
+.tutor-course-spotlight-sidebar h2, 
+.tutor-course-spotlight-sidebar h3, 
+.tutor-course-spotlight-sidebar h4,
+.tutor-lesson-sidebar h1,
+.tutor-lesson-sidebar h2,
+.tutor-lesson-sidebar h3,
+.tutor-lesson-sidebar h4,
+.tutor-lesson-sidebar .tutor-lesson-sidebar-title {
+    color: #ffffff !important;
+}
+
+/* Sidebar Topic Container */
+.tutor-course-spotlight-sidebar .tutor-course-topic,
+.tutor-lesson-sidebar .tutor-lesson-topic {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Topic Title */
+.tutor-course-spotlight-sidebar .tutor-course-topic-title,
+.tutor-lesson-sidebar .tutor-lesson-topic-title {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Topic Title Hover */
+.tutor-course-spotlight-sidebar .tutor-course-topic-title:hover,
+.tutor-lesson-sidebar .tutor-lesson-topic-title:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Lesson Items */
+.tutor-course-spotlight-sidebar .tutor-course-topic-lesson-list li a,
+.tutor-lesson-sidebar .tutor-lesson-list li a {
+    color: #999eb2 !important;
+    transition: all 0.3s ease;
+}
+
+.tutor-course-spotlight-sidebar .tutor-course-topic-lesson-list li a:hover,
+.tutor-course-spotlight-sidebar .tutor-course-topic-lesson-list li.is-active a,
+.tutor-lesson-sidebar .tutor-lesson-list li a:hover,
+.tutor-lesson-sidebar .tutor-lesson-list li.is-active a {
+    background-color: rgba(64, 119, 243, 0.1) !important;
+    color: #ffffff !important;
+    border-radius: 6px;
+}
+
+/* Lesson Icon */
+.tutor-course-topic-lesson-list li .tutor-lesson-icon,
+.tutor-lesson-list li .tutor-lesson-icon {
+    color: #999eb2 !important;
+}
+
+.tutor-course-topic-lesson-list li.is-active .tutor-lesson-icon,
+.tutor-course-topic-lesson-list li:hover .tutor-lesson-icon,
+.tutor-lesson-list li.is-active .tutor-lesson-icon,
+.tutor-lesson-list li:hover .tutor-lesson-icon {
+    color: #ffffff !important;
+}
+
+/* Spotlight Header */
+.tutor-course-spotlight-header {
+    background-color: #141924 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.tutor-course-spotlight-header .tutor-course-spotlight-title {
+    color: #ffffff !important;
+}
+
+.tutor-course-spotlight-header a {
+    color: #999eb2 !important;
+}
+
+.tutor-course-spotlight-header a:hover {
+    color: #4077f3 !important;
+}
+
+/* Sidebar active state icons */
+.tutor-course-spotlight-sidebar .tutor-icon-angle-up,
+.tutor-course-spotlight-sidebar .tutor-icon-angle-down,
+.tutor-lesson-sidebar .tutor-icon-angle-up,
+.tutor-lesson-sidebar .tutor-icon-angle-down {
+    color: #ffffff !important;
+}
+
+/* General Text in Sidebar */
+.tutor-course-spotlight-sidebar,
+.tutor-lesson-sidebar {
+    color: #999eb2 !important;
+}
+
+/* Lesson Content Area Background */
+.tutor-course-spotlight-content,
+.tutor-lesson-content {
+    background-color: #0a0f1a !important;
+}
+
+/* Main Content Typography */
+.tutor-course-spotlight-content h1,
+.tutor-course-spotlight-content h2,
+.tutor-course-spotlight-content h3,
+.tutor-course-spotlight-content h4,
+.tutor-course-spotlight-content h5,
+.tutor-course-spotlight-content h6,
+.tutor-lesson-content h1,
+.tutor-lesson-content h2,
+.tutor-lesson-content h3,
+.tutor-lesson-content h4,
+.tutor-lesson-content h5,
+.tutor-lesson-content h6 {
+    color: #ffffff !important;
+}
+
+/* Text elements inside content */
+.tutor-course-spotlight-content p,
+.tutor-course-spotlight-content span:not([class^="tutor-icon-"]):not(.tutor-btn-text),
+.tutor-course-spotlight-content div:not(.tutor-btn),
+.tutor-lesson-content p,
+.tutor-lesson-content span:not([class^="tutor-icon-"]):not(.tutor-btn-text),
+.tutor-lesson-content div:not(.tutor-btn) {
+    color: #999eb2;
+}
+
+/* Need to ensure text color doesn't override buttons or specific wrappers */
+.tutor-course-spotlight-content .tutor-btn,
+.tutor-course-spotlight-content .tutor-btn *,
+.tutor-lesson-content .tutor-btn,
+.tutor-lesson-content .tutor-btn * {
+    color: #ffffff !important;
+}
+
+/* Lesson Tabs (Overview, Q&A) */
+.tutor-tabs-btn-group a,
+.tutor-lesson-tabs a {
+    color: #999eb2 !important;
+}
+.tutor-tabs-btn-group a.active,
+.tutor-lesson-tabs a.active {
+    color: #ffffff !important;
+    border-bottom-color: #4077f3 !important;
+}
+
+/* Common Tutor Area Fixes */
+.tutor-wrap {
+    color: #999eb2;
+}
+
+/* Ensure Spotlight mode handles mobile menu toggle well */
+.tutor-spotlight-mobile-menu button {
+    color: #ffffff !important;
+}
