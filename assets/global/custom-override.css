@@ -235,3 +235,91 @@ body{
 .tutor-spotlight-mobile-menu button {
     color: #ffffff !important;
 }
+
+/* ==========================================================================
+   TUTOR LMS SINGLE LESSON (LIVE DOM CLASSES)
+   ========================================================================== */
+/* Sidebar Container */
+.tutor-lesson-sidebar,
+.tutor-course-single-sidebar-wrapper {
+    background-color: #141924 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Sidebar Title (Course Content) */
+.tutor-course-single-sidebar-title {
+    color: #ffffff !important;
+    background-color: #141924 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Topic / Module Titles */
+.tutor-course-topic-title {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.tutor-course-topic-title:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Lesson Items */
+.tutor-course-topic-item {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.tutor-course-topic-item:hover,
+.tutor-course-topic-item.is-active {
+    background-color: rgba(64, 119, 243, 0.1) !important;
+}
+
+.tutor-course-topic-item-title {
+    color: #999eb2 !important;
+}
+
+.tutor-course-topic-item:hover .tutor-course-topic-item-title,
+.tutor-course-topic-item.is-active .tutor-course-topic-item-title {
+    color: #ffffff !important;
+}
+
+/* Main Content Area */
+.tutor-lesson-content-area {
+    background-color: #0a0f1a !important;
+}
+
+/* Main Content Header (where the tabs are) */
+.tutor-lesson-content-header {
+    background-color: #0a0f1a !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Fix Hardcoded Black Colors in Tutor */
+.tutor-lesson-content-area .tutor-color-black {
+    color: #ffffff !important;
+}
+
+.tutor-lesson-content-area .tutor-fs-5,
+.tutor-lesson-content-area .tutor-fs-6,
+.tutor-lesson-content-area .tutor-fw-medium {
+    color: #ffffff !important;
+}
+
+/* Content paragraphs */
+.tutor-lesson-content-area p,
+.tutor-lesson-content-area span:not([class^="tutor-icon-"]):not(.tutor-nav-link) {
+    color: #999eb2;
+}
+
+/* Tabs */
+.tutor-nav-link {
+    color: #999eb2 !important;
+}
+
+.tutor-nav-link.is-active,
+.tutor-nav-link:hover {
+    color: #ffffff !important;
+    border-bottom-color: #4077f3 !important;
+}
