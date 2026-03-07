@@ -7,6 +7,8 @@
 
    Targets: #tutor-registration-wrap  >  #tutor-registration-form
    Also covers .tutor-login-wrap (login page shares this style)
+
+   Last updated: 2026-03-06 - Unified login/signup form design
    ========================================================================== */
 
 /* ─── 0. CSS VARIABLES ─── */
@@ -732,10 +734,10 @@ body .page-content {
 .tutor-login-wrap h3,
 .tutor-login-wrap .tutor-fs-4,
 .tutor-login-wrap .tutor-fs-5 {
-    color: var(--sp-white) !important;
-    font-size: 20px !important;
-    font-weight: 700 !important;
-    margin-bottom: 6px !important;
+    color: var(--sp-gray) !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    margin-bottom: 16px !important;
     text-align: center !important;
     line-height: 1.4 !important;
 }
@@ -884,7 +886,48 @@ body .page-content {
 
 
 /* ==========================================================================
-   22. ENTRANCE ANIMATION
+   22. FORGOT PASSWORD LINK — Override ghost button to link style
+   ========================================================================== */
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost {
+    /* Reset all button styles */
+    width: auto !important;
+    display: inline !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    /* Apply link styles */
+    color: var(--sp-blue) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: var(--sp-transition) !important;
+    line-height: 1.5 !important;
+    letter-spacing: normal !important;
+    text-align: right !important;
+    transform: none !important;
+}
+
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost:hover {
+    color: var(--sp-blue-light) !important;
+    text-decoration: underline !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost:active {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+
+/* ==========================================================================
+   23. ENTRANCE ANIMATION
    ========================================================================== */
 @keyframes signupCardFadeIn {
     from {
