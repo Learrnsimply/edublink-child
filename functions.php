@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+add_action( 'wp_enqueue_scripts', 'learnsimply_enqueue_custom_overrides', 999 );
+
+
 /**
  * Placeholder image URL when no image is available
  * Change path here to update across the entire theme
@@ -1092,6 +1095,171 @@ function edublink_child_load_global_override_css() {
 	}
 }
 add_action( 'wp_head', 'edublink_child_load_global_override_css', 10000 );
+
+/**
+ * Inject inline dark-mode CSS for Tutor LMS lesson sidebar (spotlight mode).
+ * Loaded via wp_footer to guarantee it renders AFTER all other stylesheets,
+ * bypassing any file-level server/CDN caching.
+ */
+function edublink_child_lesson_sidebar_dark_mode() {
+	// Only load on Tutor LMS lesson pages (spotlight mode)
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+	if ( strpos( $request_uri, '/lesson/' ) === false ) {
+		return;
+	}
+	?>
+	<style id="learnsimply-sidebar-dark-mode">
+	/* ── Sidebar container ── */
+	.tutor-course-spotlight-sidebar,
+	.tutor-course-spotlight-sidebar > div,
+	.tutor-course-topics-sidebar,
+	.tutor-course-single-sidebar-wrapper {
+		background-color: #141924 !important;
+		color: #999eb2 !important;
+		border-right: 1px solid rgba(255,255,255,0.08) !important;
+		border-left:  1px solid rgba(255,255,255,0.08) !important;
+	}
+
+	/* ── Sidebar header ── */
+	.tutor-course-spotlight-sidebar-header,
+	.tutor-course-single-sidebar-title {
+		background-color: #141924 !important;
+		color: #fff !important;
+		border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+	}
+
+	/* ── Topic / module container ── */
+	.tutor-course-topic-single {
+		background-color: transparent !important;
+		border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+	}
+
+	/* ── Topic / module header (e.g. الوحدة الاولي) ── */
+	.tutor-course-topics-header {
+		background-color: rgba(255,255,255,0.04) !important;
+		color: #fff !important;
+		border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+	}
+	.tutor-course-topics-header:hover {
+		background-color: rgba(255,255,255,0.08) !important;
+	}
+	.tutor-course-topics-header,
+	.tutor-course-topics-header * {
+		color: #fff !important;
+	}
+
+	/* ── Topic title (older Tutor versions) ── */
+	.tutor-course-topic-title,
+	.tutor-course-topic-title *,
+	.tutor-course-topic-title span,
+	.tutor-course-topic-title div {
+		color: #fff !important;
+		background-color: rgba(255,255,255,0.04) !important;
+	}
+
+	/* ── Lessons list container ── */
+	.tutor-course-lessons-list {
+		background-color: transparent !important;
+	}
+
+	/* ── Individual lesson items ── */
+	.tutor-course-lesson-item,
+	a.tutor-course-lesson-item,
+	.tutor-course-topic-item {
+		color: #999eb2 !important;
+		background-color: transparent !important;
+		border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+	}
+	.tutor-course-lesson-item span,
+	.tutor-course-lesson-item div,
+	.tutor-course-topic-item-title {
+		color: inherit !important;
+	}
+
+	/* Hover + active state */
+	.tutor-course-lesson-item:hover,
+	.tutor-course-lesson-item.is-active,
+	.tutor-course-lesson-item.tutor-active,
+	.tutor-course-lesson-item.active,
+	.tutor-course-topic-item:hover,
+	.tutor-course-topic-item.is-active {
+		background-color: rgba(64,119,243,0.1) !important;
+		color: #fff !important;
+		border-radius: 6px;
+	}
+
+	/* ── Icons ── */
+	.tutor-course-spotlight-sidebar [class^="tutor-icon-"],
+	.tutor-course-spotlight-sidebar [class*=" tutor-icon-"],
+	.tutor-course-spotlight-sidebar .tutor-form-check-input {
+		color: #999eb2 !important;
+		border-color: rgba(255,255,255,0.2) !important;
+		background-color: transparent !important;
+	}
+	/* Arrow / chevron icons → white */
+	.tutor-course-spotlight-sidebar [class*="tutor-icon-angle"] {
+		color: #fff !important;
+	}
+	/* Info icon → accent blue */
+	.tutor-course-spotlight-sidebar .tutor-icon-circle-info,
+	.tutor-course-spotlight-sidebar .tutor-icon-info-circle {
+		color: #4077f3 !important;
+	}
+	/* Checked checkbox */
+	.tutor-course-spotlight-sidebar .tutor-form-check-input:checked,
+	.tutor-course-spotlight-sidebar input[type="checkbox"]:checked {
+		background-color: #4077f3 !important;
+		border-color: #4077f3 !important;
+	}
+
+	/* ── Progress counts (0/5, 2/18) ── */
+	.tutor-course-spotlight-sidebar .tutor-fs-7,
+	.tutor-course-spotlight-sidebar .tutor-color-muted {
+		color: #999eb2 !important;
+	}
+
+	/* ── Override Tutor utility bg/color classes inside sidebar ── */
+	.tutor-course-spotlight-sidebar .tutor-bg-white,
+	.tutor-course-spotlight-sidebar [class*="bg-white"],
+	.tutor-course-spotlight-sidebar [class*="bg-light"] {
+		background-color: #141924 !important;
+	}
+	.tutor-course-spotlight-sidebar .tutor-color-black,
+	.tutor-course-spotlight-sidebar .tutor-color-dark,
+	.tutor-course-spotlight-sidebar [class*="color-black"],
+	.tutor-course-spotlight-sidebar [class*="color-dark"] {
+		color: #fff !important;
+	}
+
+	/* ── NUCLEAR: wipe stray backgrounds on ALL sidebar descendants ── */
+	.tutor-course-spotlight-sidebar *:not(.tutor-btn):not([class*="icon"]):not(svg):not(path):not(i):not(input) {
+		background-color: transparent !important;
+	}
+	/* Re-apply sidebar container bg */
+	.tutor-course-spotlight-sidebar {
+		background-color: #141924 !important;
+	}
+	/* Re-apply topic header bg */
+	.tutor-course-topics-header {
+		background-color: rgba(255,255,255,0.04) !important;
+	}
+	/* Re-apply hover/active bg */
+	.tutor-course-lesson-item:hover,
+	.tutor-course-lesson-item.is-active,
+	.tutor-course-lesson-item.tutor-active,
+	.tutor-course-lesson-item.active {
+		background-color: rgba(64,119,243,0.1) !important;
+	}
+
+	/* ── Scrollbar ── */
+	.tutor-course-spotlight-sidebar::-webkit-scrollbar { width: 6px; }
+	.tutor-course-spotlight-sidebar::-webkit-scrollbar-track { background: #0a0f1a; }
+	.tutor-course-spotlight-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+	.tutor-course-spotlight-sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+	</style>
+	<?php
+}
+add_action( 'wp_footer', 'edublink_child_lesson_sidebar_dark_mode', 99999 );
 
 /**
  * Remove WooCommerce CSS
