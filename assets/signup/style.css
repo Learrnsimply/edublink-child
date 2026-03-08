@@ -13,28 +13,28 @@
 
 /* ─── 0. CSS VARIABLES ─── */
 :root {
-    --sp-bg:           #0a0f1a;
-    --sp-card:         #111827;
-    --sp-card-alt:     #1a2232;
-    --sp-glass:        rgba(255, 255, 255, 0.04);
+    --sp-bg: #0a0f1a;
+    --sp-card: #111827;
+    --sp-card-alt: #1a2232;
+    --sp-glass: rgba(255, 255, 255, 0.04);
     --sp-glass-border: rgba(255, 255, 255, 0.08);
-    --sp-glass-hover:  rgba(255, 255, 255, 0.07);
-    --sp-blue:         #4077f3;
-    --sp-blue-light:   #658FF2;
-    --sp-blue-soft:    rgba(64, 119, 243, 0.12);
-    --sp-blue-glow:    rgba(64, 119, 243, 0.22);
-    --sp-white:        #ffffff;
-    --sp-white-soft:   #d0d4e0;
-    --sp-gray:         #94a3b8;
-    --sp-gray-dim:     #64748b;
-    --sp-green:        #18a963;
-    --sp-red:          #f96a7b;
-    --sp-border:       rgba(255, 255, 255, 0.08);
-    --sp-radius:       16px;
-    --sp-radius-lg:    24px;
-    --sp-radius-sm:    10px;
-    --sp-font:         "Graphik Arabic", "Cairo", "IBM Plex Sans Arabic", sans-serif;
-    --sp-transition:   all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --sp-glass-hover: rgba(255, 255, 255, 0.07);
+    --sp-blue: #4077f3;
+    --sp-blue-light: #658FF2;
+    --sp-blue-soft: rgba(64, 119, 243, 0.12);
+    --sp-blue-glow: rgba(64, 119, 243, 0.22);
+    --sp-white: #ffffff;
+    --sp-white-soft: #d0d4e0;
+    --sp-gray: #94a3b8;
+    --sp-gray-dim: #64748b;
+    --sp-green: #18a963;
+    --sp-red: #f96a7b;
+    --sp-border: rgba(255, 255, 255, 0.08);
+    --sp-radius: 16px;
+    --sp-radius-lg: 24px;
+    --sp-radius-sm: 10px;
+    --sp-font: "Graphik Arabic", "Cairo", "IBM Plex Sans Arabic", sans-serif;
+    --sp-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 
@@ -77,8 +77,8 @@ body .page-content {
    ========================================================================== */
 .entry-content,
 .page-content,
-.site-main > article,
-.site-main > .type-page {
+.site-main>article,
+.site-main>.type-page {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -92,7 +92,7 @@ body .page-content {
 /* Subtle background pattern */
 .entry-content::before,
 .page-content::before,
-.site-main > article::before {
+.site-main>article::before {
     content: "" !important;
     position: absolute !important;
     top: 0 !important;
@@ -113,11 +113,9 @@ body .page-content {
 .tutor-login-wrap {
     width: 100% !important;
     max-width: 460px !important;
-    background: linear-gradient(
-        165deg,
-        rgba(17, 24, 39, 0.95) 0%,
-        rgba(15, 23, 42, 0.98) 100%
-    ) !important;
+    background: linear-gradient(165deg,
+            rgba(17, 24, 39, 0.95) 0%,
+            rgba(15, 23, 42, 0.98) 100%) !important;
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-radius: var(--sp-radius-lg) !important;
     padding: 36px 32px 32px !important;
@@ -310,7 +308,7 @@ body .page-content {
 .tutor-login-wrap select:focus {
     border-color: var(--sp-blue) !important;
     box-shadow: 0 0 0 3px var(--sp-blue-soft),
-                0 0 12px rgba(64, 119, 243, 0.08) !important;
+        0 0 12px rgba(64, 119, 243, 0.08) !important;
     background: rgba(255, 255, 255, 0.06) !important;
 }
 
@@ -566,9 +564,9 @@ body .page-content {
 }
 
 /* "Already have account? Login" text below the form */
-#tutor-registration-wrap > p,
-#tutor-registration-wrap > div > p,
-.tutor-login-wrap > p:last-child,
+#tutor-registration-wrap>p,
+#tutor-registration-wrap>div>p,
+.tutor-login-wrap>p:last-child,
 .tutor-login-wrap .tutor-mt-20,
 .tutor-login-wrap .tutor-mt-24 {
     text-align: center !important;
@@ -822,6 +820,7 @@ body .page-content {
    21. RESPONSIVE
    ========================================================================== */
 @media (max-width: 600px) {
+
     #tutor-registration-wrap,
     .tutor-login-wrap {
         max-width: 100% !important;
@@ -832,8 +831,8 @@ body .page-content {
 
     .entry-content,
     .page-content,
-    .site-main > article,
-    .site-main > .type-page {
+    .site-main>article,
+    .site-main>.type-page {
         padding: 20px 8px 40px !important;
         min-height: calc(100vh - 140px) !important;
     }
@@ -866,12 +865,13 @@ body .page-content {
     /* Hide background glow on mobile */
     .entry-content::before,
     .page-content::before,
-    .site-main > article::before {
+    .site-main>article::before {
         display: none !important;
     }
 }
 
 @media (max-width: 400px) {
+
     #tutor-registration-wrap,
     .tutor-login-wrap {
         padding: 24px 16px 20px !important;
@@ -936,8 +936,36 @@ body .page-content {
         opacity: 0;
         transform: translateY(20px) scale(0.98);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
+}
+
+.elementor-heading-title {
+    color: #ffffff !important;
+}
+
+/* --- Overview Tab Content --- */
+.tutor-lesson-content-area .elementor-widget-container,
+.tutor-lesson-content-area .elementor-widget-container p,
+.tutor-lesson-content-area .elementor-widget-container span,
+.tutor-lesson-content-area .elementor-widget-container div,
+#tutor-lesson-tab-overview .elementor-widget-container,
+#tutor-lesson-tab-overview .elementor-widget-container p,
+#tutor-lesson-tab-overview .elementor-widget-container span,
+#tutor-lesson-tab-overview .elementor-widget-container div {
+    color: #afb1b9 !important;
+}
+
+.tutor-lesson-content-area .elementor-widget-container strong,
+.tutor-lesson-content-area .elementor-widget-container strong *,
+.tutor-lesson-content-area .elementor-widget-container b,
+.tutor-lesson-content-area .elementor-widget-container b *,
+#tutor-lesson-tab-overview .elementor-widget-container strong,
+#tutor-lesson-tab-overview .elementor-widget-container strong *,
+#tutor-lesson-tab-overview .elementor-widget-container b,
+#tutor-lesson-tab-overview .elementor-widget-container b * {
+    color: #ffffff !important;
 }
