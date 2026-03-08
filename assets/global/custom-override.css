@@ -18,42 +18,44 @@
    }
 */
 
-.coupon-col-end{
-       background: transparent !important;
-       /* removed blue accent which conflicted with button styling */
+.coupon-col-end {
+    background: transparent !important;
+    /* removed blue accent which conflicted with button styling */
     border-end-end-radius: 30px !important;
 }
 
-#promo-bar{
-   background: red !important;
+#promo-bar {
+    background: red !important;
 }
 
 .tutor-course-spotlight-nav {
-   background-color: #0a0f1a !important;
-   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background-color: #0a0f1a !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-body{
-   background-color: #0a0f1a !important;
+body {
+    background-color: #0a0f1a !important;
 }
 
 /* tutor-login-wrap background now handled by signup/style.css */
 
 /* Review "عرض المزيد" button - same style as show-more */
 .show-more-review {
-  background: none;
-  border: none;
-  padding: 0;
-  color: #4077f3;
-  cursor: pointer;
-  font: inherit;
-  text-decoration: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #4077f3;
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
 }
+
 .show-more-review:hover {
-  color: #5a8cff;
+    color: #5a8cff;
 }
+
 .review-text-content.expanded {
-  white-space: pre-wrap;
+    white-space: pre-wrap;
 }
 
 /* Tutor LMS icons: restore icon font (global styles.css overrides *::before with Graphik Arabic) */
@@ -61,7 +63,7 @@ body{
 [class*=" tutor-icon-"],
 [class^="tutor-icon-"]::before,
 [class*=" tutor-icon-"]::before {
-  font-family: tutor !important;
+    font-family: tutor !important;
 }
 
 /* ==========================================================================
@@ -92,7 +94,7 @@ aside[class*="sidebar"] {
 }
 
 /* Sidebar cells in the Tutor LMS spotlight Vue layout */
-div[class*="course-spotlight"] > div[class*="sidebar"],
+div[class*="course-spotlight"]>div[class*="sidebar"],
 div[class*="spotlight"] div[class*="sidebar-wrap"],
 div[class*="spotlight"] div[class*="sidebar-inner"],
 div[class*="spotlight"] div[class*="sidebar-content"] {
@@ -141,7 +143,7 @@ li[class*="course-lesson"] a {
 .tutor-course-single-sidebar-title,
 .tutor-spotlight-sidebar-title,
 .tutor-course-topics-sidebar-title,
-.tutor-course-spotlight-sidebar > .tutor-course-title {
+.tutor-course-spotlight-sidebar>.tutor-course-title {
     color: #ffffff !important;
     background-color: #1b2133 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -408,4 +410,8 @@ li[class*="course-lesson"] a {
     color: #ffffff !important;
     background-color: #1b2133 !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.elementor-heading-title {
+    color: #ffffff !important;
 }
