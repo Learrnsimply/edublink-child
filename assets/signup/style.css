@@ -969,3 +969,7 @@ body .page-content {
 #tutor-lesson-tab-overview .elementor-widget-container b * {
     color: #ffffff !important;
 }
+
+.tutor-course-topic-single-body * {
+    color: white;
+}
