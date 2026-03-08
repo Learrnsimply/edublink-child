@@ -27,6 +27,147 @@ function learnsimply_enqueue_custom_overrides() {
 }
 
 /**
+ * Inject sidebar dark mode CSS at the very end of wp_footer (highest possible priority).
+ * This MUST come after all Tutor LMS stylesheets to override them.
+ * Only runs on lesson/course pages to avoid impacting other pages.
+ */
+add_action( 'wp_footer', 'learnsimply_inject_sidebar_dark_mode', 9999 );
+
+function learnsimply_inject_sidebar_dark_mode() {
+	// Only inject on Tutor LMS lesson/course pages
+	$is_tutor_page = false;
+	if ( function_exists( 'tutor_utils' ) ) {
+		$is_tutor_page = tutor_utils()->is_single_lesson()
+			|| tutor_utils()->is_single_course()
+			|| ( function_exists( 'is_tutor_page' ) && is_tutor_page() );
+	}
+	// Fallback: check URL contains /lesson/ or /courses/
+	if ( ! $is_tutor_page ) {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+		$is_tutor_page = strpos( $request_uri, '/lesson/' ) !== false
+			|| ( strpos( $request_uri, '/courses/' ) !== false && strpos( $request_uri, '/lesson/' ) !== false );
+	}
+
+	if ( ! $is_tutor_page ) {
+		return;
+	}
+	?>
+<style id="learnsimply-sidebar-dark-mode">
+/* ==========================================================
+   SIDEBAR DARK MODE - FOOTER INJECT (absolute last priority)
+   Targets confirmed DOM classes from browser inspection.
+   ========================================================== */
+
+/* ── Accordion topic headers ("الوحدة الأولى" rows) ──────── */
+.tutor-accordion-item-header,
+.tutor-course-topic-title,
+.tutor-course-topic-header,
+div.tutor-accordion-item-header,
+div.tutor-course-topic-title {
+	background-color: #1b2133 !important;
+	color: #e2e6f0 !important;
+	border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Active accordion header */
+.tutor-accordion-item-header.is-active,
+.tutor-accordion-item-header.is-open {
+	background-color: #232d45 !important;
+}
+
+.tutor-accordion-item-header:hover {
+	background-color: #232d45 !important;
+}
+
+/* ── Accordion body (lesson list container) ──────────────── */
+.tutor-accordion-item-body,
+.tutor-course-topic-content,
+div.tutor-accordion-item-body {
+	background-color: #141924 !important;
+}
+
+/* ── Links INSIDE the accordion body ────────────────────── */
+.tutor-accordion-item-body a,
+.tutor-course-topic-content a,
+.tutor-course-topic-item a,
+.tutor-course-topic-lesson-list li a,
+.tutor-lesson-list li a {
+	background-color: transparent !important;
+	color: #999eb2 !important;
+}
+
+/* ── Topic item rows ──────────────────────────────────────── */
+.tutor-course-topic-item,
+.tutor-course-topic-lesson-list li {
+	background-color: transparent !important;
+	border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+/* ── Hover / active lesson rows ──────────────────────────── */
+.tutor-course-topic-item.is-active,
+.tutor-course-topic-item:hover,
+.tutor-course-topic-lesson-list li.is-active,
+.tutor-course-topic-lesson-list li:hover,
+.tutor-lesson-list li.is-active,
+.tutor-lesson-list li:hover {
+	background-color: rgba(64,119,243,0.12) !important;
+	border-radius: 6px;
+}
+
+.tutor-course-topic-item.is-active a,
+.tutor-course-topic-item:hover a,
+.tutor-course-topic-lesson-list li.is-active a,
+.tutor-course-topic-lesson-list li:hover a,
+.tutor-lesson-list li.is-active a,
+.tutor-lesson-list li:hover a {
+	color: #ffffff !important;
+}
+
+/* ── Item title text ──────────────────────────────────────── */
+.tutor-course-topic-item-title {
+	color: #999eb2 !important;
+}
+
+.tutor-course-topic-item.is-active .tutor-course-topic-item-title,
+.tutor-course-topic-item:hover .tutor-course-topic-item-title {
+	color: #ffffff !important;
+}
+
+/* ── Item duration meta ───────────────────────────────────── */
+.tutor-course-topic-item-duration {
+	color: #6b7394 !important;
+}
+
+/* ── Completion circle / check icons ─────────────────────── */
+.tutor-form-check-input,
+.tutor-form-check-circle {
+	border-color: rgba(255,255,255,0.25) !important;
+	background-color: transparent !important;
+}
+
+/* ── Sidebar container (double-confirm it's dark) ─────────── */
+.tutor-course-single-sidebar-wrapper,
+.tutor-lesson-sidebar,
+.tutor-course-spotlight-sidebar {
+	background-color: #141924 !important;
+	color: #999eb2 !important;
+}
+
+/* ── Sidebar "محتوى الدورة" title bar ─────────────────────── */
+.tutor-course-single-sidebar-wrapper .tutor-course-single-sidebar-title,
+.tutor-course-single-sidebar-title {
+	background-color: #1b2133 !important;
+	color: #ffffff !important;
+	border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+</style>
+	<?php
+}
+
+
+
+
+/**
  * Placeholder image URL when no image is available
  * Change path here to update across the entire theme
  */

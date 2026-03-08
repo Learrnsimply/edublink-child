@@ -65,123 +65,271 @@ body{
 }
 
 /* ==========================================================================
-   TUTOR LMS SINGLE LESSON (SPOTLIGHT) DARK MODE
+   TUTOR LMS SINGLE LESSON - DARK MODE (SIDEBAR + CONTENT)
+   Covers all known Tutor LMS class variants (Spotlight, v2, v3, etc.)
    ========================================================================== */
+
+/* --- Override Tutor LMS CSS Custom Properties (Theming Variables) --- */
+:root {
+    --tutor-color-design-system-light: #141924 !important;
+    --tutor-color-background-primary: #141924 !important;
+    --tutor-color-background-secondary: #1b2133 !important;
+    --tutor-sidebar-bg: #141924 !important;
+    --tutor-sidebar-bg-color: #141924 !important;
+    --tutor-color-surface: #1b2133 !important;
+    --tutor-color-surface-2: #232d45 !important;
+}
+
+/* --- Broad attribute-based overrides (highest compatibility) --- */
+/* These match ANY element whose class contains "sidebar" */
+div[class*="course-spotlight-sidebar"],
+div[class*="lesson-sidebar"],
+div[class*="single-sidebar"],
+div[class*="topics-sidebar"],
+aside[class*="sidebar"] {
+    background-color: #141924 !important;
+    color: #999eb2 !important;
+}
+
+/* Sidebar cells in the Tutor LMS spotlight Vue layout */
+div[class*="course-spotlight"] > div[class*="sidebar"],
+div[class*="spotlight"] div[class*="sidebar-wrap"],
+div[class*="spotlight"] div[class*="sidebar-inner"],
+div[class*="spotlight"] div[class*="sidebar-content"] {
+    background-color: #141924 !important;
+    color: #999eb2 !important;
+}
+
+/* Topic/module accordion headers */
+div[class*="topic-title"],
+div[class*="topic-header"],
+div[class*="accordion"][class*="header"],
+button[class*="topic-title"],
+span[class*="topic-title"] {
+    background-color: #1b2133 !important;
+    color: #e2e6f0 !important;
+}
+
+/* Individual lesson rows / links */
+div[class*="topic-item"] a,
+div[class*="course-lesson"] a,
+li[class*="topic-item"] a,
+li[class*="course-lesson"] a {
+    background-color: transparent !important;
+    color: #999eb2 !important;
+}
+
+/* --- Overall page wrappers --- */
 .tutor-course-spotlight-wrapper,
 .tutor-single-lesson-wrap {
     background-color: #0a0f1a !important;
 }
 
+/* --- SIDEBAR CONTAINER (all known variants) --- */
 .tutor-course-spotlight-sidebar,
-.tutor-lesson-sidebar {
+.tutor-lesson-sidebar,
+.tutor-course-single-sidebar-wrapper,
+.tutor-course-topics-sidebar,
+.tutor-spotlight-sidebar {
     background-color: #141924 !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-inline-start: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #999eb2 !important;
 }
 
-/* Sidebar Titles */
-.tutor-course-spotlight-sidebar .tutor-course-title,
-.tutor-course-spotlight-sidebar h1, 
-.tutor-course-spotlight-sidebar h2, 
-.tutor-course-spotlight-sidebar h3, 
+/* --- Sidebar "Course Content" title bar --- */
+.tutor-course-single-sidebar-title,
+.tutor-spotlight-sidebar-title,
+.tutor-course-topics-sidebar-title,
+.tutor-course-spotlight-sidebar > .tutor-course-title {
+    color: #ffffff !important;
+    background-color: #1b2133 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Any heading inside the sidebar */
+.tutor-course-spotlight-sidebar h1,
+.tutor-course-spotlight-sidebar h2,
+.tutor-course-spotlight-sidebar h3,
 .tutor-course-spotlight-sidebar h4,
 .tutor-lesson-sidebar h1,
 .tutor-lesson-sidebar h2,
 .tutor-lesson-sidebar h3,
 .tutor-lesson-sidebar h4,
-.tutor-lesson-sidebar .tutor-lesson-sidebar-title {
+.tutor-course-single-sidebar-wrapper h1,
+.tutor-course-single-sidebar-wrapper h2,
+.tutor-course-single-sidebar-wrapper h3,
+.tutor-course-single-sidebar-wrapper h4,
+.tutor-course-topics-sidebar h1,
+.tutor-course-topics-sidebar h2,
+.tutor-course-topics-sidebar h3,
+.tutor-course-topics-sidebar h4 {
     color: #ffffff !important;
 }
 
-/* Sidebar Topic Container */
-.tutor-course-spotlight-sidebar .tutor-course-topic,
-.tutor-lesson-sidebar .tutor-lesson-topic {
+/* --- TOPIC / MODULE HEADER (the accordion rows like "الوحدة الأولى") --- */
+.tutor-course-topic-title,
+.tutor-lesson-topic-title,
+.tutor-course-topics-header,
+.tutor-accordion-item-header,
+.tutor-course-topic-header {
+    color: #e2e6f0 !important;
+    background-color: #1b2133 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.tutor-course-topic-title:hover,
+.tutor-lesson-topic-title:hover,
+.tutor-accordion-item-header:hover,
+.tutor-course-topic-header:hover {
+    background-color: #232d45 !important;
+}
+
+/* Topic container */
+.tutor-course-topic,
+.tutor-lesson-topic,
+.tutor-accordion-item {
     background-color: transparent !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
-/* Topic Title */
-.tutor-course-spotlight-sidebar .tutor-course-topic-title,
-.tutor-lesson-sidebar .tutor-lesson-topic-title {
-    color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+/* Accordion body / lesson list container */
+.tutor-accordion-item-body,
+.tutor-course-topic-content {
+    background-color: #141924 !important;
 }
 
-/* Topic Title Hover */
-.tutor-course-spotlight-sidebar .tutor-course-topic-title:hover,
-.tutor-lesson-sidebar .tutor-lesson-topic-title:hover {
-    background-color: rgba(255, 255, 255, 0.08) !important;
+/* --- LESSON ITEMS --- */
+.tutor-course-topic-item,
+.tutor-course-lesson,
+.tutor-course-topic-lesson-list li {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
 }
 
-/* Lesson Items */
+/* Lesson item links / anchors */
+.tutor-course-topic-item a,
+.tutor-course-lesson a,
+.tutor-course-topic-lesson-list li a,
+.tutor-lesson-list li a,
 .tutor-course-spotlight-sidebar .tutor-course-topic-lesson-list li a,
 .tutor-lesson-sidebar .tutor-lesson-list li a {
     color: #999eb2 !important;
-    transition: all 0.3s ease;
+    background-color: transparent !important;
+    transition: all 0.25s ease;
 }
 
-.tutor-course-spotlight-sidebar .tutor-course-topic-lesson-list li a:hover,
-.tutor-course-spotlight-sidebar .tutor-course-topic-lesson-list li.is-active a,
-.tutor-lesson-sidebar .tutor-lesson-list li a:hover,
-.tutor-lesson-sidebar .tutor-lesson-list li.is-active a {
-    background-color: rgba(64, 119, 243, 0.1) !important;
-    color: #ffffff !important;
+/* Lesson item title text */
+.tutor-course-topic-item-title,
+.tutor-course-lesson-title {
+    color: #999eb2 !important;
+}
+
+/* Lesson item durations / meta */
+.tutor-course-topic-item-duration,
+.tutor-course-lesson-duration {
+    color: #6b7394 !important;
+}
+
+/* Hover & active states for lesson items */
+.tutor-course-topic-item:hover,
+.tutor-course-topic-item.is-active,
+.tutor-course-lesson:hover,
+.tutor-course-lesson.is-active,
+.tutor-course-topic-lesson-list li:hover,
+.tutor-course-topic-lesson-list li.is-active,
+.tutor-lesson-list li:hover,
+.tutor-lesson-list li.is-active {
+    background-color: rgba(64, 119, 243, 0.12) !important;
     border-radius: 6px;
 }
 
-/* Lesson Icon */
+.tutor-course-topic-item:hover .tutor-course-topic-item-title,
+.tutor-course-topic-item.is-active .tutor-course-topic-item-title,
+.tutor-course-topic-item:hover a,
+.tutor-course-topic-item.is-active a,
+.tutor-course-lesson:hover a,
+.tutor-course-lesson.is-active a,
+.tutor-course-topic-lesson-list li:hover a,
+.tutor-course-topic-lesson-list li.is-active a,
+.tutor-lesson-list li:hover a,
+.tutor-lesson-list li.is-active a {
+    color: #ffffff !important;
+}
+
+/* --- ICONS inside sidebar --- */
+.tutor-course-topic-item .tutor-lesson-icon,
+.tutor-course-lesson .tutor-lesson-icon,
 .tutor-course-topic-lesson-list li .tutor-lesson-icon,
 .tutor-lesson-list li .tutor-lesson-icon {
-    color: #999eb2 !important;
+    color: #6b7394 !important;
 }
 
-.tutor-course-topic-lesson-list li.is-active .tutor-lesson-icon,
+.tutor-course-topic-item:hover .tutor-lesson-icon,
+.tutor-course-topic-item.is-active .tutor-lesson-icon,
 .tutor-course-topic-lesson-list li:hover .tutor-lesson-icon,
-.tutor-lesson-list li.is-active .tutor-lesson-icon,
-.tutor-lesson-list li:hover .tutor-lesson-icon {
-    color: #ffffff !important;
-}
-
-/* Spotlight Header */
-.tutor-course-spotlight-header {
-    background-color: #141924 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.tutor-course-spotlight-header .tutor-course-spotlight-title {
-    color: #ffffff !important;
-}
-
-.tutor-course-spotlight-header a {
-    color: #999eb2 !important;
-}
-
-.tutor-course-spotlight-header a:hover {
+.tutor-course-topic-lesson-list li.is-active .tutor-lesson-icon,
+.tutor-lesson-list li:hover .tutor-lesson-icon,
+.tutor-lesson-list li.is-active .tutor-lesson-icon {
     color: #4077f3 !important;
 }
 
-/* Sidebar active state icons */
+/* Chevron / angle icons in topic headers */
+.tutor-course-topic-title .tutor-icon-angle-up,
+.tutor-course-topic-title .tutor-icon-angle-down,
+.tutor-accordion-item-header .tutor-icon-angle-up,
+.tutor-accordion-item-header .tutor-icon-angle-down,
 .tutor-course-spotlight-sidebar .tutor-icon-angle-up,
 .tutor-course-spotlight-sidebar .tutor-icon-angle-down,
 .tutor-lesson-sidebar .tutor-icon-angle-up,
-.tutor-lesson-sidebar .tutor-icon-angle-down {
+.tutor-lesson-sidebar .tutor-icon-angle-down,
+.tutor-course-single-sidebar-wrapper .tutor-icon-angle-up,
+.tutor-course-single-sidebar-wrapper .tutor-icon-angle-down {
+    color: #8893b0 !important;
+}
+
+/* Checkbox / circle completion icons */
+.tutor-form-check-input,
+.tutor-form-check-circle {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: transparent !important;
+}
+
+/* --- TOP HEADER BAR (course title + nav) --- */
+.tutor-course-spotlight-nav,
+.tutor-course-spotlight-header {
+    background-color: #0e1422 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.tutor-course-spotlight-header .tutor-course-spotlight-title,
+.tutor-course-spotlight-nav .tutor-spotlight-title {
     color: #ffffff !important;
 }
 
-/* General Text in Sidebar */
-.tutor-course-spotlight-sidebar,
-.tutor-lesson-sidebar {
+.tutor-course-spotlight-header a,
+.tutor-course-spotlight-nav a {
     color: #999eb2 !important;
 }
 
-/* Lesson Content Area Background */
+.tutor-course-spotlight-header a:hover,
+.tutor-course-spotlight-nav a:hover {
+    color: #4077f3 !important;
+}
+
+/* --- LESSON CONTENT AREA --- */
 .tutor-course-spotlight-content,
-.tutor-lesson-content {
+.tutor-lesson-content,
+.tutor-lesson-content-area {
     background-color: #0a0f1a !important;
 }
 
-/* Main Content Typography */
+.tutor-lesson-content-header {
+    background-color: #0e1422 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Content headings */
 .tutor-course-spotlight-content h1,
 .tutor-course-spotlight-content h2,
 .tutor-course-spotlight-content h3,
@@ -193,21 +341,23 @@ body{
 .tutor-lesson-content h3,
 .tutor-lesson-content h4,
 .tutor-lesson-content h5,
-.tutor-lesson-content h6 {
+.tutor-lesson-content h6,
+.tutor-lesson-content-area .tutor-color-black,
+.tutor-lesson-content-area .tutor-fs-5,
+.tutor-lesson-content-area .tutor-fs-6,
+.tutor-lesson-content-area .tutor-fw-medium {
     color: #ffffff !important;
 }
 
-/* Text elements inside content */
+/* Content body text */
 .tutor-course-spotlight-content p,
-.tutor-course-spotlight-content span:not([class^="tutor-icon-"]):not(.tutor-btn-text),
-.tutor-course-spotlight-content div:not(.tutor-btn),
 .tutor-lesson-content p,
-.tutor-lesson-content span:not([class^="tutor-icon-"]):not(.tutor-btn-text),
-.tutor-lesson-content div:not(.tutor-btn) {
+.tutor-lesson-content-area p,
+.tutor-lesson-content-area span:not([class^="tutor-icon-"]):not(.tutor-nav-link) {
     color: #999eb2;
 }
 
-/* Need to ensure text color doesn't override buttons or specific wrappers */
+/* Buttons in content */
 .tutor-course-spotlight-content .tutor-btn,
 .tutor-course-spotlight-content .tutor-btn *,
 .tutor-lesson-content .tutor-btn,
@@ -215,111 +365,30 @@ body{
     color: #ffffff !important;
 }
 
-/* Lesson Tabs (Overview, Q&A) */
-.tutor-tabs-btn-group a,
-.tutor-lesson-tabs a {
-    color: #999eb2 !important;
-}
-.tutor-tabs-btn-group a.active,
-.tutor-lesson-tabs a.active {
-    color: #ffffff !important;
-    border-bottom-color: #4077f3 !important;
-}
-
-/* Common Tutor Area Fixes */
+/* General tutor area text fallback */
 .tutor-wrap {
     color: #999eb2;
 }
 
-/* Ensure Spotlight mode handles mobile menu toggle well */
-.tutor-spotlight-mobile-menu button {
-    color: #ffffff !important;
-}
-
-/* ==========================================================================
-   TUTOR LMS SINGLE LESSON (LIVE DOM CLASSES)
-   ========================================================================== */
-/* Sidebar Container */
-.tutor-lesson-sidebar,
-.tutor-course-single-sidebar-wrapper {
-    background-color: #141924 !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Sidebar Title (Course Content) */
-.tutor-course-single-sidebar-title {
-    color: #ffffff !important;
-    background-color: #141924 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Topic / Module Titles */
-.tutor-course-topic-title {
-    color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
-.tutor-course-topic-title:hover {
-    background-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* Lesson Items */
-.tutor-course-topic-item {
-    background-color: transparent !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
-.tutor-course-topic-item:hover,
-.tutor-course-topic-item.is-active {
-    background-color: rgba(64, 119, 243, 0.1) !important;
-}
-
-.tutor-course-topic-item-title {
-    color: #999eb2 !important;
-}
-
-.tutor-course-topic-item:hover .tutor-course-topic-item-title,
-.tutor-course-topic-item.is-active .tutor-course-topic-item-title {
-    color: #ffffff !important;
-}
-
-/* Main Content Area */
-.tutor-lesson-content-area {
-    background-color: #0a0f1a !important;
-}
-
-/* Main Content Header (where the tabs are) */
-.tutor-lesson-content-header {
-    background-color: #0a0f1a !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Fix Hardcoded Black Colors in Tutor */
-.tutor-lesson-content-area .tutor-color-black {
-    color: #ffffff !important;
-}
-
-.tutor-lesson-content-area .tutor-fs-5,
-.tutor-lesson-content-area .tutor-fs-6,
-.tutor-lesson-content-area .tutor-fw-medium {
-    color: #ffffff !important;
-}
-
-/* Content paragraphs */
-.tutor-lesson-content-area p,
-.tutor-lesson-content-area span:not([class^="tutor-icon-"]):not(.tutor-nav-link) {
-    color: #999eb2;
-}
-
-/* Tabs */
+/* --- TABS (Overview / Q&A) --- */
+.tutor-tabs-btn-group a,
+.tutor-lesson-tabs a,
 .tutor-nav-link {
     color: #999eb2 !important;
 }
 
+.tutor-tabs-btn-group a.active,
+.tutor-lesson-tabs a.active,
 .tutor-nav-link.is-active,
 .tutor-nav-link:hover {
     color: #ffffff !important;
     border-bottom-color: #4077f3 !important;
+}
+
+/* --- Mobile toggle button --- */
+.tutor-spotlight-mobile-menu button,
+.tutor-course-topics-sidebar-toggler {
+    color: #ffffff !important;
+    background-color: #1b2133 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
