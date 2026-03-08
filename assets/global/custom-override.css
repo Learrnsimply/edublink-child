@@ -415,3 +415,16 @@ li[class*="course-lesson"] a {
 .elementor-heading-title {
     color: #ffffff !important;
 }
+
+/* --- Overview Tab Content --- */
+.tutor-lesson-content-area .elementor-widget-container,
+#tutor-lesson-tab-overview .elementor-widget-container {
+    color: #afb1b9 !important;
+}
+
+.tutor-lesson-content-area .elementor-widget-container strong,
+.tutor-lesson-content-area .elementor-widget-container b,
+#tutor-lesson-tab-overview .elementor-widget-container strong,
+#tutor-lesson-tab-overview .elementor-widget-container b {
+    color: #ffffff !important;
+}
