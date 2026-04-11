@@ -113,6 +113,8 @@ body .page-content {
 .tutor-login-wrap {
     width: 100% !important;
     max-width: 460px !important;
+    margin-top: 60px !important;
+    margin-bottom: 60px !important;
     background: linear-gradient(165deg,
             rgba(17, 24, 39, 0.95) 0%,
             rgba(15, 23, 42, 0.98) 100%) !important;
