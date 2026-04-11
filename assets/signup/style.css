@@ -84,7 +84,7 @@ body .page-content {
     align-items: center !important;
     justify-content: center !important;
     min-height: calc(100vh - 160px) !important;
-    padding: 40px 20px 60px !important;
+    padding: 80px 20px 80px !important;
     background: transparent !important;
     position: relative !important;
 }
