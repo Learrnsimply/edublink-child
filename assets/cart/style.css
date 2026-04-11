@@ -43,9 +43,9 @@ body.woocommerce-cart,
 .woocommerce-cart .entry-content,
 .woocommerce-cart .page-content {
   background: transparent !important;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 130px 28px 80px;
+  padding: 48px 28px 80px;
   direction: rtl;
 }
 
@@ -581,22 +581,73 @@ body.woocommerce-cart,
 }
 
 /* ─────────────────────────────────
+   4b. TWO-COLUMN LAYOUT — cart table + summary side by side
+───────────────────────────────── */
+.woocommerce-cart .woocommerce {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Wrap cart form and collaterals in a flex row */
+.woocommerce-cart form.woocommerce-cart-form {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+}
+
+.woocommerce-cart .woocommerce > form.woocommerce-cart-form,
+.woocommerce-cart .woocommerce > .cart-collaterals {
+  /* Will be arranged via JS-free CSS grid below */
+}
+
+/* Grid: items (right in RTL) + summary (left) */
+.woocommerce-cart .woocommerce {
+  display: grid !important;
+  grid-template-columns: 1fr 360px !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 28px !important;
+  align-items: start !important;
+}
+
+/* Cart page title spans full width */
+.woocommerce-cart .woocommerce > h1,
+.woocommerce-cart .woocommerce > h2 {
+  grid-column: 1 / -1 !important;
+}
+
+/* Notices span full width */
+.woocommerce-cart .woocommerce > .woocommerce-notices-wrapper {
+  grid-column: 1 / -1 !important;
+}
+
+/* Cart form — right column in RTL (column 1 in LTR = right visually) */
+.woocommerce-cart .woocommerce > form.woocommerce-cart-form {
+  grid-column: 1 / 2 !important;
+  grid-row: 2 !important;
+}
+
+/* Collaterals (totals) — left column in RTL (column 2) */
+.woocommerce-cart .woocommerce > .cart-collaterals {
+  grid-column: 2 / 3 !important;
+  grid-row: 2 !important;
+  position: sticky !important;
+  top: 24px !important;
+}
+
+/* ─────────────────────────────────
    5. CART TOTALS / SUMMARY
 ───────────────────────────────── */
 .woocommerce-cart .cart-collaterals {
   background: transparent !important;
-  margin-top: 28px;
-  display: flex;
-  justify-content: flex-start;
+  display: block !important;
 }
 
 .woocommerce-cart .cart_totals {
   background: #141924 !important;
   border: 1px solid rgba(255, 255, 255, 0.06) !important;
   border-radius: 20px !important;
-  padding: 28px 32px 32px !important;
+  padding: 28px 28px 32px !important;
   width: 100% !important;
-  max-width: 420px !important;
+  max-width: 100% !important;
   float: none !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18) !important;
 }
@@ -1247,12 +1298,53 @@ body.woocommerce-cart .page-content:has(.ls-empty-cart) {
 }
 
 /* ─────────────────────────────────
-   11. RESPONSIVE — Tablet
+   11. RESPONSIVE — Tablet / Mobile
 ───────────────────────────────── */
-@media (max-width: 1024px) {
-  .woocommerce-cart .cart_totals,
-  .custom-cart-summary {
+@media (max-width: 900px) {
+  .woocommerce-cart .woocommerce {
+    grid-template-columns: 1fr !important;
+  }
+
+  .woocommerce-cart .woocommerce > form.woocommerce-cart-form {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+  }
+
+  .woocommerce-cart .woocommerce > .cart-collaterals {
+    grid-column: 1 / -1 !important;
+    grid-row: 3 !important;
+    position: static !important;
+  }
+
+  .woocommerce-cart .cart_totals {
     max-width: 100% !important;
+  }
+
+  .woocommerce-cart table.shop_table thead th {
+    padding: 12px 14px !important;
+    font-size: 12px !important;
+  }
+
+  .woocommerce-cart table.shop_table td {
+    padding: 14px !important;
+  }
+
+  .woocommerce-cart table.shop_table td.product-thumbnail img {
+    width: 72px !important;
+    height: 52px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .woocommerce-cart .woocommerce,
+  .woocommerce-cart .entry-content,
+  .woocommerce-cart .page-content {
+    padding: 32px 16px 60px !important;
+  }
+
+  .woocommerce-cart table.shop_table thead th.product-thumbnail,
+  .woocommerce-cart table.shop_table td.product-thumbnail {
+    display: none !important;
   }
 }
 
