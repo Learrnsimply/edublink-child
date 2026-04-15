@@ -5538,7 +5538,7 @@ width: 100%;
   object-fit: contain;
 }
 
-/* Make Facebook icon look like other social icons (use image without blue background) */
+/* Facebook icon - matches other social icon style */
 .learnsimply-social-facebook {
   width: 47px;
   height: 48px;
@@ -5546,14 +5546,19 @@ width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: #4077f3;
-} 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+}
 
 .learnsimply-social-facebook .learnsimply-social-image {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
+  display: none;
+}
+
+.learnsimply-social-facebook .learnsimply-facebook-svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: white;
 }
 
 .learnsimply-facebook-f {
@@ -12706,20 +12711,20 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   left: 30px;
   width: 56px;
   height: 56px;
-  background-color: #25d366;
-  border-radius: 50%;
+  background: none;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5);
+  box-shadow: none;
   z-index: 9999;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
   text-decoration: none;
 }
 
 .whatsapp-float:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
