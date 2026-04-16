@@ -5570,6 +5570,48 @@ width: 100%;
   display: none;
 }
 
+/* YouTube icon - official YouTube branding */
+.learnsimply-social-youtube {
+  background: #FF0000;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.learnsimply-social-youtube:hover {
+  background: #CC0000;
+}
+
+.learnsimply-social-youtube .learnsimply-youtube-svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  fill: #ffffff;
+}
+
+/* Telegram icon - official Telegram branding */
+.learnsimply-social-telegram {
+  background: #2AABEE;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.learnsimply-social-telegram:hover {
+  background: #1E8FC4;
+}
+
+.learnsimply-social-telegram .learnsimply-telegram-svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: #ffffff;
+}
+
+/* LinkedIn icon - keep existing image style */
+.learnsimply-social-linkedin {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .learnsimply-footer-bottom {
   display: flex;
   flex-direction: column;
