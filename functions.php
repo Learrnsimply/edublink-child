@@ -1264,6 +1264,26 @@ function edublink_child_lesson_sidebar_dark_mode() {
 	}
 	?>
 	<style id="learnsimply-sidebar-dark-mode">
+	/* ── CSS Variables override (root cause of black icons) ── */
+	.tutor-course-spotlight-sidebar,
+	.tutor-course-topics-sidebar,
+	.tutor-lesson-sidebar,
+	.tutor-course-single-sidebar-wrapper,
+	div[class*="course-spotlight-sidebar"],
+	div[class*="topics-sidebar"] {
+		--tutor-color-black: #c8cfe0 !important;
+		--tutor-color-text: #c8cfe0 !important;
+		--tutor-color-text-primary: #c8cfe0 !important;
+		--tutor-color-text-secondary: #8893b0 !important;
+		--tutor-color-text-hints: #8893b0 !important;
+		--tutor-color-secondary: #8893b0 !important;
+		--tutor-color-muted: #8893b0 !important;
+		--tutor-icon-color: #8893b0 !important;
+		--tutor-color-design-system-dark: #c8cfe0 !important;
+		--color-text-primary: #c8cfe0 !important;
+		--color-text-secondary: #8893b0 !important;
+	}
+
 	/* ── Sidebar container ── */
 	.tutor-course-spotlight-sidebar,
 	.tutor-course-spotlight-sidebar > div,
@@ -1411,6 +1431,55 @@ function edublink_child_lesson_sidebar_dark_mode() {
 	.tutor-course-spotlight-sidebar [class*="color-black"],
 	.tutor-course-spotlight-sidebar [class*="color-dark"] {
 		color: #fff !important;
+	}
+
+	/* ── NUCLEAR: force ALL icon elements to light color ── */
+	/* Icon fonts (uses color) */
+	.tutor-course-spotlight-sidebar i,
+	.tutor-course-spotlight-sidebar [class*="tutor-icon"],
+	.tutor-course-spotlight-sidebar [class*="icon"],
+	.tutor-course-topics-sidebar i,
+	.tutor-course-topics-sidebar [class*="tutor-icon"],
+	.tutor-course-topics-sidebar [class*="icon"] {
+		color: #8893b0 !important;
+	}
+	.tutor-course-spotlight-sidebar i::before,
+	.tutor-course-spotlight-sidebar [class*="tutor-icon"]::before,
+	.tutor-course-topics-sidebar i::before,
+	.tutor-course-topics-sidebar [class*="tutor-icon"]::before {
+		color: #8893b0 !important;
+	}
+	/* SVG icons: target fill AND stroke AND color */
+	.tutor-course-spotlight-sidebar svg,
+	.tutor-course-topics-sidebar svg {
+		color: #8893b0 !important;
+		fill: #8893b0 !important;
+	}
+	.tutor-course-spotlight-sidebar svg *,
+	.tutor-course-topics-sidebar svg * {
+		fill: #8893b0 !important;
+		stroke: none !important;
+	}
+	/* SVGs that use stroke (outline style icons) */
+	.tutor-course-spotlight-sidebar svg [stroke]:not([stroke="none"]),
+	.tutor-course-topics-sidebar svg [stroke]:not([stroke="none"]) {
+		stroke: #8893b0 !important;
+		fill: none !important;
+	}
+	/* Active/hover → blue */
+	.tutor-course-topic-item:hover i,
+	.tutor-course-topic-item:hover [class*="icon"],
+	.tutor-course-topic-item.is-active i,
+	.tutor-course-topic-item.is-active [class*="icon"],
+	.tutor-course-lesson-item:hover i,
+	.tutor-course-lesson-item.is-active i {
+		color: #4077f3 !important;
+	}
+	.tutor-course-topic-item:hover svg *,
+	.tutor-course-topic-item.is-active svg *,
+	.tutor-course-lesson-item:hover svg *,
+	.tutor-course-lesson-item.is-active svg * {
+		fill: #4077f3 !important;
 	}
 
 	/* ── NUCLEAR: wipe stray backgrounds on ALL sidebar descendants ── */

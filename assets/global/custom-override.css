@@ -96,6 +96,27 @@ body {
     --tutor-color-surface-2: #232d45 !important;
 }
 
+/* --- Override Tutor CSS variables INSIDE the sidebar (icons use these) --- */
+.tutor-course-spotlight-sidebar,
+.tutor-course-topics-sidebar,
+.tutor-lesson-sidebar,
+.tutor-course-single-sidebar-wrapper,
+.tutor-spotlight-sidebar,
+div[class*="course-spotlight-sidebar"],
+div[class*="topics-sidebar"] {
+    --tutor-color-black: #c8cfe0 !important;
+    --tutor-color-text: #c8cfe0 !important;
+    --tutor-color-text-primary: #c8cfe0 !important;
+    --tutor-color-text-secondary: #8893b0 !important;
+    --tutor-color-text-hints: #8893b0 !important;
+    --tutor-color-secondary: #8893b0 !important;
+    --tutor-color-muted: #8893b0 !important;
+    --tutor-icon-color: #8893b0 !important;
+    --tutor-color-design-system-dark: #c8cfe0 !important;
+    --color-text-primary: #c8cfe0 !important;
+    --color-text-secondary: #8893b0 !important;
+}
+
 /* --- Broad attribute-based overrides (highest compatibility) --- */
 /* These match ANY element whose class contains "sidebar" */
 div[class*="course-spotlight-sidebar"],
