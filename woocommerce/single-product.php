@@ -267,10 +267,20 @@ $context['product_type'] = $product->get_type();
 $context['first_five_features'] = array();
 $description_text = $context['product_content'] ?: $context['product_excerpt'];
 if ( $description_text ) {
-	// Split by newlines or bullets and take first 5
-	$lines = preg_split( '/\n|•|·/', $description_text );
-	$features = array_filter( array_map( 'trim', $lines ) );
-	$context['first_five_features'] = array_slice( $features, 0, 5 );
+	// Try to extract <li> items from HTML first
+	preg_match_all( '/<li[^>]*>(.*?)<\/li>/si', $description_text, $matches );
+	if ( ! empty( $matches[1] ) ) {
+		$features = array_filter( array_map( function( $item ) {
+			return trim( wp_strip_all_tags( $item ) );
+		}, $matches[1] ) );
+		$context['first_five_features'] = array_slice( array_values( $features ), 0, 5 );
+	} else {
+		// Fallback: strip HTML then split by newlines or bullets
+		$plain_text = wp_strip_all_tags( $description_text );
+		$lines      = preg_split( '/\n+|•|·/', $plain_text );
+		$features   = array_filter( array_map( 'trim', $lines ) );
+		$context['first_five_features'] = array_slice( array_values( $features ), 0, 5 );
+	}
 }
 
 // Get students count (if product is linked to a course)
