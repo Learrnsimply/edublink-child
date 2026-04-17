@@ -1738,18 +1738,7 @@ body.single-post [class*="featured-image"] {
 	background-color: transparent !important;
 }
 
-/* 4. Promo banner - DO NOT TOUCH */
-body.single-post #learnsimply-promo-bar,
-body.single-post .learnsimply-promo-banner,
-body.single-post .learnsimply-promo-banner *,
-body.single-post .learnsimply-promo-banner-inner,
-body.single-post .learnsimply-promo-banner-inner * {
-	background-color: revert !important;
-	color: revert !important;
-	border-color: revert !important;
-}
-
-/* 5. Links */
+/* 4. Links */
 body.single-post a {
 	color: #4d85f5 !important;
 	background-color: transparent !important;
@@ -1758,7 +1747,7 @@ body.single-post a:hover {
 	color: #7aabff !important;
 }
 
-/* 6. Form fields */
+/* 5. Form fields */
 body.single-post input:not([type="submit"]):not([type="button"]),
 body.single-post textarea,
 body.single-post select {
@@ -1767,7 +1756,7 @@ body.single-post select {
 	border-color: rgba(255,255,255,0.15) !important;
 }
 
-/* 7. Submit buttons */
+/* 6. Submit buttons */
 body.single-post input[type="submit"],
 body.single-post button[type="submit"],
 body.single-post .edu-btn,
@@ -1778,18 +1767,63 @@ body.single-post .wp-block-button__link {
 	border-color: #4077f3 !important;
 }
 
-/* 8. Code / pre */
+/* 7. Code / pre */
 body.single-post code, body.single-post code *,
 body.single-post pre, body.single-post pre * {
 	background-color: #1b2133 !important;
 	color: #e2e8f0 !important;
 }
 
-/* 9. Blockquote */
+/* 8. Blockquote */
 body.single-post blockquote, body.single-post blockquote * {
 	background-color: #111827 !important;
 	border-color: #4077f3 !important;
 	color: #c0c8de !important;
+}
+
+/* ================================================================
+   PROMO BANNER RESTORE — exact values from promo-banner/style.css
+   Must come AFTER the nuclear rule to win the specificity war
+   ================================================================ */
+body.single-post .learnsimply-promo-banner {
+	background-color: #0a0d14 !important;
+}
+body.single-post .learnsimply-promo-banner-inner {
+	background-color: #141924 !important;
+	border-top: 1px solid rgba(255,255,255,0.08) !important;
+	border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+body.single-post .learnsimply-promo-content,
+body.single-post .learnsimply-promo-text-section,
+body.single-post .learnsimply-promo-text-line,
+body.single-post .learnsimply-promo-countdown,
+body.single-post .learnsimply-promo-timer-unit {
+	background-color: transparent !important;
+	border-color: transparent !important;
+}
+body.single-post .learnsimply-promo-text-primary {
+	color: #ffffff !important;
+}
+body.single-post .learnsimply-promo-text-secondary,
+body.single-post .learnsimply-promo-timer-number,
+body.single-post .learnsimply-promo-timer-separator,
+body.single-post .learnsimply-promo-highlight {
+	color: #4077f3 !important;
+}
+body.single-post .learnsimply-promo-timer-label {
+	color: #8893b0 !important;
+}
+body.single-post .learnsimply-promo-timer-box {
+	background-color: #0a0d14 !important;
+	border: 1px solid rgba(255,255,255,0.08) !important;
+}
+body.single-post .learnsimply-promo-cta-btn,
+body.single-post .learnsimply-promo-cta-btn * {
+	background-color: #4077f3 !important;
+	border-color: #4077f3 !important;
+}
+body.single-post .learnsimply-promo-cta-text {
+	color: #ffffff !important;
 }
 </style>
 	<?php
