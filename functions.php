@@ -1825,6 +1825,43 @@ body.single-post .learnsimply-promo-banner,
 body.single-post .learnsimply-promo-banner * {
 	display: none !important;
 }
+
+/* ================================================================
+   KILL ALL WHITE / LIGHT BACKGROUNDS — content area & Gutenberg
+   Targets inline styles, has-background blocks, and theme wrappers
+   ================================================================ */
+
+/* Any element with an inline background-color that's white/light */
+body.single-post .sp-content [style*="background-color"],
+body.single-post .sp-content [style*="background:"],
+body.single-post .sp-content .has-background,
+body.single-post .sp-content .wp-block-group,
+body.single-post .sp-content .wp-block-group__inner-container,
+body.single-post .sp-content .wp-block-cover,
+body.single-post .sp-content .wp-block-cover__inner-container,
+body.single-post .sp-content .wp-block-columns,
+body.single-post .sp-content .wp-block-column,
+body.single-post .sp-content .wp-block-media-text,
+body.single-post .sp-content .wp-block-pullquote,
+body.single-post .sp-content .wp-block-table,
+body.single-post .sp-content .wp-block-verse,
+body.single-post .sp-content .wp-block-preformatted,
+body.single-post .sp-content .wp-block-html,
+body.single-post .sp-content .entry-content,
+body.single-post .sp-content .post-content,
+body.single-post .sp-content .article-content,
+body.single-post .entry-content,
+body.single-post .post-content,
+body.single-post .article-content,
+body.single-post .post-wrapper,
+body.single-post .post-inner,
+body.single-post .single-post-content,
+body.single-post .edublink-post-content,
+body.single-post [class*="post-content"],
+body.single-post [class*="entry-content"] {
+	background-color: transparent !important;
+	background: transparent !important;
+}
 </style>
 	<?php
 }

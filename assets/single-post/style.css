@@ -235,6 +235,29 @@
   font-family: var(--learnsimply-font-primary);
 }
 
+/* ── Nuclear background kill — wipes every white/light bg the parent theme
+       or Gutenberg might inject inside the article content area ─────────── */
+.sp-content *,
+.sp-content *::before,
+.sp-content *::after {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+/* Restore explicit backgrounds only where WE want them */
+.sp-content code                   { background-color: var(--learnsimply-card-bg) !important; color: var(--learnsimply-success-green) !important; }
+.sp-content pre                    { background-color: var(--learnsimply-card-bg) !important; }
+.sp-content pre code               { background-color: transparent !important; }
+.sp-content blockquote             { background-color: var(--db-blue-soft) !important; color: var(--learnsimply-text-gray) !important; }
+.sp-content tr:nth-child(even) td  { background-color: var(--db-glass) !important; }
+.sp-content th                     { background-color: var(--db-blue-soft) !important; color: var(--learnsimply-text-white) !important; }
+.sp-content td                     { color: var(--learnsimply-text-gray) !important; }
+.sp-content h1, .sp-content h2,
+.sp-content h3, .sp-content h4,
+.sp-content h5, .sp-content h6    { color: var(--learnsimply-text-white) !important; }
+.sp-content a                      { color: var(--learnsimply-primary-blue) !important; }
+.sp-content a:hover                { color: var(--db-white) !important; }
+
 .sp-content h1,
 .sp-content h2,
 .sp-content h3,
