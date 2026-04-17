@@ -1,11 +1,65 @@
 /**
- * Cart Page — Interactions & Animations
+ * Cart Page — Interactions
  * Handles Tutor LMS cart item removal with smooth animation
  */
 (function ($) {
-  "use strict";
+    "use strict";
 
-  $(document).ready(function () {
+    $(document).ready(function () {
+
+        // ── Remove item ──
+        $(document).on("click", ".lc-item__remove", function () {
+            var $btn      = $(this);
+            var $item     = $btn.closest(".lc-item");
+            var courseId  = $btn.data("course-id") || $item.data("course-id");
+
+            if ( ! courseId ) return;
+
+            $btn.prop("disabled", true);
+
+            // Animate out
+            $item.addClass("is-removing");
+            setTimeout(function () {
+                $item.addClass("is-collapsed");
+            }, 260);
+
+            $.ajax({
+                url:  (window._tutorobject && window._tutorobject.ajaxurl) || "/wp-admin/admin-ajax.php",
+                type: "POST",
+                data: {
+                    action:        "tutor_cart_remove_item",
+                    course_id:     courseId,
+                    _tutor_nonce:  (window._tutorobject && window._tutorobject.nonce) || "",
+                },
+                success: function () {
+                    setTimeout(function () {
+                        $item.remove();
+                        refreshCartState();
+                    }, 500);
+                },
+                error: function () {
+                    // Revert on failure
+                    $item.removeClass("is-removing is-collapsed");
+                    $btn.prop("disabled", false);
+                },
+            });
+        });
+
+        function refreshCartState() {
+            var count = $(".lc-item").length;
+            if ( count === 0 ) {
+                $(".lc-cart-layout, .lc-cart-hero").css({ transition: "opacity 0.3s", opacity: 0 });
+                setTimeout(function () { location.reload(); }, 350);
+            } else {
+                $(".lc-cart-hero__count").text(
+                    count === 1 ? "1 دورة في سلتك" : count + " دورات في سلتك"
+                );
+            }
+        }
+
+    });
+
+}(jQuery));
     // ─── Tutor LMS: Remove item button ───
     $(document).on("click", ".custom-remove-item-btn", function (e) {
       e.preventDefault();
