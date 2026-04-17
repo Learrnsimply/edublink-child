@@ -567,3 +567,11 @@
 	}
 }
 
+@media (max-width: 400px) {
+	.hero-wrapper .check-text {
+		font-size: 11px;
+		line-height: 1.8;
+		word-break: break-word;
+	}
+}
+
