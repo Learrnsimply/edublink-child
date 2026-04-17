@@ -122,19 +122,19 @@
                 <div class="lc-summary-rows">
                     <div class="lc-summary-row">
                         <span class="lc-summary-row__label">المجموع الفرعي</span>
-                        <span class="lc-summary-row__val">{{ fmt_subtotal }}</span>
+                        <span class="lc-summary-row__val">{{ fmt_subtotal | raw }}</span>
                     </div>
                     {% if show_tax %}
                     <div class="lc-summary-row">
                         <span class="lc-summary-row__label">{{ tax_label }}</span>
-                        <span class="lc-summary-row__val">{{ fmt_tax }}</span>
+                        <span class="lc-summary-row__val">{{ fmt_tax | raw }}</span>
                     </div>
                     {% endif %}
                 </div>
 
                 <div class="lc-summary-total">
                     <span class="lc-summary-total__label">الإجمالي</span>
-                    <span class="lc-summary-total__val">{{ fmt_total }}</span>
+                    <span class="lc-summary-total__val">{{ fmt_total | raw }}</span>
                 </div>
 
                 <a href="{{ checkout_url }}" class="lc-checkout-btn">

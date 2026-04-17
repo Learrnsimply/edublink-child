@@ -1,21 +1,23 @@
 /**
  * Cart Page — Interactions
- * Handles Tutor LMS cart item removal with smooth animation
+ * Handles WooCommerce cart item removal with smooth animation
+ * The remove link uses WooCommerce's remove URL (server-side redirect with nonce).
+ * We animate the item out before following the link.
  */
 (function ($) {
     "use strict";
 
     $(document).ready(function () {
 
-        // ── Remove item ──
-        $(document).on("click", ".lc-item__remove", function () {
-            var $btn      = $(this);
-            var $item     = $btn.closest(".lc-item");
-            var courseId  = $btn.data("course-id") || $item.data("course-id");
+        // ── Animate out before navigating to WC remove URL ──
+        $(document).on("click", ".lc-item__remove", function (e) {
+            e.preventDefault();
 
-            if ( ! courseId ) return;
+            var $link = $(this);
+            var $item = $link.closest(".lc-item");
+            var href  = $link.attr("href");
 
-            $btn.prop("disabled", true);
+            if ( ! href ) return;
 
             // Animate out
             $item.addClass("is-removing");
@@ -23,39 +25,11 @@
                 $item.addClass("is-collapsed");
             }, 260);
 
-            $.ajax({
-                url:  (window._tutorobject && window._tutorobject.ajaxurl) || "/wp-admin/admin-ajax.php",
-                type: "POST",
-                data: {
-                    action:        "tutor_cart_remove_item",
-                    course_id:     courseId,
-                    _tutor_nonce:  (window._tutorobject && window._tutorobject.nonce) || "",
-                },
-                success: function () {
-                    setTimeout(function () {
-                        $item.remove();
-                        refreshCartState();
-                    }, 500);
-                },
-                error: function () {
-                    // Revert on failure
-                    $item.removeClass("is-removing is-collapsed");
-                    $btn.prop("disabled", false);
-                },
-            });
+            // Navigate after animation
+            setTimeout(function () {
+                window.location.href = href;
+            }, 480);
         });
-
-        function refreshCartState() {
-            var count = $(".lc-item").length;
-            if ( count === 0 ) {
-                $(".lc-cart-layout, .lc-cart-hero").css({ transition: "opacity 0.3s", opacity: 0 });
-                setTimeout(function () { location.reload(); }, 350);
-            } else {
-                $(".lc-cart-hero__count").text(
-                    count === 1 ? "1 دورة في سلتك" : count + " دورات في سلتك"
-                );
-            }
-        }
 
     });
 
