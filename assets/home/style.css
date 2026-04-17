@@ -487,3 +487,10 @@
 	}
 }
 
+/* Hide hero side image on all screens up to 1024px (tablet/mobile) */
+@media (max-width: 1024px) {
+	.hero-wrapper .side-image-container {
+		display: none !important;
+	}
+}
+
