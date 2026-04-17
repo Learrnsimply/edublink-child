@@ -521,111 +521,136 @@ li[class*="course-lesson"] a {
 }
 
 /* ==========================================================================
-   SINGLE BLOG POST - DARK THEME
-   Targets body.single-post (WordPress default class on all single posts)
+   SINGLE BLOG POST - FULL DARK THEME (NUCLEAR OVERRIDE)
    ========================================================================== */
 
-body.single-post {
-    background-color: #0a0f1a !important;
-    color: #d0d5e8 !important;
-}
-
-/* Main content area / article wrapper */
-body.single-post .site-content,
+/* ── 1. Body + root background ─────────────────────────────────────────── */
+body.single-post,
+body.single-post #page,
 body.single-post #content,
-body.single-post .content-area,
-body.single-post .entry-content-wrapper,
-body.single-post .post-content-area,
-body.single-post .edublink-post-details,
-body.single-post .edublink-single-post,
-body.single-post .blog-details-area,
-body.single-post .blog-single-area,
-body.single-post .edublink-blog-details,
-body.single-post article,
-body.single-post .post {
+body.single-post #primary,
+body.single-post .site-main,
+body.single-post main {
     background-color: #0a0f1a !important;
     color: #d0d5e8 !important;
 }
 
-/* Cards / boxes / widgets with white background */
-body.single-post .card,
-body.single-post .widget,
-body.single-post .sidebar-widget,
-body.single-post .edu-widget,
-body.single-post .single-post-card,
-body.single-post .blog-details-card,
-body.single-post .post-thumbnail-area,
-body.single-post .entry-thumbnail,
-body.single-post .post-meta-area,
-body.single-post .post-share-area,
-body.single-post .post-tags-area,
-body.single-post .author-area,
-body.single-post .author-meta,
-body.single-post .comment-area,
-body.single-post .comment-list,
-body.single-post .comment-form-area,
-body.single-post .related-post,
-body.single-post .related-posts,
-body.single-post [class*="post-detail"],
-body.single-post [class*="blog-detail"],
+/* ── 2. Nuclear: reset ALL divs/sections/articles to dark ──────────────── */
+/* This catches Elementor sections, EduBlink wrappers, whatever the theme uses */
+body.single-post div,
+body.single-post section,
+body.single-post article,
+body.single-post aside,
+body.single-post header:not(#masthead):not(.site-header),
+body.single-post footer:not(.site-footer) {
+    background-color: #0a0d14 !important;
+    border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ── 3. Elementor containers / sections / columns ──────────────────────── */
+body.single-post .elementor-section,
+body.single-post .elementor-column,
+body.single-post .elementor-widget-wrap,
+body.single-post .elementor-widget-container,
+body.single-post .e-con,
+body.single-post .e-con-inner,
+body.single-post .elementor-element,
+body.single-post .elementor-inner-section,
+body.single-post [class*="elementor-section"],
+body.single-post [class*="elementor-column"],
+body.single-post [class*="elementor-container"] {
+    background-color: #0a0d14 !important;
+}
+
+/* ── 4. EduBlink-specific blog classes ─────────────────────────────────── */
+body.single-post [class*="edu-blog"],
+body.single-post [class*="blog-details"],
 body.single-post [class*="blog-single"],
 body.single-post [class*="single-blog"],
+body.single-post [class*="post-details"],
+body.single-post [class*="post-content"],
 body.single-post [class*="post-inner"],
 body.single-post [class*="post-wrapper"],
-body.single-post [class*="post-content"] {
-    background-color: #111827 !important;
+body.single-post [class*="post-area"],
+body.single-post [class*="entry-"] {
+    background-color: #0a0d14 !important;
     color: #d0d5e8 !important;
 }
 
-/* Entry content text */
-body.single-post .entry-content,
-body.single-post .entry-content p,
-body.single-post .entry-content li,
-body.single-post .entry-content span,
-body.single-post .entry-content div {
+/* ── 5. All headings → white ───────────────────────────────────────────── */
+body.single-post h1,
+body.single-post h2,
+body.single-post h3,
+body.single-post h4,
+body.single-post h5,
+body.single-post h6,
+body.single-post h1 *,
+body.single-post h2 *,
+body.single-post h3 *,
+body.single-post h4 * {
+    color: #ffffff !important;
+    background-color: transparent !important;
+}
+
+/* ── 6. All body text → light gray ────────────────────────────────────── */
+body.single-post p,
+body.single-post li,
+body.single-post span,
+body.single-post td,
+body.single-post th,
+body.single-post label {
     color: #c0c8de !important;
+    background-color: transparent !important;
 }
 
-body.single-post .entry-content h1,
-body.single-post .entry-content h2,
-body.single-post .entry-content h3,
-body.single-post .entry-content h4,
-body.single-post .entry-content h5,
-body.single-post .entry-content h6,
-body.single-post .entry-title,
-body.single-post h1, body.single-post h2,
-body.single-post h3, body.single-post h4 {
-    color: #ffffff !important;
-}
-
-/* Meta info (date, author, category) */
-body.single-post .post-meta,
-body.single-post .entry-meta,
-body.single-post .post-meta *,
-body.single-post .entry-meta *,
-body.single-post [class*="post-meta"] * {
+/* ── 7. Meta / secondary text ──────────────────────────────────────────── */
+body.single-post [class*="meta"],
+body.single-post [class*="date"],
+body.single-post [class*="author"],
+body.single-post [class*="category"],
+body.single-post time {
     color: #8893b0 !important;
+    background-color: transparent !important;
 }
 
-/* Sidebar widgets */
-body.single-post aside,
-body.single-post .sidebar,
-body.single-post .widget-area,
-body.single-post .edu-sidebar,
-body.single-post .widget-title,
-body.single-post .widgettitle {
+/* ── 8. Links ──────────────────────────────────────────────────────────── */
+body.single-post a {
+    color: #4d85f5 !important;
+}
+body.single-post a:hover {
+    color: #7aabff !important;
+}
+
+/* ── 9. Buttons / CTAs → keep button colors intact ─────────────────────── */
+body.single-post a.edu-btn,
+body.single-post .edu-btn,
+body.single-post button[type="submit"],
+body.single-post input[type="submit"],
+body.single-post .wp-block-button__link {
+    background-color: #4077f3 !important;
+    color: #ffffff !important;
+    border-color: #4077f3 !important;
+}
+
+/* ── 10. Images → transparent wrapper ──────────────────────────────────── */
+body.single-post figure,
+body.single-post .wp-block-image,
+body.single-post .post-thumbnail,
+body.single-post [class*="thumbnail"],
+body.single-post [class*="featured-image"] {
+    background-color: transparent !important;
+}
+
+/* ── 11. Sidebar / widgets ──────────────────────────────────────────────── */
+body.single-post .widget,
+body.single-post [class*="widget"] {
     background-color: #111827 !important;
     color: #d0d5e8 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-body.single-post .widget-title,
-body.single-post .widgettitle {
-    color: #ffffff !important;
-    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Input fields / comment form */
-body.single-post input,
+/* ── 12. Form fields ────────────────────────────────────────────────────── */
+body.single-post input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
 body.single-post textarea,
 body.single-post select {
     background-color: #1b2133 !important;
@@ -633,19 +658,26 @@ body.single-post select {
     border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
-/* Borders / dividers */
-body.single-post hr,
-body.single-post [class*="divider"] {
+/* ── 13. HR / dividers ──────────────────────────────────────────────────── */
+body.single-post hr {
     border-color: rgba(255, 255, 255, 0.08) !important;
     background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Links */
-body.single-post a {
-    color: #4d85f5 !important;
+/* ── 14. Code blocks ────────────────────────────────────────────────────── */
+body.single-post code,
+body.single-post pre,
+body.single-post pre code {
+    background-color: #1b2133 !important;
+    color: #e2e8f0 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
 }
-body.single-post a:hover {
-    color: #7aabff !important;
+
+/* ── 15. Blockquote ─────────────────────────────────────────────────────── */
+body.single-post blockquote {
+    background-color: #111827 !important;
+    border-color: #4077f3 !important;
+    color: #c0c8de !important;
 }
 
 /* Hide HoliThemes Click to Chat plugin button (duplicate WhatsApp icon) */
