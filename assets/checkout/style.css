@@ -557,14 +557,33 @@ body.woocommerce-checkout body,
     background: rgba(64, 119, 243, 0.03) !important;
 }
 
+/* الدفع: جعل أيقونات البطاقات جنب بعض */
 .woocommerce-checkout #payment ul.payment_methods li.wc_payment_method label {
     color: #e8eaf0 !important;
     font-size: 15px !important;
     font-weight: 500 !important;
     cursor: pointer !important;
-    display: inline-flex !important;
+    display: flex !important;
+    flex-direction: column;
     align-items: center !important;
     gap: 10px !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li.wc_payment_method label img {
+    display: inline-block !important;
+    margin: 0 2px !important;
+    vertical-align: middle;
+}
+
+/* صف أيقونات الدفع أفقيًا أسفل النص */
+.woocommerce-checkout #payment ul.payment_methods li.wc_payment_method label .payment-icons {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    margin-bottom: 0;
 }
 
 .woocommerce-checkout #payment ul.payment_methods li img {
