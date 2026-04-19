@@ -10564,31 +10564,9 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 /* الجانب الأيمن - معلومات المدرب */
 .instructor-info {
   display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  flex: 1;
-}
-
-.instructor-main {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-}
-
-.instructor-top {
-  display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 12px;
 }
-
-.instructor-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
 
 /* صورة المدرب */
 .instructor-avatar {
