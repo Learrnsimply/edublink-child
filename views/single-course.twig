@@ -296,61 +296,61 @@
           </div>
         </div>
 
-        <!-- بطاقة المدرب -->
-        {% if instructors|length > 0 %}
         <div class="instructor-card">
           <!-- معلومات المدرب - الجانب الأيمن -->
           <div class="instructor-info">
-            <!-- النصوص -->
-            <div class="instructor-text">
-              <p class="instructor-name">{{ instructors[0].name }}</p>
-              <p class="instructor-title">{{ instructors[0].description ?: 'مدرب' }}</p>
-            </div>
-
-            <!-- صورة المدرب -->
-            <div class="instructor-avatar">
-              <div class="instructor-avatar-inner">
-                <!-- دوائر التأثير -->
-                <div class="blur-circle blur-circle-1">
-                  <svg width="100%" height="100%" viewBox="0 0 37.0813 37.0813" fill="none">
-                    <defs>
-                      <filter id="blur1" x="0" y="0" width="37.0813" height="37.0813" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
-                        <feGaussianBlur stdDeviation="0.935285" result="effect1_foregroundBlur" />
-                      </filter>
-                      <linearGradient id="gradient1" x1="18.5406" y1="1.87057" x2="18.5406" y2="35.2107" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#F8EEE4" />
-                        <stop offset="1" stop-color="#F8EEE4" stop-opacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <g filter="url(#blur1)">
-                      <circle cx="18.5406" cy="18.5406" r="16.6701" fill="url(#gradient1)" />
-                    </g>
-                  </svg>
+            <div class="instructor-main">
+              <div class="instructor-top">
+                <div class="instructor-meta">
+                  <p class="instructor-name">{{ instructors[0].name }}</p>
+                  <p class="instructor-title">{{ instructors[0].title }}</p>
                 </div>
-                <div class="blur-circle blur-circle-2">
-                  <svg width="100%" height="100%" viewBox="0 0 37.0813 37.0813" fill="none">
-                    <defs>
-                      <filter id="blur2" x="0" y="0" width="37.0813" height="37.0813" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
-                        <feGaussianBlur stdDeviation="0.935285" result="effect1_foregroundBlur" />
-                      </filter>
-                      <linearGradient id="gradient2" x1="18.5406" y1="1.87057" x2="18.5406" y2="35.2107" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#F8EEE4" />
-                        <stop offset="1" stop-color="#F8EEE4" stop-opacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <g filter="url(#blur2)">
-                      <circle cx="18.5406" cy="18.5406" r="16.6701" fill="url(#gradient2)" />
-                    </g>
-                  </svg>
+                <!-- صورة المدرب -->
+                <div class="instructor-avatar">
+                  <div class="instructor-avatar-inner">
+                    <!-- دوائر التأثير الخلفية -->
+                    <div class="blur-circle blur-circle-1">
+                      <svg width="100%" height="100%" viewBox="0 0 37.0813 37.0813" fill="none">
+                        <defs>
+                          <filter id="blur1" x="0" y="0" width="37.0813" height="37.0813" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
+                            <feGaussianBlur stdDeviation="0.935285" result="effect1_foregroundBlur" />
+                          </filter>
+                          <linearGradient id="gradient1" x1="18.5406" y1="1.87057" x2="18.5406" y2="35.2107" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#F8EEE4" />
+                            <stop offset="1" stop-color="#F8EEE4" stop-opacity="0" />
+                          </linearGradient>
+                        </defs>
+                        <g filter="url(#blur1)">
+                          <circle cx="18.5406" cy="18.5406" r="16.6701" fill="url(#gradient1)" />
+                        </g>
+                      </svg>
+                    </div>
+                    <div class="blur-circle blur-circle-2">
+                      <svg width="100%" height="100%" viewBox="0 0 37.0813 37.0813" fill="none">
+                        <defs>
+                          <filter id="blur2" x="0" y="0" width="37.0813" height="37.0813" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
+                            <feGaussianBlur stdDeviation="0.935285" result="effect1_foregroundBlur" />
+                          </filter>
+                          <linearGradient id="gradient2" x1="18.5406" y1="1.87057" x2="18.5406" y2="35.2107" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#F8EEE4" />
+                            <stop offset="1" stop-color="#F8EEE4" stop-opacity="0" />
+                          </linearGradient>
+                        </defs>
+                        <g filter="url(#blur2)">
+                          <circle cx="18.5406" cy="18.5406" r="16.6701" fill="url(#gradient2)" />
+                        </g>
+                      </svg>
+                    </div>
+                    <!-- الصورة -->
+                    <img src="{{ instructors[0].avatar ?: theme_uri ~ '/assets/img/ellipse1.png' }}" alt="{{ instructors[0].name }}" />
+                  </div>
                 </div>
-
-                <!-- الصورة -->
-                <img src="{{ instructors[0].avatar ?: theme_uri ~ '/assets/img/ellipse1.png' }}" alt="{{ instructors[0].name }}" />
               </div>
+              <p class="instructor-bio">{{ instructors[0].bio }}</p>
             </div>
           </div>
 

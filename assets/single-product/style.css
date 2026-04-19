@@ -1444,9 +1444,31 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 /* Right side - instructor info */
 .instructor-info {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 15px;
+  flex: 1;
 }
+
+.instructor-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.instructor-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.instructor-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 
 /* Instructor image */
 .instructor-avatar {
@@ -3046,6 +3068,15 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   justify-content: center;
   gap: 10px;
   flex-shrink: 0;
+}
+
+.experience-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 6px 15px;
+  box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+  height: fit-content;
 }
 
 .course-details-btn {
