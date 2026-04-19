@@ -753,3 +753,20 @@ body.blog .eb-sidebar-widget .widget:last-child {
     display: none !important;
 }
 
+
+/* Fix text color for badges and category counts on author/blog pages */
+
+/* Article card badge/category */
+body.archive .edu-blog .edublink-post-cat a,
+body.blog .edu-blog .edublink-post-cat a {
+    color: #ffffff !important;
+}
+
+/* Category widget list items and counts */
+body.archive .widget_categories ul li,
+body.blog .widget_categories ul li,
+body.archive .widget_categories ul li a,
+body.blog .widget_categories ul li a {
+    color: #ffffff !important;
+}
+
