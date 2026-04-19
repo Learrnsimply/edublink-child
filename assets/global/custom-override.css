@@ -782,3 +782,20 @@ body.blog .widget_categories ul li {
     direction: rtl !important;
 }
 
+
+/* Increase gap between icons and text in meta areas */
+body.archive .edu-blog .blog-meta li i,
+body.blog .edu-blog .blog-meta li i,
+body.archive .edublink-recent-post-widget .post-icon,
+body.blog .edublink-recent-post-widget .post-icon {
+    margin-left: 8px !important;
+}
+
+/* Also ensure flex gap if they use flex */
+body.archive .edu-blog .blog-meta li,
+body.blog .edu-blog .blog-meta li,
+body.archive .post-meta,
+body.blog .post-meta {
+    gap: 8px !important;
+}
+
