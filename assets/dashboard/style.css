@@ -789,6 +789,18 @@ body.tutor-screen-frontend-dashboard .entry-content {
     color: var(--db-white) !important;
 }
 
+/* Tertiary buttons (like Details in Quiz Attempts) */
+.tutor-wrap.tutor-dashboard .tutor-btn-tertiary {
+    background: var(--db-blue) !important;
+    color: var(--db-white) !important;
+    border: none !important;
+}
+
+.tutor-wrap.tutor-dashboard .tutor-btn-tertiary:hover {
+    background: #3366d9 !important;
+    color: var(--db-white) !important;
+}
+
 /* Danger / delete buttons */
 .tutor-wrap.tutor-dashboard .tutor-btn-danger,
 .tutor-wrap.tutor-dashboard .tutor-btn-delete {
