@@ -13485,12 +13485,25 @@ button[name="reset_password"],
 
 /* Notices/Messages */
 .woocommerce-message,
-.woocommerce-info {
-    background: rgba(24, 169, 99, 0.08) !important;
-    border: 1px solid rgba(24, 169, 99, 0.2) !important;
+.woocommerce-info,
+.tutor-alert.tutor-success,
+.tutor-alert-success {
+    background: rgba(24, 169, 99, 0.1) !important;
+    border: 1px solid rgba(24, 169, 99, 0.3) !important;
     color: #ffffff !important;
     border-radius: 14px !important;
     padding: 20px 24px !important;
     margin-bottom: 30px !important;
     text-align: right !important;
+}
+
+.tutor-alert.tutor-success *,
+.tutor-alert-success * {
+    color: #ffffff !important;
+}
+
+.woocommerce-message::before,
+.woocommerce-info::before,
+.tutor-alert.tutor-success::before {
+    color: #18a963 !important;
 }
