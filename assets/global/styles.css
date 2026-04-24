@@ -13414,12 +13414,12 @@ body[class*="lost-password"] .woocommerce {
 }
 
 /* Target the card specifically across different possible structures */
+.tutor-forgot-password-form,
+.tutor-ResetPassword,
+.lost_reset_password,
 .woocommerce-ResetPassword,
 form.lost_password,
-form.woocommerce-ResetPassword,
-.tutor-reset-password-form,
-body .tutor-dashboard-content-inner > div:has(form),
-body .tutor-wrap div:has(> form) {
+.tutor-reset-password-form {
     background: #1a2232 !important;
     background-color: #1a2232 !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -13432,17 +13432,27 @@ body .tutor-wrap div:has(> form) {
     display: block !important;
 }
 
+/* Force children to be white */
+.tutor-forgot-password-form *,
+.lost_reset_password *,
+.woocommerce-ResetPassword * {
+    color: #ffffff !important;
+}
+
 .woocommerce-ResetPassword p,
 form.lost_password p,
 .woocommerce-ResetPassword label,
-form.lost_password label {
+form.lost_password label,
+.tutor-forgot-password-form label,
+.tutor-forgot-password-form p {
     color: #d0d4e0 !important;
     font-size: 15px !important;
     line-height: 1.8 !important;
 }
 
 .woocommerce-ResetPassword input.input-text,
-form.lost_password input.input-text {
+form.lost_password input.input-text,
+.tutor-forgot-password-form input {
     background: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     color: #ffffff !important;
@@ -13455,7 +13465,8 @@ form.lost_password input.input-text {
 
 .woocommerce-ResetPassword .button,
 form.lost_password .button,
-button[name="reset_password"] {
+button[name="reset_password"],
+.tutor-forgot-password-form button {
     background: #4077f3 !important;
     color: #ffffff !important;
     border: none !important;
