@@ -271,14 +271,22 @@ if ( $description_text ) {
 	preg_match_all( '/<li[^>]*>(.*?)<\/li>/si', $description_text, $matches );
 	if ( ! empty( $matches[1] ) ) {
 		$features = array_filter( array_map( function( $item ) {
-			return trim( wp_strip_all_tags( $item ) );
+			$text = trim( wp_strip_all_tags( $item ) );
+			// Strip emojis and special characters like 🎓, 🎯, etc.
+			$text = preg_replace( '/[\x{1F300}-\x{1F64F}\x{1F680}-\x{1F6FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{1F900}-\x{1F9FF}\x{1F1E0}-\x{1F1FF}]/u', '', $text );
+			return trim( $text );
 		}, $matches[1] ) );
 		$context['first_five_features'] = array_slice( array_values( $features ), 0, 5 );
 	} else {
 		// Fallback: strip HTML then split by newlines or bullets
 		$plain_text = wp_strip_all_tags( $description_text );
 		$lines      = preg_split( '/\n+|•|·/', $plain_text );
-		$features   = array_filter( array_map( 'trim', $lines ) );
+		$features   = array_filter( array_map( function( $item ) {
+			$text = trim( $item );
+			// Strip emojis
+			$text = preg_replace( '/[\x{1F300}-\x{1F64F}\x{1F680}-\x{1F6FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{1F900}-\x{1F9FF}\x{1F1E0}-\x{1F1FF}]/u', '', $text );
+			return trim( $text );
+		}, $lines ) );
 		$context['first_five_features'] = array_slice( array_values( $features ), 0, 5 );
 	}
 }
