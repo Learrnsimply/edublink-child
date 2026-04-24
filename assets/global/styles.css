@@ -13122,6 +13122,15 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
     border-color: rgba(255,255,255,0.1) !important;
 }
 
+/* Internal Editor Area Fix (Attempt) */
+.wp-editor-area,
+.mce-edit-area,
+.mce-edit-area iframe,
+.mce-content-body {
+    background-color: #1a2232 !important;
+    color: #ffffff !important;
+}
+
 .quicktags-toolbar input,
 .wp-core-ui .button,
 .wp-core-ui .button-secondary {
