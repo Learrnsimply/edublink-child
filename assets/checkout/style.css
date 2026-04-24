@@ -697,6 +697,17 @@ body.woocommerce-checkout body,
     padding: 24px 28px !important;
     margin-bottom: 24px !important;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+}
+
+.woocommerce-checkout .woocommerce-form-coupon .form-row {
+    margin-bottom: 0 !important;
+    flex: 1 !important;
+    width: auto !important;
 }
 
 .woocommerce-checkout .woocommerce-form-coupon .button,
@@ -705,12 +716,17 @@ body.woocommerce-checkout body,
     color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
-    padding: 11px 24px !important;
+    padding: 0 24px !important;
+    height: 48px !important;
     font-size: 14px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
     transition: all 0.25s ease !important;
     box-shadow: 0 2px 12px rgba(64, 119, 243, 0.18) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
 }
 
 .woocommerce-checkout .woocommerce-form-coupon .button:hover,
@@ -718,6 +734,17 @@ body.woocommerce-checkout body,
     background: linear-gradient(135deg, #3568d4 0%, #2a57bf 100%) !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 4px 16px rgba(64, 119, 243, 0.28) !important;
+}
+
+/* Mobile fix for coupon form */
+@media (max-width: 600px) {
+    .woocommerce-checkout .woocommerce-form-coupon {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    .woocommerce-checkout .woocommerce-form-coupon .button {
+        width: 100% !important;
+    }
 }
 
 /* ─── 14. GENERIC LINKS ─── */
