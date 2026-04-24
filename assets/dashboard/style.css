@@ -1426,28 +1426,32 @@ body.tutor-screen-frontend-dashboard .entry-content {
     color: #ffffff !important;
 }
 
-/* WP Editor (About You) - Aggressive Dark Theme Fix */
-.tutor-wrap.tutor-dashboard .wp-editor-wrap,
-.tutor-wrap.tutor-dashboard .wp-editor-container,
-.tutor-wrap.tutor-dashboard .wp-editor-tools,
-.tutor-wrap.tutor-dashboard [id^="wp-"][id$="-wrap"],
-.tutor-wrap.tutor-dashboard [id^="wp-"][id$="-container"],
-.tutor-wrap.tutor-dashboard .quicktags-toolbar,
-.tutor-wrap.tutor-dashboard .wp-editor-area {
-    background-color: #1a2232 !important; /* var(--db-card-alt) */
+/* WP Editor (About You) - Global Aggressive Dark Theme Fix */
+.wp-editor-wrap,
+.wp-editor-container,
+.wp-editor-tools,
+.quicktags-toolbar,
+.wp-editor-area,
+.wp-core-ui .button,
+.wp-core-ui .button-secondary,
+[id^="wp-"][id$="-wrap"],
+[id^="wp-"][id$="-container"] {
+    background-color: #1a2232 !important;
     background: #1a2232 !important;
     color: #ffffff !important;
     border-color: rgba(255,255,255,0.1) !important;
 }
 
-.tutor-wrap.tutor-dashboard .quicktags-toolbar input,
-.tutor-wrap.tutor-dashboard .wp-core-ui .button,
-.tutor-wrap.tutor-dashboard .wp-core-ui .button-secondary {
+.quicktags-toolbar input {
     background: rgba(255,255,255,0.08) !important;
     color: #ffffff !important;
     border: 1px solid rgba(255,255,255,0.1) !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+}
+
+/* Ensure editor icons (Dashicons) are visible */
+.wp-core-ui .dashicons, 
+.wp-core-ui .dashicons-before:before {
+    color: #ffffff !important;
 }
 
 /* Force ALL dropdowns and selects in dashboard to be dark */
