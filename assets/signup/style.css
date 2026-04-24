@@ -614,37 +614,17 @@ body .page-content {
     transform: translateY(-1px) !important;
 }
 
-/* Checked state */
+/* Checked state — with SVG checkmark */
 #tutor-registration-form input[type="checkbox"]:checked,
 .tutor-login-wrap input[type="checkbox"]:checked,
 .tutor-login-wrap .tutor-form-check-input[type="checkbox"]:checked {
-    background: var(--sp-blue) !important;
+    background-color: var(--sp-blue) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-size: 14px !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
     border-color: var(--sp-blue) !important;
     box-shadow: 0 0 12px var(--sp-blue-glow) !important;
-}
-
-/* Checkmark icon using pseudo-element */
-#tutor-registration-form input[type="checkbox"]::after,
-.tutor-login-wrap input[type="checkbox"]::after,
-.tutor-login-wrap .tutor-form-check-input[type="checkbox"]::after {
-    content: "" !important;
-    position: absolute !important;
-    width: 5px !important;
-    height: 10px !important;
-    border: solid white !important;
-    border-width: 0 2.5px 2.5px 0 !important;
-    transform: rotate(45deg) scale(0) !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    opacity: 0 !important;
-    left: 6px !important;
-    top: 2px !important;
-}
-
-#tutor-registration-form input[type="checkbox"]:checked::after,
-.tutor-login-wrap input[type="checkbox"]:checked::after,
-.tutor-login-wrap .tutor-form-check-input[type="checkbox"]:checked::after {
-    transform: rotate(45deg) scale(1) !important;
-    opacity: 1 !important;
 }
 
 /* Radio buttons (if any) */
