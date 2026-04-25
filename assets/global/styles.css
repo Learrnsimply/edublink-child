@@ -520,18 +520,6 @@ table, th, td, tr,
     padding: 12px;
   }
 
-  .learnsimply-header-right-side {
-    gap: 30px;
-  }
-
-  .learnsimply-header-navigation-menu {
-    gap: 15px;
-  }
-
-  .learnsimply-header-menu-text {
-    font-size: 16px;
-  }
-
   .learnsimply-header-logo-text {
     font-size: 19px;
   }
@@ -542,22 +530,6 @@ table, th, td, tr,
   .learnsimply-header-main-container {
     width: 95%;
     padding: 10px;
-  }
-
-  .learnsimply-header-right-side {
-    gap: 20px;
-  }
-
-  .learnsimply-header-navigation-menu {
-    gap: 10px;
-  }
-
-  .learnsimply-header-menu-item {
-    padding: 6px 10px;
-  }
-
-  .learnsimply-header-menu-text {
-    font-size: 15px;
   }
 
   .learnsimply-header-btn-login,
@@ -571,8 +543,8 @@ table, th, td, tr,
   }
 }
 
-/* Mobile Landscape - 900px */
-@media (max-width: 900px) {
+/* Mobile Landscape - 1200px (Increased to prevent menu item overlap) */
+@media (max-width: 1200px) {
   .learnsimply-header-main-container {
     width: calc(100% - 20px);
     padding: 10px 15px;
