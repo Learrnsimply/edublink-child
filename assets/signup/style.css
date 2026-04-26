@@ -57,7 +57,9 @@ body .learnsimply-homepage-body,
 body .page-content,
 body #content,
 body #primary,
-body #main {
+body #main,
+body .tutor-wrap,
+body .tutor-container {
     background-color: var(--sp-bg) !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -1059,8 +1061,10 @@ body #main {
 
 #tutor-registration-wrap,
 .tutor-login-wrap {
-    margin-top: -40px !important; /* Move up to counter hidden paddings */
+    margin-top: -120px !important; /* Force move up to counter any invisible wrappers */
     margin-bottom: 20px !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 #tutor-registration-wrap br,
@@ -1077,7 +1081,13 @@ body #main {
     height: auto !important;
 }
 
-section, article, main, .container {
+.learnsimply-promo-banner-inner,
+.learnsimply-promo-content {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+section, article, main, .container, .tutor-wrap, .tutor-container {
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
