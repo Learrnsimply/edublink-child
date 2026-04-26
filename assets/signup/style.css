@@ -41,10 +41,8 @@
 /* ==========================================================================
    1. PAGE FOUNDATION
    ========================================================================== */
-body {
-    background-color: var(--sp-bg) !important;
-}
-
+body, 
+html,
 body .site-content,
 body .content-area,
 body .entry-content,
@@ -57,13 +55,17 @@ body .site-content-inner,
 body #page,
 body .learnsimply-homepage-body,
 body .page-content,
-body #content {
+body #content,
+body #primary,
+body #main {
     background-color: var(--sp-bg) !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     min-height: 0 !important;
+    height: auto !important;
+    display: block !important;
 }
 
 /* Hide breadcrumbs, page title bar */
@@ -1057,11 +1059,25 @@ body #content {
 
 #tutor-registration-wrap,
 .tutor-login-wrap {
-    margin-top: 10px !important;
-    margin-bottom: 40px !important;
+    margin-top: -40px !important; /* Move up to counter hidden paddings */
+    margin-bottom: 20px !important;
 }
+
+#tutor-registration-wrap br,
+#tutor-registration-wrap p:empty,
+.entry-content br,
+.entry-content p:empty {
+    display: none !important;
+}
+
 
 .learnsimply-promo-banner {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+    height: auto !important;
+}
+
+section, article, main, .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
