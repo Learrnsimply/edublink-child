@@ -161,6 +161,82 @@ function learnsimply_enqueue_custom_overrides() {
 }
 
 /**
+ * Strip blank/nbsp paragraphs and extra <br> tags from signup and login page content
+ * so Elementor-injected whitespace doesn't create a visible gap above the form.
+ */
+function learnsimply_strip_signup_blank_paras( $content ) {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+	$is_signup_page = is_page( 'signup' )
+		|| is_page( 'dashboard' )
+		|| strpos( $request_uri, '/signup' ) !== false
+		|| strpos( $request_uri, '/dashboard' ) !== false;
+
+	if ( ! $is_signup_page ) {
+		return $content;
+	}
+
+	// Remove paragraphs containing only whitespace or &nbsp;
+	$content = preg_replace( '/<p[^>]*>(\s|&nbsp;)*<\/p>/i', '', $content );
+	// Remove bare <br> / <br /> tags at the top level
+	$content = preg_replace( '/^(\s*<br\s*\/?>\s*)+/i', '', $content );
+
+	return $content;
+}
+add_filter( 'the_content', 'learnsimply_strip_signup_blank_paras', 20 );
+
+/**
+ * On signup/login pages, inject a small script that removes any Elementor
+ * inline min-height styles set directly on section/container elements,
+ * which can't be overridden by CSS alone when set as inline styles.
+ */
+function learnsimply_fix_signup_elementor_height() {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+	$is_signup_page = is_page( 'signup' )
+		|| is_page( 'dashboard' )
+		|| strpos( $request_uri, '/signup' ) !== false
+		|| strpos( $request_uri, '/dashboard' ) !== false;
+
+	if ( ! $is_signup_page ) {
+		return;
+	}
+	?>
+	<script id="learnsimply-fix-signup-height">
+	(function() {
+		function fixHeight() {
+			var selectors = [
+				'.elementor-section',
+				'.elementor-top-section',
+				'.elementor-inner-section',
+				'.elementor-column',
+				'.elementor-widget-wrap',
+				'.elementor-container',
+				'[data-element_type="section"]',
+				'[data-element_type="container"]',
+				'[data-element_type="column"]'
+			];
+			selectors.forEach(function(sel) {
+				document.querySelectorAll(sel).forEach(function(el) {
+					el.style.removeProperty('min-height');
+					el.style.removeProperty('height');
+					el.style.removeProperty('padding-top');
+					el.style.removeProperty('padding-bottom');
+					el.style.removeProperty('margin-top');
+					el.style.removeProperty('margin-bottom');
+				});
+			});
+		}
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', fixHeight);
+		} else {
+			fixHeight();
+		}
+	})();
+	</script>
+	<?php
+}
+add_action( 'wp_footer', 'learnsimply_fix_signup_elementor_height', 9998 );
+
+/**
  * Inject sidebar dark mode CSS at the very end of wp_footer (highest possible priority).
  * This MUST come after all Tutor LMS stylesheets to override them.
  * Only runs on lesson/course pages to avoid impacting other pages.
