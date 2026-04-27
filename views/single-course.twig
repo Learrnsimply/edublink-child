@@ -10,426 +10,243 @@
     
     {% include 'components/header.twig' %}
 
-    <!-- ===== START: Main Content ===== -->
     <main class="course-main-content">
       <div class="container">
-        <div class="course-page">
-          <!-- بطاقة تفاصيل الكورس (على اليسار) -->
-          <div class="course-details-card">
-            <!-- شريط الخصم العلوي -->
-            {% if discount_percent > 0 %}
-            <div class="discount-banner">
-              <p class="discount-banner-text">
-                خصم {{ discount_percent }}% لمدة 3 أيام فقط — العرض سينتهي قريبًا!
-              </p>
-            </div>
-            {% endif %}
 
-            <!-- صندوق الإحصائيات -->
-            <div class="stats-box">
-              <div class="stat-item">
-                <svg class="stat-icon" fill="none" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M12 8V12L14.5 14.5" stroke="#999EB2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                </svg>
-                <p class="stat-text">{{ course_duration ?: 'غير محدد' }}</p>
-              </div>
-
-              <div class="stat-divider"></div>
-
-              <div class="stat-item">
-                <img class="stat-icon" src="{{ theme_uri }}/assets/img/levele.png" alt="مستوي" />
-                <p class="stat-text">{{ course_level }}</p>
-              </div>
-
-              <div class="stat-divider"></div>
-
-              <div class="stat-item">
-                <img class="stat-icon" src="{{ theme_uri }}/assets/img/Inbox Line.png" alt="محتوي" />
-                <p class="stat-text">{{ content_count }} محتوي</p>
-              </div>
-            </div>
-
-            <!-- صندوق التفاصيل -->
-            <div class="details-box">
-              <!-- الفئة -->
-              {% if categories|length > 0 %}
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M18 10H13" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" />
-                  <path d="M10 3H16.5C16.9644 3 17.1966 3 17.3916 3.02567C18.7378 3.2029 19.7971 4.26222 19.9743 5.60842C20 5.80337 20 6.03558 20 6.5" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z" stroke="#999EB2" stroke-width="1.5" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">الفئه</p>
-                  <div class="detail-value">{{ categories[0].name }}</div>
-                </div>
-              </div>
-              {% endif %}
-
-              <!-- المحاضر -->
-              {% if instructors|length > 0 %}
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M4.75 8.75C6.95914 8.75 8.75 6.95914 8.75 4.75C8.75 2.54086 6.95914 0.75 4.75 0.75C2.54086 0.75 0.75 2.54086 0.75 4.75C0.75 6.95914 2.54086 8.75 4.75 8.75Z" stroke="#999EB2" stroke-width="1.5" transform="translate(7.25, 2)" />
-                  <path d="M7.75 8.75C11.616 8.75 14.75 6.95914 14.75 4.75C14.75 2.54086 11.616 0.75 7.75 0.75C3.88401 0.75 0.75 2.54086 0.75 4.75C0.75 6.95914 3.88401 8.75 7.75 8.75Z" stroke="#999EB2" stroke-width="1.5" transform="translate(4.25, 13)" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">المحاضر</p>
-                  <div class="detail-value">{{ instructors[0].name }}</div>
-                </div>
-              </div>
-              {% endif %}
-
-              <!-- المستوى -->
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M2.42022 8.66604L5.48236 4.52301C7.46169 1.84495 8.45139 0.505934 9.37479 0.788894C10.2981 1.07186 10.2981 2.71417 10.2981 5.9988V6.3085C10.2981 7.49319 10.2981 8.08554 10.6767 8.45709L10.6967 8.47634C11.0834 8.84008 11.6999 8.84008 12.9329 8.84008C15.1518 8.84008 16.2613 8.84008 16.6362 9.51298C16.6424 9.52408 16.6484 9.53538 16.6543 9.54668C17.0083 10.2301 16.3659 11.0992 15.0811 12.8374L12.019 16.9804C10.0396 19.6584 9.04989 20.9975 8.12649 20.7145C7.20319 20.4315 7.20319 18.7892 7.20319 15.5045L7.20329 15.195C7.20329 14.0102 7.20329 13.4179 6.82469 13.0463L6.80469 13.0271C6.41799 12.6634 5.80148 12.6634 4.56844 12.6634C2.34957 12.6634 1.24014 12.6634 0.865188 11.9904C0.858978 11.9793 0.852937 11.9681 0.847077 11.9567C0.493127 11.2734 1.13549 10.4043 2.42022 8.66604Z" stroke="#999EB2" stroke-width="1.5" transform="translate(4, 2)" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">المستوي</p>
-                  <div class="detail-value">{{ course_level }}</div>
-                </div>
-              </div>
-
-              <!-- آخر تحديث -->
-              {% if course_updated %}
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M0.750001 8.75C0.750001 4.97876 0.750001 3.09315 1.92157 1.92157C3.09315 0.750001 4.97876 0.750001 8.75 0.750001H12.75C16.5212 0.750001 18.4069 0.750001 19.5784 1.92157C20.75 3.09315 20.75 4.97876 20.75 8.75V10.75C20.75 14.5212 20.75 16.4069 19.5784 17.5784C18.4069 18.75 16.5212 18.75 12.75 18.75H8.75C4.97876 18.75 3.09315 18.75 1.92157 17.5784C0.750001 16.4069 0.750001 14.5212 0.750001 10.75V8.75Z" stroke="#999EB2" stroke-width="1.5" transform="translate(1.25, 2.25)" />
-                  <path d="M4.75 2.75H2.75M2.75 2.75H0.75M2.75 2.75V0.75M2.75 2.75V4.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(14, 14)" />
-                  <path d="M0.75 2.25V0.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(16.25, 2.5)" />
-                  <path d="M0.75 2.25V0.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(7, 2.5)" />
-                  <path d="M0.75 0.75H19.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(2.25, 9)" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">اخر تحديث</p>
-                  <div class="detail-value">{{ course_updated }}</div>
-                </div>
-              </div>
-              {% endif %}
-
-              <!-- يحتوي على جائزة -->
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <circle cx="12" cy="16" r="3" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M12 19.2599L9.73713 21.4293C9.41306 21.74 9.25102 21.8954 9.1138 21.9491C8.80111 22.0716 8.45425 21.9668 8.28977 21.7001C8.21758 21.583 8.19509 21.3719 8.1501 20.9497C8.1247 20.7113 8.112 20.5921 8.07345 20.4923C7.98715 20.2688 7.80579 20.0949 7.57266 20.0122C7.46853 19.9752 7.3442 19.963 7.09553 19.9387C6.65512 19.8955 6.43491 19.874 6.31283 19.8048C6.03463 19.6471 5.92529 19.3145 6.05306 19.0148C6.10913 18.8832 6.27116 18.7279 6.59523 18.4172L8.07345 17L9.1138 15.9597" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M12 19.2599L14.2629 21.4293C14.5869 21.74 14.749 21.8954 14.8862 21.9491C15.1989 22.0716 15.5457 21.9668 15.7102 21.7001C15.7824 21.583 15.8049 21.3719 15.8499 20.9497C15.8753 20.7113 15.888 20.5921 15.9265 20.4923C16.0129 20.2688 16.1942 20.0949 16.4273 20.0122C16.5315 19.9752 16.6558 19.963 16.9045 19.9387C17.3449 19.8955 17.5651 19.874 17.6872 19.8048C17.9654 19.6471 18.0747 19.3145 17.9469 19.0148C17.8909 18.8832 17.7288 18.7279 17.4048 18.4172L15.9265 17L15 16.0735" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M17.3197 17.9957C19.2921 17.9748 20.3915 17.8512 21.1213 17.1213C22 16.2426 22 14.8284 22 12V8C22 5.17157 22 3.75736 21.1213 2.87868C20.2426 2 18.8284 2 16 2L8 2C5.17157 2 3.75736 2 2.87868 2.87868C2 3.75736 2 5.17157 2 8L2 12C2 14.8284 2 16.2426 2.87868 17.1213C3.64706 17.8897 4.82497 17.9862 7 17.9983" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M9 6L15 6" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" />
-                  <path d="M7 9.5H17" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">يحتوي علي جائزه</p>
-                  <div class="detail-value">{{ has_certificate ? 'نعم' : 'لا' }}</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- صندوق السعر -->
-            <div class="price-box">
-              <div class="price-section">
-                {% if discount_percent > 0 %}
-                <div class="discount-badge">خصم {{ discount_percent }}%</div>
-                {% endif %}
-                {% if regular_price_formatted %}
-                <p class="old-price">{{ regular_price_formatted }} جنيه مصري</p>
-                {% endif %}
-                {% if sale_price_formatted %}
-                <p class="current-price">{{ sale_price_formatted }} جنية مصري</p>
-                {% elseif regular_price_formatted %}
-                <p class="current-price">{{ regular_price_formatted }} جنية مصري</p>
-                {% else %}
-                <p class="current-price">مجاني</p>
-                {% endif %}
-              </div>
-            </div>
-
-            <!-- أزرار الإجراءات -->
-            <div class="action-buttons">
-              <button class="share-button" onclick="shareCourse()">
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path d="M14.6644 5.47875L18.6367 9.00968C20.2053 10.404 20.9896 11.1012 20.9896 11.9993C20.9896 12.8975 20.2053 13.5946 18.6367 14.989L14.6644 18.5199C13.9484 19.1563 13.5903 19.4746 13.2952 19.342C13 19.2095 13 18.7305 13 17.7725V15.4279C9.4 15.4279 5.5 17.1422 4 19.9993C4 10.8565 9.33333 8.57075 13 8.57075V6.22616C13 5.26817 13 4.78917 13.2952 4.65662C13.5903 4.52407 13.9484 4.8423 14.6644 5.47875Z" stroke="#999EB2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                </svg>
-              </button>
-              {% if is_enrolled %}
-                {% if lesson_url %}
-                <a href="{{ lesson_url }}" class="buy-button">ابدأ التعلم</a>
-                {% endif %}
-              {% elseif is_public %}
-                {% if lesson_url %}
-                <a href="{{ lesson_url }}" class="buy-button">ابدأ التعلم</a>
-                {% endif %}
-              {% elseif is_purchasable and not is_free %}
-                {% if product_id %}
-                {# Direct add to cart link - PHP handles redirect to cart #}
-                <a href="{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ product_id }}" class="buy-button">اشتر الآن</a>
-                {% else %}
-                <button class="buy-button" onclick="enrollCourse()">سجل الآن</button>
-                {% endif %}
-              {% else %}
-                <button class="buy-button" onclick="enrollCourse()">سجل الآن</button>
-              {% endif %}
-            </div>
-
-            <!-- قائمة المميزات -->
-            {% if first_five_contents|length > 0 %}
-            <div class="features-box">
-              <div class="features-list">
-                {% for content in first_five_contents %}
-                  <div class="feature-item">
-                    <svg class="feature-icon" fill="none" viewBox="0 0 24 24">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#4077F3" />
-                      <path d="M10.58 15.58C10.38 15.58 10.19 15.5 10.05 15.36L7.22 12.53C6.93 12.24 6.93 11.76 7.22 11.47C7.51 11.18 7.99 11.18 8.28 11.47L10.58 13.77L15.72 8.63C16.01 8.34 16.49 8.34 16.78 8.63C17.07 8.92 17.07 9.4 16.78 9.69L11.11 15.36C10.97 15.5 10.78 15.58 10.58 15.58Z" fill="white" />
-                    </svg>
-                    <p class="feature-text">{{ content.title }}</p>
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- السكشن الموجود (على اليمين) -->
+        {# ===== HERO SECTION ===== #}
+        <div class="course-hero">
+          
+          {# Right: Course Info #}
           <div class="course-info-section">
-            <!-- صورة أو فيديو الكورس -->
+            
+            {# Breadcrumb #}
+            <div class="course-breadcrumb">
+              <a href="{{ site.url }}">الرئيسية</a>
+              <span class="breadcrumb-sep">/</span>
+              <a href="{{ site.url }}/courses">الكورسات</a>
+              <span class="breadcrumb-sep">/</span>
+              <span class="breadcrumb-current">{{ course_title }}</span>
+            </div>
+
+            {# Badges #}
+            <div class="course-badges">
+              <span class="badge badge-type">كورس</span>
+              <span class="badge badge-rating">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffbb54"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                {{ rating_avg }} ({{ rating_count }} تقييم)
+              </span>
+              <span class="badge badge-level">{{ course_level }}</span>
+            </div>
+
+            {# Title #}
+            <h1 class="course-title">{{ course_title }}</h1>
+
+            {# Description #}
+            <div class="course-description">
+              {% set descText = course_excerpt ?: course_content|striptags %}
+              {{ descText|slice(0, 200) }}{% if descText|length > 200 %}...{% endif %}
+            </div>
+
+            {# Instructor Mini Card #}
+            {% if instructors|length > 0 %}
+            <div class="instructor-mini">
+              <div class="instructor-mini-avatar">
+                <img src="{{ instructors[0].avatar ?: theme_uri ~ '/assets/img/ellipse1.png' }}" alt="{{ instructors[0].name }}" />
+              </div>
+              <div class="instructor-mini-info">
+                <p class="instructor-mini-name">{{ instructors[0].name }}</p>
+                <p class="instructor-mini-role">+7 سنين خبرة</p>
+              </div>
+            </div>
+            {% endif %}
+
+            {# Stats Row #}
+            <div class="course-stats-row">
+              <div class="stat-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999eb2" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8V12L14.5 14.5" stroke-linecap="round"/></svg>
+                <span>{{ course_duration ?: 'غير محدد' }}</span>
+              </div>
+              <div class="stat-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999eb2" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>{{ content_count }} محتوى</span>
+              </div>
+              <div class="stat-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999eb2" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <span>+{{ students_count }} طالب</span>
+              </div>
+              {% if has_certificate %}
+              <div class="stat-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999eb2" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                <span>شهادة إتمام</span>
+              </div>
+              {% endif %}
+            </div>
+
+            {# Media: Video or Image #}
             <div class="single-course-media">
               {% if course_video %}
-                {# Display video if available #}
                 <div class="single-course-video">
                   {% if course_video.source == 'youtube' and course_video.embed_url %}
-                    {# YouTube Video #}
-                    <iframe 
-                      src="{{ course_video.embed_url }}" 
-                      frameborder="0" 
-                      allowfullscreen 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      title="{{ course_title }}"
-                    ></iframe>
+                    <iframe src="{{ course_video.embed_url }}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="{{ course_title }}"></iframe>
                   {% elseif course_video.source == 'vimeo' and course_video.embed_url %}
-                    {# Vimeo Video #}
-                    <iframe 
-                      src="{{ course_video.embed_url }}" 
-                      frameborder="0" 
-                      allowfullscreen 
-                      allow="autoplay; fullscreen; picture-in-picture"
-                      title="{{ course_title }}"
-                    ></iframe>
+                    <iframe src="{{ course_video.embed_url }}" frameborder="0" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="{{ course_title }}"></iframe>
                   {% elseif course_video.source == 'embedded' and course_video.embed_code %}
-                    {# Embedded Code #}
                     {{ course_video.embed_code|raw }}
                   {% elseif course_video.url %}
-                    {# HTML5 or External URL Video #}
-                    <video 
-                      controls 
-                      playsinline
-                      {% if course_video.poster %}poster="{{ course_video.poster }}"{% endif %}
-                    >
+                    <video controls playsinline {% if course_video.poster %}poster="{{ course_video.poster }}"{% endif %}>
                       <source src="{{ course_video.url }}" type="{{ course_video.type|default('video/mp4') }}" />
-                      المتصفح الخاص بك لا يدعم تشغيل الفيديو.
                     </video>
                   {% else %}
-                    {# Fallback to image #}
-                    <img src="{{ course_image }}" alt="{{ course_title }}" class="course-image" />
+                    <img src="{{ course_image }}" alt="{{ course_title }}" />
                   {% endif %}
                 </div>
               {% else %}
-                {# Display image if no video #}
                 <div class="single-course-image">
                   <img src="{{ course_image }}" alt="{{ course_title }}" />
                 </div>
               {% endif %}
             </div>
+          </div>
 
-            <!-- محتوى الكورس -->
-            <div class="course-content">
-              <!-- الصف الأول -->
-              <div class="info-row">
-                <!-- التقييم -->
-                <div class="rating-badge">
-                  <div class="rating-text">{{ rating_avg }} ({{ rating_count }} تقيم)</div>
-                  <svg class="star-icon" fill="none" viewBox="0 0 24 24">
-                    <path d="M9.58019 6.39712C10.6568 4.46571 11.1952 3.5 12 3.5C12.8048 3.5 13.3432 4.46571 14.4198 6.39712L14.6984 6.8968C15.0043 7.44564 15.1573 7.72007 15.3958 7.90114C15.6343 8.0822 15.9314 8.14942 16.5255 8.28384L17.0664 8.40622C19.1571 8.87927 20.2025 9.1158 20.4512 9.91557C20.6999 10.7153 19.9872 11.5487 18.5619 13.2154L18.1932 13.6466C17.7881 14.1203 17.5856 14.3571 17.4945 14.6501C17.4034 14.943 17.434 15.259 17.4953 15.8909L17.551 16.4662C17.7665 18.69 17.8742 19.8019 17.2231 20.2962C16.572 20.7905 15.5932 20.3398 13.6357 19.4385L13.1292 19.2053C12.573 18.9492 12.2948 18.8211 12 18.8211C11.7052 18.8211 11.427 18.9492 10.8708 19.2053L10.3643 19.4385C8.40677 20.3398 7.428 20.7905 6.77688 20.2962C6.12575 19.8019 6.2335 18.69 6.44899 16.4662L6.50474 15.8909C6.56597 15.259 6.59659 14.943 6.50548 14.6501C6.41438 14.3571 6.21186 14.1203 5.80683 13.6466L5.43808 13.2154C4.01276 11.5487 3.3001 10.7153 3.54881 9.91557C3.79751 9.1158 4.84288 8.87927 6.93361 8.40622L7.4745 8.28384C8.06862 8.14942 8.36568 8.0822 8.6042 7.90114C8.84272 7.72007 8.9957 7.44565 9.30165 6.8968L9.58019 6.39712Z" fill="#FFBB54" />
+          {# Left: Purchase Card (Sticky) #}
+          <div class="purchase-card-wrapper">
+            <div class="purchase-card">
+              
+              {# Discount Banner #}
+              {% if discount_percent > 0 %}
+              <div class="purchase-discount-banner">
+                خصم {{ discount_percent }}% — العرض لفترة محدودة!
+              </div>
+              {% endif %}
+
+              {# Price #}
+              <div class="purchase-price-section">
+                <div class="purchase-price-row">
+                  {% if sale_price_formatted %}
+                    <span class="purchase-current-price">{{ sale_price_formatted }}</span>
+                    <span class="purchase-currency">جنيه مصري</span>
+                  {% elseif regular_price_formatted %}
+                    <span class="purchase-current-price">{{ regular_price_formatted }}</span>
+                    <span class="purchase-currency">جنيه مصري</span>
+                  {% else %}
+                    <span class="purchase-current-price purchase-free">مجاني</span>
+                  {% endif %}
+                </div>
+                {% if discount_percent > 0 and regular_price_formatted %}
+                <div class="purchase-old-row">
+                  <span class="purchase-old-price">{{ regular_price_formatted }} جنيه</span>
+                  <span class="purchase-discount-badge">خصم {{ discount_percent }}%</span>
+                </div>
+                {% endif %}
+              </div>
+
+              {# CTA Button #}
+              <div class="purchase-cta">
+                {% if is_enrolled %}
+                  {% if lesson_url %}
+                  <a href="{{ lesson_url }}" class="purchase-btn purchase-btn-enrolled">ابدأ التعلم</a>
+                  {% endif %}
+                {% elseif is_public %}
+                  {% if lesson_url %}
+                  <a href="{{ lesson_url }}" class="purchase-btn purchase-btn-enrolled">ابدأ التعلم</a>
+                  {% endif %}
+                {% elseif is_purchasable and not is_free %}
+                  {% if product_id %}
+                  <a href="{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ product_id }}" class="purchase-btn">اشتر الآن</a>
+                  {% else %}
+                  <button class="purchase-btn" onclick="enrollCourse()">سجل الآن</button>
+                  {% endif %}
+                {% else %}
+                  <button class="purchase-btn" onclick="enrollCourse()">سجل الآن</button>
+                {% endif %}
+
+                <button class="purchase-share-btn" onclick="shareCourse()">
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+                    <path d="M14.6644 5.47875L18.6367 9.00968C20.2053 10.404 20.9896 11.1012 20.9896 11.9993C20.9896 12.8975 20.2053 13.5946 18.6367 14.989L14.6644 18.5199C13.9484 19.1563 13.5903 19.4746 13.2952 19.342C13 19.2095 13 18.7305 13 17.7725V15.4279C9.4 15.4279 5.5 17.1422 4 19.9993C4 10.8565 9.33333 8.57075 13 8.57075V6.22616C13 5.26817 13 4.78917 13.2952 4.65662C13.5903 4.52407 13.9484 4.8423 14.6644 5.47875Z" stroke="#999EB2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
                   </svg>
-                </div>
-
-                <!-- الجانب الأيسر -->
-                <div class="info-left">
-                  <!-- شارة كورس -->
-                  <div class="course-badge">كورس</div>
-
-                  <!-- عدد الطلاب -->
-                  <div class="students-count">
-                    <div class="students-count-text">عدد الطلاب المشتركين</div>
-                    <div class="students-avatars">
-                      {% if students_avatars|length > 0 %}
-                        {% for student in students_avatars|slice(0, 3) %}
-                          <img class="avatar" src="{{ student.avatar }}" alt="{{ student.name ?: 'Student' }}" />
-                        {% endfor %}
-                      {% else %}
-                      <img class="avatar" src="{{ theme_uri }}/assets/img/ellipse1.png" alt="Student" />
-                      <img class="avatar" src="{{ theme_uri }}/assets/img/ellipse2.png" alt="Student" />
-                      <img class="avatar" src="{{ theme_uri }}/assets/img/ellipse3.png" alt="Student" />
-                      {% endif %}
-                      <div class="avatar-badge">{{ students_count }}+</div>
-                    </div>
-                  </div>
-                </div>
+                </button>
               </div>
 
-              <!-- عنوان الكورس -->
-              <div class="course-title">
-                {{ course_title }}
+              {# Features Mini List #}
+              {% if first_five_contents|length > 0 %}
+              <div class="purchase-features">
+                <p class="purchase-features-title">يتضمن الكورس:</p>
+                {% for content in first_five_contents %}
+                <div class="purchase-feature-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#4077f3"><circle cx="12" cy="12" r="10"/><path d="M10.58 15.58C10.38 15.58 10.19 15.5 10.05 15.36L7.22 12.53C6.93 12.24 6.93 11.76 7.22 11.47C7.51 11.18 7.99 11.18 8.28 11.47L10.58 13.77L15.72 8.63C16.01 8.34 16.49 8.34 16.78 8.63C17.07 8.92 17.07 9.4 16.78 9.69L11.11 15.36C10.97 15.5 10.78 15.58 10.58 15.58Z" fill="#fff"/></svg>
+                  <span>{{ content.title }}</span>
+                </div>
+                {% endfor %}
               </div>
+              {% endif %}
 
-              <!-- وصف الكورس -->
-              <div class="course-description">
-                {% set descText = course_excerpt ?: course_content|striptags %}
-                {# Inject newlines before emojis if not already there #}
-                {{ descText|replace({
-                  '1️⃣': '\n1️⃣', '2️⃣': '\n2️⃣', '3️⃣': '\n3️⃣', '4️⃣': '\n4️⃣', '5️⃣': '\n5️⃣', 
-                  '6️⃣': '\n6️⃣', '7️⃣': '\n7️⃣', '8️⃣': '\n8️⃣', '9️⃣': '\n9️⃣', '🔟': '\n🔟',
-                  '📂': '\n📂', '🎯': '\n🎯'
-                })|raw }}
+              {# Students Avatars #}
+              <div class="purchase-students">
+                <div class="students-avatars">
+                  {% if students_avatars|length > 0 %}
+                    {% for student in students_avatars|slice(0, 3) %}
+                      <img class="avatar" src="{{ student.avatar }}" alt="{{ student.name ?: 'Student' }}" />
+                    {% endfor %}
+                  {% else %}
+                    <img class="avatar" src="{{ theme_uri }}/assets/img/ellipse1.png" alt="Student" />
+                    <img class="avatar" src="{{ theme_uri }}/assets/img/ellipse2.png" alt="Student" />
+                    <img class="avatar" src="{{ theme_uri }}/assets/img/ellipse3.png" alt="Student" />
+                  {% endif %}
+                  <div class="avatar-badge">{{ students_count }}+</div>
+                </div>
+                <span class="purchase-students-text">طالب مشترك</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- بطاقة المدرب -->
-        {% if instructors|length > 0 %}
-        <div class="instructor-card">
-          <!-- معلومات المدرب - الجانب الأيمن -->
-          <div class="instructor-info">
-            <!-- النصوص -->
-            <div class="instructor-text">
-              <p class="instructor-name">{{ instructors[0].name }}</p>
-              <p class="instructor-title">{{ instructors[0].title ?: 'مدرب' }}</p>
-            </div>
-            <!-- صورة المدرب -->
-            <div class="instructor-avatar">
-              <div class="instructor-avatar-inner">
-                <div class="blur-circle blur-circle-1">
-                  <svg width="100%" height="100%" viewBox="0 0 37.0813 37.0813" fill="none">
-                    <defs>
-                      <filter id="blur1" x="0" y="0" width="37.0813" height="37.0813" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
-                        <feGaussianBlur stdDeviation="0.935285" result="effect1_foregroundBlur" />
-                      </filter>
-                      <linearGradient id="gradient1" x1="18.5406" y1="1.87057" x2="18.5406" y2="35.2107" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#F8EEE4" />
-                        <stop offset="1" stop-color="#F8EEE4" stop-opacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <g filter="url(#blur1)">
-                      <circle cx="18.5406" cy="18.5406" r="16.6701" fill="url(#gradient1)" />
-                    </g>
-                  </svg>
-                </div>
-                <div class="blur-circle blur-circle-2">
-                  <svg width="100%" height="100%" viewBox="0 0 37.0813 37.0813" fill="none">
-                    <defs>
-                      <filter id="blur2" x="0" y="0" width="37.0813" height="37.0813" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
-                        <feGaussianBlur stdDeviation="0.935285" result="effect1_foregroundBlur" />
-                      </filter>
-                      <linearGradient id="gradient2" x1="18.5406" y1="1.87057" x2="18.5406" y2="35.2107" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#F8EEE4" />
-                        <stop offset="1" stop-color="#F8EEE4" stop-opacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <g filter="url(#blur2)">
-                      <circle cx="18.5406" cy="18.5406" r="16.6701" fill="url(#gradient2)" />
-                    </g>
-                  </svg>
-                </div>
-                <img src="{{ instructors[0].avatar ?: theme_uri ~ '/assets/img/ellipse1.png' }}" alt="{{ instructors[0].name }}" />
-              </div>
-            </div>
-          </div>
-
-          <!-- شارة الخبرة - الجانب الأيسر -->
-          <div class="experience-badge">
-            <p class="experience-text">+7 سنين خبرة</p>
-          </div>
-        </div>
-        {% endif %}
-
-
-
-
-        <!-- بطاقة وصف الكورس -->
+        {# ===== COURSE DESCRIPTION ===== #}
         {% if course_content %}
-        <div class="description-card">
+        <div class="section-card description-card">
           <div class="card-content">
-            <!-- عنوان القسم -->
             <div class="section-header">
               <div class="section-icon-box">
-                <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                  <path clip-rule="evenodd" d="M16.5 30.25C10.0182 30.25 6.77728 30.25 4.76365 28.2363C2.75 26.2228 2.75 22.9818 2.75 16.5C2.75 10.0182 2.75 6.77728 4.76365 4.76365C6.77728 2.75 10.0182 2.75 16.5 2.75C22.9818 2.75 26.2228 2.75 28.2363 4.76365C30.25 6.77728 30.25 10.0182 30.25 16.5C30.25 22.9818 30.25 26.2228 28.2363 28.2363C26.2228 30.25 22.9818 30.25 16.5 30.25ZM16.5 24.4062C17.0695 24.4062 17.5312 23.9445 17.5312 23.375V15.125C17.5312 14.5555 17.0695 14.0938 16.5 14.0938C15.9305 14.0938 15.4688 14.5555 15.4688 15.125V23.375C15.4688 23.9445 15.9305 24.4062 16.5 24.4062ZM16.5 9.625C17.2594 9.625 17.875 10.2406 17.875 11C17.875 11.7594 17.2594 12.375 16.5 12.375C15.7406 12.375 15.125 11.7594 15.125 11C15.125 10.2406 15.7406 9.625 16.5 9.625Z" fill="white" fill-rule="evenodd" />
-                </svg>
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z" fill="#fff"/></svg>
               </div>
               <h2 class="section-title">وصف الكورس</h2>
             </div>
-
-            <!-- نص الوصف -->
             <div class="description-text">
               {{ course_content|raw }}
             </div>
           </div>
-
-          <!-- التدرج السفلي مع زر عرض المزيد -->
           <div class="gradient-overlay">
             <p class="show-more-btn">عرض المزيد</p>
           </div>
         </div>
         {% endif %}
 
-        <!-- بطاقة ماذا ستتعلم -->
+        {# ===== WHAT YOU'LL LEARN ===== #}
         {% if course_benefits and course_benefits|trim %}
-        <div class="learning-card">
-          <!-- عنوان القسم -->
+        <div class="section-card learning-card">
           <div class="section-header">
             <div class="section-icon-box">
-              <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                <path d="M4.76365 28.2363C6.77728 30.25 10.0182 30.25 16.5 30.25C22.9817 30.25 26.2228 30.25 28.2363 28.2363C29.9837 26.489 30.2148 23.8176 30.2453 18.9062H25.9046C24.5656 18.9062 24.2155 18.9282 23.9216 19.0635C23.6277 19.1987 23.3831 19.4502 22.5118 20.4667L21.5592 21.5783C20.8688 22.3854 20.322 23.0248 19.5652 23.3728C18.8085 23.7208 17.9671 23.72 16.9049 23.7189H16.0951C15.0329 23.72 14.1915 23.7208 13.4348 23.3728C12.678 23.0248 12.1312 22.3854 11.4408 21.5783L10.4883 20.4667C9.61689 19.4502 9.3723 19.1987 9.07837 19.0635C8.78445 18.9282 8.43435 18.9062 7.09536 18.9062H2.75466C2.78521 23.8176 3.0163 26.489 4.76365 28.2363Z" fill="white" />
-                <path clip-rule="evenodd" d="M16.5 2.75C22.9818 2.75 26.2228 2.75 28.2363 4.76365C30.25 6.77728 30.25 10.0182 30.25 16.5V16.8438L25.7201 16.8436C24.6579 16.8425 23.8165 16.8417 23.0598 17.1897C22.303 17.5377 21.7562 18.1771 21.0658 18.9842L20.1132 20.0958C19.2419 21.1123 18.9973 21.3638 18.7034 21.499C18.4095 21.6343 18.0594 21.6562 16.7204 21.6562H16.2796C14.9406 21.6562 14.5905 21.6343 14.2966 21.499C14.0027 21.3638 13.7581 21.1123 12.8867 20.0958L11.9342 18.9842C11.2438 18.1771 10.697 17.5377 9.9402 17.1897C9.18343 16.8417 8.34219 16.8425 7.27999 16.8436L2.75001 16.8438L2.75 16.5C2.75 10.0182 2.75 6.77728 4.76365 4.76365C6.77728 2.75 10.0182 2.75 16.5 2.75ZM12.7188 14.4375C12.7188 13.868 13.1805 13.4062 13.75 13.4062H19.25C19.8195 13.4062 20.2812 13.868 20.2812 14.4375C20.2812 15.007 19.8195 15.4688 19.25 15.4688H13.75C13.1805 15.4688 12.7188 15.007 12.7188 14.4375Z" fill="white" fill-rule="evenodd" />
-                <path clip-rule="evenodd" d="M9.96875 9.625C9.96875 9.05546 10.4305 8.59375 11 8.59375H22C22.5695 8.59375 23.0312 9.05546 23.0312 9.625C23.0312 10.1945 22.5695 10.6562 22 10.6562H11C10.4305 10.6562 9.96875 10.1945 9.96875 9.625Z" fill="white" fill-rule="evenodd" />
-              </svg>
+              <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
             </div>
             <h2 class="section-title">ماذا ستتعلم في هذه الدورة؟</h2>
           </div>
-
-          <!-- شبكة التعلم -->
           <div class="learning-grid">
             {% set benefits_array = course_benefits|split('\n')|filter(b => b|trim) %}
             {% set half_count = (benefits_array|length / 2)|round %}
-            <!-- العمود الأول -->
             <div class="learning-column">
               {% for benefit in benefits_array|slice(0, half_count) %}
                 {% if benefit|trim %}
                 <div class="learning-item">
-                  <svg class="check-icon" fill="none" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" fill="#999EB2" />
-                    <path d="M10.58 15.58C10.38 15.58 10.19 15.5 10.05 15.36L7.22 12.53C6.93 12.24 6.93 11.76 7.22 11.47C7.51 11.18 7.99 11.18 8.28 11.47L10.58 13.77L15.72 8.63C16.01 8.34 16.49 8.34 16.78 8.63C17.07 8.92 17.07 9.4 16.78 9.69L11.11 15.36C10.97 15.5 10.78 15.58 10.58 15.58Z" fill="white" />
-                  </svg>
+                  <svg class="check-icon" width="20" height="20" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#999EB2"/><path d="M10.58 15.58C10.38 15.58 10.19 15.5 10.05 15.36L7.22 12.53C6.93 12.24 6.93 11.76 7.22 11.47C7.51 11.18 7.99 11.18 8.28 11.47L10.58 13.77L15.72 8.63C16.01 8.34 16.49 8.34 16.78 8.63C17.07 8.92 17.07 9.4 16.78 9.69L11.11 15.36C10.97 15.5 10.78 15.58 10.58 15.58Z" fill="#fff"/></svg>
                   <p class="learning-text">{{ benefit|trim }}</p>
                 </div>
                 {% endif %}
               {% endfor %}
             </div>
-
-            <!-- العمود الثاني -->
             <div class="learning-column">
               {% for benefit in benefits_array|slice(half_count) %}
                 {% if benefit|trim %}
                 <div class="learning-item">
-                  <svg class="check-icon" fill="none" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" fill="#999EB2" />
-                    <path d="M10.58 15.58C10.38 15.58 10.19 15.5 10.05 15.36L7.22 12.53C6.93 12.24 6.93 11.76 7.22 11.47C7.51 11.18 7.99 11.18 8.28 11.47L10.58 13.77L15.72 8.63C16.01 8.34 16.49 8.34 16.78 8.63C17.07 8.92 17.07 9.4 16.78 9.69L11.11 15.36C10.97 15.5 10.78 15.58 10.58 15.58Z" fill="white" />
-                  </svg>
+                  <svg class="check-icon" width="20" height="20" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#999EB2"/><path d="M10.58 15.58C10.38 15.58 10.19 15.5 10.05 15.36L7.22 12.53C6.93 12.24 6.93 11.76 7.22 11.47C7.51 11.18 7.99 11.18 8.28 11.47L10.58 13.77L15.72 8.63C16.01 8.34 16.49 8.34 16.78 8.63C17.07 8.92 17.07 9.4 16.78 9.69L11.11 15.36C10.97 15.5 10.78 15.58 10.58 15.58Z" fill="#fff"/></svg>
                   <p class="learning-text">{{ benefit|trim }}</p>
                 </div>
                 {% endif %}
@@ -439,22 +256,16 @@
         </div>
         {% endif %}
 
-        <!-- بطاقة محتوي الكورس -->
+        {# ===== COURSE CONTENT / CURRICULUM ===== #}
         {% if topics|length > 0 %}
-        <div class="course-content-card">
-          <!-- عنوان القسم -->
+        <div class="section-card course-content-card">
           <div class="section-header">
             <div class="section-icon-box">
-              <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                <path d="M11.7011 2.75001H21.2987C21.6184 2.74993 21.8635 2.74988 22.0777 2.77083C23.6009 2.91984 24.8478 3.83567 25.3764 5.06932H7.62338C8.15209 3.83567 9.39888 2.91984 10.9221 2.77083C11.1364 2.74988 11.3814 2.74993 11.7011 2.75001Z" fill="white" />
-                <path d="M8.67697 6.49429C6.76485 6.49429 5.19699 7.64895 4.67376 9.18075C4.66286 9.21268 4.6524 9.24479 4.6424 9.27703C5.18986 9.11125 5.75961 9.00294 6.33637 8.929C7.82189 8.73855 9.69924 8.73865 11.88 8.73877H21.3566C23.5374 8.73865 25.4148 8.73855 26.9004 8.929C27.477 9.00294 28.0468 9.11125 28.5942 9.27703C28.5843 9.24479 28.5739 9.21268 28.5629 9.18075C28.0397 7.64895 26.4718 6.49429 24.5597 6.49429H8.67697Z" fill="white" />
-                <path clip-rule="evenodd" d="M21.0754 10.3703H11.9245C7.28417 10.3703 4.96398 10.3703 3.66069 11.7272C2.3574 13.0841 2.66404 15.1804 3.27733 19.3732L3.85891 23.349C4.33986 26.6371 4.58033 28.281 5.81397 29.2655C7.0476 30.25 8.8671 30.25 12.5061 30.25H20.4938C24.1329 30.25 25.9524 30.25 27.1861 29.2655C28.4197 28.281 28.6601 26.6371 29.1411 23.349L29.7227 19.3732C30.3359 15.1805 30.6426 13.0841 29.3393 11.7272C28.036 10.3703 25.7158 10.3703 21.0754 10.3703ZM20.0491 21.717C20.8169 21.2411 20.8169 20.0089 20.0491 19.533L15.4132 16.6589C14.667 16.1964 13.75 16.7985 13.75 17.7511V23.4989C13.75 24.4515 14.667 25.0536 15.4132 24.591L20.0491 21.717Z" fill="white" fill-rule="evenodd" />
-              </svg>
+              <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/></svg>
             </div>
-            <h2 class="section-title">محتوي الكورس</h2>
+            <h2 class="section-title">محتوى الكورس</h2>
           </div>
 
-          <!-- قائمة الأسابيع -->
           <div class="weeks-list">
             {% for topic in topics %}
             <div class="week-container {% if loop.first %}open{% endif %}">
@@ -467,8 +278,8 @@
                     <span>{{ topic.contents|length }} ساعه</span>
                   </div>
                 </div>
-                <svg class="arrow-icon" fill="none" viewBox="0 0 24 24">
-                  <path clip-rule="evenodd" d="M4.43056 8.51191C4.70012 8.19741 5.1736 8.16099 5.48809 8.43056L12 14.0122L18.5119 8.43056C18.8264 8.16099 19.2999 8.19741 19.5694 8.51191C19.839 8.8264 19.8026 9.29988 19.4881 9.56944L12.4881 15.5694C12.2072 15.8102 11.7928 15.8102 11.5119 15.5694L4.51191 9.56944C4.19741 9.29988 4.16099 8.8264 4.43056 8.51191Z" fill="#999EB2" fill-rule="evenodd" />
+                <svg class="arrow-icon" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                  <path d="M6 9l6 6 6-6" stroke="#999EB2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
 
@@ -477,23 +288,22 @@
                 <div class="lecture-item">
                   <div class="lecture-content">
                     <p class="lecture-title">{{ content.title }}</p>
-                    {% if content.type == 'tutor_lesson' or content.type == 'lesson' %}
-                      <img class="lecture-icon" src="{{ theme_uri }}/assets/img/Subtract.png" alt="أيقونة فيديو" />
+                    {% if not is_enrolled %}
+                      <svg class="lecture-icon" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                        <rect x="3" y="11" width="18" height="11" rx="2" stroke="#666b7a" stroke-width="1.5"/>
+                        <path d="M7 11V7a5 5 0 0110 0v4" stroke="#666b7a" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    {% elseif content.type == 'tutor_lesson' or content.type == 'lesson' %}
+                      <img class="lecture-icon" src="{{ theme_uri }}/assets/img/Subtract.png" alt="فيديو" />
                     {% elseif content.type == 'tutor_quiz' or content.type == 'quiz' %}
-                      <svg class="lecture-icon" fill="none" viewBox="0 0 24 24">
-                        <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.19C2 19.83 4.17 22 7.81 22H16.19C19.83 22 22 19.83 22 16.19V7.81C22 4.17 19.83 2 16.19 2ZM9.97 14.9L7.72 17.15C7.57 17.3 7.38 17.37 7.19 17.37C7 17.37 6.8 17.3 6.66 17.15L5.91 16.4C5.61 16.11 5.61 15.63 5.91 15.34C6.2 15.05 6.67 15.05 6.97 15.34L7.19 15.56L8.91 13.84C9.2 13.55 9.67 13.55 9.97 13.84C10.26 14.13 10.26 14.61 9.97 14.9ZM9.97 7.9L7.72 10.15C7.57 10.3 7.38 10.37 7.19 10.37C7 10.37 6.8 10.3 6.66 10.15L5.91 9.4C5.61 9.11 5.61 8.63 5.91 8.34C6.2 8.05 6.67 8.05 6.97 8.34L7.19 8.56L8.91 6.84C9.2 6.55 9.67 6.55 9.97 6.84C10.26 7.13 10.26 7.61 9.97 7.9ZM17.56 16.62H12.31C11.9 16.62 11.56 16.28 11.56 15.87C11.56 15.46 11.9 15.12 12.31 15.12H17.56C17.98 15.12 18.31 15.46 18.31 15.87C18.31 16.28 17.98 16.62 17.56 16.62ZM17.56 9.62H12.31C11.9 9.62 11.56 9.28 11.56 8.87C11.56 8.46 11.9 8.12 12.31 8.12H17.56C17.98 8.12 18.31 8.46 18.31 8.87C18.31 9.28 17.98 9.62 17.56 9.62Z" fill="#999EB2" />
+                      <svg class="lecture-icon" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="3" stroke="#999EB2" stroke-width="1.5"/>
+                        <path d="M9 12l2 2 4-4" stroke="#999EB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                     {% else %}
-                      <svg class="lecture-icon" fill="none" viewBox="0 0 24 24">
-                        <path d="M9.5 2C8.67157 2 8 2.67157 8 3.5V4.5C8 5.32843 8.67157 6 9.5 6H14.5C15.3284 6 16 5.32843 16 4.5V3.5C16 2.67157 15.3284 2 14.5 2H9.5Z" fill="#999EB2" />
-                        <path clip-rule="evenodd" d="M6.5 4.03662C5.24209 4.10719 4.44798 4.30764 3.87868 4.87694C3 5.75562 3 7.16983 3 9.99826V15.9983C3 18.8267 3 20.2409 3.87868 21.1196C4.75736 21.9983 6.17157 21.9983 9 21.9983H15C17.8284 21.9983 19.2426 21.9983 20.1213 21.1196C21 20.2409 21 18.8267 21 15.9983V9.99826C21 7.16983 21 5.75562 20.1213 4.87694C19.552 4.30764 18.7579 4.10719 17.5 4.03662V4.5C17.5 6.15685 16.1569 7.5 14.5 7.5H9.5C7.84315 7.5 6.5 6.15685 6.5 4.5V4.03662ZM15.5117 12.5483C15.8146 12.2657 15.8309 11.7911 15.5483 11.4883C15.2657 11.1855 14.7911 11.1691 14.4883 11.4517L10.7143 14.9741L9.51174 13.8517C9.20893 13.5691 8.73434 13.5855 8.45171 13.8883C8.16909 14.1911 8.18545 14.6657 8.48826 14.9483L10.2025 16.5483C10.4907 16.8172 10.9379 16.8172 11.226 16.5483L15.5117 12.5483Z" fill="#999EB2" fill-rule="evenodd" />
+                      <svg class="lecture-icon" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="#999EB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
-                    {% endif %}
-                    {% if not is_enrolled %}
-                    <svg class="lock-icon" fill="none" viewBox="0 0 20 20">
-                      <circle cx="10" cy="10" r="8.33333" stroke="#999EB2" stroke-width="1.5" />
-                      <path d="M7.08333 10.4167L8.75 12.0833L12.9167 7.91667" stroke="#999EB2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                    </svg>
                     {% endif %}
                   </div>
                   {% if content.duration %}
@@ -510,98 +320,70 @@
         </div>
         {% endif %}
 
-        <!-- بطاقة التقييمات -->
+        {# ===== REVIEWS ===== #}
         {% if course_reviews|length > 0 %}
-        <div class="reviews-section">
-          <!-- Ratings Overview -->
-          <div class="ratings-overview">
-            <div class="ratings-overview-content">
-              <!-- Header -->
-              <div class="ratings-header">
-                <div class="stars-icon">
-                  <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                    <path d="M26.125 4.46875C26.6945 4.46875 27.1562 4.93046 27.1562 5.5V5.84375H27.5C28.0695 5.84375 28.5312 6.30546 28.5312 6.875C28.5312 7.44454 28.0695 7.90625 27.5 7.90625H27.1562V8.25C27.1562 8.81954 26.6945 9.28125 26.125 9.28125C25.5555 9.28125 25.0938 8.81954 25.0938 8.25V7.90625H24.75C24.1805 7.90625 23.7188 7.44454 23.7188 6.875C23.7188 6.30546 24.1805 5.84375 24.75 5.84375H25.0938V5.5C25.0938 4.93046 25.5555 4.46875 26.125 4.46875Z" fill="white" />
-                    <path d="M6.69284 3.4383C6.73408 3.29285 6.99226 3.29197 7.03447 3.43714C7.22725 4.10004 7.58472 5.0799 8.12526 5.61681C8.66581 6.15372 9.64805 6.50455 10.3122 6.69284C10.4577 6.73408 10.4586 6.99226 10.3134 7.03447C9.65049 7.22725 8.67064 7.58472 8.13374 8.12526C7.59683 8.66581 7.24599 9.64805 7.0577 10.3122C7.01646 10.4577 6.75828 10.4586 6.71606 10.3134C6.52329 9.65049 6.16583 8.67064 5.62528 8.13374C5.08472 7.59683 4.10249 7.24599 3.4383 7.0577C3.29285 7.01646 3.29197 6.75828 3.43714 6.71606C4.10004 6.52329 5.0799 6.16583 5.61681 5.62528C6.15372 5.08472 6.50455 4.10249 6.69284 3.4383Z" fill="white" />
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.8603 10.8585C15.3406 8.20285 16.0809 6.875 17.1875 6.875C18.2941 6.875 19.0344 8.20285 20.5147 10.8585L20.8978 11.5456C21.3184 12.3003 21.5288 12.6776 21.8567 12.9266C22.1847 13.1755 22.5932 13.268 23.4101 13.4528L24.1538 13.6211C27.0285 14.2715 28.4659 14.5967 28.8079 15.6964C29.1499 16.796 28.1699 17.942 26.2101 20.2337L25.7031 20.8266C25.1461 21.4779 24.8677 21.8035 24.7424 22.2064C24.6172 22.6091 24.6593 23.0436 24.7435 23.9125L24.8201 24.7035C25.1164 27.7612 25.2645 29.2901 24.3693 29.9698C23.474 30.6494 22.1282 30.0297 19.4366 28.7904L18.7402 28.4698C17.9754 28.1176 17.5929 27.9415 17.1875 27.9415C16.7822 27.9415 16.3996 28.1176 15.6349 28.4698L14.9384 28.7904C12.2468 30.0297 10.901 30.6494 10.0057 29.9698C9.11041 29.2901 9.25856 27.7612 9.55486 24.7035L9.63152 23.9125C9.71571 23.0436 9.75781 22.6091 9.63253 22.2064C9.50727 21.8035 9.22881 21.4779 8.67189 20.8266L8.16486 20.2337C6.20504 17.942 5.22514 16.796 5.56711 15.6964C5.90908 14.5967 7.34646 14.2715 10.2212 13.6211L10.9649 13.4528C11.7819 13.268 12.1903 13.1755 12.5183 12.9266C12.8462 12.6776 13.0566 12.3003 13.4773 11.5456L13.8603 10.8585Z" fill="white" />
-                  </svg>
-                </div>
-                <p class="ratings-title">التقييمات مشترين الكورس</p>
+        <div class="section-card reviews-section">
+          <div class="reviews-header-row">
+            <div class="section-header">
+              <div class="section-icon-box section-icon-box-gold">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffbb54"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               </div>
-
-              <!-- Ratings Content -->
-              <div class="ratings-content">
-                <div class="ratings-list-container">
-                  <div class="ratings-list">
-                    <!-- Rating rows will be generated dynamically -->
-                    {% for i in 5..1 %}
-                      {% set rating_count = 0 %}
-                      {% for review in course_reviews %}
-                        {% if review.rating == i %}
-                          {% set rating_count = rating_count + 1 %}
-                        {% endif %}
-                      {% endfor %}
-                      {% set percentage = rating_count > 0 ? (rating_count / course_reviews|length * 100)|round : 0 %}
-                      <div class="rating-row">
-                        <div class="stars-group">
-                          {% for j in 1..5 %}
-                            <svg class="star-icon {% if j <= i %}filled{% else %}empty{% endif %}" viewBox="0 0 24 24">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                            </svg>
-                          {% endfor %}
-                        </div>
-                        <div class="progress-container">
-                          <div class="progress-bg"></div>
-                          <div class="progress-fill" style="right: {{ 100 - percentage }}%"></div>
-                        </div>
-                        <p class="percentage">{{ percentage }}%</p>
-                      </div>
-                    {% endfor %}
-                  </div>
-                </div>
-                <div class="rating-summary">
-                  <div class="rating-summary-content">
-                    <p class="summary-title">التقييم</p>
-                    <div class="summary-stars">
-                      {% for i in 1..5 %}
-                        <svg class="star-icon {% if i <= rating_avg|round %}filled{% else %}empty{% endif %}" viewBox="0 0 24 24">
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                        </svg>
-                      {% endfor %}
-                    </div>
-                    <p class="summary-rating">{{ rating_avg }}</p>
-                  </div>
-                </div>
-              </div>
+              <h2 class="section-title">تقييمات الطلاب</h2>
+            </div>
+            <div class="reviews-summary-inline">
+              <span class="reviews-avg-big">{{ rating_avg }}</span>
+              <span class="reviews-avg-label">من 5 ({{ rating_count }} تقييم)</span>
             </div>
           </div>
 
-          <!-- Review Cards -->
+          {# Rating Bars #}
+          <div class="ratings-bars">
+            {% for i in 5..1 %}
+              {% set r_count = 0 %}
+              {% for review in course_reviews %}
+                {% if review.rating == i %}
+                  {% set r_count = r_count + 1 %}
+                {% endif %}
+              {% endfor %}
+              {% set pct = r_count > 0 ? (r_count / course_reviews|length * 100)|round : 0 %}
+              <div class="rating-bar-row">
+                <div class="rating-bar-stars">
+                  {% for j in 1..5 %}
+                    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="{% if j <= i %}#ffbb54{% else %}rgba(255,255,255,0.08){% endif %}"/></svg>
+                  {% endfor %}
+                </div>
+                <div class="rating-bar-track">
+                  <div class="rating-bar-fill" style="width: {{ pct }}%"></div>
+                </div>
+                <span class="rating-bar-pct">{{ pct }}%</span>
+              </div>
+            {% endfor %}
+          </div>
+
+          {# Review Cards #}
           <div class="review-cards" id="reviews-container">
             {% for review in course_reviews %}
             <div class="review-card {% if loop.index > 2 %}hidden-review{% endif %}">
               <div class="review-card-content">
                 <div class="review-header">
-                  <div class="review-header-inner">
-                    <div class="review-info-group">
-                      <div class="review-stars">
-                        {% for i in 1..5 %}
-                          <svg class="star-icon {% if i <= review.rating %}filled{% else %}empty{% endif %}" viewBox="0 0 16 16">
-                            <path d="M8 1.33l2.36 4.78L15.5 7.5l-3.5 3.41.83 4.83L8 13.68l-4.83 2.54.83-4.83L.5 7.5l5.14-.39L8 1.33z" />
-                          </svg>
-                        {% endfor %}
-                      </div>
-                      <div class="user-details">
-                        <p class="user-name">{{ review.author }}</p>
-                        <p class="review-date">{{ review.date|date('d/m/Y') }}{% if review.pending|default(false) %} <span class="review-pending-badge">قيد المراجعة</span>{% endif %}</p>
-                      </div>
-                    </div>
+                  <div class="review-avatar">
+                    <img src="{{ review.avatar ?: theme_uri ~ '/assets/img/ellipse1.png' }}" alt="{{ review.author }}" />
                   </div>
-                  <div class="avatar">
-                    <img src="{{ review.avatar ?: theme_uri ~ '/assets/img/ellipse1.png' }}" alt="User Avatar" />
+                  <div class="review-meta">
+                    <p class="user-name">{{ review.author }}</p>
+                    <div class="review-stars">
+                      {% for i in 1..5 %}
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="{% if i <= review.rating %}#ffbb54{% else %}rgba(255,255,255,0.08){% endif %}"/></svg>
+                      {% endfor %}
+                      <span class="review-date">{{ review.date|date('d/m/Y') }}</span>
+                      {% if review.pending|default(false) %}
+                        <span class="review-pending-badge">قيد المراجعة</span>
+                      {% endif %}
+                    </div>
                   </div>
                 </div>
                 <div class="review-text">
-                  <p class="review-text-content" {% if review.content|length > 200 %}data-full="{{ review.content|e('html_attr') }}" data-short="{{ (review.content|slice(0, 200) ~ '...')|e('html_attr') }}"{% endif %}>
+                  <p {% if review.content|length > 200 %}data-full="{{ review.content|e('html_attr') }}" data-short="{{ (review.content|slice(0, 200) ~ '...')|e('html_attr') }}"{% endif %}>
                     {{ review.content|slice(0, 200) }}{% if review.content|length > 200 %}... <button type="button" class="show-more-review">عرض المزيد</button>{% endif %}
                   </p>
                 </div>
@@ -621,26 +403,22 @@
         </div>
         {% endif %}
 
-        {# Add Review Form for Enrolled Users #}
+        {# ===== ADD REVIEW FORM ===== #}
         {% if can_write_review %}
-        <div class="add-review-section">
+        <div class="section-card add-review-section">
           <div class="card-content">
             <div class="section-header">
               <div class="section-icon-box">
-                <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                  <path clip-rule="evenodd" d="M16.5 30.25C10.0182 30.25 6.77728 30.25 4.76365 28.2363C2.75 26.2228 2.75 22.9818 2.75 16.5C2.75 10.0182 2.75 6.77728 4.76365 4.76365C6.77728 2.75 10.0182 2.75 16.5 2.75C22.9818 2.75 26.2228 2.75 28.2363 4.76365C30.25 6.77728 30.25 10.0182 30.25 16.5C30.25 22.9818 30.25 26.2228 28.2363 28.2363C26.2228 30.25 22.9818 30.25 16.5 30.25ZM16.5 24.4062C17.0695 24.4062 17.5312 23.9445 17.5312 23.375V15.125C17.5312 14.5555 17.0695 14.0938 16.5 14.0938C15.9305 14.0938 15.4688 14.5555 15.4688 15.125V23.375C15.4688 23.9445 15.9305 24.4062 16.5 24.4062ZM16.5 9.625C17.2594 9.625 17.875 10.2406 17.875 11C17.875 11.7594 17.2594 12.375 16.5 12.375C15.7406 12.375 15.125 11.7594 15.125 11C15.125 10.2406 15.7406 9.625 16.5 9.625Z" fill="white" fill-rule="evenodd" />
-                </svg>
+                <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
               </div>
               <h2 class="section-title">{% if user_review %}تعديل تقييمك{% else %}أضف تقييمك للكورس{% endif %}</h2>
             </div>
-
             <div class="add-review-form">
               <form method="post" class="tutor-review-form" id="tutor-review-form">
                 <input type="hidden" name="course_id" value="{{ course.ID }}"/>
                 <input type="hidden" name="review_id" value="{{ user_review.id|default('') }}"/>
                 <input type="hidden" name="action" value="tutor_place_rating"/>
                 <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}"/>
-                
                 <div class="form-group star-rating-group">
                   <label class="form-label">التقييم</label>
                   <div class="star-rating-input" id="star-rating-input">
@@ -652,48 +430,40 @@
                     <input type="hidden" name="tutor_rating_gen_input" id="tutor_rating_gen_input" value="{{ user_review.rating|default(0) }}"/>
                   </div>
                 </div>
-                
                 <div class="form-group">
                   <label class="form-label">تقييمك</label>
                   <textarea name="review" class="review-textarea" placeholder="اكتب تقييمك هنا..." rows="4">{{ user_review.content|default('') }}</textarea>
                 </div>
-                
                 <div class="form-group">
                   <button type="submit" class="submit-review-btn">
                     <span>{% if user_review %}تحديث التقييم{% else %}إرسال التقييم{% endif %}</span>
                   </button>
                 </div>
-                
                 <div class="review-message" id="review-message" style="display: none;"></div>
               </form>
             </div>
           </div>
         </div>
         {% elseif is_enrolled and not is_user_logged_in %}
-        <div class="add-review-section">
+        <div class="section-card add-review-section">
           <div class="card-content">
             <div class="section-header">
               <div class="section-icon-box">
-                <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                  <path clip-rule="evenodd" d="M16.5 30.25C10.0182 30.25 6.77728 30.25 4.76365 28.2363C2.75 26.2228 2.75 22.9818 2.75 16.5C2.75 10.0182 2.75 6.77728 4.76365 4.76365C6.77728 2.75 10.0182 2.75 16.5 2.75C22.9818 2.75 26.2228 2.75 28.2363 4.76365C30.25 6.77728 30.25 10.0182 30.25 16.5C30.25 22.9818 30.25 26.2228 28.2363 28.2363C26.2228 30.25 22.9818 30.25 16.5 30.25ZM16.5 24.4062C17.0695 24.4062 17.5312 23.9445 17.5312 23.375V15.125C17.5312 14.5555 17.0695 14.0938 16.5 14.0938C15.9305 14.0938 15.4688 14.5555 15.4688 15.125V23.375C15.4688 23.9445 15.9305 24.4062 16.5 24.4062ZM16.5 9.625C17.2594 9.625 17.875 10.2406 17.875 11C17.875 11.7594 17.2594 12.375 16.5 12.375C15.7406 12.375 15.125 11.7594 15.125 11C15.125 10.2406 15.7406 9.625 16.5 9.625Z" fill="white" fill-rule="evenodd" />
-                </svg>
+                <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z"/></svg>
               </div>
               <h2 class="section-title">أضف تقييمك للكورس</h2>
             </div>
             <div class="add-review-form">
-              <p class="login-required-message">
-                يجب تسجيل الدخول أولًا قبل إضافة تقييم.
-              </p>
+              <p class="login-required-message">يجب تسجيل الدخول أولًا قبل إضافة تقييم.</p>
             </div>
           </div>
         </div>
         {% endif %}
+
       </div>
     </main>
-    <!-- ===== END: Main Content ===== -->
 
     {% include 'components/footer.twig' %}
-
     {% include 'components/whatsapp-button.twig' %}
 
     <script>
