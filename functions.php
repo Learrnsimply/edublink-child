@@ -1784,6 +1784,31 @@ function edublink_child_lesson_sidebar_dark_mode() {
 		fill: #4077f3 !important;
 	}
 
+	/* ── Quiz items: always blue icon, never grey ── */
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] i,
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] [class^="tutor-icon-"],
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] [class*=" tutor-icon-"],
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] [class*="icon"],
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] i,
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] [class^="tutor-icon-"],
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] [class*=" tutor-icon-"],
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] [class*="icon"] {
+		color: #4077f3 !important;
+	}
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] i::before,
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] [class^="tutor-icon-"]::before,
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] i::before,
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] [class^="tutor-icon-"]::before {
+		color: #4077f3 !important;
+	}
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] svg,
+	.tutor-course-spotlight-sidebar [data-content-type="tutor_quiz"] svg *,
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] svg,
+	.tutor-course-topics-sidebar [data-content-type="tutor_quiz"] svg * {
+		fill: #4077f3 !important;
+		color: #4077f3 !important;
+	}
+
 	/* ── NUCLEAR: wipe stray backgrounds on ALL sidebar descendants ── */
 	.tutor-course-spotlight-sidebar *:not(.tutor-btn):not([class*="icon"]):not(svg):not(path):not(i):not(input) {
 		background-color: transparent !important;
@@ -1824,7 +1849,8 @@ function edublink_child_lesson_sidebar_dark_mode() {
 			sidebars.forEach(function(sb){
 				sb.querySelectorAll('svg').forEach(function(svg){
 					var isActive = svg.closest('.is-active, .tutor-active, .active');
-					var c = isActive ? AC : DC;
+					var isQuiz  = svg.closest('[data-content-type="tutor_quiz"]');
+					var c = (isActive || isQuiz) ? AC : DC;
 					svg.style.fill = c;
 					svg.style.color = c;
 					svg.querySelectorAll('path, rect, circle').forEach(function(s){
@@ -1833,7 +1859,8 @@ function edublink_child_lesson_sidebar_dark_mode() {
 				});
 				sb.querySelectorAll('i, [class^="tutor-icon-"]').forEach(function(el){
 					var isActive = el.closest('.is-active, .tutor-active, .active');
-					el.style.color = isActive ? AC : DC;
+					var isQuiz  = el.closest('[data-content-type="tutor_quiz"]');
+					el.style.color = (isActive || isQuiz) ? AC : DC;
 				});
 			});
 			isRunning = false;
