@@ -2369,3 +2369,8 @@ function learnsimply_change_paypal_text( $translated_text, $text, $domain ) {
     }
     return $translated_text;
 }
+
+// DEPLOY TEST - Remove after confirming
+add_action('wp_footer', function() {
+    echo '<div style="position:fixed;bottom:0;left:0;background:red;color:white;padding:10px;z-index:99999;font-size:16px;">🚀 Deploy working!</div>';
+});
