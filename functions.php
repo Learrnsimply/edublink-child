@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once get_stylesheet_directory() . '/list-lessons.php';
+require_once get_stylesheet_directory() . '/create-quizzes-topic1.php';
 
 /**
  * Enqueue IBM Plex Sans Arabic from Google Fonts (site-wide font)
