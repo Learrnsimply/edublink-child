@@ -11,24 +11,25 @@ function learnsimply_list_course_topics() {
 
 	global $wpdb;
 
-	$course_id = 24443;
+	$topic_id = 24444;
 
 	$results = $wpdb->get_results( $wpdb->prepare(
-		"SELECT ID, post_title, post_type, post_parent
+		"SELECT ID, post_title, post_type, menu_order
 		 FROM {$wpdb->posts}
 		 WHERE post_parent = %d
-		 AND post_status = 'publish'",
-		$course_id
+		 AND post_status = 'publish'
+		 ORDER BY menu_order ASC",
+		$topic_id
 	) );
 
 	echo '<pre>';
-	echo "Children of course ID {$course_id}:\n\n";
+	echo "Children of topic ID {$topic_id}:\n\n";
 
 	if ( empty( $results ) ) {
-		echo "No published posts found with post_parent = {$course_id}.\n";
+		echo "No published posts found with post_parent = {$topic_id}.\n";
 	} else {
 		foreach ( $results as $row ) {
-			echo "ID: {$row->ID}  |  post_type: {$row->post_type}  |  post_parent: {$row->post_parent}  |  Title: {$row->post_title}\n";
+			echo "ID: {$row->ID}  |  post_type: {$row->post_type}  |  menu_order: {$row->menu_order}  |  Title: {$row->post_title}\n";
 		}
 	}
 
