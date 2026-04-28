@@ -9,25 +9,26 @@ function learnsimply_list_course_topics() {
 		return;
 	}
 
+	global $wpdb;
+
 	$course_id = 24443;
 
-	$topics = get_posts( [
-		'post_type'      => 'tutor_topics',
-		'post_parent'    => $course_id,
-		'posts_per_page' => -1,
-		'post_status'    => 'publish',
-		'orderby'        => 'menu_order',
-		'order'          => 'ASC',
-	] );
+	$results = $wpdb->get_results( $wpdb->prepare(
+		"SELECT ID, post_title, post_type, post_parent
+		 FROM {$wpdb->posts}
+		 WHERE post_parent = %d
+		 AND post_status = 'publish'",
+		$course_id
+	) );
 
 	echo '<pre>';
-	echo "Topics for course ID {$course_id}:\n\n";
+	echo "Children of course ID {$course_id}:\n\n";
 
-	if ( empty( $topics ) ) {
-		echo "No topics found for this course.\n";
+	if ( empty( $results ) ) {
+		echo "No published posts found with post_parent = {$course_id}.\n";
 	} else {
-		foreach ( $topics as $topic ) {
-			echo "ID: {$topic->ID}  |  Title: {$topic->post_title}\n";
+		foreach ( $results as $row ) {
+			echo "ID: {$row->ID}  |  post_type: {$row->post_type}  |  post_parent: {$row->post_parent}  |  Title: {$row->post_title}\n";
 		}
 	}
 
