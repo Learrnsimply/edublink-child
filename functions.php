@@ -255,137 +255,162 @@ function learnsimply_checkout_mobile_inline_fix()
 			padding-bottom: 0 !important;
 		}
 
-		/* Reduce gap between title and login form/notice */
+		/* 2. CHECKOUT LOGIN FORM — Professional Design */
 		body.woocommerce-checkout .woocommerce-form-login {
-			margin-top: 0 !important;
+			display: flex !important;
+			flex-direction: row-reverse !important; /* Text on right, form on left for RTL */
+			flex-wrap: wrap !important;
+			gap: 40px !important;
+			background: #1b2133 !important;
+			padding: 40px !important;
+			border-radius: 20px !important;
+			border: 1px solid rgba(255, 255, 255, 0.08) !important;
+			margin: 0 0 20px 0 !important;
+			align-items: flex-start !important;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
 		}
 
-		/* 2. GUEST LOGIN FORM — Mobile responsive */
+		/* Description Text Section */
+		body.woocommerce-checkout .woocommerce-form-login > p:not(.form-row):not(.lost_password) {
+			flex: 1 1 350px !important;
+			margin: 0 !important;
+			font-size: 16px !important;
+			line-height: 1.8 !important;
+			color: #afb1b9 !important;
+			background: rgba(255, 255, 255, 0.03) !important;
+			padding: 25px !important;
+			border-radius: 12px !important;
+			border-right: 4px solid #4077f3 !important;
+		}
+
+		/* Form Inputs Column */
+		body.woocommerce-checkout .woocommerce-form-login .login-form-fields-wrapper,
+		body.woocommerce-checkout .woocommerce-form-login .form-row-first,
+		body.woocommerce-checkout .woocommerce-form-login .form-row-last,
+		body.woocommerce-checkout .woocommerce-form-login .form-row {
+			flex: 1 1 300px !important;
+			width: auto !important;
+			float: none !important;
+			margin-bottom: 15px !important;
+		}
+
+		/* Force rows to stack in the form column */
+		body.woocommerce-checkout .woocommerce-form-login .form-row-first,
+		body.woocommerce-checkout .woocommerce-form-login .form-row-last {
+			display: block !important;
+			width: 100% !important;
+		}
+
+		/* Labels styling */
+		body.woocommerce-checkout .woocommerce-form-login label {
+			display: block !important;
+			margin-bottom: 8px !important;
+			font-size: 14px !important;
+			font-weight: 500 !important;
+			color: #ffffff !important;
+		}
+
+		/* Input styling */
+		body.woocommerce-checkout .woocommerce-form-login input.input-text {
+			background: #141924 !important;
+			border: 1px solid rgba(255, 255, 255, 0.1) !important;
+			color: #ffffff !important;
+			padding: 12px 16px !important;
+			border-radius: 10px !important;
+			width: 100% !important;
+			font-size: 15px !important;
+			transition: all 0.3s ease !important;
+		}
+
+		body.woocommerce-checkout .woocommerce-form-login input.input-text:focus {
+			border-color: #4077f3 !important;
+			box-shadow: 0 0 0 3px rgba(64, 119, 243, 0.2) !important;
+			outline: none !important;
+		}
+
+		/* Checkbox and Login Button row */
+		body.woocommerce-checkout .woocommerce-form-login .form-row:has(button) {
+			display: flex !important;
+			align-items: center !important;
+			gap: 20px !important;
+			flex-wrap: wrap !important;
+			margin-top: 10px !important;
+		}
+
+		body.woocommerce-checkout .woocommerce-form-login .woocommerce-form__label-for-checkbox {
+			display: inline-flex !important;
+			align-items: center !important;
+			gap: 8px !important;
+			margin: 0 !important;
+			cursor: pointer !important;
+			color: #afb1b9 !important;
+		}
+
+		body.woocommerce-checkout .woocommerce-form-login .button {
+			background: #4077f3 !important;
+			color: #ffffff !important;
+			padding: 12px 30px !important;
+			border-radius: 10px !important;
+			font-weight: 600 !important;
+			border: none !important;
+			cursor: pointer !important;
+			transition: background 0.3s ease !important;
+		}
+
+		body.woocommerce-checkout .woocommerce-form-login .button:hover {
+			background: #2d61d6 !important;
+		}
+
+		/* Forgot Password link */
+		body.woocommerce-checkout .woocommerce-form-login .lost_password {
+			width: 100% !important;
+			margin-top: 15px !important;
+			font-size: 14px !important;
+		}
+
+		body.woocommerce-checkout .woocommerce-form-login .lost_password a {
+			color: #4077f3 !important;
+			text-decoration: none !important;
+		}
+
+		body.woocommerce-checkout .woocommerce-form-login .lost_password a:hover {
+			text-decoration: underline !important;
+		}
+
+		/* Clearfix removal if any */
+		body.woocommerce-checkout .woocommerce-form-login .clear {
+			display: none !important;
+		}
+
+		/* 3. GUEST LOGIN FORM — Mobile responsive */
 		@media screen and (max-width: 767px) {
-
-			/* Prevent horizontal overflow */
-			body.woocommerce-checkout {
-				overflow-x: hidden !important;
+			body.woocommerce-checkout .woocommerce-form-login {
+				flex-direction: column !important;
+				padding: 25px 20px !important;
+				gap: 20px !important;
 			}
 
-			/* Login form container */
-			.woocommerce-checkout .woocommerce-form-login {
-				display: block !important;
+			body.woocommerce-checkout .woocommerce-form-login > p:not(.form-row):not(.lost_password) {
+				flex: none !important;
 				width: 100% !important;
-				box-sizing: border-box !important;
-				padding: 20px 16px !important;
-				margin: 0 0 16px 0 !important;
-				overflow: hidden !important;
+				padding: 20px !important;
+				font-size: 14px !important;
 			}
 
-			/* The two field rows — force full width & stack vertically */
-			.woocommerce-checkout .woocommerce-form-login .form-row-first,
-			.woocommerce-checkout .woocommerce-form-login .form-row-last,
-			.woocommerce-checkout .woocommerce-form-login .form-row {
-				display: block !important;
+			body.woocommerce-checkout .woocommerce-form-login .form-row {
+				flex: none !important;
 				width: 100% !important;
-				float: none !important;
-				clear: both !important;
-				margin-left: 0 !important;
-				margin-right: 0 !important;
-				margin-bottom: 14px !important;
-				box-sizing: border-box !important;
+			}
+			
+			body.woocommerce-checkout .woocommerce-form-login .form-row:has(button) {
+				flex-direction: column-reverse !important;
+				align-items: stretch !important;
 			}
 
-			/* Labels — full width block */
-			.woocommerce-checkout .woocommerce-form-login label:not(.woocommerce-form__label-for-checkbox) {
-				display: block !important;
+			body.woocommerce-checkout .woocommerce-form-login .button {
 				width: 100% !important;
-				margin-bottom: 6px !important;
-				float: none !important;
-				font-size: 13px !important;
+				padding: 14px !important;
 			}
-
-			/* Text inputs — full width */
-			.woocommerce-checkout .woocommerce-form-login input[type="text"],
-			.woocommerce-checkout .woocommerce-form-login input[type="email"],
-			.woocommerce-checkout .woocommerce-form-login input[type="password"],
-			.woocommerce-checkout .woocommerce-form-login input.input-text {
-				display: block !important;
-				width: 100% !important;
-				box-sizing: border-box !important;
-				font-size: 16px !important;
-				/* Prevent iOS zoom */
-				padding: 12px 14px !important;
-				float: none !important;
-			}
-
-			/* Remember me row — flex so checkbox + label are inline */
-			.woocommerce-checkout .woocommerce-form-login .woocommerce-form__label-for-checkbox {
-				display: inline-flex !important;
-				align-items: center !important;
-				gap: 8px !important;
-				width: auto !important;
-				float: none !important;
-				margin-bottom: 14px !important;
-			}
-
-			/* Checkbox itself — small fixed size */
-			.woocommerce-checkout .woocommerce-form-login input[type="checkbox"] {
-				display: inline-block !important;
-				width: 18px !important;
-				height: 18px !important;
-				flex-shrink: 0 !important;
-			}
-
-			/* Login button — full width, text inside */
-			.woocommerce-checkout .woocommerce-form-login button[type="submit"],
-			.woocommerce-checkout .woocommerce-form-login .woocommerce-button,
-			.woocommerce-checkout .woocommerce-form-login input[type="submit"] {
-				display: block !important;
-				width: 100% !important;
-				box-sizing: border-box !important;
-				padding: 13px 16px !important;
-				margin-top: 6px !important;
-				float: none !important;
-				clear: both !important;
-				font-size: 15px !important;
-				font-weight: 700 !important;
-				text-align: center !important;
-				line-height: 1.4 !important;
-				white-space: normal !important;
-				word-break: keep-all !important;
-				overflow: visible !important;
-				height: auto !important;
-				min-height: 48px !important;
-			}
-
-			/* Any span/text node inside the button */
-			.woocommerce-checkout .woocommerce-form-login button[type="submit"] *,
-			.woocommerce-checkout .woocommerce-form-login .woocommerce-button * {
-				display: inline !important;
-				width: auto !important;
-				float: none !important;
-				position: static !important;
-			}
-
-			/* Description paragraph */
-			.woocommerce-checkout .woocommerce-form-login>p:not(.form-row) {
-				width: 100% !important;
-				float: none !important;
-				display: block !important;
-				font-size: 13px !important;
-				line-height: 1.7 !important;
-				margin-bottom: 14px !important;
-				word-break: break-word !important;
-				overflow-wrap: break-word !important;
-			}
-
-			/* Cart notice (متابعة التسوق) */
-			.woocommerce-checkout .woocommerce-message {
-				display: flex !important;
-				flex-wrap: wrap !important;
-				gap: 10px !important;
-				align-items: center !important;
-				padding: 12px 14px !important;
-				font-size: 13px !important;
-			}
-
 		}
 
 		/* end @media 767px */
