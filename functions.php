@@ -292,27 +292,38 @@ function learnsimply_checkout_mobile_inline_fix()
 			grid-column: 1 / 2 !important;
 			width: 100% !important;
 			margin: 0 0 20px 0 !important;
-			display: flex !important;
-			flex-direction: column !important; /* Force label on top of input */
-			align-items: flex-start !important;
+			display: block !important;
+			clear: both !important;
 		}
 
 		/* Labels styling - Always on top-right */
 		body.woocommerce-checkout .woocommerce-form-login label:not(.woocommerce-form__label-for-checkbox) {
 			display: block !important;
 			width: 100% !important;
-			margin-bottom: 10px !important;
+			margin: 0 0 10px 0 !important;
 			font-size: 14px !important;
 			font-weight: 500 !important;
 			color: #ffffff !important;
 			text-align: right !important;
-			order: 1 !important; /* Ensure label is first */
+			float: none !important;
+			line-height: 1.5 !important;
+		}
+
+		/* Fix for password visibility toggle wrapper and any inner wrappers */
+		body.woocommerce-checkout .woocommerce-form-login .password-input,
+		body.woocommerce-checkout .woocommerce-form-login span.password-input,
+		body.woocommerce-checkout .woocommerce-form-login .woocommerce-input-wrapper {
+			display: block !important;
+			width: 100% !important;
+			position: relative !important;
+			clear: both !important;
+			float: none !important;
 		}
 
 		/* Input styling - Always below label */
 		body.woocommerce-checkout .woocommerce-form-login input.input-text,
 		body.woocommerce-checkout .woocommerce-form-login .woocommerce-Input {
-			order: 2 !important;
+			display: block !important;
 			background: #141924 !important;
 			border: 1px solid rgba(255, 255, 255, 0.1) !important;
 			color: #ffffff !important;
@@ -322,15 +333,8 @@ function learnsimply_checkout_mobile_inline_fix()
 			font-size: 15px !important;
 			transition: all 0.3s ease !important;
 			box-sizing: border-box !important;
-		}
-
-		/* Fix for password visibility toggle wrapper if exists */
-		body.woocommerce-checkout .woocommerce-form-login .show-password-input,
-		body.woocommerce-checkout .woocommerce-form-login span.password-input {
-			display: block !important;
-			width: 100% !important;
-			order: 2 !important;
-			position: relative !important;
+			margin: 0 !important;
+			float: none !important;
 		}
 
 		body.woocommerce-checkout .woocommerce-form-login input.input-text:focus {
