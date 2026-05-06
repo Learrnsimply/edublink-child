@@ -182,10 +182,13 @@ function learnsimply_checkout_mobile_inline_fix() {
 	/* 1. Tight spacing — breadcrumb is hidden so no need for big offset */
 	body.woocommerce-checkout .woocommerce,
 	body.woocommerce-checkout .entry-content,
-	body.woocommerce-checkout .page-content {
-		padding-top: 8px !important;
-		padding-bottom: 20px !important;
-		margin-top: 10px !important;
+	body.woocommerce-checkout .page-content,
+	body.woocommerce-checkout .site-content,
+	body.woocommerce-checkout .edublink-main-wrapper {
+		padding-top: 10px !important;
+		padding-bottom: 10px !important;
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
 	}
 
 	/* Hide breadcrumb areas that create empty vertical space */
@@ -201,13 +204,31 @@ function learnsimply_checkout_mobile_inline_fix() {
 		padding: 0 !important;
 	}
 
-	/* h1 title — compact margins */
-	body.woocommerce-checkout h1 {
-		margin: 8px 0 10px 0 !important;
+	/* h1/h2 title — compact margins (10px gap to element below) */
+	body.woocommerce-checkout h1,
+	body.woocommerce-checkout h2.entry-title,
+	body.woocommerce-checkout .woocommerce > h2 {
+		margin: 0 0 10px 0 !important;
 		padding: 0 !important;
 		font-size: 22px !important;
 		text-align: center !important;
 		line-height: 1.3 !important;
+		color: #ffffff !important;
+	}
+
+	/* WooCommerce Notices / Login Toggle Spacing */
+	body.woocommerce-checkout .woocommerce-notices-wrapper,
+	body.woocommerce-checkout .woocommerce-form-login-toggle,
+	body.woocommerce-checkout .woocommerce-info {
+		margin-top: 0 !important;
+		margin-bottom: 10px !important;
+		padding-top: 12px !important;
+		padding-bottom: 12px !important;
+	}
+
+	/* Reduce gap between title and login form/notice */
+	body.woocommerce-checkout .woocommerce-form-login {
+		margin-top: 0 !important;
 	}
 
 	/* 2. GUEST LOGIN FORM — Mobile responsive */
@@ -349,8 +370,10 @@ function learnsimply_strip_signup_blank_paras( $content ) {
 	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
 	$is_signup_page = is_page( 'signup' )
 		|| is_page( 'dashboard' )
+		|| is_checkout()
 		|| strpos( $request_uri, '/signup' ) !== false
-		|| strpos( $request_uri, '/dashboard' ) !== false;
+		|| strpos( $request_uri, '/dashboard' ) !== false
+		|| strpos( $request_uri, '/checkout' ) !== false;
 
 	if ( ! $is_signup_page ) {
 		return $content;
