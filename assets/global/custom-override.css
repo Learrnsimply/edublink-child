@@ -18,22 +18,45 @@
    }
 */
 
-/* ── Checkout Page Gap Fixes ── */
-.woocommerce-checkout .woocommerce,
-.woocommerce-checkout .entry-content,
-.woocommerce-checkout .page-content,
-.woocommerce-checkout #primary,
-.woocommerce-checkout main,
-.woocommerce-checkout .site-main {
-    padding-top: 5px !important;
+/* ── Checkout Page Gap Fixes — Aggressive Nuke ── */
+body.woocommerce-checkout .woocommerce,
+body.woocommerce-checkout .entry-content,
+body.woocommerce-checkout .page-content,
+body.woocommerce-checkout .site-content,
+body.woocommerce-checkout .edublink-main-wrapper,
+body.woocommerce-checkout #primary,
+body.woocommerce-checkout #content,
+body.woocommerce-checkout main,
+body.woocommerce-checkout .site-main,
+body.woocommerce-checkout .eb-container,
+body.woocommerce-checkout .site-content-inner,
+body.woocommerce-checkout .elementor-section,
+body.woocommerce-checkout .elementor-container,
+body.woocommerce-checkout .elementor-column,
+body.woocommerce-checkout .elementor-widget-wrap {
+    padding-top: 0 !important;
     margin-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    min-height: 0 !important;
 }
 
-.woocommerce-checkout h1,
-.woocommerce-checkout h2.entry-title,
-.woocommerce-checkout .woocommerce > h2 {
+body.woocommerce-checkout h1,
+body.woocommerce-checkout h2.entry-title,
+body.woocommerce-checkout .woocommerce > h2,
+body.woocommerce-checkout .elementor-heading-title {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    padding: 0 !important;
+}
+
+/* Extra safety for login form and notices */
+body.woocommerce-checkout .woocommerce-notices-wrapper,
+body.woocommerce-checkout .woocommerce-form-login-toggle,
+body.woocommerce-checkout .woocommerce-info {
     margin-top: 0 !important;
     margin-bottom: 10px !important;
+    padding: 10px 20px !important;
 }
 
 .coupon-col-end {
