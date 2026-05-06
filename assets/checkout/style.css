@@ -167,7 +167,7 @@ body.woocommerce-checkout body,
     border: none !important;
     border-radius: var(--db-radius) !important;
     padding: 28px 32px 32px !important;
-    margin-bottom: 24px !important;
+    margin-bottom: 10px !important; /* Reduced from 24px */
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15) !important;
 }
 
