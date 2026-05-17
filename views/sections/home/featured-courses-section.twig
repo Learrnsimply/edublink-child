@@ -1,4 +1,4 @@
-    <!-- ===== START: Featured Courses Section ===== -->
+<!-- ===== START: Featured Courses Section ===== -->
     <section id="courses" class="learnsimply-featured-courses-section">
       <div class="learnsimply-section-container">
         <div class="learnsimply-section-header">
@@ -200,7 +200,6 @@
             </div>
 
             <!-- Action Buttons -->
-<!-- Action Buttons -->
             <div class="action-buttons">
               {% if course.is_enrolled %}
                 <a 
@@ -235,6 +234,9 @@
               </a>
               {% endif %}
             </div>
+          </article>
+          {% endfor %}
+        </div>
 
         <a href="{% if site.courses_archive_url %}{{ site.courses_archive_url }}{% else %}{{ site.url }}/courses/{% endif %}" class="learnsimply-view-all-button">عرض كل الدورات</a>
       </div>
