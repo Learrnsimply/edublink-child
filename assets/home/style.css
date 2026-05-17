@@ -665,10 +665,13 @@
 	color: #18A963 !important;
 }
 
-.bundle-btn {
+.bundle-card-premium .action-buttons a.learnsimply-buy-now-button.bundle-btn {
 	background: linear-gradient(135deg, #f0a030, #e8922d) !important;
+	border-color: #f0a030 !important;
+	border: none !important;
 }
 
-.bundle-btn:hover {
+.bundle-card-premium .action-buttons a.learnsimply-buy-now-button.bundle-btn:hover {
+	background: linear-gradient(135deg, #e8922d, #d4820a) !important;
 	box-shadow: 0 8px 28px rgba(240, 160, 48, 0.3) !important;
 }
