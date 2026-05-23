@@ -90,6 +90,20 @@ body.woocommerce-checkout body,
     padding: 18px 24px !important;
     font-size: 15px !important;
     line-height: 1.7 !important;
+    /* Flex layout so the inline "متابعة التسوق" / "Click here to login" button
+       sits on the same baseline as the text instead of floating above it. */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    flex-wrap: wrap !important;
+}
+
+.woocommerce-checkout .woocommerce-info .button,
+.woocommerce-checkout .woocommerce-message .button {
+    float: none !important;
+    margin: 0 !important;
+    flex: 0 0 auto !important;
 }
 
 .woocommerce-checkout .woocommerce-info::before,
@@ -714,18 +728,23 @@ body.woocommerce-checkout body,
     margin-bottom: 10px !important;
 }
 
+/* Shared card chrome for coupon and login forms — layout split below. */
 .woocommerce-checkout .woocommerce-form-coupon,
 .woocommerce-checkout .woocommerce-form-login {
     background: var(--db-card) !important;
     border: none !important;
     border-radius: var(--db-radius) !important;
     padding: 24px 28px !important;
-    margin-bottom: 10px !important; /* Reduced from 24px */
+    margin-bottom: 10px !important;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Coupon form: single-line layout (one text input + submit button on the same row). */
+.woocommerce-checkout .woocommerce-form-coupon {
     display: flex !important;
     flex-direction: row !important;
     gap: 12px !important;
-    align-items: stretch !important; /* Stretch to fill height */
+    align-items: stretch !important;
     flex-wrap: nowrap !important;
 }
 
@@ -740,6 +759,61 @@ body.woocommerce-checkout body,
     height: 50px !important;
     margin: 0 !important;
     display: block !important;
+}
+
+/* Login form: stacked column layout (username → password → remember + submit → lost password).
+   The previous shared `flex-direction: row` was squashing the four form-rows into one line. */
+.woocommerce-checkout .woocommerce-form-login {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+}
+
+.woocommerce-checkout .woocommerce-form-login > p {
+    margin: 0 !important;
+}
+
+.woocommerce-checkout .woocommerce-form-login .form-row {
+    margin: 0 !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.woocommerce-checkout .woocommerce-form-login .form-row label {
+    display: block !important;
+    margin-bottom: 6px !important;
+}
+
+.woocommerce-checkout .woocommerce-form-login .form-row input.input-text {
+    width: 100% !important;
+    height: 50px !important;
+    margin: 0 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+/* The row that holds the submit button + "remember me" checkbox. */
+.woocommerce-checkout .woocommerce-form-login .form-row:has(.button) {
+    display: flex !important;
+    flex-direction: row-reverse !important; /* submit button on the right in RTL */
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    flex-wrap: wrap !important;
+    margin-top: 4px !important;
+}
+
+.woocommerce-checkout .woocommerce-form-login .woocommerce-form-login__rememberme {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+}
+
+.woocommerce-checkout .woocommerce-form-login .lost_password {
+    margin: 0 !important;
+    text-align: left !important; /* sits opposite the inputs in RTL */
 }
 
 .woocommerce-checkout .woocommerce-form-coupon .button,
