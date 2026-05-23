@@ -216,7 +216,9 @@ table, th, td, tr,
   -webkit-backdrop-filter: blur(10px);
   z-index: 1000;
 }
-
+main {
+  padding-top: 100px;
+}
 .learnsimply-header-border-overlay {
   position: absolute;
   top: -1px;
