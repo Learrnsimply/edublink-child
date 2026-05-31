@@ -13582,12 +13582,6 @@ button[name="reset_password"],
 }
 
 /* Fix signup page spacing below fixed header */
-body[class*="signup"] .site-content,
-body[class*="signup"] .tutor-wrap,
-body[class*="signup"] #content,
-body[class*="signup"]>.wrap,
-body[class*="register"] .site-content,
-body[class*="register"] .tutor-wrap,
-body[class*="register"] #content {
+.site-content-inner.edublink-page-container {
   padding-top: 120px !important;
 }
