@@ -289,7 +289,6 @@
         <!-- Action Buttons -->
         <div class="action-buttons">
           {% if course.is_enrolled %}
-            {# Enrolled student - resume learning at first lesson #}
             <a
               href="{{ course.first_lesson_url }}"
               class="learnsimply-buy-now-button buy-button"
@@ -297,7 +296,6 @@
               <span>ابدأ التعلم</span>
             </a>
           {% elseif course.is_free %}
-            {# Free course - direct enroll #}
             <a
               href="{{ course.link }}"
               class="learnsimply-buy-now-button buy-button"
@@ -305,17 +303,16 @@
               <span>ابدأ التعلم</span>
             </a>
           {% else %}
-            {# Paid + not enrolled - show quick-add-to-cart icon + "ادفع الآن" leading to product page #}
+            <a
+              href="{{ course.link }}"
+              class="cart-button"
+              aria-label="تفاصيل الكورس"
+            >
+              <span>تفاصيل</span>
+            </a>
             {% if course.product_id %}
             <a
-              href="{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ course.product_id }}"
-              class="cart-button"
-              aria-label="أضف إلى السلة"
-            >
-              <img class="cart-icon" src="{{ theme_uri }}/assets/img/Cart.png" alt="سلة التسوق" />
-            </a>
-            <a
-              href="{{ course.product_url ?: course.link }}"
+              href="{{ site.url }}/checkout/?add-to-cart={{ course.product_id }}"
               class="learnsimply-buy-now-button buy-button"
             >
               <span>ادفع الآن</span>
