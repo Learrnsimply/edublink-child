@@ -13586,6 +13586,24 @@ button[name="reset_password"],
 body .tutor-wrap.tutor-page-wrap {
   padding-top: 120px !important;
 }
-body.page-id-32445 .site-content-inner.edublink-page-container {
+/* ══ Fix: signup & login spacing below fixed header ══ */
+html body.page-id-32445 .site-content-inner.edublink-page-container {
   padding-top: 120px !important;
+}
+
+html body.page-id-32445 #primary.content-area {
+  padding-top: 120px !important;
+}
+
+html body.page-id-32445 main#main.site-main {
+  padding-top: 120px !important;
+}
+
+@media (max-width: 600px) {
+
+  html body.page-id-32445 .site-content-inner.edublink-page-container,
+  html body.page-id-32445 #primary.content-area,
+  html body.page-id-32445 main#main.site-main {
+    padding-top: 100px !important;
+  }
 }
