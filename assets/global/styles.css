@@ -2,6 +2,12 @@
 /* IBM Plex Sans Arabic loaded via wp_enqueue_style in functions.php (edublink_child_enqueue_fonts) */
 
 /* ===== ROOT VARIABLES ===== */
+/* Fix spacing for dashboard and signup pages */
+.tutor-dashboard-page main,
+.tutor-signup-page main,
+body.page-template-default main {
+  padding-top: 120px;
+}
 :root {
   --learnsimply-primary-blue: #4077f3;
   --primary: #4077f3;
