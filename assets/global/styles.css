@@ -3,11 +3,7 @@
 
 /* ===== ROOT VARIABLES ===== */
 /* Fix spacing for dashboard and signup pages */
-.tutor-dashboard-page main,
-.tutor-signup-page main,
-body.page-template-default main {
-  padding-top: 120px;
-}
+
 :root {
   --learnsimply-primary-blue: #4077f3;
   --primary: #4077f3;
@@ -13583,4 +13579,15 @@ button[name="reset_password"],
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1.2 !important;
+}
+
+/* Fix signup page spacing below fixed header */
+body[class*="signup"] .site-content,
+body[class*="signup"] .tutor-wrap,
+body[class*="signup"] #content,
+body[class*="signup"]>.wrap,
+body[class*="register"] .site-content,
+body[class*="register"] .tutor-wrap,
+body[class*="register"] #content {
+  padding-top: 120px !important;
 }
