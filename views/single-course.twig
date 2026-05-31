@@ -145,7 +145,6 @@
               </div>
             </div>
 
-            <!-- أزرار الإجراءات -->
          <!-- أزرار الإجراءات -->
             <div class="action-buttons">
               <button class="share-button" onclick="shareCourse()">
@@ -165,20 +164,28 @@
                 {% if product_id %}
                 <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="buy-button">اشتر الآن</a>
                 {% else %}
-                <form method="POST" style="flex: 1;">
-                  <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
-                  <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
-                  <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
-                  <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
-                </form>
+                {% if is_user_logged_in %}
+                  <form method="POST" style="flex: 1;">
+                    <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
+                    <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
+                    <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
+                    <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
+                  </form>
+                {% else %}
+                  <a href="{{ site.url }}/dashboard/" class="buy-button" style="flex: 1; text-decoration: none;">سجل الآن</a>
                 {% endif %}
-              {% else %}
-                <form method="POST" style="flex: 1;">
-                  <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
-                  <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
-                  <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
-                  <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
-                </form>
+              {% endif %}
+          {% else %}
+                {% if is_user_logged_in %}
+                  <form method="POST" style="flex: 1;">
+                    <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
+                    <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
+                    <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
+                    <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
+                  </form>
+                {% else %}
+                  <a href="{{ site.url }}/dashboard/" class="buy-button" style="flex: 1; text-decoration: none;">سجل الآن</a>
+                {% endif %}
               {% endif %}
             </div>
 
