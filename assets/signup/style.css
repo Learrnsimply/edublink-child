@@ -1115,8 +1115,9 @@ body .tutor-container {
     padding-bottom: 0 !important;
 }
 
-/* Fix: dashboard login page — push content below fixed header */
-.tutor-wrap.tutor-page-wrap {
+/* Fix: push content below fixed header on login & signup */
+.tutor-wrap.tutor-page-wrap,
+.site-content-inner.edublink-page-container {
     padding-top: 100px !important;
     display: flex !important;
     flex-direction: column !important;
