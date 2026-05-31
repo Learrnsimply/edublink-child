@@ -13586,6 +13586,7 @@ button[name="reset_password"],
 body .tutor-wrap.tutor-page-wrap {
   padding-top: 120px !important;
 }
-body.page-id-32445 .site-content-inner.edublink-page-container {
+/* Fix signup page spacing */
+body.page-id-32445 .site-content-inner {
   padding-top: 120px !important;
 }
