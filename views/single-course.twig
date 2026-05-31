@@ -146,6 +146,7 @@
             </div>
 
             <!-- أزرار الإجراءات -->
+         <!-- أزرار الإجراءات -->
             <div class="action-buttons">
               <button class="share-button" onclick="shareCourse()">
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -162,13 +163,22 @@
                 {% endif %}
               {% elseif is_purchasable and not is_free %}
                 {% if product_id %}
-                {# Direct add to cart link - PHP handles redirect to cart #}
-                <a href="{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ product_id }}" class="buy-button">اشتر الآن</a>
+                <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="buy-button">اشتر الآن</a>
                 {% else %}
-                <button class="buy-button" onclick="enrollCourse()">سجل الآن</button>
+                <form method="POST" style="flex: 1;">
+                  <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
+                  <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
+                  <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
+                  <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
+                </form>
                 {% endif %}
               {% else %}
-                <button class="buy-button" onclick="enrollCourse()">سجل الآن</button>
+                <form method="POST" style="flex: 1;">
+                  <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
+                  <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
+                  <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
+                  <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
+                </form>
               {% endif %}
             </div>
 
