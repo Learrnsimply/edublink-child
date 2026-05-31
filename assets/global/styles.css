@@ -3586,7 +3586,33 @@ main {
   color: white;
   margin: 0;
 }
+.details-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  height: 48px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: #fff;
+  font-family: "IBM Plex Sans Arabic";
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
 
+.details-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.details-button span {
+  color: #fff;
+}
 /* ===== NEW ABOUT SECTION ===== */
 .about-main-container {
   width: 100%;
