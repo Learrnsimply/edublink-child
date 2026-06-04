@@ -737,8 +737,11 @@ main {
     height: 24px;
   }
 
+  /* Hide the brand wordmark on phones — the logo icon stays as the home link.
+     Frees the horizontal space the wordmark needed, so the cart + both auth
+     buttons (تسجيل دخول / انشاء حساب) no longer overflow the bar on narrow screens. */
   .learnsimply-header-logo-text {
-    font-size: 15px;
+    display: none;
   }
 
   .learnsimply-header-mobile-toggle {
@@ -749,10 +752,7 @@ main {
 
 /* Very Small Mobile - 380px */
 @media (max-width: 380px) {
-  .learnsimply-header-logo-text {
-    display: none;
-  }
-
+  /* .learnsimply-header-logo-text is already hidden from the 480px breakpoint above. */
   .learnsimply-header-logo-container {
     gap: 0;
   }
