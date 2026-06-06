@@ -764,6 +764,75 @@ function learnsimply_inject_sidebar_dark_mode()
 			color: #ffffff !important;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 		}
+
+		/* ── Lesson NOTES panel — fix invisible text (Ahmed req C, 2026-06-06) ── */
+		/* "X Note taken" title sits on the dark panel → light text */
+		.tutor-lesson-note-list-title {
+			color: #e2e6f0 !important;
+		}
+		/* Note textarea is a light box → force dark readable text + white bg */
+		.tutor-lesson-notes-form .tutor-form-control,
+		.tutor-lesson-notes-form textarea.tutor-form-control {
+			color: #1c2230 !important;
+			background-color: #ffffff !important;
+		}
+		.tutor-lesson-notes-form .tutor-form-control::placeholder {
+			color: #6b7280 !important;
+			opacity: 1 !important;
+		}
+		/* Saved note card → guaranteed light card + dark text */
+		.tutor-lesson-note-list-item {
+			background-color: #f4f6fa !important;
+		}
+		.tutor-lesson-note-list-item-content,
+		.tutor-lesson-note-list-item-content span,
+		.tutor-lesson-note-content-short span,
+		.tutor-lesson-note-content-long span,
+		.tutor-lesson-note-list-item-highlight {
+			color: #1c2230 !important;
+		}
+		.tutor-lesson-note-list-item-time {
+			color: #5b6478 !important;
+		}
+	</style>
+	<?php
+}
+
+/**
+ * Certificate page contrast fix (Ahmed req A2, 2026-06-06).
+ * Tutor's certificate detail text uses tutor-color-black / tutor-color-secondary,
+ * which render dark-on-dark (invisible) on the site's dark theme.
+ * Force readable light text, scoped to the certificate container only.
+ */
+add_action('wp_footer', 'learnsimply_inject_certificate_contrast', 9999);
+
+function learnsimply_inject_certificate_contrast()
+{
+	$is_cert = isset($_GET['cert_hash']) && '' !== $_GET['cert_hash'];
+	if (!$is_cert) {
+		$uri     = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		$is_cert = strpos($uri, 'cert_hash=') !== false || strpos($uri, '/certificate') !== false;
+	}
+	if (!$is_cert) {
+		return;
+	}
+	?>
+	<style id="learnsimply-certificate-contrast">
+		/* Values (were tutor-color-black = invisible on dark) → light */
+		.tutor-download-certificate .tutor-dc-course-title,
+		.tutor-download-certificate .tutor-info-id-details,
+		.tutor-download-certificate .tutor-info-issued-value,
+		.tutor-download-certificate .tutor-info-date-details,
+		.tutor-download-certificate .tutor-color-black {
+			color: #eef1f8 !important;
+		}
+		/* Labels (Credential ID / Issued By / Issued Date) → muted light */
+		.tutor-download-certificate .tutor-info-id-name,
+		.tutor-download-certificate .tutor-info-issued-name,
+		.tutor-download-certificate .tutor-info-date-name,
+		.tutor-download-certificate .tutor-color-secondary {
+			color: #aab2c8 !important;
+		}
 	</style>
 	<?php
 }
