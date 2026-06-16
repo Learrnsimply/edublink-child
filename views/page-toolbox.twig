@@ -1,0 +1,56 @@
+{% extends "layouts/base.twig" %}
+
+{% block title %}صندوق الأدوات — اتعلم ببساطة{% endblock %}
+
+{% block body_class %}learnsimply-toolbox-body{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/toolbox/style.css" />
+{% endblock %}
+
+{% block content %}
+<section class="ls-toolbox">
+
+    {# ===== Header ===== #}
+    <div class="ls-toolbox-header">
+        <span class="ls-toolbox-badge">🧰 أدوات مجانية</span>
+        <h1 class="ls-toolbox-title">صندوق الأدوات</h1>
+        <p class="ls-toolbox-desc">أدوات بسيطة تساعدك تشتغل أسرع وأذكى — مجانية وجاهزة للاستخدام.</p>
+    </div>
+
+    {# ===== Tools Grid ===== #}
+    <div class="ls-toolbox-grid">
+
+        {# --- أداة 1: Prompt موقع --- #}
+        <a href="/ai-website-prompt/" class="ls-toolbox-card">
+            <div class="ls-toolbox-card-icon">
+                <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            </div>
+            <h2 class="ls-toolbox-card-title">Prompt موقع مش شكله AI</h2>
+            <p class="ls-toolbox-card-desc">أمر جاهز تديه لأي AI قبل ما تطلب منه يعملك موقع — عشان التصميم يطلع مختلف وميبقاش الشكل المكرر.</p>
+            <svg class="ls-toolbox-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
+        </a>
+
+        {#
+        ============ عشان تضيف أداة جديدة ============
+        انسخ البلوك اللي تحت وغيّر:
+        1. href → لينك صفحة الأداة
+        2. الـ SVG → أيقونة الأداة
+        3. card-title → اسم الأداة
+        4. card-desc → وصف بسيط
+        ================================================
+
+        <a href="/tool-link/" class="ls-toolbox-card">
+            <div class="ls-toolbox-card-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+            </div>
+            <h2 class="ls-toolbox-card-title">اسم الأداة</h2>
+            <p class="ls-toolbox-card-desc">وصف بسيط عن الأداة ودي بتعمل إيه.</p>
+            <svg class="ls-toolbox-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
+        </a>
+
+        #}
+
+    </div>
+</section>
+{% endblock %}
