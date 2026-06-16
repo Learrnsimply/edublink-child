@@ -1,0 +1,297 @@
+/* ============================================================
+   TOOL DETAIL PAGE — Shared styles for all tool pages
+   ============================================================ */
+
+/* ─── Container ─── */
+.ls-tool {
+    min-height: 80vh;
+    padding: 0 20px 80px;
+}
+
+.ls-tool-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 0 0;
+}
+
+/* ─── Back Link ─── */
+.ls-tool-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--learnsimply-text-gray) !important;
+    text-decoration: none !important;
+    margin-bottom: 40px;
+    transition: color 0.3s ease;
+}
+
+.ls-tool-back:hover {
+    color: var(--learnsimply-primary-blue) !important;
+    text-decoration: none !important;
+}
+
+.ls-tool-back svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ─── Header ─── */
+.ls-tool-header {
+    margin-bottom: 36px;
+}
+
+.ls-tool-badge {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--learnsimply-primary-blue) !important;
+    background: rgba(64, 119, 243, 0.1) !important;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+}
+
+.ls-tool-title {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    color: #ffffff !important;
+}
+
+.ls-tool-subtitle {
+    font-size: 16.5px;
+    font-weight: 400;
+    color: var(--learnsimply-text-gray) !important;
+    line-height: 1.75;
+}
+
+.ls-tool-subtitle strong {
+    color: #ffffff !important;
+}
+
+/* ─── Terminal Code Block ─── */
+.ls-tool-terminal {
+    background: var(--learnsimply-card-bg) !important;
+    border: 1px solid var(--learnsimply-card-border) !important;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.ls-tool-terminal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: #1a2232 !important;
+    border-bottom: 1px solid var(--learnsimply-card-border) !important;
+}
+
+.ls-tool-terminal-dots {
+    display: flex;
+    gap: 7px;
+    direction: ltr;
+}
+
+.ls-tool-terminal-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.ls-tool-terminal-dot--red { background: #ff5f57 !important; }
+.ls-tool-terminal-dot--yellow { background: #febc2e !important; }
+.ls-tool-terminal-dot--green { background: #28c840 !important; }
+
+.ls-tool-terminal-filename {
+    font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--learnsimply-text-gray) !important;
+    direction: ltr;
+}
+
+.ls-tool-terminal-body {
+    padding: 24px;
+    overflow-x: auto;
+}
+
+.ls-tool-terminal-body pre {
+    font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+    font-size: 13.5px !important;
+    line-height: 1.85 !important;
+    color: #c4c4d4 !important;
+    background: none !important;
+    background-color: transparent !important;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    direction: ltr;
+    text-align: left;
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* ─── Copy Button ─── */
+.ls-tool-copy-wrap {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 24px 20px;
+}
+
+.ls-tool-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff !important;
+    background: #1a2232 !important;
+    border: 1px solid var(--learnsimply-card-border) !important;
+    border-radius: 10px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ls-tool-copy-btn:hover {
+    background: #232d45 !important;
+    border-color: var(--learnsimply-primary-blue) !important;
+}
+
+.ls-tool-copy-btn svg {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ls-tool-copy-btn--done {
+    color: var(--learnsimply-success-green) !important;
+    border-color: var(--learnsimply-success-green) !important;
+    background: rgba(24, 169, 99, 0.12) !important;
+}
+
+/* ─── Steps Section ─── */
+.ls-tool-steps-section {
+    margin-top: 8px;
+}
+
+.ls-tool-steps-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #ffffff !important;
+}
+
+.ls-tool-steps {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.ls-tool-steps::before {
+    content: '';
+    position: absolute;
+    right: 19px;
+    top: 40px;
+    bottom: 20px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 2px;
+}
+
+.ls-tool-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 16px 0;
+    position: relative;
+}
+
+.ls-tool-step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--learnsimply-card-bg) !important;
+    border: 2px solid rgba(255, 255, 255, 0.08) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--learnsimply-primary-blue) !important;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+}
+
+.ls-tool-step-content {
+    padding-top: 8px;
+}
+
+.ls-tool-step-label {
+    font-size: 16.5px;
+    font-weight: 700;
+    color: #ffffff !important;
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.ls-tool-step-desc {
+    font-size: 14.5px;
+    font-weight: 400;
+    color: var(--learnsimply-text-gray) !important;
+    line-height: 1.7;
+}
+
+.ls-tool-step-desc a {
+    color: var(--learnsimply-primary-blue) !important;
+    text-decoration: none !important;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.ls-tool-step-desc a:hover {
+    border-bottom-color: var(--learnsimply-primary-blue) !important;
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 768px) {
+    .ls-tool-container {
+        padding: 30px 0 0;
+    }
+
+    .ls-tool-title {
+        font-size: 26px;
+    }
+
+    .ls-tool-subtitle {
+        font-size: 15px;
+    }
+
+    .ls-tool-terminal-body {
+        padding: 18px 16px;
+    }
+
+    .ls-tool-terminal-body pre {
+        font-size: 12.5px !important;
+        line-height: 1.75 !important;
+    }
+
+    .ls-tool-copy-wrap {
+        padding: 0 16px 16px;
+    }
+}

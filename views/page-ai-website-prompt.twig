@@ -1,0 +1,149 @@
+{% extends "layouts/base.twig" %}
+
+{% block title %}Prompt موقع مش شكله AI — اتعلم ببساطة{% endblock %}
+
+{% block body_class %}learnsimply-tool-page-body{% endblock %}
+
+{% block styles %}
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/toolbox/tool-page.css" />
+{% endblock %}
+
+{% block content %}
+<section class="ls-tool">
+    <div class="ls-tool-container">
+
+        {# ===== Back Link ===== #}
+        <a href="/toolbox/" class="ls-tool-back">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            صندوق الأدوات
+        </a>
+
+        {# ===== Header ===== #}
+        <div class="ls-tool-header">
+            <span class="ls-tool-badge">أداة مجانية</span>
+            <h1 class="ls-tool-title">Prompt موقع مش شكله AI</h1>
+            <p class="ls-tool-subtitle">أمر بتديه لأي AI (زي ChatGPT أو Claude) <strong>قبل</strong> ما تطلب منه يعملك موقع — عشان التصميم يطلع مختلف ومايبقاش الشكل المكرر اللي كل الناس بتاخده.</p>
+        </div>
+
+        {# ===== Terminal Code Block ===== #}
+        <div class="ls-tool-terminal">
+            <div class="ls-tool-terminal-bar">
+                <span class="ls-tool-terminal-filename">design-prompt.txt</span>
+                <div class="ls-tool-terminal-dots">
+                    <span class="ls-tool-terminal-dot ls-tool-terminal-dot--red"></span>
+                    <span class="ls-tool-terminal-dot ls-tool-terminal-dot--yellow"></span>
+                    <span class="ls-tool-terminal-dot ls-tool-terminal-dot--green"></span>
+                </div>
+            </div>
+            <div class="ls-tool-terminal-body">
+                <pre id="ls-tool-prompt-text">Use the following design philosophy for this project:
+
+&lt;frontend_aesthetics&gt;
+Before writing any code, define a bold aesthetic direction by answering:
+1. What problem does this interface solve, and for whom?
+2. What tone defines it? Choose one and fully commit: brutally minimal, maximalist, retro-futuristic, editorial, brutalist, art deco, organic, luxury, or playful.
+3. What is the one thing users will remember most about this design?
+
+Then implement the interface with strong visual intention. Match implementation complexity to the vision: maximalist design should include elaborate animations and layered effects, while refined minimalism should rely on precise spacing, typography, and subtle detail.
+
+Design rules:
+- Typography: Use distinctive, characterful fonts. Pair a unique display font with a refined body font. Avoid Inter, Roboto, Arial, Space Grotesk, and generic system fonts.
+- Color &amp; Theme: Commit to one dominant palette with sharp accents. Use CSS variables for consistency. Avoid safe, evenly distributed palettes. Take inspiration from IDE themes and cultural aesthetics.
+- Motion: Focus on memorable, high-impact motion. A strong page-load reveal with staggered animations is better than many weak hover effects. Use CSS-only motion for HTML and Motion library for React.
+- Spatial Composition: Break rigid layouts. Use asymmetry, overlap, diagonal flow, generous negative space, or controlled density. Avoid default centered stacks.
+- Backgrounds &amp; Texture: Add atmosphere using gradient meshes, noise, geometric patterns, layered transparency, grain, dramatic shadows, and decorative borders. Do not default to flat solid backgrounds unless the chosen aesthetic requires it.
+
+Never use:
+- Overused fonts like Inter, Roboto, Arial, Space Grotesk, or system defaults
+- Generic color schemes, especially purple gradients on white
+- Predictable centered layouts, standard card grids, or reusable-looking patterns
+- Cookie-cutter design with no context-specific identity
+
+Make bold, unexpected choices that feel tailored to this exact project. The final result should feel unique, memorable, and impossible to confuse with a generic template.
+&lt;/frontend_aesthetics&gt;</pre>
+            </div>
+            <div class="ls-tool-copy-wrap">
+                <button type="button" class="ls-tool-copy-btn" id="ls-tool-copy-btn">
+                    <svg class="ls-tool-copy-icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                    <span class="ls-tool-copy-label">نسخ الأمر</span>
+                </button>
+            </div>
+        </div>
+
+        {# ===== Steps ===== #}
+        <div class="ls-tool-steps-section">
+            <h2 class="ls-tool-steps-title">إزاي تستخدمه؟</h2>
+            <div class="ls-tool-steps">
+                <div class="ls-tool-step">
+                    <div class="ls-tool-step-num">1</div>
+                    <div class="ls-tool-step-content">
+                        <div class="ls-tool-step-label">انسخ الأمر</div>
+                        <div class="ls-tool-step-desc">اضغط على زرار "نسخ الأمر" فوق.</div>
+                    </div>
+                </div>
+                <div class="ls-tool-step">
+                    <div class="ls-tool-step-num">2</div>
+                    <div class="ls-tool-step-content">
+                        <div class="ls-tool-step-label">افتح أي AI</div>
+                        <div class="ls-tool-step-desc">روح على <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> أو <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a> أو أي أداة بتستخدمها.</div>
+                    </div>
+                </div>
+                <div class="ls-tool-step">
+                    <div class="ls-tool-step-num">3</div>
+                    <div class="ls-tool-step-content">
+                        <div class="ls-tool-step-label">ابعت الأمر الأول</div>
+                        <div class="ls-tool-step-desc">الصق الأمر اللي نسخته وابعته لوحده — ده بيحدد أسلوب التصميم.</div>
+                    </div>
+                </div>
+                <div class="ls-tool-step">
+                    <div class="ls-tool-step-num">4</div>
+                    <div class="ls-tool-step-content">
+                        <div class="ls-tool-step-label">اطلب الموقع</div>
+                        <div class="ls-tool-step-desc">دلوقتي اطلب منه يعملك الموقع اللي أنت عايزه — هيطلع بتصميم مختلف تمامًا.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function(){
+    var btn = document.getElementById('ls-tool-copy-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+        var pre = document.getElementById('ls-tool-prompt-text');
+        if(!pre) return;
+        var tmp = document.createElement('textarea');
+        tmp.innerHTML = pre.innerHTML;
+        var text = tmp.value;
+        function done(){
+            btn.classList.add('ls-tool-copy-btn--done');
+            btn.querySelector('.ls-tool-copy-label').textContent = 'تم النسخ ✓';
+            btn.querySelector('.ls-tool-copy-icon').style.display = 'none';
+            setTimeout(function(){
+                btn.classList.remove('ls-tool-copy-btn--done');
+                btn.querySelector('.ls-tool-copy-label').textContent = 'نسخ الأمر';
+                btn.querySelector('.ls-tool-copy-icon').style.display = '';
+            }, 2200);
+        }
+        if(navigator.clipboard && window.isSecureContext){
+            navigator.clipboard.writeText(text).then(done).catch(fb);
+        } else { fb(); }
+        function fb(){
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+            document.body.appendChild(ta);
+            ta.focus(); ta.select();
+            try{ document.execCommand('copy'); done(); }catch(e){}
+            document.body.removeChild(ta);
+        }
+    });
+})();
+</script>
+{% endblock %}
