@@ -2260,3 +2260,49 @@ body.single-tutor_quiz label.tutor-quiz-question-item .tutor-card *,
 body.single-tutor_quiz .quiz-question-ans-choice-area .tutor-card * {
     color: #e2e6f0 !important;
 }
+/* ============================================================
+   CERTIFICATE PAGE — Make JPG/PDF buttons always visible
+   ============================================================ */
+
+/* Show the tooltip permanently, not just on hover */
+.tutor-dc-download-button .tooltip-wrap .tooltip-txt {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    transform: none !important;
+    display: inline-flex !important;
+    gap: 8px !important;
+    background: #1b2133 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    padding: 8px 14px !important;
+    margin-left: 12px !important;
+}
+
+/* Style each format option (JPG / PDF) as a clear button */
+.tutor-dc-download-button .tooltip-txt a,
+.tutor-dc-download-button .tooltip-txt span[data-type] {
+    padding: 6px 16px !important;
+    border-radius: 8px !important;
+    background: #4077f3 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease !important;
+    text-decoration: none !important;
+}
+
+.tutor-dc-download-button .tooltip-txt a:hover,
+.tutor-dc-download-button .tooltip-txt span[data-type]:hover {
+    background: #2d61d6 !important;
+}
+/* ============================================================
+   CERTIFICATE — Show JPG/PDF options permanently
+   ============================================================ */
+.tutor-dc-download-button .tooltip-wrap .tooltip-txt {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
