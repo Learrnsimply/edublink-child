@@ -170,6 +170,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Star Rating Input functionality
 document.addEventListener("DOMContentLoaded", function () {
+	// FAQ Accordion
+	const faqQuestions = document.querySelectorAll(".faq-question");
+	faqQuestions.forEach((question) => {
+		question.addEventListener("click", function () {
+			const faqItem = this.parentElement;
+			const isOpen = faqItem.classList.contains("open");
+
+			// Close all FAQ items first
+			document.querySelectorAll(".faq-item").forEach((item) => {
+				item.classList.remove("open");
+			});
+
+			// Open clicked item if it wasn't open
+			if (!isOpen) {
+				faqItem.classList.add("open");
+			}
+		});
+	});
+});
+
+// Star Rating Input functionality
+document.addEventListener("DOMContentLoaded", function () {
 	const starRatingInput = document.getElementById("star-rating-input");
 	if (!starRatingInput) return;
 	
@@ -284,4 +306,3 @@ document.addEventListener("DOMContentLoaded", function () {
 		el.style.display = "block";
 	}
 });
-

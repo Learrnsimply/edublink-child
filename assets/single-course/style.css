@@ -8,10 +8,10 @@
   margin-top: 80px;
 }
 
-.course-main-content .container{
-      gap: 32px;
-    display: flex;
-    flex-direction: column;
+.course-main-content .container {
+  gap: 32px;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -189,7 +189,7 @@
   }
 
   .info-left {
- 
+
     align-items: flex-end;
     width: 100%;
   }
@@ -247,7 +247,7 @@
   }
 
   .instructor-card {
-   
+
     max-width: 100%;
   }
 
@@ -257,12 +257,12 @@
   }
 
   .learning-card {
- 
+
     max-width: 100%;
   }
 
   .course-content-card {
-   
+
     max-width: 100%;
   }
 
@@ -307,7 +307,7 @@
   }
 
   .info-left {
- 
+
     align-items: flex-end;
     width: 100%;
     gap: 10px;
@@ -662,7 +662,8 @@
 .single-course-video {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: 56.25%;
+  /* 16:9 Aspect Ratio */
   height: 0;
   overflow: hidden;
   border-radius: 20px;
@@ -793,7 +794,7 @@
   }
 
   .price-section {
-   
+
     gap: 5px;
   }
 
@@ -981,8 +982,8 @@
   justify-content: center;
   padding: 20px;
 
-border: 1px solid rgba(255, 255, 255, 0.10);
-background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 84, 213, 0.00) 37.19%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 84, 213, 0.00) 37.19%);
   border-radius: 15px;
   position: relative;
   flex-shrink: 0;
@@ -1026,7 +1027,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   cursor: pointer;
   transition: all 0.3s ease;
   width: fit-content !important;
-      background: #ffffff12;
+  background: #ffffff12;
 }
 
 .contact-card-button:hover {
@@ -1050,7 +1051,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
     flex-direction: row-reverse;
   }
 
- 
+
 }
 
 @media (min-width: 1024px) {
@@ -1257,20 +1258,22 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  height: 80px; /* shrink the overlay to a small bar */
+  height: 80px;
+  /* shrink the overlay to a small bar */
   background: linear-gradient(to bottom, rgba(22, 27, 38, 0) 0%, rgba(22, 27, 38, 0) 100%);
   border-radius: 0 0 18px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px 20px;
-  pointer-events: all; /* allow clicks on the button */
+  pointer-events: all;
+  /* allow clicks on the button */
 }
 
 /* Make the show-more button appear as a pill when expanded */
 .description-card.expanded .show-more-btn {
   margin-top: 0;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   padding: 8px 14px;
   border-radius: 8px;
 }
@@ -1365,11 +1368,9 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   transform: translateX(-50%);
   width: 100%;
   height: 304px;
-  background: linear-gradient(
-    to bottom,
-    rgba(22, 27, 38, 0) 0%,
-    #161b26 55.858%
-  );
+  background: linear-gradient(to bottom,
+      rgba(22, 27, 38, 0) 0%,
+      #161b26 55.858%);
   border-radius: 18px;
   display: flex;
   align-items: flex-end;
@@ -1427,7 +1428,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   }
 
   .contact-card-text {
-    
+
     align-items: start !important;
   }
 
@@ -1995,34 +1996,40 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 
 @media (max-width: 1600px) {
 
-.instructor-card {
-  width: 100% !important;
-  max-width: none;
-}
-.description-card {
-  width: 100% !important;
-  max-width: none;
-}
-.learning-card {
-  width: 100% !important;
-  max-width: none;
-}
-.course-content-card {
-  width: 100% !important;
-  max-width: none;
-}
-.reviews-section {
-  width: 100% !important;
-  max-width: none;
-}
-.instructor-card {
-  width: 100% !important;
-  max-width: none;
-}
-.package-content-card{
-  width: 100% !important;
-  max-width: none;
-}
+  .instructor-card {
+    width: 100% !important;
+    max-width: none;
+  }
+
+  .description-card {
+    width: 100% !important;
+    max-width: none;
+  }
+
+  .learning-card {
+    width: 100% !important;
+    max-width: none;
+  }
+
+  .course-content-card {
+    width: 100% !important;
+    max-width: none;
+  }
+
+  .reviews-section {
+    width: 100% !important;
+    max-width: none;
+  }
+
+  .instructor-card {
+    width: 100% !important;
+    max-width: none;
+  }
+
+  .package-content-card {
+    width: 100% !important;
+    max-width: none;
+  }
 
 }
 
@@ -2722,11 +2729,13 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .package-content-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* move header items to start (right side in RTL) */
+  justify-content: flex-start;
+  /* move header items to start (right side in RTL) */
   gap: 20px;
   width: 100%;
   /* Force icon to appear before title and keep block on the right */
-  padding-right: 0; /* ensure flush with card's right edge */
+  padding-right: 0;
+  /* ensure flush with card's right edge */
 }
 
 /* Reverse visual order: icon first on the right, title after it */
@@ -2759,7 +2768,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   width: 33px;
   height: 33px;
   object-fit: contain;
-} 
+}
 
 .courses-list {
   display: flex;
@@ -2898,7 +2907,8 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
     height: 50px;
   }
 
-  .package-content-icon, .package-content-icon-box svg {
+  .package-content-icon,
+  .package-content-icon-box svg {
     width: 28px;
     height: 28px;
   }
@@ -2958,7 +2968,8 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
     height: 45px;
   }
 
-  .package-content-icon, .package-content-icon-box svg {
+  .package-content-icon,
+  .package-content-icon-box svg {
     width: 25px;
     height: 25px;
   }
@@ -3392,7 +3403,8 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   }
 
   .learnsimply-footer-links-wrapper {
-    padding: 25px 15px 25px 25px; /* keep content aligned to right */
+    padding: 25px 15px 25px 25px;
+    /* keep content aligned to right */
     border-radius: 20px;
     gap: 30px;
   }
@@ -3501,9 +3513,219 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 /* ===== END: Reviews Load More Styles ===== */
+
+/* ===== Preview Lesson Badge ===== */
+.lecture-preview-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.lecture-preview-link:hover {
+  background: rgba(64, 119, 243, 0.08) !important;
+  border-color: rgba(64, 119, 243, 0.2);
+}
+
+.lecture-preview-link .lecture-title {
+  color: var(--learnsimply-text-white);
+}
+
+.preview-badge {
+  background: rgba(64, 119, 243, 0.12);
+  color: #4077f3;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 24px;
+}
+
+/* ===== Guarantee Card ===== */
+.guarantee-card {
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  direction: rtl;
+}
+
+.guarantee-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+}
+
+.guarantee-content {
+  flex: 1;
+}
+
+.guarantee-title {
+  color: #22c55e;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.guarantee-text {
+  color: #999eb2;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ===== FAQ Card ===== */
+.faq-card {
+  background: var(--learnsimply-card-bg, #1e2128);
+  border-radius: 16px;
+  padding: 40px;
+  direction: rtl;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s ease;
+}
+
+.faq-item.open {
+  border-color: rgba(64, 119, 243, 0.2);
+}
+
+.faq-question {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  gap: 16px;
+  user-select: none;
+}
+
+.faq-question:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-question-text {
+  color: var(--learnsimply-text-white, #fff);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  line-height: 1.6;
+}
+
+.faq-arrow {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.faq-item.open .faq-arrow {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  padding: 0 24px;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 300px;
+  padding: 0 24px 20px;
+}
+
+.faq-answer-text {
+  color: #999eb2;
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ===== FAQ Responsive ===== */
+@media (max-width: 768px) {
+  .faq-card {
+    padding: 24px;
+  }
+
+  .faq-question {
+    padding: 16px 20px;
+  }
+
+  .faq-question-text {
+    font-size: 16px;
+  }
+
+  .faq-answer {
+    padding: 0 20px;
+  }
+
+  .faq-item.open .faq-answer {
+    padding: 0 20px 16px;
+  }
+
+  .faq-answer-text {
+    font-size: 14px;
+  }
+
+  .guarantee-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .guarantee-title {
+    font-size: 18px;
+  }
+
+  .guarantee-text {
+    font-size: 14px;
+  }
+
+  .preview-badge {
+    font-size: 12px;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-card {
+    padding: 20px;
+  }
+
+  .faq-question {
+    padding: 14px 16px;
+  }
+
+  .faq-question-text {
+    font-size: 15px;
+  }
+
+  .guarantee-card {
+    padding: 20px;
+    gap: 16px;
+  }
+}

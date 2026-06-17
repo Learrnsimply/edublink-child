@@ -168,11 +168,22 @@ if ( $topics && $topics->have_posts() ) {
 					$content_duration = get_post_meta( $content_id, '_video_duration', true );
 				}
 				
+				// Check if lesson is a free preview
+				$is_preview = get_post_meta( $content_id, '_is_preview', true );
+				
+				// Get lesson permalink for preview lessons
+				$content_url = '';
+				if ( $is_preview ) {
+					$content_url = get_permalink( $content_id );
+				}
+				
 				$content_item = array(
 					'id' => $content_id,
 					'type' => $content_type,
 					'title' => get_the_title(),
 					'duration' => $content_duration,
+					'is_preview' => (bool) $is_preview,
+					'url' => $content_url,
 				);
 				
 				$topic_data['contents'][] = $content_item;
@@ -360,6 +371,37 @@ if ( $context['tutor_course_sell_by'] === 'woocommerce' && class_exists( 'WooCom
 
 // Get course content count (lessons + quizzes + assignments)
 $context['content_count'] = $context['lesson_count'] + $context['quiz_count'] + $context['assignment_count'];
+
+// Get FAQ items from course meta (custom field: _learnsimply_faq)
+$faq_raw = get_post_meta( $course_id, '_learnsimply_faq', true );
+$context['faq_items'] = array();
+if ( ! empty( $faq_raw ) && is_array( $faq_raw ) ) {
+	$context['faq_items'] = $faq_raw;
+} else {
+	// Default FAQ items
+	$context['faq_items'] = array(
+		array(
+			'question' => 'هل يمكنني استرداد المبلغ؟',
+			'answer' => 'نعم، لديك ضمان استرداد كامل خلال 7 أيام من الشراء. لو الكورس مش مناسبك، تواصل معنا وهنرجعلك فلوسك بالكامل.',
+		),
+		array(
+			'question' => 'هل الوصول للكورس مدى الحياة؟',
+			'answer' => 'نعم، بمجرد شراء الكورس يكون عندك وصول مدى الحياة لكل المحتوى والتحديثات المستقبلية.',
+		),
+		array(
+			'question' => 'هل أحتاج خبرة سابقة؟',
+			'answer' => 'لا، الكورس مصمم للمبتدئين تماماً. هنبدأ من أساسيات البرمجة ونوصل لمفاهيم متقدمة.',
+		),
+		array(
+			'question' => 'هل يوجد شهادة بعد إتمام الكورس؟',
+			'answer' => 'نعم، بعد إتمام كل الدروس هتحصل على شهادة إتمام تقدر تضيفها في CV أو LinkedIn.',
+		),
+		array(
+			'question' => 'كيف أتواصل للدعم؟',
+			'answer' => 'تقدر تتواصل معنا على واتساب في أي وقت، وكمان هتنضم لجروب خاص بالكورس للمناقشة مع باقي الطلاب.',
+		),
+	);
+}
 
 // Render the template
 Timber::render( 'single-course.twig', $context );

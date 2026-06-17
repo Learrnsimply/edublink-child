@@ -342,32 +342,9 @@
 
 
 
-        <!-- بطاقة وصف الكورس -->
-        {% if course_content %}
-        <div class="description-card">
-          <div class="card-content">
-            <!-- عنوان القسم -->
-            <div class="section-header">
-              <div class="section-icon-box">
-                <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                  <path clip-rule="evenodd" d="M16.5 30.25C10.0182 30.25 6.77728 30.25 4.76365 28.2363C2.75 26.2228 2.75 22.9818 2.75 16.5C2.75 10.0182 2.75 6.77728 4.76365 4.76365C6.77728 2.75 10.0182 2.75 16.5 2.75C22.9818 2.75 26.2228 2.75 28.2363 4.76365C30.25 6.77728 30.25 10.0182 30.25 16.5C30.25 22.9818 30.25 26.2228 28.2363 28.2363C26.2228 30.25 22.9818 30.25 16.5 30.25ZM16.5 24.4062C17.0695 24.4062 17.5312 23.9445 17.5312 23.375V15.125C17.5312 14.5555 17.0695 14.0938 16.5 14.0938C15.9305 14.0938 15.4688 14.5555 15.4688 15.125V23.375C15.4688 23.9445 15.9305 24.4062 16.5 24.4062ZM16.5 9.625C17.2594 9.625 17.875 10.2406 17.875 11C17.875 11.7594 17.2594 12.375 16.5 12.375C15.7406 12.375 15.125 11.7594 15.125 11C15.125 10.2406 15.7406 9.625 16.5 9.625Z" fill="white" fill-rule="evenodd" />
-                </svg>
-              </div>
-              <h2 class="section-title">وصف الكورس</h2>
-            </div>
 
-            <!-- نص الوصف -->
-            <div class="description-text">
-              {{ course_content|safe_html }}
-            </div>
-          </div>
 
-          <!-- التدرج السفلي مع زر عرض المزيد -->
-          <div class="gradient-overlay">
-            <p class="show-more-btn">عرض المزيد</p>
-          </div>
-        </div>
-        {% endif %}
+
 
         <!-- بطاقة ماذا ستتعلم -->
         {% if course_benefits and course_benefits|trim %}
@@ -467,6 +444,20 @@
 
               <div class="lectures-list">
                 {% for content in topic.contents %}
+                {% if content.is_preview and content.url and not is_enrolled %}
+                <a href="{{ content.url }}" class="lecture-item lecture-preview-link" target="_blank">
+                  <div class="lecture-content">
+                    <p class="lecture-title">{{ content.title }}</p>
+                    <img class="lecture-icon" src="{{ theme_uri }}/assets/img/Subtract.png" alt="أيقونة فيديو" />
+                  </div>
+                  <div class="lecture-right">
+                    <span class="preview-badge">معاينة مجانية</span>
+                    {% if content.duration %}
+                    <div class="lecture-duration">{{ content.duration }}</div>
+                    {% endif %}
+                  </div>
+                </a>
+                {% else %}
                 <div class="lecture-item">
                   <div class="lecture-content">
                     <p class="lecture-title">{{ content.title }}</p>
@@ -496,10 +487,59 @@
                   </div>
                   {% endif %}
                 </div>
+                {% endif %}
                 {% endfor %}
               </div>
             </div>
             {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- بطاقة ضمان الاسترداد -->
+        {% if not is_enrolled and not is_free %}
+        <div class="guarantee-card">
+          <div class="guarantee-icon">
+            <svg width="48" height="48" fill="none" viewBox="0 0 24 24">
+              <path d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22Z" stroke="#22c55e" stroke-width="1.5"/>
+              <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="guarantee-content">
+            <h3 class="guarantee-title">ضمان استرداد الأموال خلال 7 أيام</h3>
+            <p class="guarantee-text">لو الكورس مش مناسبك، تواصل معنا خلال 7 أيام من الشراء وهنرجعلك فلوسك بالكامل. من غير أي أسئلة.</p>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- بطاقة الأسئلة الشائعة -->
+        {% if faq_items|length > 0 %}
+        <div class="faq-card">
+          <div class="card-content">
+            <div class="section-header">
+              <div class="section-icon-box">
+                <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
+                  <path clip-rule="evenodd" d="M16.5 30.25C10.0182 30.25 6.77728 30.25 4.76365 28.2363C2.75 26.2228 2.75 22.9818 2.75 16.5C2.75 10.0182 2.75 6.77728 4.76365 4.76365C6.77728 2.75 10.0182 2.75 16.5 2.75C22.9818 2.75 26.2228 2.75 28.2363 4.76365C30.25 6.77728 30.25 10.0182 30.25 16.5C30.25 22.9818 30.25 26.2228 28.2363 28.2363C26.2228 30.25 22.9818 30.25 16.5 30.25ZM16.5 24.4062C17.0695 24.4062 17.5312 23.9445 17.5312 23.375V15.125C17.5312 14.5555 17.0695 14.0938 16.5 14.0938C15.9305 14.0938 15.4688 14.5555 15.4688 15.125V23.375C15.4688 23.9445 15.9305 24.4062 16.5 24.4062ZM16.5 9.625C17.2594 9.625 17.875 10.2406 17.875 11C17.875 11.7594 17.2594 12.375 16.5 12.375C15.7406 12.375 15.125 11.7594 15.125 11C15.125 10.2406 15.7406 9.625 16.5 9.625Z" fill="white" fill-rule="evenodd" />
+                </svg>
+              </div>
+              <h2 class="section-title">الأسئلة الشائعة</h2>
+            </div>
+
+            <div class="faq-list">
+              {% for item in faq_items %}
+              <div class="faq-item {% if loop.first %}open{% endif %}">
+                <div class="faq-question">
+                  <p class="faq-question-text">{{ item.question }}</p>
+                  <svg class="faq-arrow" fill="none" viewBox="0 0 24 24">
+                    <path clip-rule="evenodd" d="M4.43056 8.51191C4.70012 8.19741 5.1736 8.16099 5.48809 8.43056L12 14.0122L18.5119 8.43056C18.8264 8.16099 19.2999 8.19741 19.5694 8.51191C19.839 8.8264 19.8026 9.29988 19.4881 9.56944L12.4881 15.5694C12.2072 15.8102 11.7928 15.8102 11.5119 15.5694L4.51191 9.56944C4.19741 9.29988 4.16099 8.8264 4.43056 8.51191Z" fill="#999EB2" fill-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="faq-answer">
+                  <p class="faq-answer-text">{{ item.answer }}</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
         {% endif %}
