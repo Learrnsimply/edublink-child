@@ -16,142 +16,33 @@
         <div class="course-page">
           <!-- بطاقة تفاصيل الكورس (على اليسار) -->
           <div class="course-details-card">
-            <!-- شريط الخصم العلوي -->
-            {% if discount_percent > 0 %}
-            <div class="discount-banner">
-              <p class="discount-banner-text">
-                خصم {{ discount_percent }}% لمدة 3 أيام فقط — العرض سينتهي قريبًا!
-              </p>
-            </div>
-            {% endif %}
-
-            <!-- صندوق الإحصائيات -->
-            <div class="stats-box">
-              <div class="stat-item">
-                <svg class="stat-icon" fill="none" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M12 8V12L14.5 14.5" stroke="#999EB2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                </svg>
-                <p class="stat-text">{{ course_duration ?: 'غير محدد' }}</p>
-              </div>
-
-              <div class="stat-divider"></div>
-
-              <div class="stat-item">
-                <img class="stat-icon" src="{{ theme_uri }}/assets/img/levele.png" alt="مستوي" />
-                <p class="stat-text">{{ course_level }}</p>
-              </div>
-
-              <div class="stat-divider"></div>
-
-              <div class="stat-item">
-                <img class="stat-icon" src="{{ theme_uri }}/assets/img/Inbox Line.png" alt="محتوي" />
-                <p class="stat-text">{{ content_count }} محتوي</p>
-              </div>
-            </div>
-
-            <!-- صندوق التفاصيل -->
-            <div class="details-box">
-              <!-- الفئة -->
-              {% if categories|length > 0 %}
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M18 10H13" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" />
-                  <path d="M10 3H16.5C16.9644 3 17.1966 3 17.3916 3.02567C18.7378 3.2029 19.7971 4.26222 19.9743 5.60842C20 5.80337 20 6.03558 20 6.5" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M2 6.94975C2 6.06722 2 5.62595 2.06935 5.25839C2.37464 3.64031 3.64031 2.37464 5.25839 2.06935C5.62595 2 6.06722 2 6.94975 2C7.33642 2 7.52976 2 7.71557 2.01738C8.51665 2.09229 9.27652 2.40704 9.89594 2.92051C10.0396 3.03961 10.1763 3.17633 10.4497 3.44975L11 4C11.8158 4.81578 12.2237 5.22367 12.7121 5.49543C12.9804 5.64471 13.2651 5.7626 13.5604 5.84678C14.0979 6 14.6747 6 15.8284 6H16.2021C18.8345 6 20.1506 6 21.0062 6.76946C21.0849 6.84024 21.1598 6.91514 21.2305 6.99383C22 7.84935 22 9.16554 22 11.7979V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V6.94975Z" stroke="#999EB2" stroke-width="1.5" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">الفئه</p>
-                  <div class="detail-value">{{ categories[0].name }}</div>
-                </div>
-              </div>
-              {% endif %}
-
-              <!-- المحاضر -->
-              {% if instructors|length > 0 %}
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M4.75 8.75C6.95914 8.75 8.75 6.95914 8.75 4.75C8.75 2.54086 6.95914 0.75 4.75 0.75C2.54086 0.75 0.75 2.54086 0.75 4.75C0.75 6.95914 2.54086 8.75 4.75 8.75Z" stroke="#999EB2" stroke-width="1.5" transform="translate(7.25, 2)" />
-                  <path d="M7.75 8.75C11.616 8.75 14.75 6.95914 14.75 4.75C14.75 2.54086 11.616 0.75 7.75 0.75C3.88401 0.75 0.75 2.54086 0.75 4.75C0.75 6.95914 3.88401 8.75 7.75 8.75Z" stroke="#999EB2" stroke-width="1.5" transform="translate(4.25, 13)" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">المحاضر</p>
-                  <div class="detail-value">{{ instructors[0].name }}</div>
-                </div>
-              </div>
-              {% endif %}
-
-              <!-- المستوى -->
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M2.42022 8.66604L5.48236 4.52301C7.46169 1.84495 8.45139 0.505934 9.37479 0.788894C10.2981 1.07186 10.2981 2.71417 10.2981 5.9988V6.3085C10.2981 7.49319 10.2981 8.08554 10.6767 8.45709L10.6967 8.47634C11.0834 8.84008 11.6999 8.84008 12.9329 8.84008C15.1518 8.84008 16.2613 8.84008 16.6362 9.51298C16.6424 9.52408 16.6484 9.53538 16.6543 9.54668C17.0083 10.2301 16.3659 11.0992 15.0811 12.8374L12.019 16.9804C10.0396 19.6584 9.04989 20.9975 8.12649 20.7145C7.20319 20.4315 7.20319 18.7892 7.20319 15.5045L7.20329 15.195C7.20329 14.0102 7.20329 13.4179 6.82469 13.0463L6.80469 13.0271C6.41799 12.6634 5.80148 12.6634 4.56844 12.6634C2.34957 12.6634 1.24014 12.6634 0.865188 11.9904C0.858978 11.9793 0.852937 11.9681 0.847077 11.9567C0.493127 11.2734 1.13549 10.4043 2.42022 8.66604Z" stroke="#999EB2" stroke-width="1.5" transform="translate(4, 2)" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">المستوي</p>
-                  <div class="detail-value">{{ course_level }}</div>
-                </div>
-              </div>
-
-              <!-- آخر تحديث -->
-              {% if course_updated %}
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <path d="M0.750001 8.75C0.750001 4.97876 0.750001 3.09315 1.92157 1.92157C3.09315 0.750001 4.97876 0.750001 8.75 0.750001H12.75C16.5212 0.750001 18.4069 0.750001 19.5784 1.92157C20.75 3.09315 20.75 4.97876 20.75 8.75V10.75C20.75 14.5212 20.75 16.4069 19.5784 17.5784C18.4069 18.75 16.5212 18.75 12.75 18.75H8.75C4.97876 18.75 3.09315 18.75 1.92157 17.5784C0.750001 16.4069 0.750001 14.5212 0.750001 10.75V8.75Z" stroke="#999EB2" stroke-width="1.5" transform="translate(1.25, 2.25)" />
-                  <path d="M4.75 2.75H2.75M2.75 2.75H0.75M2.75 2.75V0.75M2.75 2.75V4.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(14, 14)" />
-                  <path d="M0.75 2.25V0.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(16.25, 2.5)" />
-                  <path d="M0.75 2.25V0.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(7, 2.5)" />
-                  <path d="M0.75 0.75H19.75" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" transform="translate(2.25, 9)" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">اخر تحديث</p>
-                  <div class="detail-value">{{ course_updated }}</div>
-                </div>
-              </div>
-              {% endif %}
-
-              <!-- يحتوي على جائزة -->
-              <div class="detail-row">
-                <svg class="detail-icon" fill="none" viewBox="0 0 24 24">
-                  <circle cx="12" cy="16" r="3" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M12 19.2599L9.73713 21.4293C9.41306 21.74 9.25102 21.8954 9.1138 21.9491C8.80111 22.0716 8.45425 21.9668 8.28977 21.7001C8.21758 21.583 8.19509 21.3719 8.1501 20.9497C8.1247 20.7113 8.112 20.5921 8.07345 20.4923C7.98715 20.2688 7.80579 20.0949 7.57266 20.0122C7.46853 19.9752 7.3442 19.963 7.09553 19.9387C6.65512 19.8955 6.43491 19.874 6.31283 19.8048C6.03463 19.6471 5.92529 19.3145 6.05306 19.0148C6.10913 18.8832 6.27116 18.7279 6.59523 18.4172L8.07345 17L9.1138 15.9597" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M12 19.2599L14.2629 21.4293C14.5869 21.74 14.749 21.8954 14.8862 21.9491C15.1989 22.0716 15.5457 21.9668 15.7102 21.7001C15.7824 21.583 15.8049 21.3719 15.8499 20.9497C15.8753 20.7113 15.888 20.5921 15.9265 20.4923C16.0129 20.2688 16.1942 20.0949 16.4273 20.0122C16.5315 19.9752 16.6558 19.963 16.9045 19.9387C17.3449 19.8955 17.5651 19.874 17.6872 19.8048C17.9654 19.6471 18.0747 19.3145 17.9469 19.0148C17.8909 18.8832 17.7288 18.7279 17.4048 18.4172L15.9265 17L15 16.0735" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M17.3197 17.9957C19.2921 17.9748 20.3915 17.8512 21.1213 17.1213C22 16.2426 22 14.8284 22 12V8C22 5.17157 22 3.75736 21.1213 2.87868C20.2426 2 18.8284 2 16 2L8 2C5.17157 2 3.75736 2 2.87868 2.87868C2 3.75736 2 5.17157 2 8L2 12C2 14.8284 2 16.2426 2.87868 17.1213C3.64706 17.8897 4.82497 17.9862 7 17.9983" stroke="#999EB2" stroke-width="1.5" />
-                  <path d="M9 6L15 6" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" />
-                  <path d="M7 9.5H17" stroke="#999EB2" stroke-linecap="round" stroke-width="1.5" />
-                </svg>
-                <div class="detail-content">
-                  <p class="detail-label">يحتوي علي جائزه</p>
-                  <div class="detail-value">{{ has_certificate ? 'نعم' : 'لا' }}</div>
-                </div>
-              </div>
-            </div>
 
             <!-- صندوق السعر -->
             <div class="price-box">
               <div class="price-section">
-                {% if discount_percent > 0 %}
-                <div class="discount-badge">خصم {{ discount_percent }}%</div>
-                {% endif %}
-                {% if regular_price_formatted %}
-                <p class="old-price">{{ regular_price_formatted }} جنيه مصري</p>
-                {% endif %}
                 {% if sale_price_formatted %}
-                <p class="current-price">{{ sale_price_formatted }} جنيه مصري</p>
+                <div class="price-row">
+                  <p class="current-price">{{ sale_price_formatted }} <span class="price-currency">EGP</span></p>
+                  {% if regular_price_formatted %}
+                  <p class="old-price">{{ regular_price_formatted }} EGP</p>
+                  {% endif %}
+                </div>
                 {% elseif regular_price_formatted %}
-                <p class="current-price">{{ regular_price_formatted }} جنيه مصري</p>
+                <p class="current-price">{{ regular_price_formatted }} <span class="price-currency">EGP</span></p>
                 {% else %}
                 <p class="current-price">مجاني</p>
                 {% endif %}
               </div>
+              {% if discount_percent > 0 and regular_price_formatted %}
+              <div class="price-urgency">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 8V12L14.5 14.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+                <span>السعر هيرجع لـ {{ regular_price_formatted }} ج.م بعد انتهاء العرض</span>
+              </div>
+              {% endif %}
             </div>
 
-         <!-- أزرار الإجراءات -->
+            <!-- أزرار الإجراءات -->
             <div class="action-buttons">
-              <button class="share-button" onclick="shareCourse()">
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path d="M14.6644 5.47875L18.6367 9.00968C20.2053 10.404 20.9896 11.1012 20.9896 11.9993C20.9896 12.8975 20.2053 13.5946 18.6367 14.989L14.6644 18.5199C13.9484 19.1563 13.5903 19.4746 13.2952 19.342C13 19.2095 13 18.7305 13 17.7725V15.4279C9.4 15.4279 5.5 17.1422 4 19.9993C4 10.8565 9.33333 8.57075 13 8.57075V6.22616C13 5.26817 13 4.78917 13.2952 4.65662C13.5903 4.52407 13.9484 4.8423 14.6644 5.47875Z" stroke="#999EB2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                </svg>
-              </button>
               {% if is_enrolled %}
                 {% if lesson_url %}
                 <a href="{{ lesson_url }}" class="buy-button">ابدأ التعلم</a>
@@ -165,46 +56,112 @@
                 <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="buy-button">اشتر الآن</a>
                 {% else %}
                 {% if is_user_logged_in %}
-                  <form method="POST" style="flex: 1;">
+                  <form method="POST" style="width: 100%;">
                     <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
                     <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
                     <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
                     <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
                   </form>
                 {% else %}
-                  <a href="{{ site.url }}/dashboard/" class="buy-button" style="flex: 1; text-decoration: none;">سجل الآن</a>
+                  <a href="{{ site.url }}/dashboard/" class="buy-button" style="text-decoration: none;">سجل الآن</a>
                 {% endif %}
               {% endif %}
           {% else %}
                 {% if is_user_logged_in %}
-                  <form method="POST" style="flex: 1;">
+                  <form method="POST" style="width: 100%;">
                     <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
                     <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
                     <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
                     <button type="submit" class="buy-button" style="width: 100%;">سجل الآن</button>
                   </form>
                 {% else %}
-                  <a href="{{ site.url }}/dashboard/" class="buy-button" style="flex: 1; text-decoration: none;">سجل الآن</a>
+                  <a href="{{ site.url }}/dashboard/" class="buy-button" style="text-decoration: none;">سجل الآن</a>
                 {% endif %}
               {% endif %}
+              <button class="share-button" onclick="shareCourse()">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                  <path d="M14.6644 5.47875L18.6367 9.00968C20.2053 10.404 20.9896 11.1012 20.9896 11.9993C20.9896 12.8975 20.2053 13.5946 18.6367 14.989L14.6644 18.5199C13.9484 19.1563 13.5903 19.4746 13.2952 19.342C13 19.2095 13 18.7305 13 17.7725V15.4279C9.4 15.4279 5.5 17.1422 4 19.9993C4 10.8565 9.33333 8.57075 13 8.57075V6.22616C13 5.26817 13 4.78917 13.2952 4.65662C13.5903 4.52407 13.9484 4.8423 14.6644 5.47875Z" stroke="#999EB2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                </svg>
+              </button>
             </div>
 
-            <!-- قائمة المميزات -->
-            {% if first_five_contents|length > 0 %}
-            <div class="features-box">
-              <div class="features-list">
-                {% for content in first_five_contents %}
-                  <div class="feature-item">
-                    <svg class="feature-icon" fill="none" viewBox="0 0 24 24">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#4077F3" />
-                      <path d="M10.58 15.58C10.38 15.58 10.19 15.5 10.05 15.36L7.22 12.53C6.93 12.24 6.93 11.76 7.22 11.47C7.51 11.18 7.99 11.18 8.28 11.47L10.58 13.77L15.72 8.63C16.01 8.34 16.49 8.34 16.78 8.63C17.07 8.92 17.07 9.4 16.78 9.69L11.11 15.36C10.97 15.5 10.78 15.58 10.58 15.58Z" fill="white" />
-                    </svg>
-                    <p class="feature-text">{{ content.title }}</p>
-                  </div>
-                {% endfor %}
+            <!-- زر شاهد مقدمة الكورس -->
+            {% if preview_count > 0 and first_preview_url and not is_enrolled %}
+            <a href="{{ first_preview_url }}" class="preview-cta" target="_blank">
+              <div class="preview-cta-right">
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path d="M21.4086 9.352C23.5305 10.5065 23.5305 13.4935 21.4086 14.648L8.59662 21.6286C6.53435 22.7513 4 21.2948 4 18.9806V5.01937C4 2.70518 6.53435 1.2487 8.59661 2.37141L21.4086 9.352Z" fill="#4077f3"/>
+                </svg>
+                <div class="preview-cta-text">
+                  <span class="preview-cta-title">شاهد مقدمة الكورس</span>
+                </div>
+              </div>
+              <div class="preview-cta-badge">{{ preview_count }} دروس مجانية</div>
+            </a>
+            {% endif %}
+
+            <!-- ضمان الاسترداد -->
+            {% if not is_enrolled and not is_free %}
+            <div class="sidebar-guarantee">
+              <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+                <path d="M9.592 3.2a3.882 3.882 0 0 1 4.816 0l.592.469c.56.443 1.235.714 1.944.78l.756.069a3.882 3.882 0 0 1 3.404 3.404l.069.756c.066.71.337 1.384.78 1.944l.469.592a3.882 3.882 0 0 1 0 4.816l-.469.592a3.882 3.882 0 0 0-.78 1.944l-.069.756a3.882 3.882 0 0 1-3.404 3.404l-.756.069a3.882 3.882 0 0 0-1.944.78l-.592.469a3.882 3.882 0 0 1-4.816 0l-.592-.469a3.882 3.882 0 0 0-1.944-.78l-.756-.069a3.882 3.882 0 0 1-3.404-3.404l-.069-.756a3.882 3.882 0 0 0-.78-1.944l-.469-.592a3.882 3.882 0 0 1 0-4.816l.469-.592c.443-.56.714-1.235.78-1.944l.069-.756A3.882 3.882 0 0 1 6.3 4.518l.756-.069a3.882 3.882 0 0 0 1.944-.78l.592-.469Z" stroke="#22c55e" stroke-width="1.5"/>
+                <path d="M9 12l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="sidebar-guarantee-text">
+                <span class="sidebar-guarantee-title">ضمان استرداد الأموال خلال 7 أيام</span>
+                <span class="sidebar-guarantee-desc">لو الكورس مش مناسبك، هترجعلك فلوسك بالكامل</span>
               </div>
             </div>
             {% endif %}
+
+            <!-- تفاصيل الدورة -->
+            <div class="sidebar-details">
+              <h4 class="sidebar-details-title">تفاصيل الدورة</h4>
+              <div class="sidebar-detail-row">
+                <span class="sidebar-detail-label">المدة</span>
+                <span class="sidebar-detail-value">{{ course_duration ?: 'غير محدد' }}</span>
+              </div>
+              <div class="sidebar-detail-row">
+                <span class="sidebar-detail-label">الدروس</span>
+                <span class="sidebar-detail-value">{{ content_count }}</span>
+              </div>
+              <div class="sidebar-detail-row">
+                <span class="sidebar-detail-label">الطلاب</span>
+                <span class="sidebar-detail-value">{{ students_count }}</span>
+              </div>
+              <div class="sidebar-detail-row">
+                <span class="sidebar-detail-label">المستوى</span>
+                <span class="sidebar-detail-value">{{ course_level }}</span>
+              </div>
+              <div class="sidebar-detail-row">
+                <span class="sidebar-detail-label">اللغة</span>
+                <span class="sidebar-detail-value">العربية</span>
+              </div>
+              <div class="sidebar-detail-row">
+                <span class="sidebar-detail-label">الشهادة</span>
+                <span class="sidebar-detail-value">{{ has_certificate ? 'نعم' : 'لا' }}</span>
+              </div>
+            </div>
+
+            <!-- مشاركة -->
+            <div class="sidebar-share">
+              <span class="sidebar-share-label">مشاركة في:</span>
+              <div class="sidebar-share-icons">
+                <a href="https://wa.me/?text={{ course_title|url_encode }}%20{{ site.url }}/courses/{{ course.post_name }}/" target="_blank" class="share-icon-link">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#999eb2"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}/courses/{{ course.post_name }}/" target="_blank" class="share-icon-link">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#999eb2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url={{ site.url }}/courses/{{ course.post_name }}/&text={{ course_title|url_encode }}" target="_blank" class="share-icon-link">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#999eb2"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="https://t.me/share/url?url={{ site.url }}/courses/{{ course.post_name }}/&text={{ course_title|url_encode }}" target="_blank" class="share-icon-link">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#999eb2"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                </a>
+              </div>
+            </div>
+
           </div>
 
           <!-- السكشن الموجود (على اليمين) -->
@@ -496,21 +453,6 @@
         </div>
         {% endif %}
 
-        <!-- بطاقة ضمان الاسترداد -->
-        {% if not is_enrolled and not is_free %}
-        <div class="guarantee-card">
-          <div class="guarantee-icon">
-            <svg width="48" height="48" fill="none" viewBox="0 0 24 24">
-              <path d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22Z" stroke="#22c55e" stroke-width="1.5"/>
-              <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="guarantee-content">
-            <h3 class="guarantee-title">ضمان استرداد الأموال خلال 7 أيام</h3>
-            <p class="guarantee-text">لو الكورس مش مناسبك، تواصل معنا خلال 7 أيام من الشراء وهنرجعلك فلوسك بالكامل. من غير أي أسئلة.</p>
-          </div>
-        </div>
-        {% endif %}
 
         <!-- بطاقة الأسئلة الشائعة -->
         {% if faq_items|length > 0 %}

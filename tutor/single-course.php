@@ -372,6 +372,26 @@ if ( $context['tutor_course_sell_by'] === 'woocommerce' && class_exists( 'WooCom
 // Get course content count (lessons + quizzes + assignments)
 $context['content_count'] = $context['lesson_count'] + $context['quiz_count'] + $context['assignment_count'];
 
+// Count preview lessons and get first preview URL
+$preview_count = 0;
+$first_preview_url = '';
+if ( ! empty( $context['topics'] ) ) {
+	foreach ( $context['topics'] as $topic ) {
+		if ( ! empty( $topic['contents'] ) ) {
+			foreach ( $topic['contents'] as $content ) {
+				if ( ! empty( $content['is_preview'] ) ) {
+					$preview_count++;
+					if ( empty( $first_preview_url ) && ! empty( $content['url'] ) ) {
+						$first_preview_url = $content['url'];
+					}
+				}
+			}
+		}
+	}
+}
+$context['preview_count'] = $preview_count;
+$context['first_preview_url'] = $first_preview_url;
+
 // Get FAQ items from course meta (custom field: _learnsimply_faq)
 $faq_raw = get_post_meta( $course_id, '_learnsimply_faq', true );
 $context['faq_items'] = array();
