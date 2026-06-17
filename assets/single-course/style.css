@@ -3932,3 +3932,235 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
     font-size: 14px;
   }
 }
+
+/* ===== SIDEBAR CARD OVERRIDES - Premium Design ===== */
+
+.course-details-card {
+  padding: 24px !important;
+  gap: 16px !important;
+  border-radius: 16px !important;
+}
+
+/* Price overrides */
+.price-box {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+}
+
+.price-section {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+
+.price-row {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+.current-price {
+  color: #4077f3 !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.price-currency {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+
+.old-price {
+  color: #666b7a !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  text-decoration: line-through !important;
+  margin: 0 !important;
+}
+
+/* Price urgency override */
+.price-urgency {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+/* Buy Button - Gradient */
+.buy-button {
+  background: linear-gradient(135deg, #4077f3 0%, #5b8ff9 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 14px 20px !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  font-family: "IBM Plex Sans Arabic", sans-serif !important;
+  flex: 1 !important;
+  cursor: pointer !important;
+  height: auto !important;
+  min-height: 52px !important;
+  transition: all 0.3s ease !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 15px rgba(64, 119, 243, 0.3) !important;
+}
+
+.buy-button:hover {
+  background: linear-gradient(135deg, #3567e0 0%, #4a7ef0 100%) !important;
+  box-shadow: 0 6px 20px rgba(64, 119, 243, 0.4) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Share button */
+.action-buttons .share-button {
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  border-radius: 12px !important;
+  flex: none !important;
+}
+
+/* Preview CTA - Gradient */
+.preview-cta {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.06) 100%) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 14px 18px !important;
+}
+
+.preview-cta:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.preview-cta svg path {
+  fill: #10b981 !important;
+}
+
+.preview-cta-title {
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+.preview-cta-badge {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+}
+
+/* Sidebar Details */
+.sidebar-details {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.sidebar-detail-row {
+  padding: 14px 18px !important;
+}
+
+.sidebar-detail-label {
+  font-size: 15px !important;
+}
+
+.sidebar-detail-value {
+  font-size: 15px !important;
+}
+
+/* ===== SIDEBAR RESPONSIVE OVERRIDES ===== */
+@media (max-width: 1200px) {
+  .course-details-card {
+    max-width: 380px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .course-page {
+    flex-direction: column !important;
+  }
+  
+  .course-details-card {
+    max-width: 100% !important;
+    order: -1 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .course-details-card {
+    padding: 20px !important;
+    gap: 14px !important;
+    max-width: 100% !important;
+  }
+  
+  .current-price {
+    font-size: 28px !important;
+  }
+  
+  .old-price {
+    font-size: 16px !important;
+  }
+  
+  .buy-button {
+    font-size: 16px !important;
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+  }
+  
+  .action-buttons .share-button {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+  }
+  
+  .preview-cta {
+    padding: 12px 14px !important;
+  }
+  
+  .preview-cta-title {
+    font-size: 14px !important;
+  }
+  
+  .preview-cta-badge {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+  }
+  
+  .sidebar-detail-row {
+    padding: 12px 14px !important;
+  }
+  
+  .price-urgency {
+    font-size: 13px !important;
+    padding: 8px 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-details-card {
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+  
+  .current-price {
+    font-size: 26px !important;
+  }
+  
+  .buy-button {
+    font-size: 15px !important;
+    min-height: 46px !important;
+  }
+  
+  .action-buttons .share-button {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+  }
+}

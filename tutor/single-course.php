@@ -70,13 +70,13 @@ $context['display_price'] = $price_info->display_price;
 
 // Format prices for display
 if ( $context['regular_price'] ) {
-	$context['regular_price_formatted'] = number_format( $context['regular_price'], 2, '.', ',' );
+	$context['regular_price_formatted'] = number_format( $context['regular_price'], 0, '.', ',' );
 } else {
 	$context['regular_price_formatted'] = null;
 }
 
 if ( $context['sale_price'] ) {
-	$context['sale_price_formatted'] = number_format( $context['sale_price'], 2, '.', ',' );
+	$context['sale_price_formatted'] = number_format( $context['sale_price'], 0, '.', ',' );
 } else {
 	$context['sale_price_formatted'] = null;
 }
