@@ -27,6 +27,20 @@ add_filter('rest_endpoints', function ($endpoints) {
 });
 
 /**
+ * Block author-archive enumeration (?author=N and /author/{slug}).
+ * WordPress 301-redirects ?author=1 to /author/{login}/, leaking the username
+ * in the Location header — a foothold for targeted brute-force. We run at
+ * priority 0 so this fires before redirect_canonical (priority 10) can leak it.
+ * The site uses no public author archives, so redirecting them home is safe.
+ */
+add_action('template_redirect', function () {
+	if (is_author() || isset($_GET['author'])) {
+		wp_safe_redirect(home_url('/'), 301);
+		exit;
+	}
+}, 0);
+
+/**
  * Enqueue IBM Plex Sans Arabic from Google Fonts (site-wide font)
  */
 add_action('wp_enqueue_scripts', 'learnsimply_enqueue_ibm_plex_font', 1);
@@ -1792,18 +1806,29 @@ function edublink_child_disable_elementor_locations()
    ========================================================================== */
 
 /**
- * Enqueue IBM Plex Sans Arabic from Google Fonts
+ * Enqueue Inter for the homepage "start right" features section.
+ * Previously loaded via a render-blocking @import inside that section's inline
+ * <style>; moved here so it loads as a non-blocking <link> on the homepage only
+ * (matching where it loaded before). Readex Pro was dropped — it was imported
+ * but never referenced by any font-family anywhere in the theme.
+ *
+ * Note: the site-wide IBM Plex Sans Arabic font is enqueued by
+ * learnsimply_enqueue_ibm_plex_font() near the top of this file. The old
+ * edublink_child_enqueue_fonts() was an exact duplicate of it (same handle,
+ * same URL) and has been removed.
  */
-function edublink_child_enqueue_fonts()
+function learnsimply_enqueue_inter_font()
 {
-	wp_enqueue_style(
-		'ibm-plex-sans-arabic',
-		'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap',
-		array(),
-		null
-	);
+	if (is_front_page()) {
+		wp_enqueue_style(
+			'inter-font',
+			'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap',
+			array(),
+			null
+		);
+	}
 }
-add_action('wp_enqueue_scripts', 'edublink_child_enqueue_fonts', 1);
+add_action('wp_enqueue_scripts', 'learnsimply_enqueue_inter_font', 1);
 
 /**
  * Enqueue parent and child theme styles
@@ -1960,6 +1985,14 @@ function edublink_child_load_page_assets()
 		}
 		if (file_exists($js_file)) {
 			wp_enqueue_script('edublink-' . $page_type . '-script', $assets_uri . '/' . $page_type . '/script.js', array('jquery'), filemtime($js_file), true);
+
+			// Pass admin-ajax URL to the single-course review form the WP way
+			// (replaces an inline <script> that set window.ajaxurl in the template).
+			if ($page_type === 'single-course') {
+				wp_localize_script('edublink-single-course-script', 'lsCourseAjax', array(
+					'url' => admin_url('admin-ajax.php'),
+				));
+			}
 		}
 
 	}
