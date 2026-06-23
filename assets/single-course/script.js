@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const formData = new FormData(reviewForm);
 		
 		// Send AJAX request
-		fetch(window.ajaxurl || "/wp-admin/admin-ajax.php", {
+		fetch((window.lsCourseAjax && window.lsCourseAjax.url) || window.ajaxurl || "/wp-admin/admin-ajax.php", {
 			method: "POST",
 			body: formData,
 			credentials: "same-origin"
