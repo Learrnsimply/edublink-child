@@ -4,3 +4,6 @@
 .DS_Store
 *.log
 
+
+# Orphan demo export — never load static HTML in a child theme (perf-H-3)
+/homepage.html
