@@ -348,6 +348,18 @@ if ( ! isset( $context['bundles'] ) ) {
 	$context['bundles'] = array();
 }
 
+// Featured homepage bundle — pinned to the "Java Basics + OOP" bundle by slug so the
+// card's price / buy-link / avatar always track THAT specific live WC product, instead of
+// "whichever bundle is newest" (bundles[0], which now resolves to the Data Structures bundle).
+// The template keeps the current literals (849 / 2,150 / 61% / id 33336) as a safe fallback.
+$context['featured_bundle'] = null;
+foreach ( $context['bundles'] as $ls_bundle ) {
+	if ( ! empty( $ls_bundle['link'] ) && false !== strpos( $ls_bundle['link'], 'java-basics-oop-bundle' ) ) {
+		$context['featured_bundle'] = $ls_bundle;
+		break;
+	}
+}
+
 // Get articles (WordPress posts)
 $context['articles'] = array();
 $articles_args = array(
