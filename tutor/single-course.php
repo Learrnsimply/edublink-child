@@ -171,12 +171,11 @@ if ( $topics && $topics->have_posts() ) {
 				// Check if lesson is a free preview
 				$is_preview = get_post_meta( $content_id, '_is_preview', true );
 				
-				// Get lesson permalink for preview lessons
-				$content_url = '';
-				if ( $is_preview ) {
-					$content_url = get_permalink( $content_id );
-				}
-				
+				// Lesson permalink — used by the twig for the enrolled "go to lesson" link
+				// and the non-enrolled preview link. Non-enrolled LOCKED rows never render
+				// it (they link to #course-buy), so no paid-content URL is exposed.
+				$content_url = get_permalink( $content_id );
+
 				$content_item = array(
 					'id' => $content_id,
 					'type' => $content_type,

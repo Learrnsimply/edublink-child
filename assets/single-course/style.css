@@ -4253,3 +4253,22 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .course-content-card,
 .reviews-section,
 .faq-card { scroll-margin-top: 100px; }
+
+/* ===== CLICKABLE CURRICULUM ROWS (FR-004 routing) =====
+   enrolled → lesson in Tutor · not-enrolled+preview → sample · not-enrolled+locked → #course-buy */
+a.lecture-item {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
+.lecture-clickable:hover { background: rgba(64, 119, 243, 0.06); }
+.lecture-locked-buy:hover { background: rgba(64, 119, 243, 0.08); }
+.lecture-locked-buy:hover .lecture-title { color: #4077f3; }
+.lecture-clickable:focus-visible { outline: 2px solid #5b8ff9; outline-offset: 2px; }
+
+/* clicking a locked lesson scrolls to the buy CTA (reduced-motion-safe) */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+#course-buy { scroll-margin-top: 100px; }
