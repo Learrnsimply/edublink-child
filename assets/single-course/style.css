@@ -4164,3 +4164,92 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
     min-width: 46px !important;
   }
 }
+
+/* ===== STICKY MOBILE BUY BAR (FR-006) ===== */
+/* Hidden on desktop; the sidebar buy card is in reach there. On ≤1024px that card
+   is order:-1 (top of column) and scrolls away, so this keeps price + CTA pinned. */
+.course-sticky-buy { display: none; }
+
+@media (max-width: 1024px) {
+  .course-sticky-buy {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 9998; /* just under the WhatsApp float (9999), which we lift below */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(10, 15, 26, 0.92);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  .course-sticky-buy__price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .course-sticky-buy__current {
+    color: #4077f3;
+    font-size: 20px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .course-sticky-buy__cur { font-size: 13px; font-weight: 600; }
+
+  .course-sticky-buy__old {
+    color: #666b7a;
+    font-size: 14px;
+    text-decoration: line-through;
+    white-space: nowrap;
+  }
+
+  .course-sticky-buy__btn {
+    flex: 1 1 auto !important;
+    max-width: 58% !important;
+    min-height: 46px !important;
+    font-size: 16px !important;
+  }
+
+  /* reserve space + lift WhatsApp float ONLY when the bar actually renders
+     (it's conditional in twig — paid/not-enrolled — so scope with :has to avoid an
+     empty gap + a mis-placed WA float on enrolled/free/public course pages) */
+  body:has(.course-sticky-buy) { padding-bottom: 84px; }
+  body:has(.course-sticky-buy) .whatsapp-float { bottom: 92px !important; }
+}
+
+/* guard against overflow at the 320px floor: drop the strikethrough old price */
+@media (max-width: 360px) {
+  .course-sticky-buy__old { display: none; }
+}
+
+/* ===== PREMIUM POLISH (FR-007) — additive only, no layout changes ===== */
+/* Designed focus states (a11y + premium feel) */
+.buy-button:focus-visible,
+.share-button:focus-visible,
+.lecture-preview-link:focus-visible,
+.preview-cta:focus-visible,
+.course-sticky-buy__btn:focus-visible {
+  outline: 2px solid #5b8ff9;
+  outline-offset: 2px;
+}
+
+/* Make the playable (preview) lecture feel interactive vs the locked rows */
+.lecture-preview-link {
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.lecture-preview-link:hover {
+  transform: translateX(-2px); /* RTL: nudge toward content */
+  background: rgba(16, 185, 129, 0.06);
+}
+
+/* Anchored/smooth scrolls clear the fixed header */
+.course-content-card,
+.reviews-section,
+.faq-card { scroll-margin-top: 100px; }
