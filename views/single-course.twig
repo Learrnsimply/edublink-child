@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ course_title }} - {{ site.name }}</title>
+    {# <title> managed by Rank Math via wp_head — hardcoded tag removed to fix BUG-003 (duplicate title) #}
     {{ fn('wp_head') }}
   </head>
   <body class="learnsimply-homepage-body">
@@ -667,6 +667,21 @@
       </div>
     </main>
     <!-- ===== END: Main Content ===== -->
+
+    {# FR-006: sticky buy bar on mobile — keeps price + CTA in reach as the buy card scrolls away (it's order:-1 at top on ≤1024px). Only for the conversion moment: paid, purchasable, not yet enrolled. #}
+    {% if is_purchasable and not is_free and not is_enrolled and product_id %}
+    <div class="course-sticky-buy">
+      <div class="course-sticky-buy__price">
+        {% if sale_price_formatted %}
+          <span class="course-sticky-buy__current">{{ sale_price_formatted }} <span class="course-sticky-buy__cur">ج.م</span></span>
+          {% if regular_price_formatted %}<span class="course-sticky-buy__old">{{ regular_price_formatted }}</span>{% endif %}
+        {% elseif regular_price_formatted %}
+          <span class="course-sticky-buy__current">{{ regular_price_formatted }} <span class="course-sticky-buy__cur">ج.م</span></span>
+        {% endif %}
+      </div>
+      <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="course-sticky-buy__btn buy-button">اشتر الآن</a>
+    </div>
+    {% endif %}
 
     {% include 'components/footer.twig' %}
 
