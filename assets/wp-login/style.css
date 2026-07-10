@@ -1,0 +1,309 @@
+/* ==========================================================================
+   WP-LOGIN — Premium Dark Theme
+   LearnSimply (learrnsimply.com)
+
+   Styles ALL wp-login.php states so users who land here (mainly from the
+   password-reset email link: ?action=rp / resetpass) see the site's brand
+   instead of the default WordPress screen. States covered:
+   - login (loginform), lostpassword, rp/resetpass, checkemail, messages.
+
+   Enqueued via login_enqueue_scripts in functions.php.
+   ========================================================================== */
+
+:root {
+    --lsw-bg: #0a0f1a;
+    --lsw-card: #111827;
+    --lsw-blue: #4077f3;
+    --lsw-blue-light: #658FF2;
+    --lsw-blue-soft: rgba(64, 119, 243, 0.12);
+    --lsw-blue-glow: rgba(64, 119, 243, 0.22);
+    --lsw-white: #ffffff;
+    --lsw-white-soft: #d0d4e0;
+    --lsw-gray: #94a3b8;
+    --lsw-gray-dim: #64748b;
+    --lsw-green: #2ecc87;
+    --lsw-red: #f96a7b;
+    --lsw-border: rgba(255, 255, 255, 0.08);
+    --lsw-font: "IBM Plex Sans Arabic", -apple-system, sans-serif;
+}
+
+/* ─── Page ─── */
+body.login {
+    background: var(--lsw-bg) !important;
+    font-family: var(--lsw-font) !important;
+}
+
+body.login * {
+    font-family: var(--lsw-font) !important;
+}
+
+/* Subtle glow behind the card */
+body.login::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(64, 119, 243, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.login #login {
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── Logo: replaced by login_headertext (site name) ─── */
+.login h1 a {
+    background-image: none !important;
+    text-indent: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: var(--lsw-white) !important;
+    line-height: 1.4 !important;
+    text-decoration: none !important;
+    margin-bottom: 8px !important;
+}
+
+/* ─── Card (the form) ─── */
+.login form {
+    background: linear-gradient(165deg,
+            rgba(17, 24, 39, 0.95) 0%,
+            rgba(15, 23, 42, 0.98) 100%) !important;
+    border: 1px solid var(--lsw-border) !important;
+    border-radius: 24px !important;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 4px 24px rgba(0, 0, 0, 0.3),
+        0 24px 48px rgba(0, 0, 0, 0.15) !important;
+    padding: 28px 30px !important;
+    margin-top: 24px !important;
+}
+
+/* ─── Labels & text ─── */
+.login form label,
+.login form .indicator-hint,
+.login form p,
+.login form .pw-weak label {
+    color: var(--lsw-gray) !important;
+    font-size: 13px !important;
+}
+
+.login form .user-pass1-wrap p.description {
+    color: var(--lsw-gray-dim) !important;
+    font-size: 12px !important;
+}
+
+/* ─── Inputs ─── */
+.login form .input,
+.login form input[type="text"],
+.login form input[type="password"],
+.login form input[type="email"],
+.login input[type="text"]:focus,
+.login form input[type="checkbox"] + label {
+    color: var(--lsw-white) !important;
+}
+
+.login form .input,
+.login form input[type="text"],
+.login form input[type="password"],
+.login form input[type="email"] {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--lsw-border) !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+    min-height: 44px;
+}
+
+.login form .input:focus,
+.login form input[type="text"]:focus,
+.login form input[type="password"]:focus,
+.login form input[type="email"]:focus {
+    border-color: var(--lsw-blue) !important;
+    box-shadow: 0 0 0 3px var(--lsw-blue-soft) !important;
+    outline: none !important;
+}
+
+/* Chrome autofill on dark */
+.login form input:-webkit-autofill,
+.login form input:-webkit-autofill:hover,
+.login form input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--lsw-white) !important;
+    -webkit-box-shadow: 0 0 0px 1000px #111827 inset !important;
+    box-shadow: 0 0 0px 1000px #111827 inset !important;
+}
+
+/* Password reveal / generate buttons */
+.login .wp-pwd button.wp-hide-pw,
+.login .wp-pwd button.wp-hide-pw:hover,
+.login .wp-pwd button.wp-hide-pw:focus {
+    color: var(--lsw-gray) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.login .wp-pwd button.wp-hide-pw .dashicons {
+    color: var(--lsw-white-soft) !important;
+}
+
+.login form .button.wp-generate-pw {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--lsw-border) !important;
+    border-radius: 12px !important;
+    color: var(--lsw-white-soft) !important;
+    padding: 8px 16px !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.login form .button.wp-generate-pw:hover {
+    border-color: var(--lsw-blue) !important;
+    color: var(--lsw-white) !important;
+}
+
+/* Password strength meter */
+.login form #pass-strength-result {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--lsw-border) !important;
+    border-radius: 10px !important;
+    color: var(--lsw-gray) !important;
+    text-shadow: none !important;
+}
+
+.login form #pass-strength-result.short,
+.login form #pass-strength-result.bad {
+    background: rgba(249, 106, 123, 0.12) !important;
+    border-color: rgba(249, 106, 123, 0.3) !important;
+    color: var(--lsw-red) !important;
+}
+
+.login form #pass-strength-result.good {
+    background: rgba(255, 178, 46, 0.12) !important;
+    border-color: rgba(255, 178, 46, 0.3) !important;
+    color: #ffb22e !important;
+}
+
+.login form #pass-strength-result.strong {
+    background: rgba(24, 169, 99, 0.12) !important;
+    border-color: rgba(24, 169, 99, 0.3) !important;
+    color: var(--lsw-green) !important;
+}
+
+/* ─── Primary button ─── */
+.login form .button-primary {
+    width: 100% !important;
+    background: var(--lsw-blue) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    color: var(--lsw-white) !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    padding: 10px 24px !important;
+    min-height: 46px;
+    text-shadow: none !important;
+    box-shadow: 0 4px 16px var(--lsw-blue-glow) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    float: none !important;
+    margin-top: 10px !important;
+}
+
+.login form .button-primary:hover,
+.login form .button-primary:focus {
+    background: var(--lsw-blue-light) !important;
+    transform: translateY(-1px);
+}
+
+/* ─── Messages / errors ─── */
+.login .message,
+.login .success,
+.login .notice-info {
+    background: rgba(24, 169, 99, 0.1) !important;
+    border: 1px solid rgba(24, 169, 99, 0.3) !important;
+    border-right: 3px solid var(--lsw-green) !important;
+    border-radius: 12px !important;
+    color: var(--lsw-green) !important;
+    box-shadow: none !important;
+}
+
+.login #login_error,
+.login .notice-error {
+    background: rgba(249, 106, 123, 0.1) !important;
+    border: 1px solid rgba(249, 106, 123, 0.3) !important;
+    border-right: 3px solid var(--lsw-red) !important;
+    border-radius: 12px !important;
+    color: var(--lsw-red) !important;
+    box-shadow: none !important;
+}
+
+.login .message a,
+.login .success a,
+.login #login_error a,
+.login .notice a {
+    color: var(--lsw-blue) !important;
+    font-weight: 600;
+}
+
+/* ─── Below-card links ─── */
+.login #nav,
+.login #backtoblog {
+    text-align: center !important;
+}
+
+.login #nav a,
+.login #backtoblog a {
+    color: var(--lsw-gray) !important;
+    font-size: 13px !important;
+    transition: color 0.2s ease;
+}
+
+.login #nav a:hover,
+.login #backtoblog a:hover {
+    color: var(--lsw-blue-light) !important;
+}
+
+/* Privacy link + language switcher: keep the page minimal */
+.login .privacy-policy-page-link a {
+    color: var(--lsw-gray-dim) !important;
+    font-size: 12px !important;
+}
+
+.login .language-switcher {
+    display: none !important;
+}
+
+/* Remember-me checkbox */
+.login form input[type="checkbox"] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 5px !important;
+}
+
+.login form input[type="checkbox"]:checked {
+    background: var(--lsw-blue) !important;
+    border-color: var(--lsw-blue) !important;
+}
+
+.login form .forgetmenot label {
+    color: var(--lsw-white-soft) !important;
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 480px) {
+    .login #login {
+        width: auto !important;
+        margin: 8vh 16px 24px !important;
+        padding: 0 !important;
+    }
+
+    .login form {
+        padding: 24px 20px !important;
+        border-radius: 16px !important;
+    }
+}

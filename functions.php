@@ -54,6 +54,48 @@ function learnsimply_enqueue_ibm_plex_font()
 	);
 }
 
+// ──────────────────────────────────────────────
+// wp-login.php branding (password-reset email links land here)
+// ──────────────────────────────────────────────
+
+/**
+ * Theme the wp-login.php screen (login / lostpassword / rp / resetpass).
+ * Users reach it from the password-reset email link, so it must match
+ * the site's dark identity instead of the default WordPress look.
+ */
+add_action('login_enqueue_scripts', 'learnsimply_enqueue_login_styles');
+function learnsimply_enqueue_login_styles()
+{
+	wp_enqueue_style(
+		'ibm-plex-sans-arabic',
+		'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap',
+		array(),
+		null
+	);
+
+	$file = get_stylesheet_directory() . '/assets/wp-login/style.css';
+	if (file_exists($file)) {
+		wp_enqueue_style(
+			'learnsimply-wp-login',
+			get_stylesheet_directory_uri() . '/assets/wp-login/style.css',
+			array(),
+			filemtime($file)
+		);
+	}
+}
+
+/**
+ * Replace the WordPress logo above the login form with the site name,
+ * linked to the homepage instead of wordpress.org.
+ */
+add_filter('login_headertext', function () {
+	return get_bloginfo('name');
+});
+
+add_filter('login_headerurl', function () {
+	return home_url('/');
+});
+
 add_action('wp_enqueue_scripts', 'learnsimply_enqueue_single_post_styles');
 
 /**
