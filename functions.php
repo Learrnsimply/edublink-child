@@ -729,7 +729,9 @@ function learnsimply_inject_sidebar_dark_mode()
 			|| strpos($request_uri, '/tutor-quiz/') !== false
 			|| strpos($request_uri, '/assignments/') !== false
 			|| strpos($request_uri, '/tutor-assignment/') !== false
-			|| (strpos($request_uri, '/courses/') !== false && strpos($request_uri, '/lesson/') !== false);
+			|| (strpos($request_uri, '/courses/') !== false && strpos($request_uri, '/lesson/') !== false)
+			// Tutor 4.0 learning area (?subpage=course-info / announcements / reviews ...)
+			|| (strpos($request_uri, '/courses/') !== false && strpos($request_uri, 'subpage=') !== false);
 	}
 
 	if (!$is_tutor_page) {
@@ -873,6 +875,53 @@ function learnsimply_inject_sidebar_dark_mode()
 		}
 		.tutor-lesson-note-list-item-time {
 			color: #5b6478 !important;
+		}
+
+		/* ── Learning area (Tutor 4.0) course-info tab (?subpage=course-info) ──
+		   Tutor hardcodes white cells (.tutor-table tr td { background:#fff })
+		   in the course meta table, leaving white rows with invisible white
+		   text on the dark theme. Force the whole table + info cards dark. */
+		.tutor-learning-area .tutor-course-info-table,
+		.tutor-learning-area .tutor-table-wrapper,
+		.tutor-learning-area .tutor-table,
+		.tutor-learning-area .tutor-surface-l1 {
+			background: #141924 !important;
+			border-color: rgba(255, 255, 255, 0.08) !important;
+		}
+
+		.tutor-learning-area .tutor-table tr td,
+		.tutor-learning-area .tutor-table tr th {
+			background: #141924 !important;
+			color: #e2e6f0 !important;
+			border-color: rgba(255, 255, 255, 0.08) !important;
+		}
+
+		/* Subtle zebra striping, dark-on-dark */
+		.tutor-learning-area .tutor-table tr:nth-child(odd) td {
+			background: #1b2133 !important;
+		}
+
+		/* "About this Course" / "What you'll learn" cards */
+		.tutor-learning-area .tutor-course-info .tutor-card {
+			background: #141924 !important;
+			border: 1px solid rgba(255, 255, 255, 0.08) !important;
+			color: #e2e6f0 !important;
+			box-shadow: none !important;
+		}
+
+		.tutor-learning-area .tutor-course-info .tutor-card p,
+		.tutor-learning-area .tutor-course-info .tutor-course-info-list-content {
+			color: #c3c8d6 !important;
+		}
+
+		/* Course title + secondary text in the intro block */
+		.tutor-learning-area .tutor-course-intro h3,
+		.tutor-learning-area .tutor-course-info h3 {
+			color: #ffffff !important;
+		}
+
+		.tutor-learning-area .tutor-course-info .tutor-text-secondary {
+			color: #999eb2 !important;
 		}
 	</style>
 	<?php
