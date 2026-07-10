@@ -166,7 +166,7 @@ body .tutor-container {
 
 /* Heading text injected above the form */
 #tutor-registration-wrap::after {
-    content: "انشاء حساب جديد" !important;
+    content: "إنشاء حساب جديد" !important;
     display: block !important;
     text-align: center !important;
     font-size: 22px !important;
@@ -401,7 +401,7 @@ body .tutor-container {
 /* ==========================================================================
    11. SUBMIT BUTTON — Premium pill button matching site CTA style
    ========================================================================== */
-#tutor-registration-form .tutor-btn,
+#tutor-registration-form .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray),
 #tutor-registration-form .tutor-btn-primary,
 #tutor-registration-form button[type="submit"],
 .tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray),
@@ -434,7 +434,7 @@ body .tutor-container {
 }
 
 /* Hover shimmer */
-#tutor-registration-form .tutor-btn:hover,
+#tutor-registration-form .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray):hover,
 #tutor-registration-form button[type="submit"]:hover,
 .tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray):hover,
 .tutor-login-wrap button[type="submit"]:hover {
@@ -443,7 +443,7 @@ body .tutor-container {
     transform: translateY(-1px) !important;
 }
 
-#tutor-registration-form .tutor-btn:active,
+#tutor-registration-form .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray):active,
 #tutor-registration-form button[type="submit"]:active,
 .tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray):active,
 .tutor-login-wrap button[type="submit"]:active {
@@ -517,8 +517,9 @@ body .tutor-container {
     color: #1da1f2 !important;
 }
 
-/* Google login button */
-#tutor-registration-wrap [id*="google"],
+/* Google login button — exclude the "-authentication" wrapper divs, otherwise
+   an empty glass pill shows when Google's button hasn't rendered */
+#tutor-registration-wrap [id*="google"]:not([id*="authentication"]),
 #tutor-registration-wrap .tutor-social-login-btn,
 #tutor-registration-wrap [class*="google-login"],
 #tutor-registration-wrap [class*="social-login"] button,
@@ -547,7 +548,7 @@ body .tutor-container {
     text-decoration: none !important;
 }
 
-#tutor-registration-wrap [id*="google"]:hover,
+#tutor-registration-wrap [id*="google"]:not([id*="authentication"]):hover,
 #tutor-registration-wrap .tutor-social-login-btn:hover,
 .tutor-login-wrap .tutor-social-login a:hover,
 .tutor-login-wrap .tutor-social-login button:hover {
@@ -967,7 +968,10 @@ body .tutor-container {
    ========================================================================== */
 .tutor-login-wrap a.tutor-btn.tutor-btn-ghost,
 .tutor-login-wrap a.tutor-btn.tutor-btn-link,
-.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray {
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-ghost,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-link,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-link-gray {
     /* Reset all button styles */
     width: auto !important;
     display: inline !important;
@@ -992,7 +996,10 @@ body .tutor-container {
 
 .tutor-login-wrap a.tutor-btn.tutor-btn-ghost:hover,
 .tutor-login-wrap a.tutor-btn.tutor-btn-link:hover,
-.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray:hover {
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray:hover,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-ghost:hover,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-link:hover,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-link-gray:hover {
     color: var(--sp-blue-light) !important;
     text-decoration: underline !important;
     background: none !important;
@@ -1003,7 +1010,10 @@ body .tutor-container {
 
 .tutor-login-wrap a.tutor-btn.tutor-btn-ghost:active,
 .tutor-login-wrap a.tutor-btn.tutor-btn-link:active,
-.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray:active {
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray:active,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-ghost:active,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-link:active,
+#tutor-registration-wrap a.tutor-btn.tutor-btn-link-gray:active {
     transform: none !important;
     box-shadow: none !important;
 }
@@ -1028,6 +1038,70 @@ body .tutor-container {
     cursor: pointer !important;
     font-size: 13px !important;
     color: var(--sp-white-soft) !important;
+}
+
+
+/* ==========================================================================
+   22b. SIGNUP FORM — COMPACT GRID
+   Tutor stacks 6 labelled fields with large margins, making the form very
+   tall. Lay the form out as a 2-column grid: first/last name share one row,
+   everything else spans the full width, and vertical rhythm comes from the
+   grid gap instead of Tutor's tutor-mb-8 (32px) margins.
+   ========================================================================== */
+#tutor-registration-form {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px 12px !important;
+}
+
+#tutor-registration-form > * {
+    grid-column: 1 / -1;
+    min-width: 0;
+}
+
+/* First + last name side by side (1st and 2nd direct-child divs) */
+#tutor-registration-form > .tutor-form-group:nth-of-type(1),
+#tutor-registration-form > .tutor-form-group:nth-of-type(2) {
+    grid-column: auto;
+}
+
+/* Spacing is handled by the grid gap — strip Tutor's stacked margins */
+#tutor-registration-form .tutor-form-group,
+#tutor-registration-form .tutor-password-strength-checker,
+#tutor-registration-form .tutor-input-field,
+#tutor-registration-form .tutor-form-wrap {
+    margin: 0 !important;
+}
+
+/* Tutor outputs an empty .tutor-form-row filler — collapse it unless it
+   actually contains a field (e.g. a terms checkbox enabled later) */
+#tutor-registration-form > .tutor-form-row:not(:has(input, select, textarea, a)) {
+    display: none !important;
+}
+
+/* Hide the social-auth section entirely when no provider button rendered,
+   so no stray border/padding shows */
+#tutor-pro-social-authentication:not(:has(iframe, button, a, [role="button"])) {
+    display: none !important;
+}
+
+/* Social-auth section: divider above + centred Google button
+   (Google's own wrapper otherwise renders the iframe off-centre) */
+#tutor-pro-social-authentication {
+    margin-top: 18px !important;
+    padding-top: 18px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+#tutor-pro-google-authentication {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+#tutor-pro-google-authentication iframe {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 
