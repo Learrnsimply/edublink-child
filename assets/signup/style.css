@@ -371,6 +371,31 @@ body .tutor-container {
     color: var(--sp-white) !important;
 }
 
+/* Password show/hide toggle — Tutor injects a span with inline
+   "position:absolute; right:15px" and a currentColor SVG. Move it to the
+   LEFT corner (RTL: text starts right, so the icon belongs left) and make
+   it white on both login and signup forms. */
+.tutor-login-wrap .tutor-input-field > span[style*="position: absolute"],
+#tutor-registration-form .tutor-input-field > span[style*="position: absolute"] {
+    left: 15px !important;
+    right: auto !important;
+    color: var(--sp-white-soft) !important;
+}
+
+.tutor-login-wrap .tutor-input-field > span[style*="position: absolute"]:hover,
+#tutor-registration-form .tutor-input-field > span[style*="position: absolute"]:hover {
+    color: var(--sp-white) !important;
+}
+
+/* Clear the icon on the left instead of the right (overrides the inline
+   padding-right:45px Tutor puts on the login password input) */
+.tutor-login-wrap input[name="pwd"],
+#tutor-registration-form input[name="password"],
+#tutor-registration-form input[name="password_confirmation"] {
+    padding-left: 45px !important;
+    padding-right: 14px !important;
+}
+
 /* Validation icon in confirm password */
 #tutor-registration-form .tutor-form-wrap .tutor-validation-icon {
     position: absolute !important;
@@ -956,6 +981,14 @@ body .tutor-container {
     #tutor-registration-form input[type="password"],
     #tutor-registration-form .tutor-form-wrap input {
         padding: 10px 12px !important;
+    }
+
+    /* Keep clearance for the show/hide eye icon on the left */
+    .tutor-login-wrap input[name="pwd"],
+    #tutor-registration-form input[name="password"],
+    #tutor-registration-form input[name="password_confirmation"] {
+        padding-left: 45px !important;
+        padding-right: 12px !important;
     }
 }
 
