@@ -404,7 +404,7 @@ body .tutor-container {
 #tutor-registration-form .tutor-btn,
 #tutor-registration-form .tutor-btn-primary,
 #tutor-registration-form button[type="submit"],
-.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost),
+.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray),
 .tutor-login-wrap .tutor-btn-primary,
 .tutor-login-wrap button[type="submit"],
 .tutor-login-wrap input[type="submit"] {
@@ -436,7 +436,7 @@ body .tutor-container {
 /* Hover shimmer */
 #tutor-registration-form .tutor-btn:hover,
 #tutor-registration-form button[type="submit"]:hover,
-.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):hover,
+.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray):hover,
 .tutor-login-wrap button[type="submit"]:hover {
     background: var(--sp-blue-light) !important;
     box-shadow: 0 6px 24px var(--sp-blue-glow) !important;
@@ -445,7 +445,7 @@ body .tutor-container {
 
 #tutor-registration-form .tutor-btn:active,
 #tutor-registration-form button[type="submit"]:active,
-.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):active,
+.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray):active,
 .tutor-login-wrap button[type="submit"]:active {
     transform: translateY(0) !important;
     box-shadow: 0 2px 8px var(--sp-blue-glow) !important;
@@ -454,7 +454,7 @@ body .tutor-container {
 /* Loading state */
 #tutor-registration-form .tutor-btn.is-loading,
 #tutor-registration-form button[type="submit"]:disabled,
-.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost).is-loading {
+.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray).is-loading {
     opacity: 0.7 !important;
     cursor: not-allowed !important;
     transform: none !important;
@@ -798,6 +798,7 @@ body .tutor-container {
 .tutor-login-wrap h1,
 .tutor-login-wrap h2,
 .tutor-login-wrap h3,
+.tutor-login-wrap .tutor-h3,
 .tutor-login-wrap .tutor-fs-4,
 .tutor-login-wrap .tutor-fs-5 {
     color: var(--sp-gray) !important;
@@ -811,6 +812,8 @@ body .tutor-container {
 
 #tutor-registration-wrap p,
 .tutor-login-wrap p,
+#tutor-registration-wrap .tutor-small,
+.tutor-login-wrap .tutor-small,
 .tutor-login-wrap .tutor-color-secondary,
 .tutor-login-wrap .tutor-color-muted {
     color: var(--sp-gray) !important;
@@ -893,7 +896,9 @@ body .tutor-container {
         max-width: 100% !important;
         padding: 28px 20px 24px !important;
         border-radius: var(--sp-radius) !important;
-        margin: 100px 12px 30px !important;
+        /* Container already reserves 100px for the fixed header —
+           a small margin here avoids ~200px of dead space on mobile */
+        margin: 24px 12px 30px !important;
     }
 
     .entry-content,
@@ -942,7 +947,7 @@ body .tutor-container {
     #tutor-registration-wrap,
     .tutor-login-wrap {
         padding: 24px 16px 20px !important;
-        margin: 100px 8px 30px !important;
+        margin: 20px 8px 24px !important;
     }
 
     #tutor-registration-form input[type="text"],
@@ -956,8 +961,13 @@ body .tutor-container {
 
 /* ==========================================================================
    22. FORGOT PASSWORD LINK — Override ghost button to link style
+   Tutor marks plain links with .tutor-btn too: forgot-password uses
+   .tutor-btn-link-gray and "register now" uses .tutor-btn-link — style all
+   three variants as inline links, not primary buttons.
    ========================================================================== */
-.tutor-login-wrap a.tutor-btn.tutor-btn-ghost {
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray {
     /* Reset all button styles */
     width: auto !important;
     display: inline !important;
@@ -980,7 +990,9 @@ body .tutor-container {
     transform: none !important;
 }
 
-.tutor-login-wrap a.tutor-btn.tutor-btn-ghost:hover {
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost:hover,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link:hover,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray:hover {
     color: var(--sp-blue-light) !important;
     text-decoration: underline !important;
     background: none !important;
@@ -989,9 +1001,33 @@ body .tutor-container {
     transform: none !important;
 }
 
-.tutor-login-wrap a.tutor-btn.tutor-btn-ghost:active {
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost:active,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link:active,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray:active {
     transform: none !important;
     box-shadow: none !important;
+}
+
+/* Remember-me + forgot-password row: keep it a single flex line */
+.tutor-login-wrap .tutor-flex.tutor-justify-between.tutor-items-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    flex-wrap: nowrap !important;
+}
+
+.tutor-login-wrap .tutor-input-wrapper {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.tutor-login-wrap .tutor-input-wrapper .tutor-label {
+    white-space: nowrap !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+    color: var(--sp-white-soft) !important;
 }
 
 
