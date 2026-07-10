@@ -1547,3 +1547,78 @@ body .tutor-wrap .woocommerce-ResetPassword {
 .tutor-dashboard-content-inner .woocommerce-info::before {
     color: #18a963 !important;
 }
+
+/* ==========================================================
+   RETRIEVE PASSWORD — current Tutor markup
+   Tutor renders: .tutor-card (white!) > form.tutor-forgot-password-form
+   .tutor-ResetPassword.lost_reset_password — none of the legacy
+   lost_password / woocommerce-ResetPassword selectors above match it.
+   ========================================================== */
+
+/* Kill the white wrapper card around the dark form.
+   NOTE: Tutor prints this .tutor-card as a direct child of <body>,
+   outside .tutor-wrap — do not scope these to .tutor-wrap. */
+body .tutor-card:has(> form.lost_reset_password),
+body .tutor-card:has(> .tutor-forgot-password-form) {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Style the form itself as the dark auth card */
+body form.lost_reset_password,
+body form.tutor-forgot-password-form {
+    background: #1a2232 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    padding: 32px 28px !important;
+    color: #ffffff !important;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3) !important;
+}
+
+body form.lost_reset_password p,
+body form.lost_reset_password label {
+    color: #d0d4e0 !important;
+    line-height: 1.8 !important;
+}
+
+/* ==========================================================
+   TUTOR ALERTS — dark theme
+   Tutor's default alert keeps its light background (#fee4e2) but the
+   dark-theme rules force color:#fff, making the message unreadable.
+   ========================================================== */
+body .tutor-alert.tutor-alert-error,
+body .tutor-alert.tutor-alert-danger,
+body .tutor-alert.tutor-alert-warning {
+    background: rgba(249, 106, 123, 0.1) !important;
+    border: 1px solid rgba(249, 106, 123, 0.3) !important;
+    border-radius: 12px !important;
+    color: #f96a7b !important;
+    padding: 14px 18px !important;
+}
+
+body .tutor-alert.tutor-alert-error .tutor-alert-content,
+body .tutor-alert.tutor-alert-error .tutor-alert-content *,
+body .tutor-alert.tutor-alert-danger .tutor-alert-content,
+body .tutor-alert.tutor-alert-danger .tutor-alert-content *,
+body .tutor-alert.tutor-alert-warning .tutor-alert-content,
+body .tutor-alert.tutor-alert-warning .tutor-alert-content * {
+    color: #f96a7b !important;
+}
+
+body .tutor-alert.tutor-alert-success,
+body .tutor-alert.tutor-alert-info {
+    background: rgba(24, 169, 99, 0.1) !important;
+    border: 1px solid rgba(24, 169, 99, 0.3) !important;
+    border-radius: 12px !important;
+    color: #2ecc87 !important;
+    padding: 14px 18px !important;
+}
+
+body .tutor-alert.tutor-alert-success .tutor-alert-content,
+body .tutor-alert.tutor-alert-success .tutor-alert-content *,
+body .tutor-alert.tutor-alert-info .tutor-alert-content,
+body .tutor-alert.tutor-alert-info .tutor-alert-content * {
+    color: inherit !important;
+}
