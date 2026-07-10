@@ -1,0 +1,443 @@
+/* ==========================================================================
+   TUTOR INLINE LOGIN CARD — Dark Theme (site-wide, logged-out visitors)
+   LearnSimply (learrnsimply.com)
+
+   Tutor renders its login form (.tutor-login-wrap) inline on ANY page that
+   requires auth — course subpages (?subpage=course-info), protected lessons,
+   etc. The full signup stylesheet only loads on /signup + /dashboard and
+   can't be reused here (it carries page-level resets that would break
+   course layouts), so this file holds ONLY the card-scoped styles.
+
+   Every selector must stay scoped to .tutor-login-wrap.
+   Load order: enqueued before the signup stylesheet's late <link>, so on
+   /dashboard the signup file still wins where values differ (margins).
+   ========================================================================== */
+
+.tutor-login-wrap {
+    --sp-blue: #4077f3;
+    --sp-blue-light: #658FF2;
+    --sp-blue-soft: rgba(64, 119, 243, 0.12);
+    --sp-blue-glow: rgba(64, 119, 243, 0.22);
+    --sp-white: #ffffff;
+    --sp-white-soft: #d0d4e0;
+    --sp-gray: #94a3b8;
+    --sp-gray-dim: #64748b;
+    --sp-green: #18a963;
+    --sp-red: #f96a7b;
+    --sp-font: "IBM Plex Sans Arabic";
+    --sp-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Tutor variable overrides */
+    --tutor-color-primary: #4077f3;
+    --tutor-color-primary-hover: #658FF2;
+    --tutor-border-color: rgba(255, 255, 255, 0.08);
+    --tutor-color-gray: #94a3b8;
+    --tutor-color-white: #ffffff;
+    --tutor-border-radius: 12px;
+}
+
+/* ─── Card ─── */
+.tutor-login-wrap {
+    width: 100% !important;
+    max-width: 460px !important;
+    background: linear-gradient(165deg,
+            rgba(17, 24, 39, 0.95) 0%,
+            rgba(15, 23, 42, 0.98) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 24px !important;
+    padding: 24px 32px 28px !important;
+    /* Clears the fixed header. On /dashboard the signup stylesheet's
+       late-printed <link> comes after this file, so its margins win there. */
+    margin: 110px auto 40px !important;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 4px 24px rgba(0, 0, 0, 0.3),
+        0 24px 48px rgba(0, 0, 0, 0.15) !important;
+    direction: rtl !important;
+    position: relative !important;
+    font-family: var(--sp-font) !important;
+    z-index: 1 !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Top glow accent */
+.tutor-login-wrap::before {
+    content: "" !important;
+    position: absolute !important;
+    top: -1px !important;
+    right: -1px !important;
+    left: -1px !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, transparent 5%, var(--sp-blue) 50%, transparent 95%) !important;
+    border-radius: 24px 24px 0 0 !important;
+    z-index: 2 !important;
+}
+
+/* Heading above the form */
+.tutor-login-wrap::after {
+    content: "تسجيل الدخول" !important;
+    display: block !important;
+    text-align: center !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: var(--sp-white) !important;
+    margin-bottom: 6px !important;
+    font-family: var(--sp-font) !important;
+    line-height: 1.4 !important;
+    order: -1 !important;
+}
+
+/* ─── Typography reset ─── */
+.tutor-login-wrap,
+.tutor-login-wrap * {
+    font-family: var(--sp-font) !important;
+    box-sizing: border-box !important;
+}
+
+/* Subtitle ("أهلاً بك مرة أخرى!") + headings */
+.tutor-login-wrap h1,
+.tutor-login-wrap h2,
+.tutor-login-wrap h3,
+.tutor-login-wrap .tutor-h3,
+.tutor-login-wrap .tutor-fs-4,
+.tutor-login-wrap .tutor-fs-5 {
+    color: var(--sp-gray) !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    margin-bottom: 20px !important;
+    margin-top: -4px !important;
+    text-align: center !important;
+    line-height: 1.4 !important;
+}
+
+.tutor-login-wrap p,
+.tutor-login-wrap .tutor-small,
+.tutor-login-wrap .tutor-color-secondary,
+.tutor-login-wrap .tutor-color-muted {
+    color: var(--sp-gray) !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+}
+
+/* ─── Inner wrappers ─── */
+.tutor-login-wrap .tutor-login-form-wrapper {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.tutor-login-wrap .bg-white,
+.tutor-login-wrap .card,
+.tutor-login-wrap .card-body {
+    background: transparent !important;
+    color: inherit !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ─── Form rows ─── */
+.tutor-login-wrap .tutor-form-row {
+    display: flex !important;
+    gap: 12px !important;
+    margin-bottom: 0 !important;
+    flex-wrap: wrap !important;
+}
+
+.tutor-login-wrap .tutor-form-col-6 {
+    flex: 1 1 calc(50% - 6px) !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.tutor-login-wrap .tutor-form-col-12 {
+    flex: 1 1 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.tutor-login-wrap .tutor-form-group {
+    margin-bottom: 16px !important;
+}
+
+/* ─── Labels ─── */
+.tutor-login-wrap label,
+.tutor-login-wrap .tutor-form-label {
+    display: block !important;
+    color: var(--sp-gray) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    margin-bottom: 6px !important;
+}
+
+/* ─── Inputs ─── */
+.tutor-login-wrap input[type="text"],
+.tutor-login-wrap input[type="email"],
+.tutor-login-wrap input[type="password"],
+.tutor-login-wrap input[type="tel"],
+.tutor-login-wrap input[type="search"],
+.tutor-login-wrap textarea,
+.tutor-login-wrap select,
+.tutor-login-wrap .tutor-form-control {
+    width: 100% !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    color: var(--sp-white) !important;
+    padding: 12px 14px !important;
+    font-size: 14px !important;
+    transition: var(--sp-transition) !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    line-height: 1.5 !important;
+    height: auto !important;
+}
+
+.tutor-login-wrap input:focus,
+.tutor-login-wrap textarea:focus,
+.tutor-login-wrap select:focus {
+    border-color: var(--sp-blue) !important;
+    box-shadow: 0 0 0 3px var(--sp-blue-soft),
+        0 0 12px rgba(64, 119, 243, 0.08) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.tutor-login-wrap input::placeholder,
+.tutor-login-wrap textarea::placeholder {
+    color: var(--sp-gray-dim) !important;
+    opacity: 1 !important;
+    font-size: 13px !important;
+}
+
+.tutor-login-wrap input:-webkit-autofill,
+.tutor-login-wrap input:-webkit-autofill:hover,
+.tutor-login-wrap input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--sp-white) !important;
+    -webkit-box-shadow: 0 0 0px 1000px #111827 inset !important;
+    box-shadow: 0 0 0px 1000px #111827 inset !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* ─── Password show/hide toggle (inline-styled span from Tutor) ─── */
+.tutor-login-wrap .tutor-input-field {
+    position: relative !important;
+}
+
+.tutor-login-wrap .tutor-input-field > span[style*="position: absolute"] {
+    left: 15px !important;
+    right: auto !important;
+    color: var(--sp-white-soft) !important;
+}
+
+.tutor-login-wrap .tutor-input-field > span[style*="position: absolute"]:hover {
+    color: var(--sp-white) !important;
+}
+
+.tutor-login-wrap input[name="pwd"] {
+    padding-left: 45px !important;
+    padding-right: 14px !important;
+}
+
+/* ─── Primary button (excluding link-style .tutor-btn variants) ─── */
+.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray),
+.tutor-login-wrap button[type="submit"],
+.tutor-login-wrap input[type="submit"] {
+    width: 100% !important;
+    padding: 13px 24px !important;
+    background: var(--sp-blue) !important;
+    color: var(--sp-white) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: var(--sp-transition) !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-top: 4px !important;
+    box-shadow: 0 4px 16px var(--sp-blue-glow) !important;
+    line-height: 1.5 !important;
+    text-decoration: none !important;
+}
+
+.tutor-login-wrap .tutor-btn:not(.tutor-btn-ghost):not(.tutor-btn-link):not(.tutor-btn-link-gray):hover,
+.tutor-login-wrap button[type="submit"]:hover {
+    background: var(--sp-blue-light) !important;
+    box-shadow: 0 6px 24px var(--sp-blue-glow) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ─── Link-style buttons (forgot password / register now) ─── */
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray {
+    width: auto !important;
+    display: inline !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    color: var(--sp-blue) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1.5 !important;
+    transform: none !important;
+}
+
+.tutor-login-wrap a.tutor-btn.tutor-btn-ghost:hover,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link:hover,
+.tutor-login-wrap a.tutor-btn.tutor-btn-link-gray:hover {
+    color: var(--sp-blue-light) !important;
+    text-decoration: underline !important;
+    background: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.tutor-login-wrap a:not(.tutor-btn) {
+    color: var(--sp-blue) !important;
+    text-decoration: none !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.tutor-login-wrap a:not(.tutor-btn):hover {
+    color: var(--sp-blue-light) !important;
+    text-decoration: underline !important;
+}
+
+/* ─── Remember-me row ─── */
+.tutor-login-wrap .tutor-flex.tutor-justify-between.tutor-items-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    flex-wrap: nowrap !important;
+}
+
+.tutor-login-wrap .tutor-input-wrapper {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.tutor-login-wrap .tutor-input-wrapper .tutor-label {
+    white-space: nowrap !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+    color: var(--sp-white-soft) !important;
+}
+
+.tutor-login-wrap input[type="checkbox"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    position: relative !important;
+    margin: 0 0 0 12px !important;
+    display: inline-flex !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+}
+
+.tutor-login-wrap input[type="checkbox"]:checked {
+    background-color: var(--sp-blue) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-size: 14px !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    border-color: var(--sp-blue) !important;
+}
+
+/* ─── Alerts ─── */
+.tutor-login-wrap .tutor-alert-danger,
+.tutor-login-wrap .tutor-alert-error,
+.tutor-login-wrap .tutor-alert-warning {
+    background: rgba(249, 106, 123, 0.08) !important;
+    border: 1px solid rgba(249, 106, 123, 0.25) !important;
+    border-radius: 12px !important;
+    color: var(--sp-red) !important;
+    padding: 12px 16px !important;
+    margin-bottom: 16px !important;
+    font-size: 13px !important;
+}
+
+.tutor-login-wrap .tutor-alert-danger *,
+.tutor-login-wrap .tutor-alert-error *,
+.tutor-login-wrap .tutor-alert-warning * {
+    color: var(--sp-red) !important;
+}
+
+.tutor-login-wrap .tutor-alert-success {
+    background: rgba(24, 169, 99, 0.08) !important;
+    border: 1px solid rgba(24, 169, 99, 0.25) !important;
+    border-radius: 12px !important;
+    color: var(--sp-green) !important;
+    padding: 12px 16px !important;
+    margin-bottom: 16px !important;
+    font-size: 13px !important;
+}
+
+/* ─── Social login (Google) ─── */
+.tutor-login-wrap #tutor-pro-social-authentication {
+    margin-top: 18px !important;
+    padding-top: 18px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.tutor-login-wrap #tutor-pro-social-authentication:not(:has(iframe, button, a, [role="button"])) {
+    display: none !important;
+}
+
+.tutor-login-wrap #tutor-pro-google-authentication {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.tutor-login-wrap #tutor-pro-google-authentication iframe {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.tutor-login-wrap #tutor-pro-twitter-login {
+    width: 100% !important;
+    max-width: 100% !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    color: var(--sp-white-soft) !important;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+    .tutor-login-wrap {
+        max-width: calc(100% - 24px) !important;
+        padding: 28px 20px 24px !important;
+        border-radius: 16px !important;
+    }
+
+    .tutor-login-wrap .tutor-form-row {
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+
+    .tutor-login-wrap .tutor-form-col-6 {
+        flex: 1 1 100% !important;
+    }
+}

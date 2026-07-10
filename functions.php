@@ -96,6 +96,30 @@ add_filter('login_headerurl', function () {
 	return home_url('/');
 });
 
+/**
+ * Tutor renders its login card inline on ANY page that requires auth
+ * (course subpages like ?subpage=course-info, protected lessons, ...).
+ * The signup stylesheet only loads on /signup + /dashboard and carries
+ * page-level resets unsafe elsewhere, so load a scoped card-only dark
+ * stylesheet site-wide for logged-out visitors.
+ */
+add_action('wp_enqueue_scripts', 'learnsimply_enqueue_tutor_auth_styles', 100);
+function learnsimply_enqueue_tutor_auth_styles()
+{
+	if (is_user_logged_in()) {
+		return;
+	}
+	$file = get_stylesheet_directory() . '/assets/tutor-auth/style.css';
+	if (file_exists($file)) {
+		wp_enqueue_style(
+			'learnsimply-tutor-auth',
+			get_stylesheet_directory_uri() . '/assets/tutor-auth/style.css',
+			array(),
+			filemtime($file)
+		);
+	}
+}
+
 add_action('wp_enqueue_scripts', 'learnsimply_enqueue_single_post_styles');
 
 /**
