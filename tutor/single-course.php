@@ -261,8 +261,24 @@ if ( function_exists( 'tutor_course_benefits' ) ) {
 $context['course_benefits'] = get_post_meta( $course_id, '_tutor_course_benefits', true );
 }
 $context['course_requirements'] = get_post_meta( $course_id, '_tutor_course_requirements', true );
-$context['course_target_audience'] = get_post_meta( $course_id, '_tutor_course_target_audience', true );
-$context['course_material_includes'] = get_post_meta( $course_id, '_tutor_course_material_includes', true );
+
+// Target audience + material includes: same normalization as benefits above —
+// Tutor may store these as arrays, and the twig splits them on newlines.
+if ( function_exists( 'tutor_course_target_audience' ) ) {
+	$audience_array = tutor_course_target_audience( $course_id );
+	$context['course_target_audience'] = ! empty( $audience_array ) ? implode( "\n", (array) $audience_array ) : '';
+} else {
+	$audience_raw = get_post_meta( $course_id, '_tutor_course_target_audience', true );
+	$context['course_target_audience'] = is_array( $audience_raw ) ? implode( "\n", $audience_raw ) : $audience_raw;
+}
+
+if ( function_exists( 'tutor_course_material_includes' ) ) {
+	$materials_array = tutor_course_material_includes( $course_id );
+	$context['course_material_includes'] = ! empty( $materials_array ) ? implode( "\n", (array) $materials_array ) : '';
+} else {
+	$materials_raw = get_post_meta( $course_id, '_tutor_course_material_includes', true );
+	$context['course_material_includes'] = is_array( $materials_raw ) ? implode( "\n", $materials_raw ) : $materials_raw;
+}
 
 // Get course image
 $context['course_image'] = get_the_post_thumbnail_url( $course_id, 'full' );

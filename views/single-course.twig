@@ -13,6 +13,95 @@
     <!-- ===== START: Main Content ===== -->
     <main class="course-main-content">
       <div class="container">
+
+        <!-- ===== Hero: وعد الكورس + إثبات اجتماعي + CTA ===== -->
+        <section class="course-hero">
+          <div class="course-hero__badges">
+            <span class="course-hero__badge">كورس</span>
+            {% if categories|length > 0 %}
+            <span class="course-hero__badge course-hero__badge--cat">{{ categories[0].name }}</span>
+            {% endif %}
+            {% if discount_percent > 0 and not is_enrolled %}
+            <span class="course-hero__badge course-hero__badge--offer">خصم {{ discount_percent }}٪ لفترة محدودة</span>
+            {% endif %}
+          </div>
+
+          <h1 class="course-hero__title">{{ course_title }}</h1>
+
+          {% if course_excerpt %}
+          <p class="course-hero__subtitle">{{ course_excerpt }}</p>
+          {% endif %}
+
+          <div class="course-hero__proof">
+            {% if rating_count > 0 %}
+            <div class="course-hero__chip">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFBB54"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span>{{ rating_avg }} ({{ rating_count }} تقييم)</span>
+            </div>
+            {% endif %}
+            {% if students_count > 0 %}
+            <div class="course-hero__chip">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="#999EB2" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#999EB2" stroke-width="1.8"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#999EB2" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span>+{{ students_count }} طالب مشترك</span>
+            </div>
+            {% endif %}
+            <div class="course-hero__chip">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21.4086 9.352C23.5305 10.5065 23.5305 13.4935 21.4086 14.648L8.59662 21.6286C6.53435 22.7513 4 21.2948 4 18.9806V5.01937C4 2.70518 6.53435 1.2487 8.59661 2.37141L21.4086 9.352Z" fill="#999EB2"/></svg>
+              <span>{{ content_count }} درس</span>
+            </div>
+            {% if course_duration %}
+            <div class="course-hero__chip">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#999EB2" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#999EB2" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span>{{ course_duration }}</span>
+            </div>
+            {% endif %}
+            <div class="course-hero__chip">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke="#999EB2" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="6" stroke="#999EB2" stroke-width="1.8"/></svg>
+              <span>وصول مدى الحياة</span>
+            </div>
+          </div>
+
+          <div class="course-hero__cta">
+            {% if is_enrolled %}
+              {% if lesson_url %}
+              <a href="{{ lesson_url }}" class="course-hero__buy">كمّل التعلم من حيث وقفت</a>
+              {% endif %}
+            {% else %}
+              {% if is_purchasable and not is_free and product_id %}
+              <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="course-hero__buy">اشترك في الكورس دلوقتي
+                {% if sale_price_formatted %}
+                <span class="course-hero__buy-price">بـ {{ sale_price_formatted }} ج.م بدل <s>{{ regular_price_formatted }}</s></span>
+                {% elseif regular_price_formatted %}
+                <span class="course-hero__buy-price">بـ {{ regular_price_formatted }} ج.م</span>
+                {% endif %}
+              </a>
+              {% elseif is_user_logged_in %}
+              <form method="POST" class="course-hero__enroll-form">
+                <input type="hidden" name="tutor_course_id" value="{{ course.ID }}">
+                <input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
+                <input type="hidden" name="{{ tutor_nonce_field }}" value="{{ tutor_nonce }}">
+                <button type="submit" class="course-hero__buy">سجل في الكورس مجانًا</button>
+              </form>
+              {% else %}
+              <a href="{{ site.url }}/dashboard/" class="course-hero__buy">سجل في الكورس مجانًا</a>
+              {% endif %}
+              {% if preview_count > 0 and first_preview_url %}
+              <a href="{{ first_preview_url }}" target="_blank" class="course-hero__preview">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21.4086 9.352C23.5305 10.5065 23.5305 13.4935 21.4086 14.648L8.59662 21.6286C6.53435 22.7513 4 21.2948 4 18.9806V5.01937C4 2.70518 6.53435 1.2487 8.59661 2.37141L21.4086 9.352Z" fill="#4077f3"/></svg>
+                شاهد {{ preview_count }} دروس مجانية
+              </a>
+              {% endif %}
+            {% endif %}
+          </div>
+
+          {% if not is_enrolled and not is_free %}
+          <p class="course-hero__guarantee">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="#22c55e" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            ضمان استرداد الفلوس خلال 7 أيام — لو الكورس مش مناسبك هترجعلك بالكامل
+          </p>
+          {% endif %}
+        </section>
+
         <div class="course-page">
           <!-- بطاقة تفاصيل الكورس (على اليسار) -->
           <div class="course-details-card">
@@ -251,12 +340,8 @@
                 </div>
               </div>
 
-              <!-- عنوان الكورس -->
-              <div class="course-title">
-                {{ course_title }}
-              </div>
-
               <!-- وصف الكورس -->
+              <h2 class="course-about-heading">إيه اللي هتلاقيه جوه الكورس؟</h2>
               <div class="course-description">
                 {% set descText = course_excerpt ?: course_content|striptags %}
                 {# Inject newlines before emojis if not already there #}
@@ -269,6 +354,29 @@
             </div>
           </div>
         </div>
+
+        <!-- بطاقة: الكورس ده معمول ليك لو -->
+        {% set audience_items = course_target_audience ? course_target_audience|split('\n')|filter(a => a|trim) : [] %}
+        {% if audience_items|length > 0 %}
+        <section class="persona-card">
+          <div class="section-header">
+            <div class="section-icon-box">
+              <svg width="33" height="33" fill="none" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="white" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="white" stroke-width="1.8"/><path d="M16 11l2 2 4-4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2 class="section-title">الكورس ده معمول ليك لو…</h2>
+          </div>
+          <div class="persona-grid">
+            {% for item in audience_items %}
+            <div class="persona-item">
+              <div class="persona-item-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(64,119,243,0.15)"/><path d="M8.5 12.5l2.3 2.3 4.7-5" stroke="#4077f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <p class="persona-item-text">{{ item|trim }}</p>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
 
         <!-- بطاقة المدرب -->
         {% if instructors|length > 0 %}
@@ -358,6 +466,29 @@
             <p class="learning-show-more">عرض المزيد</p>
           </div>
         </div>
+        {% endif %}
+
+        <!-- بطاقة: إيه اللي هتاخده معاك -->
+        {% set includes_items = course_material_includes ? course_material_includes|split('\n')|filter(a => a|trim) : [] %}
+        {% if includes_items|length > 0 %}
+        <section class="includes-card">
+          <div class="section-header">
+            <div class="section-icon-box">
+              <svg width="33" height="33" fill="none" viewBox="0 0 24 24"><path d="M20 12v9H4v-9" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 7H2v5h20V7z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 21V7" stroke="white" stroke-width="1.8"/><path d="M12 7c-1.5 0-4.5-.5-4.5-2.5S10.5 2 12 4.5C13.5 2 16.5 2.5 16.5 4.5S13.5 7 12 7z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <h2 class="section-title">إيه اللي هتاخده معاك جوه الكورس؟</h2>
+          </div>
+          <div class="includes-grid">
+            {% for item in includes_items %}
+            <div class="includes-item">
+              <div class="includes-item-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="3" fill="rgba(64,119,243,0.15)"/><path d="M8 6V5a4 4 0 0 1 8 0v1" stroke="#4077f3" stroke-width="1.8" stroke-linecap="round"/><path d="M9 12.5l2 2 4-4" stroke="#4077f3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <p class="includes-item-text">{{ item|trim }}</p>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
         {% endif %}
         {% if topics|length > 0 %}
         <div class="course-content-card">
@@ -463,6 +594,17 @@
             {% endfor %}
           </div>
         </div>
+        {% endif %}
+
+        <!-- CTA وسط الصفحة -->
+        {% if not is_enrolled and is_purchasable and not is_free and product_id %}
+        <section class="mid-cta">
+          <div class="mid-cta__text">
+            <h3 class="mid-cta__title">شفت المحتوى بنفسك… جاهز تبدأ؟</h3>
+            <p class="mid-cta__sub">انضم لـ +{{ students_count }} طالب بدأوا رحلتهم معانا</p>
+          </div>
+          <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="mid-cta__btn">اشترك دلوقتي</a>
+        </section>
         {% endif %}
 
 
@@ -607,6 +749,63 @@
           </div>
           {% endif %}
         </div>
+        {% endif %}
+
+        <!-- هيحصل إيه بعد الاشتراك؟ -->
+        {% if not is_enrolled %}
+        <section class="after-buy-card">
+          <div class="section-header">
+            <div class="section-icon-box">
+              <svg width="33" height="33" fill="none" viewBox="0 0 24 24"><path d="M13 2L4.09 12.97a.6.6 0 0 0 .47.98H11l-1 8 8.91-10.97a.6.6 0 0 0-.47-.98H13l1-8z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <h2 class="section-title">هيحصل إيه أول ما تشترك؟</h2>
+          </div>
+          <div class="after-buy-steps">
+            <div class="after-buy-step">
+              <span class="after-buy-step__num">1</span>
+              <div class="after-buy-step__body">
+                <h4>وصول فوري لكل الدروس</h4>
+                <p>{{ is_free ? 'أول ما تسجل، الكورس كله بيتفتحلك في نفس اللحظة — من غير انتظار.' : 'أول ما الدفع يتم، الكورس كله بيتفتحلك في نفس اللحظة — من غير انتظار.' }}</p>
+              </div>
+            </div>
+            <div class="after-buy-step">
+              <span class="after-buy-step__num">2</span>
+              <div class="after-buy-step__body">
+                <h4>تتعلم على مزاجك، مدى الحياة</h4>
+                <p>الكورس ملكك للأبد، بكل التحديثات الجاية عليه، من موبايلك أو اللابتوب.</p>
+              </div>
+            </div>
+            <div class="after-buy-step">
+              <span class="after-buy-step__num">3</span>
+              <div class="after-buy-step__body">
+                <h4>{{ has_certificate ? 'شهادة إتمام + دعم مباشر' : 'دعم مباشر معاك' }}</h4>
+                <p>{{ has_certificate ? 'بعد ما تخلص الدروس بتحصل على شهادة إتمام، وأي سؤال بيتجاوب عليه مباشرة.' : 'أي سؤال يقف قدامك، بنجاوب عليك مباشرة — مش هتبقى لوحدك.' }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        {% endif %}
+
+        <!-- CTA نهائي -->
+        {% if not is_enrolled and is_purchasable and not is_free and product_id %}
+        <section class="final-cta">
+          <h2 class="final-cta__title">خطوة واحدة تفصلك عن البداية</h2>
+          <p class="final-cta__sub">مش محتاج تجهز أي حاجة — اشترك دلوقتي وابدأ أول درس في دقيقتين.</p>
+          <div class="final-cta__price">
+            {% if sale_price_formatted %}
+            <span class="final-cta__current">{{ sale_price_formatted }} <span>ج.م</span></span>
+            {% if regular_price_formatted %}<span class="final-cta__old">{{ regular_price_formatted }} ج.م</span>{% endif %}
+            {% if discount_percent > 0 %}<span class="final-cta__discount">وفّر {{ discount_percent }}٪</span>{% endif %}
+            {% elseif regular_price_formatted %}
+            <span class="final-cta__current">{{ regular_price_formatted }} <span>ج.م</span></span>
+            {% endif %}
+          </div>
+          <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="final-cta__btn">اشترك في الكورس دلوقتي</a>
+          <p class="final-cta__trust">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="#22c55e" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            دفع آمن 100٪ ببطاقتك أو محفظتك الإلكترونية — وضمان استرداد خلال 7 أيام
+          </p>
+        </section>
         {% endif %}
 
         {# Add Review Form for Enrolled Users #}

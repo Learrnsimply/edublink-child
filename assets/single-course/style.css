@@ -4272,3 +4272,486 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   html { scroll-behavior: smooth; }
 }
 #course-buy { scroll-margin-top: 100px; }
+
+/* ===== START: CONVERSION REDESIGN (FR-008) — hero + persuasion sections ===== */
+
+/* ─── Hero ─── */
+.course-hero {
+  position: relative;
+  text-align: center;
+  padding: 24px 20px 8px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.course-hero::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(900px, 100%);
+  height: 420px;
+  background: radial-gradient(ellipse at center, rgba(64, 119, 243, 0.16) 0%, rgba(64, 119, 243, 0) 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.course-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.course-hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.course-hero__badge {
+  background: rgba(64, 119, 243, 0.08);
+  border: 1px solid rgba(64, 119, 243, 0.25);
+  color: #4077f3;
+  padding: 7px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.course-hero__badge--cat {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--learnsimply-card-border);
+  color: var(--learnsimply-text-gray);
+}
+
+.course-hero__badge--offer {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.course-hero__title {
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.4;
+  color: #ffffff;
+  max-width: 900px;
+  margin: 0;
+}
+
+.course-hero__subtitle {
+  font-size: clamp(16px, 2.2vw, 20px);
+  line-height: 1.9;
+  color: var(--learnsimply-text-gray);
+  max-width: 760px;
+  margin: 0;
+}
+
+.course-hero__proof {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.course-hero__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--learnsimply-card-border);
+  border-radius: 30px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #e8eaf0;
+  white-space: nowrap;
+}
+
+.course-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.course-hero__enroll-form {
+  display: inline-flex;
+}
+
+.course-hero__buy {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(135deg, #4077f3 0%, #3567e0 100%);
+  color: #ffffff !important;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 16px 42px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none !important;
+  box-shadow: 0 8px 28px rgba(64, 119, 243, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.course-hero__buy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px rgba(64, 119, 243, 0.45);
+  color: #ffffff !important;
+}
+
+.course-hero__buy-price {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.course-hero__buy-price s {
+  opacity: 0.65;
+}
+
+.course-hero__preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--learnsimply-card-border);
+  padding: 14px 26px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.course-hero__preview:hover {
+  background: rgba(64, 119, 243, 0.1);
+  border-color: rgba(64, 119, 243, 0.35);
+}
+
+.course-hero__guarantee {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #22c55e;
+  margin: 0;
+}
+
+/* heading فوق وصف الكورس (العنوان الأساسي اتنقل للهيرو) */
+.course-about-heading {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  width: 100%;
+  text-align: right;
+}
+
+/* ─── بطاقة: الكورس ده معمول ليك لو ─── */
+.persona-card,
+.includes-card,
+.after-buy-card {
+  width: 100%;
+  background: var(--learnsimply-card-bg);
+  border: 1px solid var(--learnsimply-card-border);
+  border-radius: 20px;
+  padding: 32px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.persona-grid,
+.includes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.persona-item,
+.includes-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 18px 20px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.persona-item:hover,
+.includes-item:hover {
+  background: rgba(64, 119, 243, 0.05);
+  border-color: rgba(64, 119, 243, 0.25);
+}
+
+.persona-item-icon,
+.includes-item-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.persona-item-text,
+.includes-item-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #e8eaf0;
+  margin: 0;
+}
+
+/* ─── CTA وسط الصفحة ─── */
+.mid-cta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  direction: rtl;
+  background: linear-gradient(135deg, rgba(64, 119, 243, 0.12) 0%, rgba(64, 119, 243, 0.04) 100%);
+  border: 1px solid rgba(64, 119, 243, 0.25);
+  border-radius: 20px;
+  padding: 28px 32px;
+}
+
+.mid-cta__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px;
+}
+
+.mid-cta__sub {
+  font-size: 15px;
+  color: var(--learnsimply-text-gray);
+  margin: 0;
+}
+
+.mid-cta__btn {
+  flex-shrink: 0;
+  background: #4077f3;
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 34px;
+  border-radius: 12px;
+  text-decoration: none !important;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.mid-cta__btn:hover {
+  background: #3567e0;
+  transform: translateY(-2px);
+}
+
+/* ─── هيحصل إيه بعد الاشتراك ─── */
+.after-buy-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.after-buy-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.after-buy-step__num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(64, 119, 243, 0.12);
+  border: 1px solid rgba(64, 119, 243, 0.35);
+  color: #4077f3;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.after-buy-step__body h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px;
+}
+
+.after-buy-step__body p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--learnsimply-text-gray);
+  margin: 0;
+}
+
+/* ─── CTA نهائي ─── */
+.final-cta {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  direction: rtl;
+  background: linear-gradient(160deg, rgba(64, 119, 243, 0.16) 0%, var(--learnsimply-card-bg) 55%);
+  border: 1px solid rgba(64, 119, 243, 0.3);
+  border-radius: 24px;
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.final-cta__title {
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.final-cta__sub {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--learnsimply-text-gray);
+  max-width: 560px;
+  margin: 0;
+}
+
+.final-cta__price {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.final-cta__current {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.final-cta__current span {
+  font-size: 18px;
+  color: var(--learnsimply-text-gray);
+}
+
+.final-cta__old {
+  font-size: 19px;
+  color: var(--learnsimply-text-dark-gray);
+  text-decoration: line-through;
+}
+
+.final-cta__discount {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 13px;
+  border-radius: 30px;
+}
+
+.final-cta__btn {
+  background: linear-gradient(135deg, #4077f3 0%, #3567e0 100%);
+  color: #ffffff !important;
+  font-size: 19px;
+  font-weight: 700;
+  padding: 18px 56px;
+  border-radius: 14px;
+  text-decoration: none !important;
+  box-shadow: 0 8px 28px rgba(64, 119, 243, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.final-cta__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px rgba(64, 119, 243, 0.45);
+}
+
+.final-cta__trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--learnsimply-text-gray);
+  margin: 4px 0 0;
+}
+
+/* ─── Responsive ─── */
+@media screen and (max-width: 768px) {
+  .course-hero {
+    padding: 8px 4px 0;
+    gap: 16px;
+  }
+
+  .course-hero__chip {
+    font-size: 12.5px;
+    padding: 7px 12px;
+  }
+
+  .course-hero__buy {
+    width: 100%;
+    padding: 15px 24px;
+  }
+
+  .course-hero__enroll-form {
+    width: 100%;
+  }
+
+  .course-hero__preview {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .persona-grid,
+  .includes-grid,
+  .after-buy-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .persona-card,
+  .includes-card,
+  .after-buy-card {
+    padding: 22px 18px;
+    gap: 20px;
+  }
+
+  .mid-cta {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 20px;
+  }
+
+  .mid-cta__btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .final-cta {
+    padding: 34px 20px;
+  }
+
+  .final-cta__btn {
+    width: 100%;
+    padding: 16px 24px;
+  }
+}
+
+/* ===== END: CONVERSION REDESIGN (FR-008) ===== */
