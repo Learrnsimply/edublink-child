@@ -7,21 +7,22 @@
 {% endblock %}
     
 {% block content %}
-    {% include 'sections/home/dart-offer-section.twig' %}
+    {# رحلة الزائر: ثقة ← طريق واضح ← المنتجات ← عرض واحد ← إقناع ← دليل اجتماعي ← CTA نهائي #}
     {% include 'sections/home/hero-section.twig' %}
-    {% include 'sections/home/cta-section.twig' %}
     {% include 'sections/shared/partners-section.twig' %}
     {% include 'sections/home/roadmap-section.twig' %}
     {% include 'sections/home/featured-courses-section.twig' %}
+    {% include 'sections/home/dart-offer-section.twig' %}
     {% include 'sections/home/bundles-section.twig' %}
     {% include 'sections/home/books-section.twig' %}
-    {% include 'sections/home/articles-section.twig' %}
-    {% include 'sections/home/about-me-section.twig' %}
     {% include 'sections/home/marquee-section.twig' %}
     {% include 'sections/home/features-section.twig' %}
-    {% include 'sections/shared/testimonials-section.twig' %}
     {% include 'sections/home/certificate-section.twig' %}
+    {% include 'sections/shared/testimonials-section.twig' %}
+    {% include 'sections/home/about-me-section.twig' %}
+    {% include 'sections/home/articles-section.twig' %}
     {% include 'sections/shared/faq-section.twig' %}
+    {% include 'sections/home/final-cta-section.twig' %}
 {% endblock %}
 
 {% block body_extra %}

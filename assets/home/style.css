@@ -683,3 +683,18 @@
 .bundle-card-premium .action-buttons {
 	margin-top: auto;
 }
+/* ===== Hero guarantee line (under blue-card buttons) ===== */
+.hero-wrapper .blue-card-content .hero-guarantee {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	margin: 14px 0 0;
+	font-size: 13.5px;
+	font-weight: 500;
+	color: rgba(255, 255, 255, 0.92);
+}
+
+.hero-wrapper .blue-card-content .hero-guarantee svg {
+	flex-shrink: 0;
+	color: #7dffb8;
+}
