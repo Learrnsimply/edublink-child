@@ -698,3 +698,30 @@
 	flex-shrink: 0;
 	color: #7dffb8;
 }
+
+/* ===== Compact hero (desktop) =====
+   الهيرو كان min-height: 100vh فبياخد شاشة كاملة قبل ما تظهر الكورسات.
+   التعديلات دي بتخليه أقصر عشان سيكشن الكورسات يبان من أول ما الصفحة تفتح.
+   الموبايل ليه قواعد خاصة في global/styles.css فسايبينه زي ما هو. */
+@media (min-width: 1025px) {
+	.hero-wrapper {
+		min-height: auto;
+	}
+
+	.hero-inner {
+		padding: 100px 0 24px;
+	}
+
+	.hero-content-wrapper {
+		padding: 44px 60px;
+	}
+
+	.hero-wrapper .blue-card-content .card-title {
+		font-size: 44px;
+	}
+}
+
+/* لما زرار الهيرو يودّي على #courses ميتغطاش العنوان تحت الهيدر */
+#courses {
+	scroll-margin-top: 90px;
+}
