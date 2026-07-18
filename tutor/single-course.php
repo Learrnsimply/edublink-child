@@ -407,67 +407,32 @@ if ( ! empty( $context['topics'] ) ) {
 $context['preview_count'] = $preview_count;
 $context['first_preview_url'] = $first_preview_url;
 
-// Default FAQ items. Also used to BACK-FILL any custom FAQ item whose answer was
-// left blank in the course settings, so a question never renders without an answer.
-$default_faq = array(
+// FAQ items — hardcoded and shown identically on every course page.
+// The per-course meta (_learnsimply_faq) is intentionally NOT used: the questions
+// and answers are the same for every course, and several courses had the answers
+// saved blank, which left the FAQ showing questions with no answers.
+$context['faq_items'] = array(
 	array(
 		'question' => 'هل يمكنني استرداد المبلغ؟',
-		'answer' => 'نعم، لديك ضمان استرداد كامل خلال 7 أيام من الشراء. لو الكورس مش مناسبك، تواصل معنا وهنرجعلك فلوسك بالكامل.',
+		'answer'   => 'نعم، تقدر تسترد المبلغ كامل خلال 7 أيام من شراء الكورس.',
 	),
 	array(
 		'question' => 'هل الوصول للكورس مدى الحياة؟',
-		'answer' => 'نعم، بمجرد شراء الكورس يكون عندك وصول مدى الحياة لكل المحتوى والتحديثات المستقبلية.',
+		'answer'   => 'نعم، الكورس معاك مدى الحياة بكل التحديثات القادمة.',
 	),
 	array(
 		'question' => 'هل أحتاج خبرة سابقة؟',
-		'answer' => 'لا، الكورس مصمم للمبتدئين تماماً. هنبدأ من أساسيات البرمجة ونوصل لمفاهيم متقدمة.',
+		'answer'   => 'لا إطلاقاً، الكورس مناسب للمبتدئين من الصفر.',
 	),
 	array(
 		'question' => 'هل يوجد شهادة بعد إتمام الكورس؟',
-		'answer' => 'نعم، بعد إتمام كل الدروس هتحصل على شهادة إتمام تقدر تضيفها في CV أو LinkedIn.',
+		'answer'   => 'نعم، يوجد شهادة بعد إتمام كل كورس.',
 	),
 	array(
 		'question' => 'كيف أتواصل للدعم؟',
-		'answer' => 'تقدر تتواصل معنا على واتساب في أي وقت، وكمان هتنضم لجروب خاص بالكورس للمناقشة مع باقي الطلاب.',
+		'answer'   => 'تقدر تتواصل معنا على الواتساب من خلال الرقم <a href="https://wa.me/201030127228" target="_blank" rel="noopener" style="color:#4077f3;font-weight:600;">+201030127228</a>',
 	),
 );
-
-// Lookup of default answers by (normalised) question text, for back-filling blanks.
-$default_faq_map = array();
-foreach ( $default_faq as $df ) {
-	$key = preg_replace( '/\s+/u', ' ', trim( $df['question'] ) );
-	$default_faq_map[ $key ] = $df['answer'];
-}
-
-// Get FAQ items from course meta (custom field: _learnsimply_faq)
-$faq_raw = get_post_meta( $course_id, '_learnsimply_faq', true );
-$context['faq_items'] = array();
-
-if ( ! empty( $faq_raw ) && is_array( $faq_raw ) ) {
-	// Course has custom FAQ questions. If any answer was left empty, fill it from
-	// the matching default answer (matched by question text) so no question shows blank.
-	foreach ( $faq_raw as $item ) {
-		$question = isset( $item['question'] ) ? trim( $item['question'] ) : '';
-		$answer   = isset( $item['answer'] ) ? trim( $item['answer'] ) : '';
-
-		if ( $answer === '' && $question !== '' ) {
-			$key = preg_replace( '/\s+/u', ' ', $question );
-			if ( isset( $default_faq_map[ $key ] ) ) {
-				$answer = $default_faq_map[ $key ];
-			}
-		}
-
-		if ( $question !== '' ) {
-			$context['faq_items'][] = array(
-				'question' => $question,
-				'answer'   => $answer,
-			);
-		}
-	}
-} else {
-	// No custom FAQ — use the defaults (which already include answers).
-	$context['faq_items'] = $default_faq;
-}
 
 // Render the template
 Timber::render( 'single-course.twig', $context );
