@@ -1,12 +1,37 @@
     <!-- ===== PROMO BANNER ===== -->
-    <div class="promo-banner">
+    <div class="promo-banner" id="dartPromoBanner" data-deadline="">
       <div class="promo-content">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-          <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span>خصم <strong>50%</strong> على كورس دارت - اول خطوه لبنا التطبيقات</span>
-        <a href="https://learnsimply.com/courses/dart/" class="promo-link">اشترك الان →</a>
+        <div class="promo-text">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>خصم <strong>50%</strong> على كورس دارت — أول خطوة لبناء التطبيقات</span>
+          <a href="https://learrnsimply.com/courses/dart/" class="promo-link">اشترك الآن ←</a>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="promo-countdown" id="dartCountdown" aria-label="الوقت المتبقي على العرض">
+          <div class="countdown-box">
+            <span class="countdown-num" data-unit="days">00</span>
+            <span class="countdown-label">يوم</span>
+          </div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-box">
+            <span class="countdown-num" data-unit="hours">00</span>
+            <span class="countdown-label">ساعة</span>
+          </div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-box">
+            <span class="countdown-num" data-unit="minutes">00</span>
+            <span class="countdown-label">دقيقة</span>
+          </div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-box">
+            <span class="countdown-num" data-unit="seconds">00</span>
+            <span class="countdown-label">ثانية</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -33,6 +58,16 @@
                   <p class="hero-description">
                     ابدأ من الصفر، افهم الأساس صح، واشتغل بإيدك على مشاريع حقيقية من غير تعقيد
                   </p>
+
+                  <!-- Primary CTA (visible immediately) -->
+                  <div class="hero-cta-inline">
+                    <a href="{{ courses_archive_url }}" class="hero-cta-btn-large">
+                      <span>ابدأ الآن</span>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
 
                   <!-- Features List -->
                   <div class="hero-features">
@@ -106,16 +141,6 @@
       </div>
     </section>
 
-    <!-- ===== CTA BUTTON SECTION ===== -->
-    <section class="hero-cta-section">
-      <a href="{{ courses_archive_url }}" class="hero-cta-btn-large">
-        <span>ابدأ الآن</span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </section>
-
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const counters = document.querySelectorAll('.counter');
@@ -150,43 +175,156 @@
       });
     </script>
 
+    <!-- Countdown Timer Logic -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var banner = document.getElementById('dartPromoBanner');
+        var countdown = document.getElementById('dartCountdown');
+        if (!banner || !countdown) return;
+
+        // Deadline: use data-deadline if set, otherwise a rolling 3-day window
+        // persisted per-visitor in localStorage so it feels like a real offer.
+        var deadline;
+        var attr = (banner.getAttribute('data-deadline') || '').trim();
+        if (attr) {
+          deadline = new Date(attr).getTime();
+        } else {
+          var stored = localStorage.getItem('dartOfferDeadline');
+          if (stored) {
+            deadline = parseInt(stored, 10);
+          } else {
+            deadline = Date.now() + 3 * 24 * 60 * 60 * 1000; // 3 days
+            localStorage.setItem('dartOfferDeadline', deadline);
+          }
+        }
+
+        var nums = {};
+        countdown.querySelectorAll('.countdown-num').forEach(function(el) {
+          nums[el.getAttribute('data-unit')] = el;
+        });
+
+        function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+        function tick() {
+          var diff = deadline - Date.now();
+          if (diff <= 0) {
+            // Offer ended — reset to a fresh window so the banner stays live.
+            deadline = Date.now() + 3 * 24 * 60 * 60 * 1000;
+            localStorage.setItem('dartOfferDeadline', deadline);
+            diff = deadline - Date.now();
+          }
+          var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+          if (nums.days) nums.days.textContent = pad(days);
+          if (nums.hours) nums.hours.textContent = pad(hours);
+          if (nums.minutes) nums.minutes.textContent = pad(minutes);
+          if (nums.seconds) nums.seconds.textContent = pad(seconds);
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      });
+    </script>
+
     <style>
       .promo-banner {
-        background: linear-gradient(135deg, #4077F3 0%, #2E5CC8 100%);
-        padding: 16px 20px;
-        text-align: center;
+        background: linear-gradient(135deg, #1e3a8a 0%, #2E5CC8 45%, #4077F3 100%);
+        padding: 14px 24px;
         color: white;
         font-size: 15px;
         font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       }
 
       .promo-content {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .promo-text {
+        display: flex;
+        align-items: center;
         gap: 12px;
         flex-wrap: wrap;
       }
 
-      .promo-content svg {
+      .promo-text svg {
         flex-shrink: 0;
-        color: currentColor;
+        color: #fbbf24;
       }
 
       .promo-content strong {
-        font-weight: 700;
+        font-weight: 800;
         font-size: 17px;
+        color: #fbbf24;
       }
 
       .promo-link {
         color: white;
         text-decoration: none;
-        font-weight: 600;
-        transition: opacity 0.3s ease;
+        font-weight: 700;
+        padding: 6px 16px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        transition: all 0.25s ease;
+        white-space: nowrap;
       }
 
       .promo-link:hover {
-        opacity: 0.9;
+        background: rgba(255, 255, 255, 0.28);
+        transform: translateY(-1px);
+      }
+
+      /* Countdown Timer */
+      .promo-countdown {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .countdown-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 52px;
+        padding: 6px 8px;
+        background: rgba(0, 0, 0, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 10px;
+      }
+
+      .countdown-num {
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1;
+        color: #fbbf24;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .countdown-label {
+        font-size: 10px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.85);
+        margin-top: 4px;
+      }
+
+      .countdown-sep {
+        font-size: 20px;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1;
+        padding-bottom: 14px;
       }
 
       .hero-improved {
@@ -331,12 +469,8 @@
         font-weight: 500;
       }
 
-      .hero-cta-section {
-        background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
-        padding: 80px 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      .hero-cta-inline {
+        margin-top: 4px;
       }
 
       .hero-cta-btn-large {
@@ -344,15 +478,15 @@
         align-items: center;
         justify-content: center;
         gap: 12px;
-        padding: 24px 70px;
+        padding: 18px 52px;
         background: linear-gradient(135deg, #4077F3 0%, #2E5CC8 100%);
         color: white;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 700;
         border-radius: 14px;
         text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 15px 40px rgba(64, 119, 243, 0.5);
+        box-shadow: 0 12px 32px rgba(64, 119, 243, 0.45);
         border: none;
         cursor: pointer;
       }
@@ -387,6 +521,25 @@
       @media (max-width: 768px) {
         .promo-content {
           flex-direction: column;
+          gap: 12px;
+        }
+
+        .promo-text {
+          justify-content: center;
+          text-align: center;
+        }
+
+        .promo-countdown {
+          gap: 6px;
+        }
+
+        .countdown-box {
+          min-width: 46px;
+          padding: 5px 6px;
+        }
+
+        .countdown-num {
+          font-size: 19px;
         }
 
         .hero-main-grid {
@@ -417,15 +570,15 @@
           gap: 28px;
         }
 
+        .hero-cta-inline {
+          width: 100%;
+        }
+
         .hero-cta-btn-large {
           padding: 16px 40px;
           font-size: 18px;
           width: 100%;
-          max-width: 300px;
-        }
-
-        .hero-cta-section {
-          padding: 40px 20px;
+          max-width: 340px;
         }
       }
     </style>
