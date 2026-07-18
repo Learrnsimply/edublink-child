@@ -419,6 +419,17 @@
         background: transparent !important;
       }
 
+      /* Kill the theme's stacked hero padding (110px on .hero-inner + 60px on
+         .hero-content-wrapper) that left a big empty gap under the promo banner.
+         The inner grid supplies its own spacing. */
+      .hero-improved .hero-inner {
+        padding: 16px 0 0 !important;
+      }
+
+      .hero-improved .hero-content-wrapper {
+        padding: 0 !important;
+      }
+
       /* Tighten the gap between the hero and the courses section below it */
       .hero-wrapper + .learnsimply-featured-courses-section {
         padding-top: 22px;
@@ -429,7 +440,7 @@
         grid-template-columns: 1.05fr 0.95fr;
         gap: 56px;
         align-items: center;
-        padding: 52px 40px;
+        padding: 34px 40px 40px;
         max-width: 1240px;
         margin: 0 auto;
       }
