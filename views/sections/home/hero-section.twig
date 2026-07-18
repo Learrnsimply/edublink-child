@@ -77,46 +77,16 @@
                       </svg>
                     </div>
                   </div>
-                </div>
 
-                <!-- Blue Card -->
-                <div class="blue-card">
-                  <!-- Background Shape -->
-                  <div class="blue-card-bg">
-                    <svg class="bg-shape" fill="none" viewBox="0 0 1533 1444">
-                      <g clip-path="url(#clip0_hero_bg)">
-                        <path
-                          d="M1533 722C1533 1120.87 1189.87 1444 791 1444C392.131 1444 49 1120.87 49 722C49 323.131 392.131 0 791 0C1189.87 0 1533 323.131 1533 722Z"
-                          fill="#4077F3"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_hero_bg">
-                          <rect fill="white" height="1444" width="1533" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </div>
-
-                  <div class="blue-card-content">
-                    <!-- Stars Icon (image) -->
-                    <div class="stars-icon">
-                      <img src="{{ theme_uri }}/assets/img/stars.png" alt="نجوم" />
-                    </div>
-
-                    <!-- Card Title -->
-                    <h2 class="card-title">
-من أول سطر كود… لحد أول مشروع ليك
-
-                    </h2>
-
-                    <!-- Buttons -->
-                    <div class="buttons">
-                      <a href="{{ courses_archive_url }}" class="button-dark">
-                        <div class="button-dark-border"></div>
-                        <span>ابدأ الآن</span>
-                      </a>
-                    </div>
+                  <!-- CTA Section -->
+                  <div class="hero-cta-section">
+                    <!-- Main CTA Button -->
+                    <a href="{{ courses_archive_url }}" class="hero-cta-button">
+                      <span>ابدأ الآن</span>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
 
                     <!-- Guarantee -->
                     <p class="hero-guarantee">
@@ -134,19 +104,22 @@
                   <div class="stats-row">
                     <div class="stat-item">
                       <p class="stat-number">
-                        <span class="stat-value" dir="ltr">+10,000</span>
+                        <span class="stat-value counter" data-target="10000">0</span>
+                        <span class="stat-plus">+</span>
                       </p>
                       <p class="stat-label">طالب تعلموا من المنصة</p>
                     </div>
                     <div class="stat-item">
                       <p class="stat-number">
-                        <span class="stat-value" dir="ltr">20M</span>
+                        <span class="stat-value counter" data-target="20000000">0</span>
+                        <span class="stat-unit">مشاهدة</span>
                       </p>
-                      <p class="stat-label">مشاهدة على اليوتيوب</p>
+                      <p class="stat-label">على اليوتيوب</p>
                     </div>
                     <div class="stat-item">
                       <p class="stat-number">
-                        <span class="stat-value" dir="ltr">380K+</span>
+                        <span class="stat-value counter" data-target="380000">0</span>
+                        <span class="stat-plus">K+</span>
                       </p>
                       <p class="stat-label">مشترك على اليوتيوب</p>
                     </div>
@@ -159,4 +132,120 @@
         </div>
       </div>
     </section>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+              entry.target.classList.add('animated');
+              const target = parseInt(entry.target.getAttribute('data-target'));
+              const element = entry.target;
+              
+              if (target === 20000000) {
+                // For 20M, show as "20M" not a counter
+                element.textContent = '20';
+              } else if (target === 380000) {
+                // For 380K+
+                element.textContent = '380';
+              } else {
+                // For 10K
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                  current += increment;
+                  if (current >= target) {
+                    element.textContent = target.toLocaleString('ar-EG');
+                    clearInterval(timer);
+                  } else {
+                    element.textContent = Math.floor(current).toLocaleString('ar-EG');
+                  }
+                }, 30);
+              }
+            }
+          });
+        }, observerOptions);
+
+        counters.forEach(counter => observer.observe(counter));
+      });
+    </script>
+
+    <style>
+      .hero-cta-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        margin-top: 40px;
+      }
+
+      .hero-cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 16px 48px;
+        background: linear-gradient(135deg, #4077F3 0%, #2E5CC8 100%);
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 24px rgba(64, 119, 243, 0.3);
+        border: none;
+        cursor: pointer;
+      }
+
+      .hero-cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(64, 119, 243, 0.4);
+        background: linear-gradient(135deg, #5585F7 0%, #3A66D4 100%);
+      }
+
+      .hero-cta-button:active {
+        transform: translateY(0);
+      }
+
+      .hero-cta-button svg {
+        transition: transform 0.3s ease;
+      }
+
+      .hero-cta-button:hover svg {
+        transform: translateX(-4px);
+      }
+
+      .stat-plus,
+      .stat-unit {
+        font-size: 14px;
+        font-weight: 500;
+        color: #666;
+        margin-right: 4px;
+      }
+
+      .counter {
+        font-weight: 700;
+        font-size: 28px;
+      }
+
+      @media (max-width: 768px) {
+        .hero-cta-button {
+          padding: 14px 40px;
+          font-size: 16px;
+          width: 100%;
+          max-width: 300px;
+        }
+
+        .counter {
+          font-size: 24px;
+        }
+      }
+    </style>
     <!-- ===== END: Hero Section ===== -->
