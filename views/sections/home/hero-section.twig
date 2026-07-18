@@ -2,10 +2,9 @@
     <div class="promo-banner" id="dartPromoBanner" data-deadline="">
       <div class="promo-content">
         <div class="promo-text">
-          <span class="promo-flame" aria-hidden="true">🔥</span>
           <span class="promo-pill">عرض محدود</span>
           <span class="promo-headline">
-            خصم <strong>50%</strong> على كورس دارت — أول خطوة لبناء التطبيقات
+            خصم <strong>50%</strong> على كورس دارت، أول خطوة لبناء التطبيقات
           </span>
         </div>
 
@@ -300,18 +299,6 @@
         flex-wrap: wrap;
       }
 
-      .promo-flame {
-        font-size: 24px;
-        line-height: 1;
-        display: inline-block;
-        animation: flamePulse 1.2s ease-in-out infinite;
-      }
-
-      @keyframes flamePulse {
-        0%, 100% { transform: scale(1) rotate(-4deg); }
-        50%      { transform: scale(1.18) rotate(4deg); }
-      }
-
       .promo-pill {
         background: #ffffff;
         color: #b91c1c;
@@ -399,7 +386,7 @@
       }
 
       .promo-link {
-        color: #b91c1c;
+        color: #b91c1c !important;
         background: #ffffff;
         text-decoration: none;
         font-weight: 800;
@@ -414,7 +401,8 @@
       .promo-link:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
-        color: #991b1b;
+        color: #991b1b !important;
+        background: #fff7ed;
       }
 
       /* ===== HERO ===== */
