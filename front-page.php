@@ -360,6 +360,57 @@ foreach ( $context['bundles'] as $ls_bundle ) {
 	}
 }
 
+// Java "full path" bundle — 4 courses presented as one package before the featured
+// courses section. The "before discount" total is summed from each course's REGULAR
+// price (never the sale price) so the strikethrough total and the savings stay accurate
+// against the live products even when individual courses go on sale.
+$java_bundle_slugs = array(
+	'java-course-level1',    // جافا الأساسيات
+	'javaoop',               // جافا OOP
+	'data-structure-c',      // هياكل البيانات — المستوى الأول
+	'data_structure_level2', // هياكل البيانات — المستوى الثاني
+);
+$java_bundle_items       = array();
+$java_bundle_regular_total = 0;
+$java_bundle_product_ids = array();
+
+// Preserve the requested display order by looping slugs first, then matching courses.
+foreach ( $java_bundle_slugs as $jb_slug ) {
+	foreach ( $context['courses'] as $jb_course ) {
+		if ( isset( $jb_course->slug ) && $jb_course->slug === $jb_slug ) {
+			// Always use the regular (pre-discount) price for the bundle math.
+			$jb_regular = $jb_course->regular_price ? floatval( $jb_course->regular_price ) : floatval( $jb_course->price );
+			$java_bundle_regular_total += $jb_regular;
+
+			if ( $jb_course->product_id ) {
+				$java_bundle_product_ids[] = $jb_course->product_id;
+			}
+
+			$java_bundle_items[] = array(
+				'title'         => $jb_course->title,
+				'slug'          => $jb_slug,
+				'regular_price' => $jb_regular,
+				'thumbnail'     => $jb_course->thumbnail,
+				'product_id'    => $jb_course->product_id,
+				'link'          => $jb_course->link,
+			);
+			break;
+		}
+	}
+}
+
+$java_bundle_price = 1900; // Bundle price in EGP
+$context['java_bundle'] = array(
+	'items'           => $java_bundle_items,
+	'regular_total'   => $java_bundle_regular_total,
+	'price'           => $java_bundle_price,
+	'savings'         => max( 0, $java_bundle_regular_total - $java_bundle_price ),
+	'savings_percent' => $java_bundle_regular_total > 0
+		? round( ( ( $java_bundle_regular_total - $java_bundle_price ) / $java_bundle_regular_total ) * 100 )
+		: 0,
+	'product_ids'     => $java_bundle_product_ids,
+);
+
 // Get articles (WordPress posts)
 $context['articles'] = array();
 $articles_args = array(
