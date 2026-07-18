@@ -4755,3 +4755,236 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 }
 
 /* ===== END: CONVERSION REDESIGN (FR-008) ===== */
+
+/* ═══════════════════════════════════════════════════════════
+   REDESIGN: هيرو عمودين + وصف بعرض كامل + كارت مدرب محسّن
+   (القواعد هنا في آخر الملف عشان تفوز على القديمة بنفس التخصيص)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── الهيرو: عمودين (نص | ميديا+شراء) ── */
+.course-hero {
+  text-align: right;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 48px;
+  align-items: center;
+  padding: 32px 0 16px;
+}
+.course-hero::before {
+  top: -90px;
+  left: auto;
+  right: -60px;
+  transform: none;
+  width: min(680px, 90%);
+}
+
+.course-hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  text-align: right;
+}
+.course-hero__text .course-hero__badges,
+.course-hero__text .course-hero__proof,
+.course-hero__text .course-hero__cta {
+  justify-content: flex-start;
+}
+.course-hero__text .course-hero__title,
+.course-hero__text .course-hero__subtitle {
+  text-align: right;
+  margin: 0;
+  max-width: 100%;
+}
+.course-hero__text .course-hero__title {
+  font-size: clamp(26px, 3.4vw, 42px);
+}
+
+/* ── عمود الميديا ── */
+.course-hero__media {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.course-hero__media .single-course-media {
+  margin: 0;
+}
+
+/* ── بطاقة السعر والشراء ── */
+.hero-buy-card {
+  background: var(--learnsimply-card-bg, #141924);
+  border: 1px solid var(--learnsimply-card-border, rgba(255, 255, 255, 0.1));
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.hero-buy-card__price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hero-buy-card__amount {
+  font-size: 30px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+.hero-buy-card__cur {
+  font-size: 15px;
+  color: var(--learnsimply-text-gray, #999eb2);
+}
+.hero-buy-card__old {
+  font-size: 15px;
+  color: var(--learnsimply-text-dark-gray, #6c7278);
+  text-decoration: line-through;
+}
+.hero-buy-card__save {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--learnsimply-yellow, #ffbb54);
+  background: rgba(255, 187, 84, 0.08);
+  border: 1px solid rgba(255, 187, 84, 0.2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  line-height: 1.5;
+}
+.hero-buy-card .action-buttons {
+  margin: 0;
+}
+.hero-buy-card .buy-button {
+  font-size: 17px;
+  height: 52px;
+}
+
+/* ── قسم الوصف بعرض كامل ── */
+.course-about {
+  width: 100%;
+  background: var(--learnsimply-card-bg, #141924);
+  border: 1px solid var(--learnsimply-card-border, rgba(255, 255, 255, 0.1));
+  border-radius: 20px;
+  padding: 32px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.course-about .course-about-heading {
+  text-align: right;
+}
+
+/* ── كارت المدرب المحسّن ── */
+.instructor-card {
+  align-items: flex-start;
+  max-width: 100%;
+  padding: 28px 30px;
+}
+.instructor-info {
+  align-items: flex-start;
+  gap: 18px;
+}
+.instructor-avatar {
+  width: 88px;
+  height: 88px;
+  border: 3px solid rgba(64, 119, 243, 0.35);
+}
+.instructor-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--learnsimply-primary-blue, #4077f3);
+  margin: 0 0 2px;
+}
+.instructor-name {
+  font-size: 21px;
+}
+.instructor-title {
+  color: var(--learnsimply-primary-blue, #4077f3);
+  font-size: 14.5px;
+}
+.instructor-bio {
+  color: var(--learnsimply-text-gray, #999eb2);
+  font-size: 14.5px;
+  line-height: 1.85;
+  margin: 10px 0 0;
+  max-width: 62ch;
+}
+.instructor-stats {
+  display: flex;
+  gap: 26px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.instructor-stat {
+  display: flex;
+  flex-direction: column;
+}
+.instructor-stat__num {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+.instructor-stat__label {
+  font-size: 12.5px;
+  color: var(--learnsimply-text-gray, #999eb2);
+}
+.instructor-actions {
+  align-self: stretch;
+  align-items: flex-start;
+}
+
+/* ── موبايل/تابلت: العمودين فوق بعض والميديا فوق ── */
+@media (max-width: 1024px) {
+  .course-hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 20px 0 4px;
+  }
+  .course-hero__media {
+    order: -1;
+  }
+  .course-hero__text {
+    align-items: center;
+    text-align: center;
+  }
+  .course-hero__text .course-hero__badges,
+  .course-hero__text .course-hero__proof,
+  .course-hero__text .course-hero__cta {
+    justify-content: center;
+  }
+  .course-hero__text .course-hero__title,
+  .course-hero__text .course-hero__subtitle {
+    text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .course-about {
+    padding: 22px;
+  }
+  .instructor-card {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .instructor-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .instructor-stats {
+    gap: 18px;
+  }
+  .instructor-actions {
+    width: 100%;
+  }
+  .instructor-about-btn {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+}
