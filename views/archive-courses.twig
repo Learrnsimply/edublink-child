@@ -39,6 +39,111 @@
     .course-card .course-info .info-item.level::before {
       background-image: url("{{ theme_uri }}/assets/img/levele.png") !important;
     }
+
+    /* ── All-Courses Bundle Banner ──────────────────────────────── */
+    .ls-bundle-banner {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      margin: 30px 0 45px;
+      padding: 34px 38px;
+      border-radius: 22px;
+      border: 1px solid rgba(64, 119, 243, 0.35);
+      background:
+        radial-gradient(120% 160% at 100% 0%, rgba(64, 119, 243, 0.28) 0%, rgba(64, 119, 243, 0) 55%),
+        radial-gradient(120% 160% at 0% 100%, rgba(255, 187, 84, 0.16) 0%, rgba(255, 187, 84, 0) 55%),
+        linear-gradient(135deg, rgba(13, 20, 38, 0.96) 0%, rgba(10, 15, 26, 0.96) 100%);
+      box-shadow: 0 20px 55px -25px rgba(64, 119, 243, 0.6);
+    }
+    .ls-bundle-banner__glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(60% 120% at 85% 15%, rgba(64, 119, 243, 0.22) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .ls-bundle-banner__content { position: relative; z-index: 1; flex: 1 1 420px; min-width: 260px; }
+    .ls-bundle-banner__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      margin-bottom: 14px;
+      border-radius: 999px;
+      background: rgba(255, 187, 84, 0.14);
+      border: 1px solid rgba(255, 187, 84, 0.4);
+      color: #FFBB54;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .ls-bundle-banner__title {
+      margin: 0 0 8px;
+      color: #fff;
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+    .ls-bundle-banner__subtitle { margin: 0 0 18px; color: #B7BECF; font-size: 15px; line-height: 1.7; }
+    .ls-bundle-banner__features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 22px;
+      margin-bottom: 22px;
+    }
+    .ls-bundle-banner__feature {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #E4E8F1;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .ls-bundle-banner__feature svg { flex-shrink: 0; }
+    .ls-bundle-banner__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; }
+    .ls-bundle-banner__price-now { color: #fff; font-size: 30px; font-weight: 800; }
+    .ls-bundle-banner__price-old { color: #7C8496; font-size: 18px; text-decoration: line-through; }
+    .ls-bundle-banner__price-save {
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(46, 204, 113, 0.16);
+      border: 1px solid rgba(46, 204, 113, 0.4);
+      color: #43D787;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .ls-bundle-banner__cta { position: relative; z-index: 1; flex: 0 0 auto; }
+    .ls-bundle-banner__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 34px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #4077F3 0%, #2E5BD8 100%);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 14px 30px -10px rgba(64, 119, 243, 0.8);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .ls-bundle-banner__btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px -12px rgba(64, 119, 243, 0.95);
+    }
+    .ls-bundle-banner__btn svg { transition: transform 0.25s ease; }
+    .ls-bundle-banner__btn:hover svg { transform: translateX(-4px); }
+    @media (max-width: 768px) {
+      .ls-bundle-banner { padding: 26px 22px; text-align: center; justify-content: center; }
+      .ls-bundle-banner__title { font-size: 22px; }
+      .ls-bundle-banner__features { justify-content: center; }
+      .ls-bundle-banner__price { justify-content: center; }
+      .ls-bundle-banner__cta { width: 100%; }
+      .ls-bundle-banner__btn { width: 100%; justify-content: center; }
+    }
   </style>
 {% endblock %}
 
@@ -46,6 +151,51 @@
 
 {% block content %}
   <div class="container">
+    <!-- All-Courses Bundle Banner -->
+    <div class="ls-bundle-banner">
+      <div class="ls-bundle-banner__glow"></div>
+
+      <div class="ls-bundle-banner__content">
+        <span class="ls-bundle-banner__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l2.9 6.26L21.9 9.27l-5 3.86L18 21l-6-3.16L6 21l1.1-7.87-5-3.86 6.99-0.99L12 2z" fill="#FFBB54"/>
+          </svg>
+          الأكثر قيمة
+        </span>
+
+        <h2 class="ls-bundle-banner__title">اشترك في باقة جميع الكورسات ووفّر أكتر</h2>
+        <p class="ls-bundle-banner__subtitle">بدل ما تشتري كورس كورس، خُد رحلة البرمجة كاملة في باقة واحدة بسعر مميز ووصول مدى الحياة.</p>
+
+        <div class="ls-bundle-banner__features">
+          <span class="ls-bundle-banner__feature">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#4077F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            6 كورسات كاملة
+          </span>
+          <span class="ls-bundle-banner__feature">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#4077F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            422 درس
+          </span>
+          <span class="ls-bundle-banner__feature">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#4077F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            وصول مدى الحياة
+          </span>
+        </div>
+
+        <div class="ls-bundle-banner__price">
+          <span class="ls-bundle-banner__price-now">1,900 جنيه مصري</span>
+          <span class="ls-bundle-banner__price-old">4,800 جنيه</span>
+          <span class="ls-bundle-banner__price-save">وفّر 2,900 جنيه · خصم 60%</span>
+        </div>
+      </div>
+
+      <div class="ls-bundle-banner__cta">
+        <a href="{{ site.url }}/course-bundle/allcourse/" class="ls-bundle-banner__btn">
+          اشترك في الباقة الكاملة
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
     <!-- Archive Header -->
     <div class="learnsimply-section-container" style="margin-top: 30px; margin-bottom: 40px;">
       <div class="learnsimply-section-header">
