@@ -1,3 +1,15 @@
+    <!-- ===== PROMO BANNER ===== -->
+    <div class="promo-banner">
+      <div class="promo-content">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>خصم <strong>50%</strong> على جميع الكورسات لفترة محدودة فقط</span>
+        <a href="#courses" class="promo-link">اعرف المزيد →</a>
+      </div>
+    </div>
+
     <!-- ===== START: Hero Section ===== -->
     <section class="hero-wrapper hero-improved">
       <div class="hero-container">
@@ -50,14 +62,6 @@
                     </div>
                   </div>
 
-                  <!-- CTA Button -->
-                  <a href="{{ courses_archive_url }}" class="hero-cta-btn-large">
-                    <span>ابدأ الآن</span>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-
                   <!-- Guarantee -->
                   <div class="hero-guarantee-box">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -82,9 +86,8 @@
                     <div class="stat-box">
                       <div class="stat-number">
                         <span class="counter-20m" data-target="20">20</span>
-                        <span class="stat-suffix">M</span>
                       </div>
-                      <p class="stat-text">مشاهدة على اليوتيوب</p>
+                      <p class="stat-text">مليون مشاهدة على اليوتيوب</p>
                     </div>
 
                     <div class="stat-box">
@@ -101,6 +104,16 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- ===== CTA BUTTON SECTION ===== -->
+    <section class="hero-cta-section">
+      <a href="{{ courses_archive_url }}" class="hero-cta-btn-large">
+        <span>ابدأ الآن</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
     </section>
 
     <script>
@@ -123,10 +136,10 @@
               const timer = setInterval(() => {
                 current += increment;
                 if (current >= target) {
-                  element.textContent = target.toLocaleString('ar-EG');
+                  element.textContent = target.toLocaleString('en-US');
                   clearInterval(timer);
                 } else {
-                  element.textContent = Math.floor(current).toLocaleString('ar-EG');
+                  element.textContent = Math.floor(current).toLocaleString('en-US');
                 }
               }, 30);
             }
@@ -138,6 +151,44 @@
     </script>
 
     <style>
+      .promo-banner {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        padding: 16px 20px;
+        text-align: center;
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .promo-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .promo-content svg {
+        flex-shrink: 0;
+        color: currentColor;
+      }
+
+      .promo-content strong {
+        font-weight: 700;
+        font-size: 17px;
+      }
+
+      .promo-link {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: opacity 0.3s ease;
+      }
+
+      .promo-link:hover {
+        opacity: 0.9;
+      }
+
       .hero-improved {
         background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
       }
@@ -210,31 +261,6 @@
         flex-shrink: 0;
       }
 
-      .hero-cta-btn-large {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        padding: 18px 48px;
-        background: linear-gradient(135deg, #4077F3 0%, #2E5CC8 100%);
-        color: white;
-        font-size: 18px;
-        font-weight: 600;
-        border-radius: 12px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 24px rgba(64, 119, 243, 0.35);
-        border: none;
-        cursor: pointer;
-        width: fit-content;
-      }
-
-      .hero-cta-btn-large:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(64, 119, 243, 0.45);
-        background: linear-gradient(135deg, #5585F7 0%, #3A66D4 100%);
-      }
-
       .hero-guarantee-box {
         display: flex;
         align-items: center;
@@ -256,19 +282,21 @@
 
       .stats-card {
         background: rgba(64, 119, 243, 0.1);
-        border: 1px solid rgba(64, 119, 243, 0.2);
-        border-radius: 16px;
-        padding: 40px;
+        border: 2px solid rgba(64, 119, 243, 0.25);
+        border-radius: 20px;
+        padding: 50px 45px;
         backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
-        gap: 36px;
+        gap: 40px;
+        width: 100%;
+        max-width: 450px;
       }
 
       .stat-box {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
         text-align: center;
       }
 
@@ -276,28 +304,67 @@
         display: flex;
         align-items: baseline;
         justify-content: center;
-        gap: 4px;
+        gap: 6px;
       }
 
       .counter,
       .counter-20m,
       .counter-380k {
-        font-size: 48px;
-        font-weight: 700;
+        font-size: 52px;
+        font-weight: 800;
         color: #4077F3;
+        font-family: 'Segoe UI', Arial, sans-serif;
       }
 
       .stat-suffix {
-        font-size: 24px;
-        font-weight: 600;
+        font-size: 28px;
+        font-weight: 700;
         color: #4077F3;
+        margin-left: 4px;
       }
 
       .stat-text {
-        font-size: 15px;
+        font-size: 16px;
         color: #b0b5c0;
         margin: 0;
         line-height: 1.5;
+        font-weight: 500;
+      }
+
+      .hero-cta-section {
+        background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+        padding: 60px 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .hero-cta-btn-large {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 20px 56px;
+        background: linear-gradient(135deg, #4077F3 0%, #2E5CC8 100%);
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 14px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(64, 119, 243, 0.4);
+        border: none;
+        cursor: pointer;
+      }
+
+      .hero-cta-btn-large:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(64, 119, 243, 0.5);
+        background: linear-gradient(135deg, #5585F7 0%, #3A66D4 100%);
+      }
+
+      .hero-cta-btn-large:active {
+        transform: translateY(-1px);
       }
 
       @media (max-width: 1024px) {
@@ -318,6 +385,10 @@
       }
 
       @media (max-width: 768px) {
+        .promo-content {
+          flex-direction: column;
+        }
+
         .hero-main-grid {
           padding: 40px 20px;
           gap: 30px;
@@ -335,21 +406,26 @@
           grid-template-columns: 1fr;
         }
 
-        .hero-cta-btn-large {
-          padding: 16px 40px;
-          font-size: 16px;
-          width: 100%;
-        }
-
         .counter,
         .counter-20m,
         .counter-380k {
-          font-size: 40px;
+          font-size: 44px;
         }
 
         .stats-card {
-          padding: 30px;
-          gap: 24px;
+          padding: 35px 30px;
+          gap: 28px;
+        }
+
+        .hero-cta-btn-large {
+          padding: 16px 40px;
+          font-size: 18px;
+          width: 100%;
+          max-width: 300px;
+        }
+
+        .hero-cta-section {
+          padding: 40px 20px;
         }
       }
     </style>
