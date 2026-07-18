@@ -76,7 +76,13 @@ if ( have_posts() ) {
 	while ( have_posts() ) {
 		the_post();
 		$course_id = get_the_ID();
-		
+
+		// Skip course bundles — they have their own dedicated landing page and
+		// should not appear alongside individual courses in the archive grid.
+		if ( 'course-bundle' === get_post_type( $course_id ) ) {
+			continue;
+		}
+
 		// Get course data using Timber::get_post()
 		$course = Timber::get_post( $course_id );
 		
