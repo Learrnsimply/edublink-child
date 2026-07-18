@@ -608,38 +608,6 @@
         {% endif %}
 
 
-        <!-- بطاقة الأسئلة الشائعة -->
-        {% if faq_items|length > 0 %}
-        <div class="faq-card">
-          <div class="card-content">
-            <div class="section-header">
-              <div class="section-icon-box">
-                <svg width="33" height="33" fill="none" viewBox="0 0 33 33">
-                  <path clip-rule="evenodd" d="M16.5 30.25C10.0182 30.25 6.77728 30.25 4.76365 28.2363C2.75 26.2228 2.75 22.9818 2.75 16.5C2.75 10.0182 2.75 6.77728 4.76365 4.76365C6.77728 2.75 10.0182 2.75 16.5 2.75C22.9818 2.75 26.2228 2.75 28.2363 4.76365C30.25 6.77728 30.25 10.0182 30.25 16.5C30.25 22.9818 30.25 26.2228 28.2363 28.2363C26.2228 30.25 22.9818 30.25 16.5 30.25ZM16.5 24.4062C17.0695 24.4062 17.5312 23.9445 17.5312 23.375V15.125C17.5312 14.5555 17.0695 14.0938 16.5 14.0938C15.9305 14.0938 15.4688 14.5555 15.4688 15.125V23.375C15.4688 23.9445 15.9305 24.4062 16.5 24.4062ZM16.5 9.625C17.2594 9.625 17.875 10.2406 17.875 11C17.875 11.7594 17.2594 12.375 16.5 12.375C15.7406 12.375 15.125 11.7594 15.125 11C15.125 10.2406 15.7406 9.625 16.5 9.625Z" fill="white" fill-rule="evenodd" />
-                </svg>
-              </div>
-              <h2 class="section-title">الأسئلة الشائعة</h2>
-            </div>
-
-            <div class="faq-list">
-              {% for item in faq_items %}
-              <div class="faq-item {% if loop.first %}open{% endif %}">
-                <div class="faq-question">
-                  <p class="faq-question-text">{{ item.question }}</p>
-                  <svg class="faq-arrow" fill="none" viewBox="0 0 24 24">
-                    <path clip-rule="evenodd" d="M4.43056 8.51191C4.70012 8.19741 5.1736 8.16099 5.48809 8.43056L12 14.0122L18.5119 8.43056C18.8264 8.16099 19.2999 8.19741 19.5694 8.51191C19.839 8.8264 19.8026 9.29988 19.4881 9.56944L12.4881 15.5694C12.2072 15.8102 11.7928 15.8102 11.5119 15.5694L4.51191 9.56944C4.19741 9.29988 4.16099 8.8264 4.43056 8.51191Z" fill="#999EB2" fill-rule="evenodd" />
-                  </svg>
-                </div>
-                <div class="faq-answer">
-                  <p class="faq-answer-text">{{ item.answer|raw }}</p>
-                </div>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-        {% endif %}
-
         <!-- بطاقة التقييمات -->
         {% if course_reviews|length > 0 %}
         <div class="reviews-section">

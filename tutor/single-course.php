@@ -407,32 +407,7 @@ if ( ! empty( $context['topics'] ) ) {
 $context['preview_count'] = $preview_count;
 $context['first_preview_url'] = $first_preview_url;
 
-// FAQ items — hardcoded and shown identically on every course page.
-// The per-course meta (_learnsimply_faq) is intentionally NOT used: the questions
-// and answers are the same for every course, and several courses had the answers
-// saved blank, which left the FAQ showing questions with no answers.
-$context['faq_items'] = array(
-	array(
-		'question' => 'هل يمكنني استرداد المبلغ؟',
-		'answer'   => 'نعم، تقدر تسترد المبلغ كامل خلال 7 أيام من شراء الكورس.',
-	),
-	array(
-		'question' => 'هل الوصول للكورس مدى الحياة؟',
-		'answer'   => 'نعم، الكورس معاك مدى الحياة بكل التحديثات القادمة.',
-	),
-	array(
-		'question' => 'هل أحتاج خبرة سابقة؟',
-		'answer'   => 'لا إطلاقاً، الكورس مناسب للمبتدئين من الصفر.',
-	),
-	array(
-		'question' => 'هل يوجد شهادة بعد إتمام الكورس؟',
-		'answer'   => 'نعم، يوجد شهادة بعد إتمام كل كورس.',
-	),
-	array(
-		'question' => 'كيف أتواصل للدعم؟',
-		'answer'   => 'تقدر تتواصل معنا على الواتساب من خلال الرقم <a href="https://wa.me/201030127228" target="_blank" rel="noopener" style="color:#4077f3;font-weight:600;">+201030127228</a>',
-	),
-);
+// FAQ section removed from the single course page on request.
 
 // Render the template
 Timber::render( 'single-course.twig', $context );
