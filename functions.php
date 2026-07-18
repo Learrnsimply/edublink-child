@@ -1578,6 +1578,41 @@ function edublink_child_force_custom_templates_via_filter($template)
 	return $template;
 }
 
+/**
+ * Slugs of the courses that make up the "programming journey" bundle.
+ * Shared by the homepage bundle section (front-page.php) and the custom
+ * single course-bundle page so the course list stays in one place.
+ */
+function learnsimply_programming_bundle_slugs()
+{
+	return array(
+		'java-course-level1',        // جافا الأساسيات
+		'javaoop',                   // جافا OOP
+		'data-structure-c',          // هياكل البيانات — المستوى الأول
+		'data_structure_level2',     // هياكل البيانات — المستوى الثاني
+		'dart',                      // كورس دارت
+		'مشاريع-بايثون-للمبتدئين',   // مشاريع بايثون للمبتدئين (مجاني)
+	);
+}
+
+/**
+ * Custom template for Tutor LMS course bundles (post type: course-bundle).
+ * Renders views/single-course-bundle.twig instead of Tutor's default page.
+ * If the post type name ever differs, this simply no-ops and the default
+ * template is used, so it can never break an existing bundle page.
+ */
+add_filter('template_include', 'learnsimply_force_course_bundle_template', 999999);
+function learnsimply_force_course_bundle_template($template)
+{
+	if (is_singular('course-bundle')) {
+		$custom = get_stylesheet_directory() . '/single-course-bundle.php';
+		if (file_exists($custom)) {
+			return $custom;
+		}
+	}
+	return $template;
+}
+
 // Also keep template_redirect as backup
 add_action('template_redirect', 'edublink_child_force_custom_templates', 0);
 

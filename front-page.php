@@ -364,12 +364,9 @@ foreach ( $context['bundles'] as $ls_bundle ) {
 // courses section. The "before discount" total is summed from each course's REGULAR
 // price (never the sale price) so the strikethrough total and the savings stay accurate
 // against the live products even when individual courses go on sale.
-$java_bundle_slugs = array(
-	'java-course-level1',    // جافا الأساسيات
-	'javaoop',               // جافا OOP
-	'data-structure-c',      // هياكل البيانات — المستوى الأول
-	'data_structure_level2', // هياكل البيانات — المستوى الثاني
-);
+$java_bundle_slugs = function_exists( 'learnsimply_programming_bundle_slugs' )
+	? learnsimply_programming_bundle_slugs()
+	: array( 'java-course-level1', 'javaoop', 'data-structure-c', 'data_structure_level2', 'dart', 'مشاريع-بايثون-للمبتدئين' );
 $java_bundle_items       = array();
 $java_bundle_regular_total = 0;
 $java_bundle_product_ids = array();
