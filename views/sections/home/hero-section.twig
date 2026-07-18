@@ -430,6 +430,20 @@
         padding: 0 !important;
       }
 
+      /* Remove the inner "card" (lighter #141924 box with rounded corners) so the
+         whole hero is one uniform surface — no visible card edge / shadow under it. */
+      .hero-improved .hero-background {
+        background: transparent !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+        margin-inline: 0 !important;
+        box-shadow: none !important;
+      }
+
+      .hero-improved .hero-background-border {
+        display: none !important;
+      }
+
       /* Tighten the gap between the hero and the courses section below it */
       .hero-wrapper + .learnsimply-featured-courses-section {
         padding-top: 22px;
