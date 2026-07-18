@@ -1,36 +1,42 @@
-    <!-- ===== PROMO BANNER ===== -->
+    <!-- ===== PROMO BANNER (FOMO) ===== -->
     <div class="promo-banner" id="dartPromoBanner" data-deadline="">
       <div class="promo-content">
         <div class="promo-text">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-            <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <span>خصم <strong>50%</strong> على كورس دارت — أول خطوة لبناء التطبيقات</span>
-          <a href="https://learrnsimply.com/courses/dart/" class="promo-link">اشترك الآن ←</a>
+          <span class="promo-flame" aria-hidden="true">🔥</span>
+          <span class="promo-pill">عرض محدود</span>
+          <span class="promo-headline">
+            خصم <strong>50%</strong> على كورس دارت — أول خطوة لبناء التطبيقات
+          </span>
         </div>
 
-        <!-- Countdown Timer -->
-        <div class="promo-countdown" id="dartCountdown" aria-label="الوقت المتبقي على العرض">
-          <div class="countdown-box">
-            <span class="countdown-num" data-unit="days">00</span>
-            <span class="countdown-label">يوم</span>
+        <div class="promo-right">
+          <!-- Countdown Timer -->
+          <div class="promo-countdown" id="dartCountdown" aria-label="الوقت المتبقي على العرض">
+            <span class="countdown-caption">ينتهي خلال</span>
+            <div class="countdown-boxes">
+              <div class="countdown-box">
+                <span class="countdown-num" data-unit="days">00</span>
+                <span class="countdown-label">يوم</span>
+              </div>
+              <span class="countdown-sep">:</span>
+              <div class="countdown-box">
+                <span class="countdown-num" data-unit="hours">00</span>
+                <span class="countdown-label">ساعة</span>
+              </div>
+              <span class="countdown-sep">:</span>
+              <div class="countdown-box">
+                <span class="countdown-num" data-unit="minutes">00</span>
+                <span class="countdown-label">دقيقة</span>
+              </div>
+              <span class="countdown-sep">:</span>
+              <div class="countdown-box">
+                <span class="countdown-num" data-unit="seconds">00</span>
+                <span class="countdown-label">ثانية</span>
+              </div>
+            </div>
           </div>
-          <span class="countdown-sep">:</span>
-          <div class="countdown-box">
-            <span class="countdown-num" data-unit="hours">00</span>
-            <span class="countdown-label">ساعة</span>
-          </div>
-          <span class="countdown-sep">:</span>
-          <div class="countdown-box">
-            <span class="countdown-num" data-unit="minutes">00</span>
-            <span class="countdown-label">دقيقة</span>
-          </div>
-          <span class="countdown-sep">:</span>
-          <div class="countdown-box">
-            <span class="countdown-num" data-unit="seconds">00</span>
-            <span class="countdown-label">ثانية</span>
-          </div>
+
+          <a href="https://learrnsimply.com/courses/dart/" class="promo-link">اشترك الآن ←</a>
         </div>
       </div>
     </div>
@@ -46,64 +52,63 @@
                 <!-- Left Side - Content -->
                 <div class="hero-left-content">
                   <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
                     <span>اتعلم ببساطة</span>
                   </div>
 
                   <h1 class="hero-main-title">
                     البرمجة أسهل ممــا تتخيل...
                     <br>
-                    لو اتعلمتها ببساطة
+                    لو اتعلمتها <span class="hero-title-accent">ببساطة</span>
                   </h1>
 
                   <p class="hero-description">
                     ابدأ من الصفر، افهم الأساس صح، واشتغل بإيدك على مشاريع حقيقية من غير تعقيد
                   </p>
 
-                  <!-- Primary CTA (visible immediately) -->
+                  <!-- Primary CTA (visible immediately, scrolls to courses) -->
                   <div class="hero-cta-inline">
-                    <a href="{{ courses_archive_url }}" class="hero-cta-btn-large">
+                    <a href="#courses" class="hero-cta-btn-large" data-scroll-to="courses">
                       <span>ابدأ الآن</span>
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
                         <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                     </a>
+                    <span class="hero-cta-note">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      ضمان استرداد خلال 7 أيام
+                    </span>
                   </div>
 
                   <!-- Features List -->
                   <div class="hero-features">
                     <div class="feature-item">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                       <span>شهادة إكمال لكل مستوى</span>
                     </div>
                     <div class="feature-item">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                       <span>مشاريع تطبيقية عملية</span>
                     </div>
                     <div class="feature-item">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                       <span>تمارين بعد كل درس</span>
                     </div>
                     <div class="feature-item">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16.6666 5L7.49998 14.1667L3.33331 10" stroke="#18A963" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                       <span>شرح عربي واضح وبسيط</span>
                     </div>
-                  </div>
-
-                  <!-- Guarantee -->
-                  <div class="hero-guarantee-box">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                      <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>ضمان استرداد الفلوس خلال 7 أيام على كل الكورسات</span>
                   </div>
                 </div>
 
@@ -118,12 +123,17 @@
                       <p class="stat-text">طالب تعلموا من المنصة</p>
                     </div>
 
+                    <div class="stat-divider"></div>
+
                     <div class="stat-box">
                       <div class="stat-number">
                         <span class="counter-20m" data-target="20">20</span>
+                        <span class="stat-suffix">M+</span>
                       </div>
-                      <p class="stat-text">مليون مشاهدة على اليوتيوب</p>
+                      <p class="stat-text">مشاهدة على اليوتيوب</p>
                     </div>
+
+                    <div class="stat-divider"></div>
 
                     <div class="stat-box">
                       <div class="stat-number">
@@ -155,7 +165,7 @@
               entry.target.classList.add('animated');
               const target = parseInt(entry.target.getAttribute('data-target'));
               const element = entry.target;
-              
+
               let current = 0;
               const increment = target / 50;
               const timer = setInterval(() => {
@@ -172,6 +182,23 @@
         }, observerOptions);
 
         counters.forEach(counter => observer.observe(counter));
+      });
+    </script>
+
+    <!-- Smooth scroll for the "ابدأ الآن" CTA (stays on the same page) -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-scroll-to]').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            var targetId = link.getAttribute('data-scroll-to');
+            var target = document.getElementById(targetId);
+            if (!target) return; // fall back to default anchor jump
+            e.preventDefault();
+            var offset = 20;
+            var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          });
+        });
       });
     </script>
 
@@ -229,22 +256,40 @@
     </script>
 
     <style>
+      /* ===== FOMO PROMO BANNER ===== */
       .promo-banner {
-        background: linear-gradient(135deg, #1e3a8a 0%, #2E5CC8 45%, #4077F3 100%);
-        padding: 14px 24px;
-        color: white;
-        font-size: 15px;
-        font-weight: 500;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        position: relative;
+        background: linear-gradient(100deg, #b91c1c 0%, #dc2626 45%, #ea580c 100%);
+        padding: 12px 24px;
+        color: #ffffff;
+        overflow: hidden;
+      }
+
+      .promo-banner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+        transform: translateX(-100%);
+        animation: promoShine 4.5s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes promoShine {
+        0%   { transform: translateX(-100%); }
+        55%  { transform: translateX(100%); }
+        100% { transform: translateX(100%); }
       }
 
       .promo-content {
+        position: relative;
+        z-index: 1;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 20px;
+        gap: 18px 28px;
         flex-wrap: wrap;
-        max-width: 1200px;
+        max-width: 1240px;
         margin: 0 auto;
       }
 
@@ -255,40 +300,65 @@
         flex-wrap: wrap;
       }
 
-      .promo-text svg {
-        flex-shrink: 0;
-        color: #fbbf24;
+      .promo-flame {
+        font-size: 24px;
+        line-height: 1;
+        display: inline-block;
+        animation: flamePulse 1.2s ease-in-out infinite;
       }
 
-      .promo-content strong {
+      @keyframes flamePulse {
+        0%, 100% { transform: scale(1) rotate(-4deg); }
+        50%      { transform: scale(1.18) rotate(4deg); }
+      }
+
+      .promo-pill {
+        background: #ffffff;
+        color: #b91c1c;
+        font-size: 13px;
         font-weight: 800;
-        font-size: 17px;
-        color: #fbbf24;
-      }
-
-      .promo-link {
-        color: white;
-        text-decoration: none;
-        font-weight: 700;
-        padding: 6px 16px;
-        background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 8px;
-        transition: all 0.25s ease;
+        padding: 4px 12px;
+        border-radius: 50px;
         white-space: nowrap;
+        letter-spacing: 0.2px;
       }
 
-      .promo-link:hover {
-        background: rgba(255, 255, 255, 0.28);
-        transform: translateY(-1px);
+      .promo-headline {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .promo-headline strong {
+        font-weight: 900;
+        font-size: 21px;
+        color: #fde047;
+      }
+
+      .promo-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
       }
 
       /* Countdown Timer */
       .promo-countdown {
         display: flex;
         align-items: center;
-        gap: 8px;
-        flex-shrink: 0;
+        gap: 12px;
+      }
+
+      .countdown-caption {
+        font-size: 14px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.95);
+        white-space: nowrap;
+      }
+
+      .countdown-boxes {
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
       .countdown-box {
@@ -296,181 +366,153 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-width: 52px;
+        min-width: 50px;
         padding: 6px 8px;
-        background: rgba(0, 0, 0, 0.22);
-        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(0, 0, 0, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.25);
         border-radius: 10px;
+        backdrop-filter: blur(4px);
       }
 
       .countdown-num {
-        font-size: 22px;
-        font-weight: 800;
+        font-size: 24px;
+        font-weight: 900;
         line-height: 1;
-        color: #fbbf24;
+        color: #ffffff;
         font-family: 'Segoe UI', Arial, sans-serif;
         font-variant-numeric: tabular-nums;
       }
 
       .countdown-label {
         font-size: 10px;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.85);
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
         margin-top: 4px;
       }
 
       .countdown-sep {
-        font-size: 20px;
-        font-weight: 800;
-        color: rgba(255, 255, 255, 0.5);
+        font-size: 22px;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.55);
         line-height: 1;
         padding-bottom: 14px;
       }
 
+      .promo-link {
+        color: #b91c1c;
+        background: #ffffff;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 15px;
+        padding: 10px 22px;
+        border-radius: 10px;
+        transition: all 0.25s ease;
+        white-space: nowrap;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      }
+
+      .promo-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+        color: #991b1b;
+      }
+
+      /* ===== HERO ===== */
       .hero-improved {
-        background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+        position: relative;
+        background:
+          radial-gradient(1100px 520px at 78% -10%, rgba(64, 119, 243, 0.22), transparent 60%),
+          radial-gradient(900px 480px at 8% 110%, rgba(24, 169, 99, 0.12), transparent 60%),
+          linear-gradient(135deg, #0d1117 0%, #151b2b 100%);
+        overflow: hidden;
       }
 
       .hero-improved .hero-content-wrapper {
         background: transparent !important;
       }
 
+      /* Tighten the gap between the hero and the courses section below it */
+      .hero-wrapper + .learnsimply-featured-courses-section {
+        padding-top: 22px;
+      }
+
       .hero-main-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 60px;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 56px;
         align-items: center;
-        padding: 80px 40px;
+        padding: 52px 40px;
+        max-width: 1240px;
+        margin: 0 auto;
       }
 
       .hero-left-content {
         display: flex;
         flex-direction: column;
-        gap: 24px;
+        gap: 22px;
       }
 
       .hero-badge {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
+        gap: 8px;
         width: fit-content;
-        padding: 8px 20px;
-        background: rgba(64, 119, 243, 0.15);
-        border: 1px solid rgba(64, 119, 243, 0.3);
+        padding: 7px 16px;
+        background: rgba(64, 119, 243, 0.14);
+        border: 1px solid rgba(64, 119, 243, 0.35);
         border-radius: 50px;
-        color: #4077F3;
+        color: #6ea0ff;
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
+      }
+
+      .hero-badge-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #18A963;
+        box-shadow: 0 0 0 0 rgba(24, 169, 99, 0.6);
+        animation: dotPulse 1.8s ease-out infinite;
+      }
+
+      @keyframes dotPulse {
+        0%   { box-shadow: 0 0 0 0 rgba(24, 169, 99, 0.55); }
+        70%  { box-shadow: 0 0 0 8px rgba(24, 169, 99, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(24, 169, 99, 0); }
       }
 
       .hero-main-title {
-        font-size: 48px;
-        font-weight: 700;
-        line-height: 1.2;
+        font-size: 52px;
+        font-weight: 800;
+        line-height: 1.22;
         color: #ffffff;
         margin: 0;
+        letter-spacing: -0.5px;
+      }
+
+      .hero-title-accent {
+        background: linear-gradient(120deg, #4077F3 0%, #18A963 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: #4077F3;
       }
 
       .hero-description {
-        font-size: 18px;
-        color: #b0b5c0;
-        line-height: 1.6;
+        font-size: 19px;
+        color: #b9c0cf;
+        line-height: 1.7;
         margin: 0;
+        max-width: 540px;
       }
 
-      .hero-features {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-
-      .feature-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px;
-        background: rgba(64, 119, 243, 0.08);
-        border-radius: 8px;
-        color: #d0d5e0;
-        font-size: 14px;
-      }
-
-      .feature-item svg {
-        flex-shrink: 0;
-      }
-
-      .hero-guarantee-box {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: #8a8f9f;
-        font-size: 14px;
-      }
-
-      .hero-guarantee-box svg {
-        flex-shrink: 0;
-        color: #4077F3;
-      }
-
-      .hero-stats-section {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .stats-card {
-        background: rgba(64, 119, 243, 0.1);
-        border: 2px solid rgba(64, 119, 243, 0.25);
-        border-radius: 20px;
-        padding: 50px 45px;
-        backdrop-filter: blur(10px);
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        width: 100%;
-        max-width: 450px;
-      }
-
-      .stat-box {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        text-align: center;
-      }
-
-      .stat-number {
-        display: flex;
-        align-items: baseline;
-        justify-content: center;
-        gap: 6px;
-      }
-
-      .counter,
-      .counter-20m,
-      .counter-380k {
-        font-size: 52px;
-        font-weight: 800;
-        color: #4077F3;
-        font-family: 'Segoe UI', Arial, sans-serif;
-      }
-
-      .stat-suffix {
-        font-size: 28px;
-        font-weight: 700;
-        color: #4077F3;
-        margin-left: 4px;
-      }
-
-      .stat-text {
-        font-size: 16px;
-        color: #b0b5c0;
-        margin: 0;
-        line-height: 1.5;
-        font-weight: 500;
-      }
-
+      /* Primary CTA */
       .hero-cta-inline {
-        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        margin: 2px 0;
       }
 
       .hero-cta-btn-large {
@@ -478,47 +520,168 @@
         align-items: center;
         justify-content: center;
         gap: 12px;
-        padding: 18px 52px;
+        padding: 17px 46px;
         background: linear-gradient(135deg, #4077F3 0%, #2E5CC8 100%);
         color: white;
         font-size: 20px;
-        font-weight: 700;
+        font-weight: 800;
         border-radius: 14px;
         text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 12px 32px rgba(64, 119, 243, 0.45);
+        box-shadow: 0 12px 30px rgba(64, 119, 243, 0.45);
         border: none;
         cursor: pointer;
       }
 
+      .hero-cta-btn-large svg {
+        transition: transform 0.3s ease;
+      }
+
       .hero-cta-btn-large:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(64, 119, 243, 0.5);
+        box-shadow: 0 18px 42px rgba(64, 119, 243, 0.55);
         background: linear-gradient(135deg, #5585F7 0%, #3A66D4 100%);
+      }
+
+      .hero-cta-btn-large:hover svg {
+        transform: translateX(-5px);
       }
 
       .hero-cta-btn-large:active {
         transform: translateY(-1px);
       }
 
+      .hero-cta-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #9aa2b3;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .hero-cta-note svg {
+        flex-shrink: 0;
+        color: #18A963;
+      }
+
+      /* Features */
+      .hero-features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 4px;
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        color: #d6dbe6;
+        font-size: 14.5px;
+        font-weight: 500;
+        transition: all 0.25s ease;
+      }
+
+      .feature-item:hover {
+        background: rgba(64, 119, 243, 0.1);
+        border-color: rgba(64, 119, 243, 0.25);
+      }
+
+      .feature-item svg {
+        flex-shrink: 0;
+      }
+
+      /* Stats card */
+      .hero-stats-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stats-card {
+        background: linear-gradient(160deg, rgba(64, 119, 243, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+        border: 1px solid rgba(64, 119, 243, 0.28);
+        border-radius: 24px;
+        padding: 44px 40px;
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .stat-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+
+      .stat-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(64, 119, 243, 0.35), transparent);
+      }
+
+      .stat-number {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 4px;
+      }
+
+      .counter,
+      .counter-20m,
+      .counter-380k {
+        font-size: 50px;
+        font-weight: 900;
+        color: #ffffff;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        line-height: 1;
+      }
+
+      .stat-suffix {
+        font-size: 26px;
+        font-weight: 800;
+        color: #4077F3;
+      }
+
+      .stat-text {
+        font-size: 15px;
+        color: #a7aec0;
+        margin: 0;
+        line-height: 1.4;
+        font-weight: 500;
+      }
+
+      /* ===== RESPONSIVE ===== */
       @media (max-width: 1024px) {
         .hero-main-grid {
           grid-template-columns: 1fr;
           gap: 40px;
-          padding: 60px 30px;
+          padding: 44px 30px;
         }
 
         .hero-main-title {
-          font-size: 40px;
+          font-size: 42px;
         }
 
         .stats-card {
-          width: 100%;
-          max-width: 400px;
+          max-width: 100%;
         }
       }
 
       @media (max-width: 768px) {
+        .promo-banner {
+          padding: 12px 16px;
+        }
+
         .promo-content {
           flex-direction: column;
           gap: 12px;
@@ -529,8 +692,22 @@
           text-align: center;
         }
 
-        .promo-countdown {
-          gap: 6px;
+        .promo-headline {
+          font-size: 16px;
+        }
+
+        .promo-headline strong {
+          font-size: 19px;
+        }
+
+        .promo-right {
+          flex-direction: column;
+          gap: 12px;
+          width: 100%;
+        }
+
+        .countdown-caption {
+          display: none;
         }
 
         .countdown-box {
@@ -539,12 +716,17 @@
         }
 
         .countdown-num {
-          font-size: 19px;
+          font-size: 21px;
+        }
+
+        .promo-link {
+          width: 100%;
+          text-align: center;
         }
 
         .hero-main-grid {
-          padding: 40px 20px;
-          gap: 30px;
+          padding: 34px 20px;
+          gap: 28px;
         }
 
         .hero-main-title {
@@ -559,26 +741,31 @@
           grid-template-columns: 1fr;
         }
 
-        .counter,
-        .counter-20m,
-        .counter-380k {
-          font-size: 44px;
-        }
-
-        .stats-card {
-          padding: 35px 30px;
-          gap: 28px;
-        }
-
         .hero-cta-inline {
-          width: 100%;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
         }
 
         .hero-cta-btn-large {
           padding: 16px 40px;
           font-size: 18px;
           width: 100%;
-          max-width: 340px;
+        }
+
+        .hero-cta-note {
+          justify-content: center;
+        }
+
+        .counter,
+        .counter-20m,
+        .counter-380k {
+          font-size: 42px;
+        }
+
+        .stats-card {
+          padding: 32px 28px;
+          gap: 20px;
         }
       }
     </style>
