@@ -4755,3 +4755,119 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 }
 
 /* ===== END: CONVERSION REDESIGN (FR-008) ===== */
+
+/* ==========================================================================
+   COURSE DESCRIPTION CARD (v2) — rich editor content styling
+   ========================================================================== */
+.desc-card {
+  width: 100%;
+  max-width: 1030px;
+  background: var(--learnsimply-card-bg);
+  border: 1px solid var(--learnsimply-card-border);
+  border-radius: var(--learnsimply-border-radius-md);
+  padding: 32px;
+  direction: rtl;
+  margin: 40px 0 0 0;
+}
+
+.desc-card .section-header {
+  margin-bottom: 24px;
+}
+
+/* The old .course-description used white-space:pre-line for stripped text;
+   the editor now sends real HTML, so normalize it. */
+.desc-card .course-description {
+  white-space: normal;
+  font-size: 17px;
+  line-height: 1.9;
+  color: #c3c8d6;
+  width: 100%;
+  text-align: right;
+}
+
+.desc-card .course-description p {
+  margin: 0 0 16px;
+  color: #c3c8d6;
+}
+
+.desc-card .course-description h2,
+.desc-card .course-description h3,
+.desc-card .course-description h4,
+.desc-card .course-description h5 {
+  color: #ffffff;
+  font-weight: 700;
+  margin: 30px 0 12px;
+  line-height: 1.5;
+}
+
+.desc-card .course-description h2 { font-size: 22px; }
+.desc-card .course-description h3 { font-size: 19px; }
+.desc-card .course-description h4,
+.desc-card .course-description h5 { font-size: 17px; }
+
+.desc-card .course-description strong,
+.desc-card .course-description b {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.desc-card .course-description a {
+  color: #4077f3;
+  text-decoration: none;
+}
+
+.desc-card .course-description a:hover {
+  text-decoration: underline;
+}
+
+.desc-card .course-description ul,
+.desc-card .course-description ol {
+  margin: 0 0 16px;
+  padding-right: 24px;
+}
+
+.desc-card .course-description li {
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.desc-card .course-description ul li::marker {
+  color: #4077f3;
+}
+
+.desc-card .course-description img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+.desc-card .course-description blockquote {
+  margin: 0 0 16px;
+  padding: 14px 18px;
+  background: rgba(64, 119, 243, 0.06);
+  border-right: 3px solid #4077f3;
+  border-radius: 10px;
+  color: #e2e6f0;
+}
+
+@media (max-width: 768px) {
+  .desc-card {
+    margin: 30px 0 0 0;
+    padding: 24px 20px;
+  }
+
+  .desc-card .section-title {
+    font-size: 20px;
+  }
+
+  .desc-card .section-icon-box {
+    width: 48px;
+    height: 48px;
+  }
+
+  .desc-card .course-description {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+}

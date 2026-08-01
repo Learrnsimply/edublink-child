@@ -48,6 +48,8 @@ $context['course'] = $course;
 $context['course_title'] = get_the_title( $course_id );
 $context['course_content'] = get_the_content( null, false, $course_id );
 $context['course_excerpt'] = get_the_excerpt( $course_id );
+// Editor-formatted description (paragraphs, lists, headings) for the description card
+$context['course_description_html'] = apply_filters( 'the_content', get_the_content( null, false, $course_id ) );
 
 // Get course rating
 $course_rating = tutor_utils()->get_course_rating( $course_id );

@@ -340,20 +340,28 @@
                 </div>
               </div>
 
-              <!-- وصف الكورس -->
-              <h2 class="course-about-heading">إيه اللي هتلاقيه جوه الكورس؟</h2>
-              <div class="course-description">
-                {% set descText = course_excerpt ?: course_content|striptags %}
-                {# Inject newlines before emojis if not already there #}
-                {{ descText|replace({
-                  '1️⃣': '\n1️⃣', '2️⃣': '\n2️⃣', '3️⃣': '\n3️⃣', '4️⃣': '\n4️⃣', '5️⃣': '\n5️⃣', 
-                  '6️⃣': '\n6️⃣', '7️⃣': '\n7️⃣', '8️⃣': '\n8️⃣', '9️⃣': '\n9️⃣', '🔟': '\n🔟',
-                  '📂': '\n📂', '🎯': '\n🎯'
-                })|safe_html }}
-              </div>
             </div>
           </div>
         </div>
+
+        <!-- بطاقة وصف الكورس -->
+        {% if course_description_html|trim or course_excerpt|trim %}
+        <section class="desc-card">
+          <div class="section-header">
+            <div class="section-icon-box">
+              <svg width="30" height="30" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2 class="section-title">إيه اللي هتلاقيه جوه الكورس؟</h2>
+          </div>
+          <div class="course-description">
+            {% if course_description_html|trim %}
+              {{ course_description_html|safe_html }}
+            {% else %}
+              <p>{{ course_excerpt }}</p>
+            {% endif %}
+          </div>
+        </section>
+        {% endif %}
 
         <!-- بطاقة: الكورس ده معمول ليك لو -->
         {% set audience_items = course_target_audience ? course_target_audience|split('\n')|filter(a => a|trim) : [] %}
