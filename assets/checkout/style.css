@@ -1465,15 +1465,28 @@ body.woocommerce-checkout body,
     width: 100% !important;
 }
 
-/* ─── Hide ALL billing / additional-fields sections ─── */
-.woocommerce-checkout #customer_details,
+/* ─── Hide billing / additional-fields INNER sections only ───
+   NOTE: never hide #customer_details or .wpr-customer-details-wrapper —
+   on this site the order review + payment are nested inside them, so
+   hiding the wrapper nukes the whole checkout form. Hide the billing
+   sub-sections instead; the emptied wrapper collapses on its own. */
 .woocommerce-checkout .ls-customer-details-hidden,
-.woocommerce-checkout .wpr-customer-details-wrapper,
 .woocommerce-checkout .woocommerce-billing-fields,
 .woocommerce-checkout .woocommerce-additional-fields,
 .woocommerce-checkout .woocommerce-shipping-fields,
 .woocommerce-checkout #order_comments_field {
     display: none !important;
+}
+
+/* Collapse the now-empty customer-details wrapper */
+.woocommerce-checkout #customer_details,
+.woocommerce-checkout .wpr-customer-details-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    min-height: 0 !important;
 }
 
 /* Order review takes the full column width — kill floats, sticky, side-by-side */
