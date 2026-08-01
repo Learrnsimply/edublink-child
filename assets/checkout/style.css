@@ -1544,3 +1544,8 @@ body.woocommerce-checkout body,
 .woocommerce-checkout .wc_payment_method > label img {
     display: none !important;
 }
+
+/* ─── V2.3. Whole payment card is clickable (JS selects the radio) ─── */
+.woocommerce-checkout #payment ul.payment_methods li.wc_payment_method {
+    cursor: pointer !important;
+}

@@ -3356,7 +3356,37 @@ function learnsimply_checkout_hide_broken_gateway_icons()
 				jQuery(document.body).on('updated_checkout', hideBroken);
 			}
 			setTimeout(hideBroken, 1000);
+
+			// Whole payment card acts as the radio — clicking anywhere on the
+			// card (except inside the gateway description box or on a link)
+			// selects that payment method. Delegated so it survives the
+			// checkout AJAX refresh (updated_checkout rebuilds #payment).
+			document.addEventListener('click', function (e) {
+				var li = e.target.closest ? e.target.closest('#payment li.wc_payment_method') : null;
+				if (!li) return;
+				if (e.target.closest('.payment_box') || e.target.closest('a')) return;
+				var radio = li.querySelector('input.input-radio');
+				if (radio && !radio.checked) {
+					radio.checked = true;
+					radio.dispatchEvent(new Event('change', { bubbles: true }));
+				}
+			});
 		})();
 	</script>
 	<?php
+}
+
+/**
+ * Drop the ",00" decimals from prices rendered on the checkout page
+ * (order review, totals, thank-you page). Other pages keep the store default.
+ */
+add_filter('woocommerce_price_num_decimals', 'learnsimply_checkout_no_price_decimals');
+function learnsimply_checkout_no_price_decimals($decimals)
+{
+	$is_checkout_ctx = (function_exists('is_checkout') && is_checkout())
+		|| (defined('WOOCOMMERCE_CHECKOUT') && WOOCOMMERCE_CHECKOUT);
+	if ($is_checkout_ctx) {
+		return 0;
+	}
+	return $decimals;
 }
