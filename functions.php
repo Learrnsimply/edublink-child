@@ -3380,7 +3380,7 @@ function learnsimply_checkout_hide_broken_gateway_icons()
  * Drop the ",00" decimals from prices rendered on the checkout page
  * (order review, totals, thank-you page). Other pages keep the store default.
  */
-add_filter('woocommerce_price_num_decimals', 'learnsimply_checkout_no_price_decimals');
+add_filter('wc_get_price_decimals', 'learnsimply_checkout_no_price_decimals');
 function learnsimply_checkout_no_price_decimals($decimals)
 {
 	$is_checkout_ctx = (function_exists('is_checkout') && is_checkout())
