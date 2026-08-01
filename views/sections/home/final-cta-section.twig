@@ -7,7 +7,7 @@
 .ls-final{min-height:0 !important;height:auto !important;justify-content:flex-start !important}
 .ls-final > *{flex:0 0 auto !important}
 .ls-final-glow{position:absolute;width:420px;height:420px;border-radius:50%;background:#4077f3;opacity:0.12;filter:blur(120px);top:-160px;left:50%;transform:translateX(-50%);pointer-events:none}
-.ls-final > *{position:relative;z-index:1}
+.ls-final > *:not(.ls-final-glow){position:relative;z-index:1}
 .ls-final-title{color:#fff;font-size:clamp(26px,4.5vw,38px);font-weight:700;line-height:1.5;margin:0;max-width:700px}
 .ls-final-title span{background:linear-gradient(135deg,#5b9df9,#01c2f3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .ls-final-sub{color:#93a0c2;font-size:16px;line-height:1.9;margin:0;max-width:600px}
