@@ -4871,3 +4871,66 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
     line-height: 1.8;
   }
 }
+
+/* ==========================================================================
+   LEARNING CARD (v2) — comfortable stacked list instead of boxes
+   ========================================================================== */
+.learning-card .learning-grid {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.learning-card .learning-column {
+  gap: 0;
+}
+
+/* No boxes — clean rows with a subtle divider */
+.learning-card .learning-item {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 16px 4px;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.learning-card .learning-item:hover {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+.learning-card .learning-column:last-child .learning-item:last-child {
+  border-bottom: none;
+  padding-bottom: 4px;
+}
+
+/* Brand-blue check instead of the grey one */
+.learning-card .learning-item .check-icon {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.learning-card .learning-item .check-icon circle {
+  fill: #4077f3;
+}
+
+/* Comfortable readable text */
+.learning-card .learning-text {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #e2e6f0;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .learning-card .learning-item {
+    padding: 13px 2px;
+    gap: 12px;
+  }
+
+  .learning-card .learning-text {
+    font-size: 14px;
+    line-height: 1.85;
+  }
+}
