@@ -1535,3 +1535,12 @@ body.woocommerce-checkout body,
 .woocommerce-checkout .woocommerce-privacy-policy-text {
     display: none !important;
 }
+
+/* ─── V2.2. Hide gateway label icons (their URLs are broken at the gateway
+   settings level — browser shows ugly alt text). The gateway names and the
+   "Secured by Kashier" badge inside payment_box stay visible. ─── */
+.woocommerce-checkout #payment ul.payment_methods li.wc_payment_method > label img,
+.woocommerce-checkout #payment ul.payment_methods li.wc_payment_method label img,
+.woocommerce-checkout .wc_payment_method > label img {
+    display: none !important;
+}
