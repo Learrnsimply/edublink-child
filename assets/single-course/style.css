@@ -4934,3 +4934,222 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
     line-height: 1.85;
   }
 }
+
+/* ==========================================================================
+   REVIEWS SECTION (v2) — clean summary + comfortable review list
+   ========================================================================== */
+
+/* ─── Overview card ─── */
+.ratings-overview {
+  background: #1b2133;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.ratings-overview .ratings-header {
+  padding: 24px 26px 0;
+}
+
+.ratings-overview .ratings-content {
+  padding: 18px 26px 26px;
+  gap: 34px;
+  align-items: stretch;
+}
+
+/* ─── Distribution rows: single star + number, visible gradient bar ─── */
+.ratings-overview .rating-row {
+  gap: 14px;
+  padding: 7px 0;
+}
+
+.ratings-overview .stars-group {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 54px;
+  flex-shrink: 0;
+}
+
+.ratings-overview .stars-group .star-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.ratings-overview .rating-row-label {
+  color: #e2e6f0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ratings-overview .progress-container {
+  height: 8px;
+}
+
+.ratings-overview .progress-bg {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 99px;
+}
+
+/* FIX: the old `inset` rule made the fill collapse to zero width.
+   left:0 + inline right:(100-p)% stretches the fill to exactly p%. */
+.ratings-overview .progress-fill {
+  inset: auto !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #ffd27a, #ffbb54);
+  border-radius: 99px;
+}
+
+.ratings-overview .percentage {
+  min-width: 44px;
+  text-align: left;
+  color: #999eb2;
+  font-size: 13px;
+}
+
+/* ─── Summary panel: golden highlight ─── */
+.ratings-overview .rating-summary {
+  width: 210px;
+  height: auto;
+  background: rgba(255, 187, 84, 0.06);
+  border: 1px solid rgba(255, 187, 84, 0.28);
+  border-radius: 14px;
+  display: flex;
+}
+
+.ratings-overview .rating-summary-content {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 20px 14px;
+}
+
+.ratings-overview .summary-title {
+  color: #c8cfe0;
+  font-size: 14px;
+  margin: 0;
+}
+
+.ratings-overview .summary-stars .star-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.ratings-overview .summary-rating {
+  font-size: 42px;
+  font-weight: 800;
+  color: #ffbb54;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* ─── Review list: one card, rows separated by dividers ─── */
+.review-cards {
+  background: #1b2133;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 8px 26px;
+  margin-top: 22px;
+}
+
+.review-card {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0;
+  overflow: visible;
+}
+
+.review-card:last-child {
+  border-bottom: none;
+}
+
+.review-card .review-card-content {
+  padding: 20px 0;
+  gap: 12px;
+}
+
+.review-card .review-header .avatar img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(64, 119, 243, 0.5);
+}
+
+.review-card .user-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.review-card .review-date {
+  font-size: 12px;
+  color: #6b7394;
+  margin: 0;
+}
+
+.review-card .review-stars .star-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.review-card .review-text-content {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #d5dae6;
+  margin: 0;
+}
+
+.review-card .show-more-review {
+  background: none;
+  border: none;
+  color: #4077f3;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ─── Load-more button ─── */
+.reviews-load-more-wrapper {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.reviews-load-more-btn {
+  background: rgba(64, 119, 243, 0.08);
+  border: 1px solid rgba(64, 119, 243, 0.35);
+  color: #7ba3ff;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.reviews-load-more-btn:hover {
+  background: rgba(64, 119, 243, 0.16);
+  border-color: #4077f3;
+  color: #ffffff;
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 768px) {
+  .ratings-overview .rating-summary {
+    width: 100%;
+  }
+
+  .ratings-overview .ratings-content {
+    padding: 14px 18px 20px;
+  }
+
+  .review-cards {
+    padding: 6px 18px;
+  }
+}
