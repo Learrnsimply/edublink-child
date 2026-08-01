@@ -5153,3 +5153,54 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
     padding: 6px 18px;
   }
 }
+
+/* ==========================================================================
+   HERO REVIEWS CTA — red button next to the main CTA, scrolls to reviews
+   ========================================================================== */
+.course-hero__reviews-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #e11d48;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(225, 29, 72, 0.3);
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.course-hero__reviews-cta:hover {
+  background: #be123c;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(225, 29, 72, 0.4);
+}
+
+.course-hero__reviews-cta svg {
+  flex-shrink: 0;
+}
+
+/* Smooth anchor scrolling + offset so the fixed header doesn't cover the target */
+html {
+  scroll-behavior: smooth;
+}
+
+#reviews,
+#add-review {
+  scroll-margin-top: 110px;
+}
+
+@media (max-width: 768px) {
+  .course-hero__reviews-cta {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}

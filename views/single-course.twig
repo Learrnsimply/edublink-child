@@ -92,6 +92,14 @@
               </a>
               {% endif %}
             {% endif %}
+
+            {# زر التقييمات الأحمر — يظهر جنب الـ CTA وينزل لقسم التقييمات في نفس الصفحة #}
+            {% if course_reviews|length > 0 or is_enrolled %}
+            <a href="{% if course_reviews|length > 0 %}#reviews{% else %}#add-review{% endif %}" class="course-hero__reviews-cta">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
+              {% if is_enrolled %}شاركنا بتقييم للكورس{% else %}اللي جربوا قبلك قالوا إيه{% endif %}
+            </a>
+            {% endif %}
           </div>
 
           {% if not is_enrolled and not is_free %}
@@ -618,7 +626,7 @@
 
         <!-- بطاقة التقييمات -->
         {% if course_reviews|length > 0 %}
-        <div class="reviews-section">
+        <div class="reviews-section" id="reviews">
           <!-- Ratings Overview -->
           <div class="ratings-overview">
             <div class="ratings-overview-content">
@@ -785,7 +793,7 @@
 
         {# Add Review Form for Enrolled Users #}
         {% if can_write_review %}
-        <div class="add-review-section">
+        <div class="add-review-section" id="add-review">
           <div class="card-content">
             <div class="section-header">
               <div class="section-icon-box">
