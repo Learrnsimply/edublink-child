@@ -3185,16 +3185,12 @@ function edublink_child_redirect_to_cart_after_add($url)
 }
 
 /**
- * Change 'Proceed to PayPal' button text to just 'Proceed'
+ * Unify the checkout place-order button text (checkout v2 redesign).
  */
 add_filter('woocommerce_order_button_text', 'learnsimply_change_checkout_button_text', 99);
 function learnsimply_change_checkout_button_text($button_text)
 {
-	// Check for common variations
-	if (strpos($button_text, 'PayPal') !== false) {
-		return 'Proceed';
-	}
-	return $button_text;
+	return 'تأكيد الطلب';
 }
 
 add_filter('gettext', 'learnsimply_change_paypal_text', 20, 3);
@@ -3206,3 +3202,95 @@ function learnsimply_change_paypal_text($translated_text, $text, $domain)
 	return $translated_text;
 }
 
+
+/* ==========================================================================
+   CHECKOUT V2 — Pledge checkbox + trust box
+   ========================================================================== */
+
+/**
+ * Render the required single-user pledge checkbox above the place-order button.
+ * Hooked into the payment template, right before #place_order.
+ */
+add_action('woocommerce_review_order_before_submit', 'learnsimply_render_single_user_pledge');
+function learnsimply_render_single_user_pledge()
+{
+	?>
+	<div class="ls-pledge-box">
+		<label class="ls-pledge-label" for="ls_single_user_pledge">
+			<input type="checkbox" name="ls_single_user_pledge" id="ls_single_user_pledge" value="1" />
+			<span class="ls-pledge-text">أتعهد أن هذا الكورس مخصص لشخص واحد فقط ولن أشاركه مع أي شخص آخر.</span>
+		</label>
+	</div>
+	<?php
+}
+
+/**
+ * Validate the pledge checkbox — block the order if it is not checked.
+ */
+add_action('woocommerce_checkout_process', 'learnsimply_validate_single_user_pledge');
+function learnsimply_validate_single_user_pledge()
+{
+	if (empty($_POST['ls_single_user_pledge'])) {
+		wc_add_notice('برجاء تأكيد التعهد بأن الكورس مخصص لشخص واحد فقط قبل إتمام الطلب.', 'error');
+	}
+}
+
+/**
+ * Save the pledge with the order so it is visible in wp-admin.
+ */
+add_action('woocommerce_checkout_update_order_meta', 'learnsimply_save_single_user_pledge');
+function learnsimply_save_single_user_pledge($order_id)
+{
+	if (!empty($_POST['ls_single_user_pledge'])) {
+		update_post_meta($order_id, '_ls_single_user_pledge', 'yes');
+	}
+}
+
+/**
+ * Show the pledge inside the admin order screen (billing address block).
+ */
+add_action('woocommerce_admin_order_data_after_billing_address', 'learnsimply_admin_show_single_user_pledge');
+function learnsimply_admin_show_single_user_pledge($order)
+{
+	$order_id = is_object($order) && method_exists($order, 'get_id') ? $order->get_id() : 0;
+	if (!$order_id) {
+		return;
+	}
+	if (get_post_meta($order_id, '_ls_single_user_pledge', true) === 'yes') {
+		echo '<p><strong>تعهد الاستخدام الفردي:</strong> ✅ تم التأكيد</p>';
+	}
+}
+
+/**
+ * Trust box under the checkout form (money-back guarantee + secure payment).
+ */
+add_action('woocommerce_after_checkout_form', 'learnsimply_render_checkout_trust_box', 20);
+function learnsimply_render_checkout_trust_box()
+{
+	if (!function_exists('is_checkout') || !is_checkout() || is_order_received_page()) {
+		return;
+	}
+	?>
+	<div class="ls-trust-box">
+		<div class="ls-trust-item">
+			<span class="ls-trust-icon ls-trust-icon--shield" aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+			</span>
+			<span class="ls-trust-text">
+				<strong>ضمان استرداد الأموال خلال 7 أيام</strong>
+				<small>لو الكورس مش مناسبك، هنرجعلك فلوسك بالكامل</small>
+			</span>
+		</div>
+		<div class="ls-trust-separator" aria-hidden="true"></div>
+		<div class="ls-trust-item">
+			<span class="ls-trust-icon ls-trust-icon--lock" aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4077f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+			</span>
+			<span class="ls-trust-text">
+				<strong>دفع آمن ومشفر</strong>
+				<small>بياناتك محمية بتشفير SSL 256-bit</small>
+			</span>
+		</div>
+	</div>
+	<?php
+}
