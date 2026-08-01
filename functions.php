@@ -3294,3 +3294,69 @@ function learnsimply_render_checkout_trust_box()
 	</div>
 	<?php
 }
+
+/**
+ * Inject the product thumbnail into the checkout order-review item name.
+ * Works with BOTH the default WooCommerce review-order template and our
+ * override (which deliberately renders no thumb of its own), so the table
+ * looks identical no matter which template is served.
+ */
+add_filter('woocommerce_cart_item_name', 'learnsimply_checkout_item_thumb', 10, 3);
+function learnsimply_checkout_item_thumb($name, $cart_item, $cart_item_key)
+{
+	$is_checkout_ctx = (function_exists('is_checkout') && is_checkout())
+		|| (defined('WOOCOMMERCE_CHECKOUT') && WOOCOMMERCE_CHECKOUT);
+	if (!$is_checkout_ctx) {
+		return $name;
+	}
+	if (strpos($name, 'ls-co-product') !== false) {
+		return $name; // already wrapped
+	}
+	$_product = isset($cart_item['data']) ? $cart_item['data'] : null;
+	if (!$_product || !is_object($_product)) {
+		return $name;
+	}
+	return '<span class="ls-co-product"><span class="ls-co-thumb">'
+		. $_product->get_image('woocommerce_thumbnail')
+		. '</span><span class="ls-co-info">' . $name . '</span></span>';
+}
+
+/**
+ * Hide broken gateway icon images on checkout.
+ * Some gateways point to icon URLs that fail to load, leaving ugly broken-image
+ * alt text inside the payment cards. This hides any <img> that errors out,
+ * and re-runs after every checkout AJAX refresh (updated_checkout).
+ */
+add_action('wp_footer', 'learnsimply_checkout_hide_broken_gateway_icons', 9999);
+function learnsimply_checkout_hide_broken_gateway_icons()
+{
+	if (!function_exists('is_checkout') || !is_checkout()) {
+		return;
+	}
+	?>
+	<script id="ls-checkout-hide-broken-icons">
+		(function () {
+			function hideBroken() {
+				document.querySelectorAll('#payment img, .wc_payment_methods img').forEach(function (img) {
+					if (img.dataset.lsBound) return;
+					img.dataset.lsBound = '1';
+					if (img.complete && img.naturalWidth === 0) {
+						img.style.display = 'none';
+					} else {
+						img.addEventListener('error', function () { img.style.display = 'none'; });
+					}
+				});
+			}
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', hideBroken);
+			} else {
+				hideBroken();
+			}
+			if (window.jQuery) {
+				jQuery(document.body).on('updated_checkout', hideBroken);
+			}
+			setTimeout(hideBroken, 1000);
+		})();
+	</script>
+	<?php
+}

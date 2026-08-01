@@ -1419,3 +1419,106 @@ body.woocommerce-checkout body,
         padding: 20px 18px !important;
     }
 }
+
+/* ==========================================================================
+   CHECKOUT V2.1 — force single stacked column with the DEFAULT WC template too
+   (works whether or not the woocommerce/checkout/ overrides are deployed)
+   ========================================================================== */
+
+/* Constrain the whole form to the centered 640px column */
+.woocommerce-checkout form.checkout.woocommerce-checkout {
+    max-width: 640px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    float: none !important;
+}
+
+/* Notices, messages and coupon toggle align with the same column */
+.woocommerce-checkout .woocommerce > .woocommerce-notices-wrapper,
+.woocommerce-checkout .woocommerce > .woocommerce-message,
+.woocommerce-checkout .woocommerce > .woocommerce-info,
+.woocommerce-checkout .woocommerce > .woocommerce-error,
+.woocommerce-checkout .woocommerce-form-coupon-toggle,
+.woocommerce-checkout form.checkout_coupon {
+    max-width: 640px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Coupon form fields stack neatly */
+.woocommerce-checkout form.checkout_coupon {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+}
+
+.woocommerce-checkout form.checkout_coupon .form-row {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.woocommerce-checkout form.checkout_coupon .button {
+    width: 100% !important;
+}
+
+/* ─── Hide ALL billing / additional-fields sections ─── */
+.woocommerce-checkout #customer_details,
+.woocommerce-checkout .ls-customer-details-hidden,
+.woocommerce-checkout .wpr-customer-details-wrapper,
+.woocommerce-checkout .woocommerce-billing-fields,
+.woocommerce-checkout .woocommerce-additional-fields,
+.woocommerce-checkout .woocommerce-shipping-fields,
+.woocommerce-checkout #order_comments_field {
+    display: none !important;
+}
+
+/* Order review takes the full column width — kill floats, sticky, side-by-side */
+.woocommerce-checkout .woocommerce-checkout-review-order,
+.woocommerce-checkout .wpr-checkout-order-review,
+.woocommerce-checkout #order_review {
+    width: 100% !important;
+    max-width: 640px !important;
+    float: none !important;
+    clear: both !important;
+    position: static !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.woocommerce-checkout .col2-set,
+.woocommerce-checkout .col2-set .col-1,
+.woocommerce-checkout .col2-set .col-2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* "طلبك" heading — centered with divider, same as the v2 template */
+.woocommerce-checkout #order_review_heading {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    margin: 0 0 22px !important;
+    padding: 0 0 14px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    float: none !important;
+    width: 100% !important;
+}
+
+/* Quantity under the product name inside the order table */
+.woocommerce-checkout .woocommerce-checkout-review-order td.product-name .product-quantity {
+    display: block !important;
+    margin-top: 4px !important;
+}
+
+/* Hide the English WC privacy-policy paragraph above the button */
+.woocommerce-checkout .woocommerce-privacy-policy-text {
+    display: none !important;
+}
