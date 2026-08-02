@@ -3309,14 +3309,27 @@ function learnsimply_checkout_require_login()
 	if (is_wc_endpoint_url('order-received') || is_wc_endpoint_url('order-pay')) {
 		return;
 	}
-	$login_url = wc_get_page_permalink('myaccount');
-	if (!$login_url) {
-		$login_url = wp_login_url(wc_get_checkout_url());
-	} else {
-		$login_url = add_query_arg('redirect_to', rawurlencode(wc_get_checkout_url()), $login_url);
-	}
+	// The site's login lives on the Tutor dashboard page (same URL the header
+	// "تسجيل دخول" button uses), not on the WooCommerce My Account page.
+	$login_url = add_query_arg('redirect_to', rawurlencode(wc_get_checkout_url()), home_url('/dashboard/'));
 	wp_safe_redirect($login_url);
 	exit;
+}
+
+/**
+ * After logging in through the Tutor dashboard form, honour the redirect_to
+ * parameter so the customer lands back on checkout instead of the dashboard.
+ */
+add_filter('tutor_after_login_redirect_url', 'learnsimply_tutor_login_redirect_back', 20);
+function learnsimply_tutor_login_redirect_back($redirect)
+{
+	if (!empty($_REQUEST['redirect_to'])) {
+		$target = rawurldecode(wp_unslash($_REQUEST['redirect_to']));
+		if (wp_validate_redirect($target)) {
+			return $target;
+		}
+	}
+	return $redirect;
 }
 
 /**
