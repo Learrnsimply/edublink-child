@@ -3247,6 +3247,114 @@ function learnsimply_save_single_user_pledge($order_id)
 }
 
 /**
+ * The checkout design hides the billing form entirely, but WooCommerce still
+ * validates those fields as required ("فوترة الاسم الأول حقل مطلوب" …).
+ * Remove every billing/shipping field except the email, which WooCommerce
+ * pre-fills from the logged-in account even while hidden.
+ */
+add_filter('woocommerce_checkout_fields', 'learnsimply_strip_checkout_fields', 9999);
+function learnsimply_strip_checkout_fields($fields)
+{
+	if (isset($fields['billing'])) {
+		foreach ($fields['billing'] as $key => $field) {
+			if ('billing_email' !== $key) {
+				unset($fields['billing'][$key]);
+			}
+		}
+	}
+	$fields['shipping'] = array();
+	unset($fields['order']['order_comments']);
+	return $fields;
+}
+
+/**
+ * With the name/phone fields gone, fill the order's billing name and email
+ * from the customer's account so orders in wp-admin are not nameless.
+ */
+add_action('woocommerce_checkout_create_order', 'learnsimply_fill_order_from_account', 10, 1);
+function learnsimply_fill_order_from_account($order)
+{
+	$user = wp_get_current_user();
+	if (!$user || !$user->ID) {
+		return;
+	}
+	if (!$order->get_billing_first_name()) {
+		$order->set_billing_first_name($user->first_name ? $user->first_name : $user->display_name);
+	}
+	if (!$order->get_billing_last_name() && $user->last_name) {
+		$order->set_billing_last_name($user->last_name);
+	}
+	if (!$order->get_billing_email()) {
+		$order->set_billing_email($user->user_email);
+	}
+	if (!$order->get_billing_phone()) {
+		$phone = get_user_meta($user->ID, 'billing_phone', true);
+		if ($phone) {
+			$order->set_billing_phone($phone);
+		}
+	}
+}
+
+/**
+ * Guests cannot fill the hidden billing form, so checkout requires an account:
+ * instead of showing the login form/notice at the top of the checkout page,
+ * send logged-out visitors to the login page and bring them back afterwards.
+ */
+add_action('template_redirect', 'learnsimply_checkout_require_login');
+function learnsimply_checkout_require_login()
+{
+	if (!function_exists('is_checkout') || !is_checkout() || is_user_logged_in()) {
+		return;
+	}
+	if (is_wc_endpoint_url('order-received') || is_wc_endpoint_url('order-pay')) {
+		return;
+	}
+	// The site's login lives on the Tutor dashboard page (same URL the header
+	// "تسجيل دخول" button uses), not on the WooCommerce My Account page.
+	$login_url = add_query_arg('redirect_to', rawurlencode(wc_get_checkout_url()), home_url('/dashboard/'));
+	wp_safe_redirect($login_url);
+	exit;
+}
+
+/**
+ * After logging in through the Tutor dashboard form, honour the redirect_to
+ * parameter so the customer lands back on checkout instead of the dashboard.
+ */
+add_filter('tutor_after_login_redirect_url', 'learnsimply_tutor_login_redirect_back', 20);
+function learnsimply_tutor_login_redirect_back($redirect)
+{
+	if (!empty($_REQUEST['redirect_to'])) {
+		$target = rawurldecode(wp_unslash($_REQUEST['redirect_to']));
+		if (wp_validate_redirect($target)) {
+			return $target;
+		}
+	}
+	return $redirect;
+}
+
+/**
+ * After logging in through the My Account form, honour the redirect_to
+ * parameter so the customer lands back on checkout.
+ */
+add_filter('woocommerce_login_redirect', 'learnsimply_login_redirect_back_to_checkout', 10, 2);
+function learnsimply_login_redirect_back_to_checkout($redirect, $user)
+{
+	if (!empty($_GET['redirect_to'])) {
+		$target = rawurldecode(wp_unslash($_GET['redirect_to']));
+		if (wp_validate_redirect($target)) {
+			return $target;
+		}
+	}
+	return $redirect;
+}
+
+/**
+ * The checkout page no longer hosts the login form — logged-out users are
+ * redirected before rendering — so drop the built-in login form output too.
+ */
+remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10);
+
+/**
  * Show the pledge inside the admin order screen (billing address block).
  */
 add_action('woocommerce_admin_order_data_after_billing_address', 'learnsimply_admin_show_single_user_pledge');
