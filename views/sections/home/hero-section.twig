@@ -116,8 +116,8 @@
                   <div class="stats-card">
                     <div class="stat-box">
                       <div class="stat-number">
-                        <span class="counter-static">1</span>
-                        <span class="stat-suffix">مليون+</span>
+                        <span class="counter counter-wide" data-start="999998" data-target="1000000" data-duration="900">999,998</span>
+                        <span class="stat-suffix">+</span>
                       </div>
                       <p class="stat-text">طالب من جميع المنصات</p>
                     </div>
@@ -162,20 +162,25 @@
           entries.forEach(entry => {
             if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
               entry.target.classList.add('animated');
-              const target = parseInt(entry.target.getAttribute('data-target'));
               const element = entry.target;
+              const target = parseInt(element.getAttribute('data-target'), 10);
+              // Counters may start from a value other than zero (e.g. 999,998 → 1,000,000)
+              const start = parseInt(element.getAttribute('data-start') || '0', 10);
+              const duration = parseInt(element.getAttribute('data-duration') || '1500', 10);
 
-              let current = 0;
-              const increment = target / 50;
+              // Short ranges get one step per unit so every number is actually visible.
+              const range = target - start;
+              const steps = Math.min(50, Math.max(1, Math.abs(range)));
+              const stepDuration = duration / steps;
+              let done = 0;
+
+              element.textContent = start.toLocaleString('en-US');
               const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                  element.textContent = target.toLocaleString('en-US');
-                  clearInterval(timer);
-                } else {
-                  element.textContent = Math.floor(current).toLocaleString('en-US');
-                }
-              }, 30);
+                done++;
+                const value = done >= steps ? target : start + (range / steps) * done;
+                element.textContent = Math.floor(value).toLocaleString('en-US');
+                if (done >= steps) clearInterval(timer);
+              }, stepDuration);
             }
           });
         }, observerOptions);
@@ -647,6 +652,7 @@
         align-items: baseline;
         justify-content: center;
         gap: 4px;
+        white-space: nowrap;
       }
 
       .counter,
@@ -656,6 +662,12 @@
         color: #ffffff;
         font-family: 'Segoe UI', Arial, sans-serif;
         line-height: 1;
+      }
+
+      /* Seven-digit figures need a smaller size to stay on one line inside the card. */
+      .counter-wide {
+        font-size: 42px;
+        letter-spacing: -0.5px;
       }
 
       .stat-suffix {
@@ -772,6 +784,10 @@
         .counter,
         .counter-static {
           font-size: 42px;
+        }
+
+        .counter-wide {
+          font-size: 34px;
         }
 
         .stats-card {
