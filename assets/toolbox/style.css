@@ -203,6 +203,7 @@
     margin: -30px -26px 18px;   /* pull the thumbnail to the top of the card */
     overflow: hidden;
     background: #0a0f1a;
+    flex-shrink: 0;
 }
 
 .ls-toolbox-card-thumb img {
@@ -234,12 +235,16 @@
     color: #fff;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     transition: transform 0.2s ease;
+    overflow: hidden;       /* belt-and-suspenders: clip the SVG if it tries to escape */
 }
 .ls-toolbox-card-play svg {
     width: 22px;
     height: 22px;
+    max-width: 100%;
+    max-height: 100%;
     color: #fff;
     margin-inline-start: 2px;
+    flex-shrink: 0;
 }
 .ls-toolbox-card--featured:hover .ls-toolbox-card-play,
 .ls-toolbox-card--featured:focus-visible .ls-toolbox-card-play {
