@@ -5497,33 +5497,11 @@ html {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Reveal-on-scroll animations (Intersection Observer) ──
-   PROGRESSIVE ENHANCEMENT: by default, content is FULLY VISIBLE.
-   Only when JS runs and adds the `.js-ready` class to <body> do we
-   hide the elements (opacity:0) — then the IO observer reveals them.
-   This guarantees content is always visible even if JS fails. */
-.js-ready [data-reveal]:not(.is-revealed) {
-  opacity: 0;
-  transform: translateY(20px);
-}
+/* ── Reveal-on-scroll animations DISABLED (was causing empty-space bugs)
+   Sections now rely on a simple fade-in via a class added by the IO observer,
+   and content is always visible by default (no opacity:0 gate). */
 [data-reveal] {
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-[data-reveal].is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-/* Stagger children inside .build-grid */
-.build-grid .build-card[data-reveal]:nth-child(1) { transition-delay: 0.05s; }
-.build-grid .build-card[data-reveal]:nth-child(2) { transition-delay: 0.15s; }
-.build-grid .build-card[data-reveal]:nth-child(3) { transition-delay: 0.25s; }
-.faq-list .faq-item[data-reveal]:nth-child(odd)  { transition-delay: 0.05s; }
-.faq-list .faq-item[data-reveal]:nth-child(even) { transition-delay: 0.12s; }
-
-@media (prefers-reduced-motion: reduce) {
-  .js-ready [data-reveal] { opacity: 1; transform: none; transition: none; }
-  .faq-chevron { transition: none; }
+  /* Legacy: kept as a no-op. New sections don't use data-reveal. */
 }
 
 @media (max-width: 768px) {
