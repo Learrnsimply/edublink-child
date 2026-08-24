@@ -1264,8 +1264,18 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260824-2');
+	define('LS_ASSETS_VERSION', '20260824-3');
 }
+
+/**
+ * Set the `.js-ready` class on <body> as early as possible so the CSS
+ * progressive-enhancement rules (`.js-ready [data-reveal] { opacity: 0 }`)
+ * can take effect before the page paints — prevents a flash where content
+ * is briefly visible then hidden.
+ */
+add_action('wp_head', function () {
+	echo "<script>document.documentElement.classList.add('js-ready');</script>\n";
+}, 1);
 
 if (class_exists('Timber\Timber')) {
 	Timber\Timber::init();
