@@ -1,0 +1,311 @@
+{% extends "layouts/base.twig" %}
+
+{% block title %}كورس ال Vibe Coding — مرجع الفيديو | اتعلم ببساطة{% endblock %}
+
+{% block body_class %}ls-vibe-body{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/toolbox/vibe-coding-course.css" />
+    {# Inter for body copy + JetBrains Mono for tool names (matches ai-website-prompt page) #}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+{# ═══════════════════════════════════════════════════════════════
+   HERO — badge + title + subtitle + stats + dual CTAs
+   ═══════════════════════════════════════════════════════════════ #}
+<section class="lvc-hero">
+    <div class="lvc-hero-bg-glow"></div>
+
+    <div class="lvc-hero-inner">
+        <span class="lvc-hero-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            مرجع فيديو يوتيوب
+        </span>
+
+        <h1 class="lvc-hero-title">
+            كورس ال <span class="lvc-gradient-text">Vibe Coding</span>
+        </h1>
+
+        <p class="lvc-hero-subtitle">
+            5 خطوات عملية تاخدك من الصفر لموقع شغال فعلاً — من غير ما تكتب سطر كود واحد بنفسك.
+            ده <strong>مرجع الفيديو</strong> على القناة — كل الأدوات واللينكات في مكان واحد، سهل المسح على الموبايل وانت بتنفّذ.
+        </p>
+
+        <div class="lvc-hero-stats">
+            <div class="lvc-stat">
+                <div class="lvc-stat-num">5</div>
+                <div class="lvc-stat-label">خطوات عملية</div>
+            </div>
+            <div class="lvc-stat-divider"></div>
+            <div class="lvc-stat">
+                <div class="lvc-stat-num">8+</div>
+                <div class="lvc-stat-label">أدوات مجانية</div>
+            </div>
+            <div class="lvc-stat-divider"></div>
+            <div class="lvc-stat">
+                <div class="lvc-stat-num">100%</div>
+                <div class="lvc-stat-label">من غير كود</div>
+            </div>
+        </div>
+
+        <div class="lvc-hero-ctas">
+            <a href="#lvc-video" class="lvc-btn lvc-btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                شاهد الفيديو على الموقع
+            </a>
+            <a href="#lvc-step-1" class="lvc-btn lvc-btn-ghost">
+                ابدأ من الخطوة 1
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ═══════════════════════════════════════════════════════════════
+   VIDEO — embedded YouTube player OR poster with play CTA
+   ═══════════════════════════════════════════════════════════════ #}
+<section class="lvc-video-section" id="lvc-video">
+    <div class="lvc-video-frame">
+        {% if has_embed %}
+            <iframe
+                src="https://www.youtube.com/embed/{{ video_id }}?rel=0&modestbranding=1&color=white"
+                title="كورس ال Vibe Coding"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                loading="lazy"
+            ></iframe>
+        {% else %}
+            <a class="lvc-video-poster" href="{{ youtube_watch }}" target="_blank" rel="noopener">
+                <img src="{{ poster_url }}" alt="كورس ال Vibe Coding" />
+                <span class="lvc-video-play">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </span>
+                <span class="lvc-video-cta">شاهد على يوتيوب</span>
+            </a>
+        {% endif %}
+    </div>
+    <p class="lvc-video-note">
+        {% if has_embed %}
+            لو الفيديو ما اتشغّلش، افتحه على
+            <a href="{{ youtube_watch }}" target="_blank" rel="noopener">يوتيوب مباشرةً</a>.
+        {% else %}
+            ضيف الـ video ID في <code>page-vibe-coding-course.php</code> (المتغير <code>$ls_vibe_coding_video_id</code>) عشان الفيديو يتضمّن هنا تلقائياً.
+        {% endif %}
+    </p>
+</section>
+
+{# ═══════════════════════════════════════════════════════════════
+   STICKY STEP NAV — quick jump between steps
+   ═══════════════════════════════════════════════════════════════ #}
+<nav class="lvc-step-nav" id="lvc-step-nav" aria-label="خطوات سريعة">
+    <div class="lvc-step-nav-inner">
+        <span class="lvc-step-nav-label">انتقل لـ:</span>
+        {% for step in steps %}
+            <a href="#lvc-step-{{ step.number }}" class="lvc-step-nav-pill" data-step="{{ step.number }}">
+                <span class="lvc-step-nav-num">{{ step.number }}</span>
+                <span class="lvc-step-nav-title">{{ step.title }}</span>
+            </a>
+        {% endfor %}
+    </div>
+</nav>
+
+{# ═══════════════════════════════════════════════════════════════
+   STEPS — 5 numbered cards with tools + copy buttons
+   ═══════════════════════════════════════════════════════════════ #}
+<section class="lvc-steps">
+    <div class="lvc-section-head">
+        <h2 class="lvc-section-title">الخطوات الـ 5 من الفيديو</h2>
+        <p class="lvc-section-sub">اتبعهم بالترتيب — كل خطوة بتبني على اللي قبلها. اضغط "نسخ" جنب أي لينك عشان تنسخه بسرعة.</p>
+    </div>
+
+    {% for step in steps %}
+        <article class="lvc-step" id="lvc-step-{{ step.number }}" data-step="{{ step.number }}">
+            <div class="lvc-step-number-wrap">
+                <div class="lvc-step-number">{{ step.number }}</div>
+                <div class="lvc-step-number-line"></div>
+            </div>
+
+            <div class="lvc-step-body">
+                <header class="lvc-step-header">
+                    <div class="lvc-step-icon">
+                        {% if step.icon == 'bulb' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2v.3h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg>
+                        {% elseif step.icon == 'download' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        {% elseif step.icon == 'plan' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+                        {% elseif step.icon == 'build' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        {% elseif step.icon == 'rocket' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+                        {% endif %}
+                    </div>
+                    <h3 class="lvc-step-title">{{ step.title }}</h3>
+                </header>
+
+                <p class="lvc-step-desc">{{ step.description }}</p>
+
+                {% if step.tip %}
+                    <div class="lvc-step-tip">
+                        <span class="lvc-step-tip-icon">💡</span>
+                        <p>{{ step.tip }}</p>
+                    </div>
+                {% endif %}
+
+                {% if step.tools|length > 0 %}
+                    <div class="lvc-step-tools">
+                        <h4 class="lvc-step-tools-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            الأدوات اللي هتحتاجها
+                        </h4>
+                        <ul class="lvc-tool-list">
+                            {% for tool in step.tools %}
+                                <li class="lvc-tool">
+                                    <a class="lvc-tool-link" href="{{ tool.url }}" target="_blank" rel="noopener">
+                                        <span class="lvc-tool-name">{{ tool.name }}</span>
+                                        <svg class="lvc-tool-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                    </a>
+                                    <button type="button" class="lvc-copy-btn" data-copy="{{ tool.url }}" aria-label="نسخ الرابط">
+                                        <svg class="lvc-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                        <svg class="lvc-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="lvc-copy-text">نسخ</span>
+                                    </button>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </article>
+    {% endfor %}
+</section>
+
+{# ═══════════════════════════════════════════════════════════════
+   COURSES — 3 offer cards at the bottom (highest conversion zone)
+   ═══════════════════════════════════════════════════════════════ #}
+<section class="lvc-courses">
+    <div class="lvc-section-head">
+        <h2 class="lvc-section-title">عندك الموقع… طيب عايز تفهم الكود اللي وراه؟</h2>
+        <p class="lvc-section-sub">لو عايز تتعلم البرمجة وتفهم اللي الـ AI بيكتبه، وتقدر تعدّل فيه بنفسك — ابدأ من هنا:</p>
+    </div>
+
+    <div class="lvc-course-grid">
+        {% for course in courses %}
+            <article class="lvc-course {% if course.highlight %}lvc-course--highlight{% endif %}">
+                {% if course.badge %}
+                    <span class="lvc-course-badge">{{ course.badge }}</span>
+                {% endif %}
+
+                <h3 class="lvc-course-title">{{ course.title }}</h3>
+                <p class="lvc-course-desc">{{ course.description }}</p>
+                <p class="lvc-course-meta">{{ course.meta }}</p>
+
+                <div class="lvc-course-pricing">
+                    <span class="lvc-course-price-new">{{ course.new_price }} <span class="lvc-currency">جنيه</span></span>
+                    <span class="lvc-course-price-old">{{ course.old_price }} جنيه</span>
+                    <span class="lvc-course-discount">خصم {{ course.discount }}</span>
+                </div>
+
+                <a class="lvc-course-cta" href="{{ course.url }}">
+                    {{ course.cta }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </a>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+{# ═══════════════════════════════════════════════════════════════
+   FOOTER CTA — share the resource
+   ═══════════════════════════════════════════════════════════════ #}
+<section class="lvc-footer-cta">
+    <div class="lvc-footer-cta-inner">
+        <h2 class="lvc-footer-cta-title">لو الفيديو عجبك، ابعته لحد يبتدي</h2>
+        <p class="lvc-footer-cta-sub">كل الأدوات دي مجانية — اللي محتاج بس هو إنه يبتدي.</p>
+        <div class="lvc-footer-cta-actions">
+            <a class="lvc-btn lvc-btn-primary" href="https://wa.me/?text={{ ('ده مرجع فيديو الـ Vibe Coding — 5 خطوات عملية تعملك موقع بالـ AI من غير كود: ' ~ site.url ~ '/vibe-coding-course/')|url_encode }}" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                ابعته على واتساب
+            </a>
+            <a class="lvc-btn lvc-btn-ghost" href="{{ youtube_watch }}" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                شاهد على يوتيوب
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    /* ── Smooth scroll for step nav ── */
+    document.querySelectorAll('a[href^="#lvc-step-"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+            var target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                var offset = 80; // sticky nav height
+                var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        });
+    });
+
+    /* ── Highlight active step in nav while scrolling ── */
+    var pills = document.querySelectorAll('.lvc-step-nav-pill');
+    var steps = document.querySelectorAll('.lvc-step');
+    if (pills.length && steps.length) {
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    var n = entry.target.getAttribute('data-step');
+                    pills.forEach(function (p) {
+                        p.classList.toggle('is-active', p.getAttribute('data-step') === n);
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -60% 0px' });
+        steps.forEach(function (s) { obs.observe(s); });
+    }
+
+    /* ── Copy-to-clipboard for tool links ── */
+    document.querySelectorAll('.lvc-copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var url = this.getAttribute('data-copy');
+            var textEl = this.querySelector('.lvc-copy-text');
+            var fallback = function () {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+            };
+            var onSuccess = function () {
+                btn.classList.add('is-copied');
+                if (textEl) {
+                    var prev = textEl.textContent;
+                    textEl.textContent = 'تم النسخ ✓';
+                    setTimeout(function () { btn.classList.remove('is-copied'); textEl.textContent = prev; }, 1800);
+                }
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(onSuccess).catch(function () { fallback(); onSuccess(); });
+            } else {
+                fallback();
+                onSuccess();
+            }
+        });
+    });
+})();
+</script>
+{% endblock %}

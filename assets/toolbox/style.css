@@ -150,6 +150,51 @@
     transform: translateX(0);
 }
 
+/* ─── Card Flag (e.g. "🎬 فيديو") — sits at the start side (right in RTL) ─── */
+.ls-toolbox-card-flag {
+    position: absolute;
+    inset-block-start: 14px;
+    inset-inline-start: 14px;
+    background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
+    color: #ffffff !important;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    line-height: 1;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+    z-index: 1;
+}
+
+/* ─── Featured card (e.g. Vibe Coding course) — purple/cyan accent ─── */
+.ls-toolbox-card--featured {
+    background: linear-gradient(160deg, rgba(124, 58, 237, 0.10), rgba(6, 182, 212, 0.05)) !important;
+    border-color: rgba(124, 58, 237, 0.35) !important;
+}
+
+.ls-toolbox-card--featured::before {
+    background: linear-gradient(90deg, #7c3aed, #06b6d4) !important;
+    opacity: 1 !important;
+}
+
+.ls-toolbox-card--featured .ls-toolbox-card-icon {
+    background: rgba(124, 58, 237, 0.15) !important;
+}
+
+.ls-toolbox-card--featured .ls-toolbox-card-icon svg {
+    stroke: #c4b5fd !important;
+}
+
+.ls-toolbox-card--featured .ls-toolbox-card-arrow {
+    color: #c4b5fd !important;
+}
+
+.ls-toolbox-card--featured:hover,
+.ls-toolbox-card--featured:focus-visible {
+    border-color: rgba(124, 58, 237, 0.6) !important;
+    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.25);
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 768px) {
     .ls-toolbox-header {
