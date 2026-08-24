@@ -5,7 +5,42 @@
 {% block body_class %}learnsimply-toolbox-body{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ theme_uri }}/assets/toolbox/style.css" />
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/toolbox/style.css?v={{ 'now'|date('U') }}" />
+{% endblock %}
+
+{# Inline critical styles as a fallback — these run AFTER any cached or late-loaded
+   stylesheets and guarantee our colors and gradients apply. #}
+{% block head_extra %}
+<style id="ls-toolbox-critical">
+html, body.ls-toolbox-body, .ls-toolbox { color: #ffffff !important; overflow-x: hidden; }
+.ls-toolbox-hero {
+    color: #ffffff !important;
+    text-align: center !important;
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(124, 58, 237, 0.45) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(6, 182, 212, 0.35) 0%, transparent 50%),
+        linear-gradient(135deg, #1a1240 0%, #0f172a 50%, #0a1a2f 100%) !important;
+}
+.ls-toolbox-hero-content { text-align: center !important; margin: 0 auto !important; }
+.ls-toolbox-hero-title { color: #ffffff !important; text-align: center !important; }
+.ls-toolbox-hero-desc { color: #e2e6f0 !important; text-align: center !important; }
+.ls-toolbox-hero-cta { text-decoration: none !important; }
+.ls-toolbox-card { color: #ffffff !important; background: #141924 !important; }
+.ls-toolbox-card-title { color: #ffffff !important; }
+.ls-toolbox-card-desc { color: #d1d5e0 !important; }
+.ls-toolbox-card-visual--purple {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(168, 85, 247, 0.7) 0%, transparent 60%),
+        linear-gradient(135deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%) !important;
+}
+.ls-toolbox-card-visual--cyan {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(34, 211, 238, 0.7) 0%, transparent 60%),
+        linear-gradient(135deg, #0e7490 0%, #0891b2 50%, #06b6d4 100%) !important;
+}
+.ls-toolbox-card-price { color: #86efac !important; }
+.ls-toolbox-card-type { color: #9ca3b0 !important; }
+</style>
 {% endblock %}
 
 {% block content %}
