@@ -531,7 +531,7 @@
                   <div class="build-mockup-bar">
                     <span></span><span></span><span></span>
                   </div>
-                  <pre class="build-mockup-body">{{ item.code|default('') }}</pre>
+                  <pre class="build-mockup-body">{{ item.code|default('')|raw }}</pre>
                 </div>
                 {% elseif item.kind == 'oop' %}
                 <div class="build-mockup build-mockup--oop">

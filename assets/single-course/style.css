@@ -5352,13 +5352,19 @@ html {
 .build-mockup--code .build-mockup-body {
   margin: 0;
   padding: 14px 16px;
-  color: #c9d1d9;
-  line-height: 1.5;
-  font-size: 11px;
-  font-family: 'JetBrains Mono', monospace;
+  color: #e6edf3;
+  line-height: 1.6;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', 'IBM Plex Sans Arabic', monospace;
   white-space: pre;
-  color: #79c0ff;
+  overflow-x: auto;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
+/* Syntax highlighting for the code mockup (works on a <pre> with no markup) */
+.build-mockup--code .build-mockup-body .lvc-kw { color: #ff7b72; font-weight: 600; }
+.build-mockup--code .build-mockup-body .lvc-str { color: #a5d6ff; }
+.build-mockup--code .build-mockup-body .lvc-num { color: #79c0ff; }
+.build-mockup--code .build-mockup-body .lvc-cmt { color: #6e7681; font-style: italic; }
 
 /* OOP and Flutter icon cards — much bigger now */
 .build-mockup--oop, .build-mockup--flutter, .build-mockup--backend, .build-mockup--python, .build-mockup--mobile {

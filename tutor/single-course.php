@@ -437,7 +437,7 @@ function learnsimply_get_course_extras( $slug ) {
 			'build_items' => array(
 				array(
 					'kind'  => 'code',
-					'code'  => "void main() {\n  print('Hello, Dart!');\n  for (var i = 0; i < 5; i++) {\n    print(i);\n  }\n}",
+					'code'  => '<span class="lvc-kw">void</span> main() {\n  print(<span class="lvc-str">\'Hello, Dart!\'</span>);\n  <span class="lvc-kw">for</span> (<span class="lvc-kw">var</span> i = <span class="lvc-num">0</span>; i &lt; <span class="lvc-num">5</span>; i++) {\n    print(i);\n  }\n}',
 					'tag'   => 'تطبيقي',
 					'title' => 'أول Dart app ليك',
 					'desc'  => 'هنكتب أول برنامج ليك من الصفر — variables, loops, functions.',
@@ -486,7 +486,7 @@ function learnsimply_get_course_extras( $slug ) {
 			'build_items' => array(
 				array(
 					'kind'  => 'code',
-					'code'  => "public class Main {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, Java!\");\n    for (int i = 0; i < 5; i++) {\n      System.out.println(i);\n    }\n  }\n}",
+					'code'  => '<span class="lvc-kw">public class</span> Main {\n  <span class="lvc-kw">public static void</span> main(String[] args) {\n    System.out.<span class="lvc-kw">println</span>(<span class="lvc-str">"Hello, Java!"</span>);\n    <span class="lvc-kw">for</span> (<span class="lvc-kw">int</span> i = <span class="lvc-num">0</span>; i &lt; <span class="lvc-num">5</span>; i++) {\n      System.out.<span class="lvc-kw">println</span>(i);\n    }\n  }\n}',
 					'tag'   => 'تطبيقي',
 					'title' => 'أول Java app ليك',
 					'desc'  => 'هنكتب أول Java program من الصفر — variables, loops, methods, الـ main class.',
@@ -535,7 +535,7 @@ function learnsimply_get_course_extras( $slug ) {
 			'build_items' => array(
 				array(
 					'kind'  => 'code',
-					'code'  => "def greet(name):\n    return f'Hello, {name}!'\n\nfor i in range(5):\n    print(greet(f'World {i}'))",
+					'code'  => '<span class="lvc-kw">def</span> greet(name):\n    <span class="lvc-kw">return</span> <span class="lvc-str">f\'Hello, {name}!\'</span>\n\n<span class="lvc-kw">for</span> i <span class="lvc-kw">in</span> <span class="lvc-kw">range</span>(<span class="lvc-num">5</span>):\n    print(greet(<span class="lvc-str">f\'World {i}\'</span>))',
 					'tag'   => 'تطبيقي',
 					'title' => 'أول Python script',
 					'desc'  => 'هنكتب أول Python script من الصفر — functions, loops, string formatting.',
