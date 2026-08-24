@@ -1264,7 +1264,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260824-5');
+	define('LS_ASSETS_VERSION', '20260824-6');
 }
 
 /**
@@ -1905,6 +1905,22 @@ function edublink_child_prevent_caching_front_page()
 		header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 		header('Cache-Control: post-check=0, pre-check=0', false);
 		header('Pragma: no-cache');
+	}
+}
+
+/**
+ * DEVELOPMENT: disable HTML caching on single course pages so the dynamic
+ * course-specific content (what-you-build + FAQ) always reflects the
+ * latest PHP/Twig. Remove this block once everything is verified on prod.
+ */
+add_action('send_headers', 'edublink_child_prevent_caching_single_course');
+function edublink_child_prevent_caching_single_course()
+{
+	if (is_singular('courses')) {
+		header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+		header('Cache-Control: post-check=0, pre-check=0', false);
+		header('Pragma: no-cache');
+		header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');
 	}
 }
 
