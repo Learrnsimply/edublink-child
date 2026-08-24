@@ -1,9 +1,9 @@
-{% extends "layouts/base.twig" %}
+﻿{% extends "layouts/base.twig" %}
 
 {% block title %}404 - الصفحة غير موجودة | اتعلم ببساطة{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ theme_uri }}/assets/404/style.css" />
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/404/style.css?v={{ assets_version }}" />
 {% endblock %}
     
 {% block main_attributes %}class="error-404-main"{% endblock %}
@@ -71,5 +71,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ theme_uri }}/assets/404/script.js"></script>
+    <script src="{{ theme_uri }}/assets/404/script.js?v={{ assets_version }}"></script>
 {% endblock %}

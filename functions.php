@@ -1253,6 +1253,20 @@ add_action('wp_enqueue_scripts', 'learnsimply_enqueue_promo_assets', 101);
 /**
  * Initialize Timber
  */
+if (!defined('LS_ASSETS_VERSION')) {
+	/**
+	 * Asset cache-bust version — bump this EVERY TIME you push CSS/JS changes
+	 * to force every visitor's browser to re-download the new files.
+	 *
+	 * Format: YYYYMMDD-N (N increments per push on the same day).
+	 * Examples: '20260824-1', '20260824-2', '20260825-1'
+	 *
+	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
+	 * every custom CSS/JS link we ship in page templates.
+	 */
+	define('LS_ASSETS_VERSION', '20260824-2');
+}
+
 if (class_exists('Timber\Timber')) {
 	Timber\Timber::init();
 
@@ -1309,6 +1323,9 @@ if (class_exists('Timber\Timber')) {
 	{
 		// Global theme URI for assets in Twig (images, CSS, JS)
 		$context['theme_uri'] = get_stylesheet_directory_uri();
+
+		// Asset cache-bust version — append to ?v=... on every custom CSS/JS link
+		$context['assets_version'] = defined('LS_ASSETS_VERSION') ? LS_ASSETS_VERSION : '1';
 
 		// Placeholder image when no image exists (change path in learnsimply_no_image_url())
 		$context['no_image_url'] = learnsimply_no_image_url();

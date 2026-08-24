@@ -1,9 +1,9 @@
-{% extends "layouts/base.twig" %}
+﻿{% extends "layouts/base.twig" %}
 
 {% block title %}نبذة عني - اتعلم ببساطة{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ theme_uri }}/assets/about-me/style.css" />
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/about-me/style.css?v={{ assets_version }}" />
 {% endblock %}
 
 {% block content %}
@@ -20,5 +20,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ theme_uri }}/assets/about-me/script.js"></script>
+    <script src="{{ theme_uri }}/assets/about-me/script.js?v={{ assets_version }}"></script>
 {% endblock %}

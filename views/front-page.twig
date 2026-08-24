@@ -1,9 +1,9 @@
-{% extends "layouts/base.twig" %}
+﻿{% extends "layouts/base.twig" %}
 
 {% block title %}اتعلم ببساطة - تعلم البرمجة من الصفر{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ theme_uri }}/assets/home/style.css" />
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/home/style.css?v={{ assets_version }}" />
 {% endblock %}
     
 {% block content %}
@@ -28,5 +28,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ theme_uri }}/assets/home/script.js"></script>
+    <script src="{{ theme_uri }}/assets/home/script.js?v={{ assets_version }}"></script>
 {% endblock %}

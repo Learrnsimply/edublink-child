@@ -1,9 +1,9 @@
-{% extends "layouts/base.twig" %}
+﻿{% extends "layouts/base.twig" %}
 
 {% block title %}{{ archive_title }} - {{ site.name }}{% endblock %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{{ theme_uri }}/assets/course_archive/style.css" />
+  <link rel="stylesheet" href="{{ theme_uri }}/assets/course_archive/style.css?v={{ assets_version }}" />
 {% endblock %}
 
 {% block head_extra %}

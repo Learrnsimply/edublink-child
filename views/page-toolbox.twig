@@ -1,11 +1,11 @@
-{% extends "layouts/base.twig" %}
+﻿{% extends "layouts/base.twig" %}
 
 {% block title %}صندوق الأدوات — اتعلم ببساطة{% endblock %}
 
 {% block body_class %}learnsimply-toolbox-body{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ theme_uri }}/assets/toolbox/style.css?v={{ 'now'|date('U') }}" />
+    <link rel="stylesheet" href="{{ theme_uri }}/assets/toolbox/style.css?v={{ assets_version }}" />
 {% endblock %}
 
 {# Inline critical styles as a fallback — these run AFTER any cached or late-loaded
