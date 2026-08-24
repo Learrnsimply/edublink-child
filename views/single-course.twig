@@ -6,7 +6,7 @@
     {# <title> managed by Rank Math via wp_head — hardcoded tag removed to fix BUG-003 (duplicate title) #}
     {{ fn('wp_head') }}
   </head>
-  <body class="learnsimply-homepage-body">
+  <body class="learnsimply-course-body">
     
     {% include 'components/header.twig' %}
 
@@ -506,6 +506,81 @@
           </div>
         </section>
         {% endif %}
+
+        {# ═══════════════════════════════════════════════════════════════
+           WHAT YOU'LL BUILD — project showcase (build anticipation)
+           ═══════════════════════════════════════════════════════════════ #}
+        {% if not is_enrolled %}
+        <section class="what-you-build" data-reveal>
+          <div class="section-header">
+            <div class="section-icon-box">
+              <svg width="33" height="33" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h2 class="section-title">بنتعلم إيه عملي جوه الكورس ده؟</h2>
+            <p class="section-subtitle">مش فيديوهات نظرية — كل درس بياخدك لخطوة تطبيقية هتضيفها لـ Portfolio بتاعك.</p>
+          </div>
+
+          <div class="build-grid">
+            <div class="build-card" data-reveal>
+              <div class="build-card__visual">
+                <div class="build-mockup build-mockup--code">
+                  <div class="build-mockup-bar">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <pre class="build-mockup-body">void main() {
+  print('Hello, Dart!');
+  for (var i = 0; i &lt; 5; i++) {
+    print(i);
+  }
+}</pre>
+                </div>
+              </div>
+              <div class="build-card__body">
+                <span class="build-card__tag">تطبيقي</span>
+                <h3>أول Dart app ليك</h3>
+                <p>هنكتب أول برنامج ليك من الصفر — مفاهيم الـ variables, loops, functions.</p>
+              </div>
+            </div>
+
+            <div class="build-card" data-reveal>
+              <div class="build-card__visual">
+                <div class="build-mockup build-mockup--oop">
+                  <div class="build-mockup-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+                    </svg>
+                  </div>
+                  <span class="build-mockup-label">OOP</span>
+                </div>
+              </div>
+              <div class="build-card__body">
+                <span class="build-card__tag">OOP</span>
+                <h3>Class + Inheritance</h3>
+                <p>هنبني class كامل بـ inheritance و polymorphism — وهنفهم ليه OOP مهم.</p>
+              </div>
+            </div>
+
+            <div class="build-card" data-reveal>
+              <div class="build-card__visual">
+                <div class="build-mockup build-mockup--flutter">
+                  <div class="build-mockup-icon">
+                    <svg viewBox="0 0 24 24" fill="#027DFD"><path d="M14.314 2L7.657 8.657l3.657 3.657 9.657-9.657L14.314 2zm-3.657 6.343L4 14.657l6.343 6.343 6.657-6.657-6.343-6z"/></svg>
+                  </div>
+                  <span class="build-mockup-label">Flutter</span>
+                </div>
+              </div>
+              <div class="build-card__body">
+                <span class="build-card__tag">جاهزية</span>
+                <h3>مستعد لـ Flutter</h3>
+                <p>لما تخلص الكورس، هتكون جاهز تبدأ رحلتك في Flutter — ودي الخطوة الطبيعية الجاية.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        {% endif %}
+
         {% if topics|length > 0 %}
         <div class="course-content-card">
           <!-- عنوان القسم -->
@@ -765,6 +840,85 @@
                 <p>{{ has_certificate ? 'بعد ما تخلص الدروس بتحصل على شهادة إتمام، وأي سؤال بيتجاوب عليه مباشرة.' : 'أي سؤال يقف قدامك، بنجاوب عليك مباشرة — مش هتبقى لوحدك.' }}</p>
               </div>
             </div>
+          </div>
+        </section>
+        {% endif %}
+
+        {# ═══════════════════════════════════════════════════════════════
+           FAQ — answers to the most common questions (lift conversion)
+           ═══════════════════════════════════════════════════════════════ #}
+        {% if not is_enrolled %}
+        <section class="course-faq" data-reveal>
+          <div class="section-header">
+            <div class="section-icon-box">
+              <svg width="33" height="33" viewBox="0 0 24 24" fill="none">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h2 class="section-title">أسئلة بتتسأل كتير</h2>
+            <p class="section-subtitle">لو عندك أي سؤال تاني، ابعتلنا وهنرد عليك في أقل من 24 ساعة.</p>
+          </div>
+
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>أيوه، الكورس معمول للمبتدئين تماماً. بنبدأ من "إيه هو البرمجة" ونوصل لحد إنك تبني تطبيقات Dart كاملة. مش محتاج أي خلفية برمجية.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>إيه الفرق بين الكورس ده وكورسات Java اللي عندكم؟</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Java للتطبيقات العامة (Backend, Android Enterprise, Big Data). Dart/Flutter للموبايل والويب الحديث. لو هدفك الموبايل، ابدأ بـ Dart. لو هدفك Backend، ابدأ بـ Java. الاتنين في الباقة لو حابب تجرب الاتنين.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Dart. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة، من غير أي مصاريف إضافية.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>لو مش فهمت درس، فيه دعم؟</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>هل في شهادة بعد ما أخلص الكورس؟</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>{% if has_certificate %}أيوه، بعد ما تخلص كل الدروس هتحصل على شهادة إتمام معتمدة تقدر تضيفها لـ LinkedIn بتاعك أو CV.{% else %}مفيش شهادة رسمية في الكورس ده، بس هتاخد المهارات اللي تقدر تثبتها بمشاريعك الشخصية.{% endif %}</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>ضمان استرداد الفلوس شغال إزاي؟</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة. كل اللي محتاجه: تبعتلنا رسالة وبس.</p>
+              </div>
+            </details>
           </div>
         </section>
         {% endif %}

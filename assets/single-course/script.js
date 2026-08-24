@@ -305,5 +305,33 @@ document.addEventListener("DOMContentLoaded", function () {
 		el.className = "review-message " + type;
 		el.style.display = "block";
 	}
+
+	// ── Reveal-on-scroll animations (UX improvements v2) ──
+	// Uses IntersectionObserver to add .is-revealed when the section enters
+	// the viewport. Falls back to "show all immediately" if the API is
+	// unsupported (very old browsers) or the user prefers reduced motion.
+	const revealEls = document.querySelectorAll("[data-reveal]");
+	if (revealEls.length) {
+		const reduceMotion =
+			window.matchMedia &&
+			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		if (!("IntersectionObserver" in window) || reduceMotion) {
+			revealEls.forEach((el) => el.classList.add("is-revealed"));
+		} else {
+			const io = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("is-revealed");
+							io.unobserve(entry.target);
+						}
+					});
+				},
+				{ rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
+			);
+			revealEls.forEach((el) => io.observe(el));
+		}
+	}
 });
 
