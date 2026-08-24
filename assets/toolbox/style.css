@@ -1,18 +1,7 @@
 /* ============================================================
    TOOLBOX PAGE — صندوق الأدوات
-   Inspired by the سپنتهاكس Academy digital library design.
    ============================================================ */
 
-:root {
-    --ls-card-bg: #141924;
-    --ls-card-border: rgba(255, 255, 255, 0.08);
-    --ls-text: #ffffff;
-    --ls-text-gray: #b8c0d0;
-    --ls-text-mute: #6b7394;
-    --ls-primary: #4077f3;
-}
-
-/* ─── Section Container ─── */
 .ls-toolbox {
     min-height: 80vh;
     padding: 0 20px 80px;
@@ -21,7 +10,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   HERO CARD — big gradient banner
+   HERO CARD — big gradient banner (centered)
    ═══════════════════════════════════════════════════════════════ */
 .ls-toolbox-hero {
     position: relative;
@@ -39,9 +28,8 @@
     position: absolute;
     inset: 0;
     background-image:
-        radial-gradient(circle at 12% 20%, rgba(124, 58, 237, 0.15) 0, transparent 35%),
-        radial-gradient(circle at 88% 80%, rgba(6, 182, 212, 0.15) 0, transparent 35%),
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0, transparent 60%);
+        radial-gradient(circle at 12% 20%, rgba(124, 58, 237, 0.20) 0, transparent 35%),
+        radial-gradient(circle at 88% 80%, rgba(6, 182, 212, 0.20) 0, transparent 35%);
     pointer-events: none;
 }
 
@@ -52,7 +40,7 @@
     width: 600px;
     height: 600px;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.10) 0%, transparent 60%);
     pointer-events: none;
     filter: blur(40px);
 }
@@ -62,6 +50,7 @@
     z-index: 1;
     max-width: 720px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .ls-toolbox-hero-badge {
@@ -75,7 +64,7 @@
     border-radius: 999px;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin: 0 0 20px;
 }
 
 .ls-toolbox-hero-badge-icon {
@@ -91,20 +80,22 @@
 }
 
 .ls-toolbox-hero-title {
-    font-size: clamp(32px, 5vw, 48px);
+    font-size: clamp(30px, 4.5vw, 44px);
     font-weight: 800;
-    line-height: 1.2;
+    line-height: 1.25;
     color: #ffffff;
     margin: 0 0 16px;
     letter-spacing: -0.02em;
+    text-align: center;
 }
 
 .ls-toolbox-hero-desc {
-    font-size: clamp(15px, 1.6vw, 17px);
-    color: var(--ls-text-gray);
+    font-size: clamp(15px, 1.5vw, 17px);
+    color: #b8c0d0;
     line-height: 1.7;
     margin: 0 auto 32px;
     max-width: 560px;
+    text-align: center;
 }
 
 .ls-toolbox-hero-ctas {
@@ -127,7 +118,7 @@
     border: 1px solid transparent;
 }
 
-.ls-toolbox-hero-cta span:nth-child(1) {
+.ls-toolbox-hero-cta-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -163,11 +154,11 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   CARDS GRID
+   CARDS GRID — 2 columns for 2 real tools
    ═══════════════════════════════════════════════════════════════ */
 .ls-toolbox-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
     max-width: 1320px;
     margin: 0 auto;
@@ -178,8 +169,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background: var(--ls-card-bg);
-    border: 1px solid var(--ls-card-border);
+    background: #141924;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 18px;
     overflow: hidden;
     text-decoration: none;
@@ -189,7 +180,7 @@
 
 .ls-toolbox-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.18);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
@@ -216,25 +207,10 @@
     box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
 }
 
-.ls-toolbox-card-flag-sm {
-    position: absolute;
-    top: 14px;
-    inset-inline-start: 14px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 6px;
-    z-index: 3;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
-
 /* ─── Card visual area (top hero with gradient + illustration) ─── */
 .ls-toolbox-card-visual {
     position: relative;
-    height: 160px;
+    height: 200px;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -242,24 +218,18 @@
     background: #0a0f1a;
 }
 
-/* Gradient backgrounds per color theme */
-.ls-toolbox-card-visual[data-gradient="purple"] {
-    background: linear-gradient(135deg, #2e1065 0%, #4c1d95 50%, #6b21a8 100%);
+/* Purple gradient (Vibe Coding) */
+.ls-toolbox-card-visual--purple {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(168, 85, 247, 0.4) 0%, transparent 60%),
+        linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #6b21a8 100%);
 }
-.ls-toolbox-card-visual[data-gradient="cyan"] {
-    background: linear-gradient(135deg, #083344 0%, #0e7490 50%, #06b6d4 100%);
-}
-.ls-toolbox-card-visual[data-gradient="blue"] {
-    background: linear-gradient(135deg, #0c1d4d 0%, #1e40af 50%, #3b82f6 100%);
-}
-.ls-toolbox-card-visual[data-gradient="green"] {
-    background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #16a34a 100%);
-}
-.ls-toolbox-card-visual[data-gradient="orange"] {
-    background: linear-gradient(135deg, #431407 0%, #9a3412 50%, #ea580c 100%);
-}
-.ls-toolbox-card-visual[data-gradient="pink"] {
-    background: linear-gradient(135deg, #500724 0%, #9f1239 50%, #e11d48 100%);
+
+/* Cyan gradient (AI Prompt) */
+.ls-toolbox-card-visual--cyan {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(6, 182, 212, 0.4) 0%, transparent 60%),
+        linear-gradient(135deg, #083344 0%, #155e75 50%, #0e7490 100%);
 }
 
 /* The radial glow behind the illustration */
@@ -268,38 +238,27 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 140px;
-    height: 140px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
     pointer-events: none;
     z-index: 1;
 }
 
-.ls-toolbox-card-visual[data-gradient="purple"] .ls-toolbox-card-glow {
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+.ls-toolbox-card-visual--purple .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, transparent 70%);
+    filter: blur(20px);
 }
-.ls-toolbox-card-visual[data-gradient="cyan"] .ls-toolbox-card-glow {
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%);
-}
-.ls-toolbox-card-visual[data-gradient="blue"] .ls-toolbox-card-glow {
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
-}
-.ls-toolbox-card-visual[data-gradient="green"] .ls-toolbox-card-glow {
-    background: radial-gradient(circle, rgba(34, 197, 94, 0.4) 0%, transparent 70%);
-}
-.ls-toolbox-card-visual[data-gradient="orange"] .ls-toolbox-card-glow {
-    background: radial-gradient(circle, rgba(251, 146, 60, 0.4) 0%, transparent 70%);
-}
-.ls-toolbox-card-visual[data-gradient="pink"] .ls-toolbox-card-glow {
-    background: radial-gradient(circle, rgba(244, 63, 94, 0.4) 0%, transparent 70%);
+
+.ls-toolbox-card-visual--cyan .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, transparent 70%);
+    filter: blur(20px);
 }
 
 /* The illustration wrapper */
 .ls-toolbox-card-illustration {
     position: relative;
     z-index: 2;
-    color: rgba(255, 255, 255, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -307,21 +266,15 @@
 }
 
 .ls-toolbox-card:hover .ls-toolbox-card-illustration {
-    transform: scale(1.08) translateY(-4px);
-}
-
-.ls-toolbox-card-illustration svg {
-    max-width: 100%;
-    height: auto;
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+    transform: scale(1.05) translateY(-4px);
 }
 
 .ls-toolbox-card-illustration img {
-    max-width: 100%;
-    max-height: 100px;
-    border-radius: 10px;
+    max-width: 90%;
+    max-height: 140px;
+    border-radius: 12px;
     object-fit: cover;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
 /* Play overlay on image-style cards */
@@ -330,15 +283,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 0, 0, 0.9);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 0, 0, 0.92);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     transition: transform 0.2s ease;
     z-index: 3;
 }
@@ -348,14 +301,77 @@
     margin-inline-start: 2px;
 }
 .ls-toolbox-card:hover .ls-toolbox-card-play {
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1.12);
+}
+
+/* ─── Code editor mockup illustration (for AI prompt card) ─── */
+.ls-toolbox-card-illustration--mockup {
+    width: 75%;
+    max-width: 240px;
+}
+
+.ls-toolbox-card-mockup {
+    width: 100%;
+    background: #0d1117;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    direction: ltr;
+}
+
+.ls-toolbox-card-mockup-bar {
+    background: #161b22;
+    padding: 6px 10px;
+    display: flex;
+    gap: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ls-toolbox-card-mockup-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+}
+.ls-toolbox-card-mockup-dot:first-child { background: #ff5f57; }
+.ls-toolbox-card-mockup-dot:nth-child(2) { background: #febc2e; }
+.ls-toolbox-card-mockup-dot:nth-child(3) { background: #28c840; }
+
+.ls-toolbox-card-mockup-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.ls-toolbox-card-mockup-line {
+    height: 7px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    width: 100%;
+}
+.ls-toolbox-card-mockup-line--short {
+    width: 60%;
+}
+.ls-toolbox-card-mockup-prompt {
+    display: block;
+    color: #a5d6ff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    line-height: 1.2;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ─── Corner accent lines (crop marks) ─── */
 .ls-toolbox-card-corner {
     position: absolute;
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     z-index: 2;
     pointer-events: none;
     opacity: 0.5;
@@ -369,45 +385,41 @@
 .ls-toolbox-card-corner::after {
     content: '';
     position: absolute;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.65);
 }
 
-/* Top-left corner */
-.ls-toolbox-card-corner--tl { top: 10px; left: 10px; }
-.ls-toolbox-card-corner--tl::before { top: 0; left: 0; width: 14px; height: 2px; }
-.ls-toolbox-card-corner--tl::after  { top: 0; left: 0; width: 2px; height: 14px; }
+.ls-toolbox-card-corner--tl { top: 12px; left: 12px; }
+.ls-toolbox-card-corner--tl::before { top: 0; left: 0; width: 16px; height: 2px; }
+.ls-toolbox-card-corner--tl::after  { top: 0; left: 0; width: 2px; height: 16px; }
 
-/* Top-right corner */
-.ls-toolbox-card-corner--tr { top: 10px; right: 10px; }
-.ls-toolbox-card-corner--tr::before { top: 0; right: 0; width: 14px; height: 2px; }
-.ls-toolbox-card-corner--tr::after  { top: 0; right: 0; width: 2px; height: 14px; }
+.ls-toolbox-card-corner--tr { top: 12px; right: 12px; }
+.ls-toolbox-card-corner--tr::before { top: 0; right: 0; width: 16px; height: 2px; }
+.ls-toolbox-card-corner--tr::after  { top: 0; right: 0; width: 2px; height: 16px; }
 
-/* Bottom-left corner */
-.ls-toolbox-card-corner--bl { bottom: 10px; left: 10px; }
-.ls-toolbox-card-corner--bl::before { bottom: 0; left: 0; width: 14px; height: 2px; }
-.ls-toolbox-card-corner--bl::after  { bottom: 0; left: 0; width: 2px; height: 14px; }
+.ls-toolbox-card-corner--bl { bottom: 12px; left: 12px; }
+.ls-toolbox-card-corner--bl::before { bottom: 0; left: 0; width: 16px; height: 2px; }
+.ls-toolbox-card-corner--bl::after  { bottom: 0; left: 0; width: 2px; height: 16px; }
 
-/* Bottom-right corner */
-.ls-toolbox-card-corner--br { bottom: 10px; right: 10px; }
-.ls-toolbox-card-corner--br::before { bottom: 0; right: 0; width: 14px; height: 2px; }
-.ls-toolbox-card-corner--br::after  { bottom: 0; right: 0; width: 2px; height: 14px; }
+.ls-toolbox-card-corner--br { bottom: 12px; right: 12px; }
+.ls-toolbox-card-corner--br::before { bottom: 0; right: 0; width: 16px; height: 2px; }
+.ls-toolbox-card-corner--br::after  { bottom: 0; right: 0; width: 2px; height: 16px; }
 
 /* ─── Card body ─── */
 .ls-toolbox-card-title {
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 1.4;
     color: #ffffff;
     margin: 0;
-    padding: 20px 20px 10px;
+    padding: 22px 22px 10px;
 }
 
 .ls-toolbox-card-desc {
     font-size: 14px;
     line-height: 1.7;
-    color: var(--ls-text-gray);
+    color: #b8c0d0;
     margin: 0;
-    padding: 0 20px 18px;
+    padding: 0 22px 20px;
     flex: 1;
 }
 
@@ -416,18 +428,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 20px;
-    border-top: 1px solid var(--ls-card-border);
-    background: rgba(0, 0, 0, 0.15);
+    padding: 14px 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .ls-toolbox-card-price {
     font-size: 15px;
     font-weight: 700;
     color: #86efac;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
 }
 
 .ls-toolbox-card-type {
@@ -435,7 +444,7 @@
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: var(--ls-text-mute);
+    color: #6b7394;
 }
 
 /* ─── Featured card (yellow accent border for the "مميز" card) ─── */
@@ -451,15 +460,9 @@
 /* ═══════════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
-@media (max-width: 1100px) {
-    .ls-toolbox-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
 @media (max-width: 900px) {
     .ls-toolbox-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
     .ls-toolbox-hero {
         padding: 48px 32px;
@@ -467,9 +470,6 @@
 }
 
 @media (max-width: 640px) {
-    .ls-toolbox-grid {
-        grid-template-columns: 1fr;
-    }
     .ls-toolbox-hero {
         padding: 40px 24px;
         margin: 40px auto 40px;
@@ -481,5 +481,8 @@
     .ls-toolbox-hero-cta {
         width: 100%;
         justify-content: center;
+    }
+    .ls-toolbox-card-visual {
+        height: 180px;
     }
 }

@@ -12,7 +12,7 @@
 <section class="ls-toolbox">
 
     {# ═══════════════════════════════════════════════════════════════
-       HERO CARD — big gradient banner with two CTA pills
+       HERO CARD — big gradient banner
        ═══════════════════════════════════════════════════════════════ #}
     <div class="ls-toolbox-hero">
         <div class="ls-toolbox-hero-pattern" aria-hidden="true"></div>
@@ -24,9 +24,7 @@
                 المكتبة الرقمية
             </span>
 
-            <h1 class="ls-toolbox-hero-title">
-                كل الأدوات المجانية <br/>في مكان واحد
-            </h1>
+            <h1 class="ls-toolbox-hero-title">كل الأدوات المجانية في مكان واحد</h1>
 
             <p class="ls-toolbox-hero-desc">
                 أدوات عملية، مجانية تماماً، بتساعدك تشتغل أسرع وتبني حاجات احترافية بدون ما تبدأ من الصفر.
@@ -34,35 +32,34 @@
 
             <div class="ls-toolbox-hero-ctas">
                 <a href="#ls-toolbox-grid" class="ls-toolbox-hero-cta ls-toolbox-hero-cta--free">
-                    <span>6</span>
+                    <span class="ls-toolbox-hero-cta-num">1</span>
                     <span>منتج مجاني</span>
                     <span>🎁</span>
                 </a>
                 <a href="#ls-toolbox-grid" class="ls-toolbox-hero-cta ls-toolbox-hero-cta--premium">
-                    <span>1</span>
+                    <span class="ls-toolbox-hero-cta-num">1</span>
                     <span>منتج مميز</span>
-                    <span>🔥</span>
+                    <span>⭐</span>
                 </a>
             </div>
         </div>
     </div>
 
     {# ═══════════════════════════════════════════════════════════════
-       TOOLS GRID — 6 product cards with visual area + corner accents
+       TOOLS GRID — only 2 real tools, side by side
        ═══════════════════════════════════════════════════════════════ #}
     <div class="ls-toolbox-grid" id="ls-toolbox-grid">
 
         {# ──────────────── Card 1: Vibe Coding (مميز · featured) ──────────────── #}
         <a href="/vibe-coding-course/" class="ls-toolbox-card ls-toolbox-card--featured">
             <span class="ls-toolbox-card-flag ls-toolbox-card-flag--premium">⭐ مميز</span>
-            <span class="ls-toolbox-card-flag-sm">🎬 فيديو</span>
 
-            <div class="ls-toolbox-card-visual" data-gradient="purple">
+            <div class="ls-toolbox-card-visual ls-toolbox-card-visual--purple">
                 <div class="ls-toolbox-card-glow"></div>
                 <div class="ls-toolbox-card-illustration">
                     <img src="{{ theme_uri }}/assets/img/vibe-coding-course-thumb.png" alt="كورس ال Vibe Coding" />
                     <span class="ls-toolbox-card-play">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     </span>
                 </div>
                 <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tl"></span>
@@ -77,7 +74,7 @@
             <div class="ls-toolbox-card-meta">
                 <span class="ls-toolbox-card-price">مجاناً</span>
                 <span class="ls-toolbox-card-type">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                     ملف فيديو
                 </span>
             </div>
@@ -87,23 +84,23 @@
         <a href="/ai-website-prompt/" class="ls-toolbox-card">
             <span class="ls-toolbox-card-flag">مجاناً</span>
 
-            <div class="ls-toolbox-card-visual" data-gradient="cyan">
+            <div class="ls-toolbox-card-visual ls-toolbox-card-visual--cyan">
                 <div class="ls-toolbox-card-glow"></div>
-                <div class="ls-toolbox-card-illustration">
-                    <svg viewBox="0 0 120 120" width="110" height="110" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="15" y="20" width="90" height="80" rx="8" />
-                        <polyline points="25 40 25 30 35 30" />
-                        <polyline points="95 40 95 30 85 30" />
-                        <polyline points="25 80 25 90 35 90" />
-                        <polyline points="95 80 95 90 85 90" />
-                        <line x1="20" y1="55" x2="35" y2="55" />
-                        <line x1="20" y1="65" x2="30" y2="65" />
-                        <line x1="85" y1="55" x2="100" y2="55" />
-                        <line x1="90" y1="65" x2="100" y2="65" />
-                        <path d="M50 50 L42 60 L50 70" />
-                        <path d="M70 50 L78 60 L70 70" />
-                        <line x1="55" y1="72" x2="65" y2="48" />
-                    </svg>
+                <div class="ls-toolbox-card-illustration ls-toolbox-card-illustration--mockup">
+                    <div class="ls-toolbox-card-mockup">
+                        <div class="ls-toolbox-card-mockup-bar">
+                            <span class="ls-toolbox-card-mockup-dot"></span>
+                            <span class="ls-toolbox-card-mockup-dot"></span>
+                            <span class="ls-toolbox-card-mockup-dot"></span>
+                        </div>
+                        <div class="ls-toolbox-card-mockup-body">
+                            <div class="ls-toolbox-card-mockup-line"><span class="ls-toolbox-card-mockup-prompt">Make a website that doesn't look like AI...</span></div>
+                            <div class="ls-toolbox-card-mockup-line ls-toolbox-card-mockup-line--short"></div>
+                            <div class="ls-toolbox-card-mockup-line"></div>
+                            <div class="ls-toolbox-card-mockup-line ls-toolbox-card-mockup-line--short"></div>
+                            <div class="ls-toolbox-card-mockup-line"></div>
+                        </div>
+                    </div>
                 </div>
                 <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tl"></span>
                 <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tr"></span>
@@ -123,173 +120,17 @@
             </div>
         </a>
 
-        {# ──────────────── Card 3: Placeholder (مجاناً) ──────────────── #}
-        <a href="#" class="ls-toolbox-card">
-            <span class="ls-toolbox-card-flag">مجاناً</span>
-
-            <div class="ls-toolbox-card-visual" data-gradient="blue">
-                <div class="ls-toolbox-card-glow"></div>
-                <div class="ls-toolbox-card-illustration">
-                    <svg viewBox="0 0 120 120" width="100" height="100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="25" y="15" width="70" height="90" rx="8" />
-                        <line x1="35" y1="35" x2="85" y2="35" />
-                        <line x1="35" y1="50" x2="75" y2="50" />
-                        <line x1="35" y1="65" x2="80" y2="65" />
-                        <line x1="35" y1="80" x2="65" y2="80" />
-                        <circle cx="100" cy="95" r="8" fill="currentColor" opacity="0.3" />
-                    </svg>
-                </div>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tr"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--bl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--br"></span>
-            </div>
-
-            <h2 class="ls-toolbox-card-title">قالب سيرة ذاتية جاهز</h2>
-            <p class="ls-toolbox-card-desc">قالب سيرة ذاتية ATS-friendly بصيغ متعددة — عدّل عليه وابدأ قدّم على الشغل في دقايق.</p>
-
-            <div class="ls-toolbox-card-meta">
-                <span class="ls-toolbox-card-price">مجاناً</span>
-                <span class="ls-toolbox-card-type">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    ملف جاهز
-                </span>
-            </div>
-        </a>
-
-        {# ──────────────── Card 4: Placeholder (مجاناً) ──────────────── #}
-        <a href="#" class="ls-toolbox-card">
-            <span class="ls-toolbox-card-flag">مجاناً</span>
-
-            <div class="ls-toolbox-card-visual" data-gradient="green">
-                <div class="ls-toolbox-card-glow"></div>
-                <div class="ls-toolbox-card-illustration">
-                    <svg viewBox="0 0 120 120" width="100" height="100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M30 90 L30 50 L60 25 L90 50 L90 90 Z" />
-                        <rect x="50" y="60" width="20" height="30" />
-                        <line x1="30" y1="90" x2="90" y2="90" />
-                        <circle cx="60" cy="40" r="5" fill="currentColor" opacity="0.4" />
-                    </svg>
-                </div>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tr"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--bl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--br"></span>
-            </div>
-
-            <h2 class="ls-toolbox-card-title">Cheatsheet Git & GitHub</h2>
-            <p class="ls-toolbox-card-desc">كل الأوامر اللي محتاجها في Git و GitHub في صفحة واحدة — مرجع سريع وأنت شغال.</p>
-
-            <div class="ls-toolbox-card-meta">
-                <span class="ls-toolbox-card-price">مجاناً</span>
-                <span class="ls-toolbox-card-type">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    مرجع PDF
-                </span>
-            </div>
-        </a>
-
-        {# ──────────────── Card 5: Placeholder (مجاناً) ──────────────── #}
-        <a href="#" class="ls-toolbox-card">
-            <span class="ls-toolbox-card-flag">مجاناً</span>
-
-            <div class="ls-toolbox-card-visual" data-gradient="orange">
-                <div class="ls-toolbox-card-glow"></div>
-                <div class="ls-toolbox-card-illustration">
-                    <svg viewBox="0 0 120 120" width="100" height="100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="60" cy="60" r="40" />
-                        <path d="M60 30 L60 60 L82 75" />
-                        <circle cx="60" cy="60" r="3" fill="currentColor" />
-                    </svg>
-                </div>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tr"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--bl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--br"></span>
-            </div>
-
-            <h2 class="ls-toolbox-card-title">مؤقت Pomodoro على الموبايل</h2>
-            <p class="ls-toolbox-card-desc">صفحة ويب خفيفة بتفتح من الموبايل — 25 دقيقة شغل / 5 دقايق راحة، بدون تحميل أي تطبيق.</p>
-
-            <div class="ls-toolbox-card-meta">
-                <span class="ls-toolbox-card-price">مجاناً</span>
-                <span class="ls-toolbox-card-type">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    صفحة ويب
-                </span>
-            </div>
-        </a>
-
-        {# ──────────────── Card 6: Placeholder (مجاناً) ──────────────── #}
-        <a href="#" class="ls-toolbox-card">
-            <span class="ls-toolbox-card-flag">مجاناً</span>
-
-            <div class="ls-toolbox-card-visual" data-gradient="pink">
-                <div class="ls-toolbox-card-glow"></div>
-                <div class="ls-toolbox-card-illustration">
-                    <svg viewBox="0 0 120 120" width="100" height="100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 100 Q20 60 60 60 Q100 60 100 100" />
-                        <line x1="20" y1="100" x2="100" y2="100" />
-                        <circle cx="60" cy="40" r="15" />
-                        <line x1="60" y1="15" x2="60" y2="10" />
-                        <line x1="45" y1="25" x2="40" y2="22" />
-                        <line x1="75" y1="25" x2="80" y2="22" />
-                    </svg>
-                </div>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tr"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--bl"></span>
-                <span class="ls-toolbox-card-corner ls-toolbox-card-corner--br"></span>
-            </div>
-
-            <h2 class="ls-toolbox-card-title">مولّد أفكار مشاريع للمبتدئين</h2>
-            <p class="ls-toolbox-card-desc">مولّد أفكار random لمشاريع برمجة حسب مستواك — حل مشكلة "مش عارف أعمل إيه" في ثواني.</p>
-
-            <div class="ls-toolbox-card-meta">
-                <span class="ls-toolbox-card-price">مجاناً</span>
-                <span class="ls-toolbox-card-type">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    أداة تفاعلية
-                </span>
-            </div>
-        </a>
-
     </div>
 
-    {# ═══════════════════════════════════════════════════════════════
-       HOW-TO-ADD TEMPLATE — commented out, for future tools
-       ═══════════════════════════════════════════════════════════════ #}
     {#
-    ============ عشان تضيف أداة جديدة ============
-    انسخ البلوك تحت وغيّر:
-    1. href → لينك صفحة الأداة
-    2. الـ data-gradient → لون الـ visual area (purple, cyan, blue, green, orange, pink)
-    3. الـ SVG → أيقونة الأداة
-    4. card-title → اسم الأداة
-    5. card-desc → وصف بسيط
-    6. card-type → نوع الملف (ملف جاهز / مرجع PDF / صفحة ويب / إلخ)
-    ================================================
-
-    <a href="/tool-link/" class="ls-toolbox-card">
-        <span class="ls-toolbox-card-flag">مجاناً</span>
-        <div class="ls-toolbox-card-visual" data-gradient="cyan">
-            <div class="ls-toolbox-card-glow"></div>
-            <div class="ls-toolbox-card-illustration">
-                <svg viewBox="0 0 120 120" width="100" height="100">...</svg>
-            </div>
-            <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tl"></span>
-            <span class="ls-toolbox-card-corner ls-toolbox-card-corner--tr"></span>
-            <span class="ls-toolbox-card-corner ls-toolbox-card-corner--bl"></span>
-            <span class="ls-toolbox-card-corner ls-toolbox-card-corner--br"></span>
-        </div>
-        <h2 class="ls-toolbox-card-title">اسم الأداة</h2>
-        <p class="ls-toolbox-card-desc">وصف بسيط عن الأداة ودي بتعمل إيه.</p>
-        <div class="ls-toolbox-card-meta">
-            <span class="ls-toolbox-card-price">مجاناً</span>
-            <span class="ls-toolbox-card-type">ملف جاهز</span>
-        </div>
-    </a>
-
+    ═══════════════════════════════════════════════════════════════
+       HOW-TO-ADD TEMPLATE — commented out, for future tools
+    ═══════════════════════════════════════════════════════════════
+    عشان تضيف أداة جديدة:
+    1. انسخ بلوك card كامل من اللي فوق
+    2. غيّر الـ href، title، desc
+    3. للـ visual: استخدم `ls-toolbox-card-visual--purple` أو `--cyan` للـ gradient
+    4. للـ illustration: إما <img> للـ thumbnail أو `.ls-toolbox-card-mockup` للـ code editor
     #}
 
 </section>
