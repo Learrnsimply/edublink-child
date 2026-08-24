@@ -1264,7 +1264,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260824-7');
+	define('LS_ASSETS_VERSION', '20260824-8');
 }
 
 /**
@@ -1898,37 +1898,69 @@ function edublink_child_unload_elementor_assets()
  * 3. Force Disable Cache Headers for Front Page
  * This attempts to tell browsers and proxies NOT to cache the homepage
  */
+/* ==========================================================================
+   CACHE STRATEGY — comprehensive header policy
+   --------------------------------------------------------------------------
+   Three layers, all in `send_headers` (runs before any output):
+     1. STATIC ASSETS  → immutable 1-year cache (CSS/JS/images/fonts)
+                         The `?v=LS_ASSETS_VERSION` query string forces
+                         re-download on deploy — no manual purge needed.
+     2. HTML PAGES     → 10 min cache for anonymous, no cache for logged-in
+     3. DYNAMIC PAGES  → never cached (cart, checkout, account, etc.)
+   ========================================================================== */
+
+add_action('send_headers', 'edublink_child_send_cache_headers');
+function edublink_child_send_cache_headers()
+{
+	$request_uri = $_SERVER['REQUEST_URI'] ?? '';
+	$is_static_asset = (bool) preg_match(
+		'/(\.css|\.js|\.woff2?|\.ttf|\.otf|\.eot|\.svg|\.png|\.jpe?g|\.gif|\.webp|\.ico|\.avif|\.mp4|\.webm)(\?|$)/i',
+		$request_uri
+	);
+
+	/* ─── 1. Static assets (theme bundles, images) ─── */
+	if ( $is_static_asset ) {
+		// 1 year + immutable — the `?v=LS_ASSETS_VERSION` query string
+		// automatically invalidates the cache on each version bump.
+		header( 'Cache-Control: public, max-age=31536000, immutable' );
+		header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', time() + 31536000 ) . ' GMT' );
+		return;
+	}
+
+	/* ─── 2 & 3. HTML pages ─── */
+	// Never cache admin, AJAX, feeds, or logged-in users
+	if ( is_admin() || wp_doing_ajax() || is_feed() || is_user_logged_in() ) {
+		header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+		header( 'Pragma: no-cache' );
+		header( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
+		return;
+	}
+
+	// Dynamic / account-related pages — never cached
+	$dynamic_pages = array(
+		'cart', 'checkout', 'my-account', 'dashboard', 'sign-in', 'sign-up',
+		'reset-password', 'lost-password', 'order-pay', 'order-received',
+	);
+	foreach ( $dynamic_pages as $slug ) {
+		if ( is_page( $slug ) || is_page( sanitize_title( $slug ) ) ) {
+			header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+			header( 'Pragma: no-cache' );
+			return;
+		}
+	}
+
+	// Anonymous visitors on a normal page — 10 min shared cache
+	header( 'Cache-Control: public, max-age=600, s-maxage=600' );
+	header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', time() + 600 ) . ' GMT' );
+}
+
+/* Legacy alias kept for back-compat — delegates to the unified handler above */
 add_action('send_headers', 'edublink_child_prevent_caching_front_page');
 function edublink_child_prevent_caching_front_page()
 {
-	if (is_front_page() || is_home() || get_the_ID() == 9834) {
-		header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-		header('Cache-Control: post-check=0, pre-check=0', false);
-		header('Pragma: no-cache');
-	}
-}
-
-/**
- * Caching strategy for single course pages:
- * - Logged-in users: never cache (so dynamic enrollment / progress is fresh)
- * - Anonymous visitors: cache for 10 minutes (good balance between freshness
- *   and load). The LS_ASSETS_VERSION query string on CSS/JS still busts
- *   asset cache; the course-specific content (course_extras) is only
- *   rendered when the cache expires or the user logs in.
- */
-add_action('send_headers', 'edublink_child_cache_single_course');
-function edublink_child_cache_single_course()
-{
-	if (is_singular('courses')) {
-		if (is_user_logged_in()) {
-			// Logged-in users always get fresh HTML
-			header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-			header('Pragma: no-cache');
-		} else {
-			// Anonymous visitors: cache for 10 minutes
-			header('Cache-Control: public, max-age=600, s-maxage=600');
-		}
-	}
+	// The unified handler in edublink_child_send_cache_headers() already
+	// sends Cache-Control headers; this function is a no-op kept so any
+	// references in child/parent themes don't break.
 }
 
 /**
