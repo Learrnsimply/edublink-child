@@ -409,7 +409,189 @@ if ( ! empty( $context['topics'] ) ) {
 $context['preview_count'] = $preview_count;
 $context['first_preview_url'] = $first_preview_url;
 
-// FAQ section removed from the single course page on request.
+/* ==========================================================================
+   COURSE-SPECIFIC EXTRAS — "What you'll build" + FAQ per course
+   --------------------------------------------------------------------------
+   The "what-you-build" and "course-faq" sections in single-course.twig are
+   driven from here. Each course has its own copy (Java ≠ Dart ≠ Python).
+   The map is keyed by the course SLUG (post_name). Unknown courses fall
+   back to a sensible default so a new course never shows wrong content.
+   ========================================================================== */
+$course_slug = $course ? $course->post_name : '';
+
+/**
+ * @param string $slug  Course slug (post_name).
+ * @return array{build_items: array, faq_items: array}
+ *   build_items[].kind = 'code' | 'oop' | 'flutter' | 'backend' | 'mobile' | 'python'
+ *   build_items[].tag  = small label shown above the card title
+ *   build_items[].title, .desc = card body
+ *   faq_items[].q, .a   = question and answer
+ */
+function learnsimply_get_course_extras( $slug ) {
+	$map = array(
+
+		// ───────────────────────────────────────────────
+		// DART — Flutter / Mobile focus
+		// ───────────────────────────────────────────────
+		'dart' => array(
+			'build_items' => array(
+				array(
+					'kind'  => 'code',
+					'code'  => "void main() {\n  print('Hello, Dart!');\n  for (var i = 0; i < 5; i++) {\n    print(i);\n  }\n}",
+					'tag'   => 'تطبيقي',
+					'title' => 'أول Dart app ليك',
+					'desc'  => 'هنكتب أول برنامج ليك من الصفر — variables, loops, functions.',
+				),
+				array(
+					'kind'  => 'oop',
+					'tag'   => 'OOP',
+					'title' => 'Class + Inheritance',
+					'desc'  => 'هنبني class كامل بـ inheritance و polymorphism — وهنفهم ليه OOP مهم قبل ما تدخل Flutter.',
+				),
+				array(
+					'kind'  => 'flutter',
+					'tag'   => 'جاهزية',
+					'title' => 'مستعد لـ Flutter',
+					'desc'  => 'لما تخلص الكورس، هتكون جاهز تبدأ رحلتك في Flutter — ودي الخطوة الطبيعية الجاية.',
+				),
+			),
+			'faq_items' => array(
+				array(
+					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
+					'a' => 'أيوه، الكورس معمول للمبتدئين تماماً. بنبدأ من "إيه هو البرمجة" ونوصل لحد إنك تبني تطبيقات Dart كاملة. مش محتاج أي خلفية برمجية.',
+				),
+				array(
+					'q' => 'إيه الفرق بين الكورس ده وكورسات Java اللي عندكم؟',
+					'a' => 'Java للتطبيقات العامة (Backend, Android Enterprise, Big Data). Dart/Flutter للموبايل والويب الحديث. لو هدفك الموبايل، ابدأ بـ Dart. لو هدفك Backend، ابدأ بـ Java. الاتنين في الباقة لو حابب تجرب الاتنين.',
+				),
+				array(
+					'q' => 'هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟',
+					'a' => 'أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Dart. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة، من غير أي مصاريف إضافية.',
+				),
+				array(
+					'q' => 'لو مش فهمت درس، فيه دعم؟',
+					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
+				),
+				array(
+					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
+					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
+				),
+			),
+		),
+
+		// ───────────────────────────────────────────────
+		// JAVA — Backend / general-purpose focus
+		// ───────────────────────────────────────────────
+		'java-course-level1' => array(
+			'build_items' => array(
+				array(
+					'kind'  => 'code',
+					'code'  => "public class Main {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, Java!\");\n    for (int i = 0; i < 5; i++) {\n      System.out.println(i);\n    }\n  }\n}",
+					'tag'   => 'تطبيقي',
+					'title' => 'أول Java app ليك',
+					'desc'  => 'هنكتب أول Java program من الصفر — variables, loops, methods, الـ main class.',
+				),
+				array(
+					'kind'  => 'oop',
+					'tag'   => 'OOP',
+					'title' => 'Class + Inheritance',
+					'desc'  => 'Java = لغة OOP من الطراز الأول. هنغطي encapsulation, inheritance, polymorphism, interfaces بالتفصيل.',
+				),
+				array(
+					'kind'  => 'backend',
+					'tag'   => 'جاهزية',
+					'title' => 'مستعد لـ Backend',
+					'desc'  => 'لما تخلص الكورس، هتكون جاهز تتعلم Spring Boot أو أي framework تاني.',
+				),
+			),
+			'faq_items' => array(
+				array(
+					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
+					'a' => 'أيوه، الكورس معمول للمبتدئين تماماً. Java لغة ممتازة كأول لغة لأنها بتعلمك الـ fundamentals بشكل صارم.',
+				),
+				array(
+					'q' => 'إيه اللي أقدر أعمله بعد ما أخلص الكورس؟',
+					'a' => 'تقدر تتقدم لشغل Junior Java Developer، تتعلم Spring Boot للـ Backend، أو تدخل مجال الـ Android بـ Java.',
+				),
+				array(
+					'q' => 'هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟',
+					'a' => 'أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Java. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة.',
+				),
+				array(
+					'q' => 'لو مش فهمت درس، فيه دعم؟',
+					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
+				),
+				array(
+					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
+					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
+				),
+			),
+		),
+
+		// ───────────────────────────────────────────────
+		// PYTHON PROJECTS — Free / project-focused
+		// ───────────────────────────────────────────────
+		'مشاريع-بايثون-للمبتدئين' => array(
+			'build_items' => array(
+				array(
+					'kind'  => 'code',
+					'code'  => "def greet(name):\n    return f'Hello, {name}!'\n\nfor i in range(5):\n    print(greet(f'World {i}'))",
+					'tag'   => 'تطبيقي',
+					'title' => 'أول Python script',
+					'desc'  => 'هنكتب أول Python script من الصفر — functions, loops, string formatting.',
+				),
+				array(
+					'kind'  => 'python',
+					'tag'   => 'مشاريع',
+					'title' => 'مشاريع حقيقية',
+					'desc'  => 'مشاريع تطبيقية بتحاكي مشاكل حقيقية — to-do list, calculator, simple game.',
+				),
+				array(
+					'kind'  => 'backend',
+					'tag'   => 'جاهزية',
+					'title' => 'مستعد لـ Flask / Django',
+					'desc'  => 'لما تخلص، هتكون جاهز تتعلم أي web framework أو حتى تدخل مجال الـ data science.',
+				),
+			),
+			'faq_items' => array(
+				array(
+					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
+					'a' => 'أيوه! Python هي أسهل لغة تبدأ بيها. الكورس معمول خصيصاً للمبتدئين — هنبدأ من الصفر.',
+				),
+				array(
+					'q' => 'إيه الفرق بين الكورس ده وباقي كورسات Python على اليوتيوب؟',
+					'a' => 'الفرق إن الكورس ده مبني على مشاريع تطبيقية. مش بس syntax — كل درس بينتهي بمشروع صغير تضيفه للـ Portfolio بتاعك.',
+				),
+				array(
+					'q' => 'هل الكورس مجاني فعلاً؟',
+					'a' => 'أيوه، الكورس مجاني تماماً. من غير اشتراك، من غير بطاقة ائتمان. كل اللي محتاجه إنك تسجل في الموقع.',
+				),
+				array(
+					'q' => 'لو مش فهمت درس، فيه دعم؟',
+					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب.',
+				),
+				array(
+					'q' => 'إيه الكورس المناسب اللي بعده؟',
+					'a' => 'بعد ما تخلص، أنصحك بـ "أساسيات Dart" لو هدفك الموبايل، أو "جافا" لو هدفك Backend متكامل.',
+				),
+			),
+		),
+
+	);
+
+	// Fallback: use the Dart content for any course we haven't mapped yet.
+	// This way a new course never shows wrong content — it shows the most
+	// useful default. You can add a real entry above for each new course.
+	$fallback = isset( $map['dart'] ) ? $map['dart'] : array(
+		'build_items' => array(),
+		'faq_items'   => array(),
+	);
+
+	return isset( $map[ $slug ] ) ? $map[ $slug ] : $fallback;
+}
+
+$context['course_extras'] = learnsimply_get_course_extras( $course_slug );
+$context['course_slug']   = $course_slug;
 
 // Render the template
 Timber::render( 'single-course.twig', $context );

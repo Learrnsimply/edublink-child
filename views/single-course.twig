@@ -510,7 +510,7 @@
         {# ═══════════════════════════════════════════════════════════════
            WHAT YOU'LL BUILD — project showcase (build anticipation)
            ═══════════════════════════════════════════════════════════════ #}
-        {% if not is_enrolled %}
+        {% if not is_enrolled and course_extras.build_items|length > 0 %}
         <section class="what-you-build">
           <div class="section-header">
             <div class="section-icon-box">
@@ -523,29 +523,17 @@
           </div>
 
           <div class="build-grid">
+            {% for item in course_extras.build_items %}
             <div class="build-card">
               <div class="build-card__visual">
+                {% if item.kind == 'code' %}
                 <div class="build-mockup build-mockup--code">
                   <div class="build-mockup-bar">
                     <span></span><span></span><span></span>
                   </div>
-                  <pre class="build-mockup-body">void main() {
-  print('Hello, Dart!');
-  for (var i = 0; i &lt; 5; i++) {
-    print(i);
-  }
-}</pre>
+                  <pre class="build-mockup-body">{{ item.code|default('') }}</pre>
                 </div>
-              </div>
-              <div class="build-card__body">
-                <span class="build-card__tag">تطبيقي</span>
-                <h3>أول Dart app ليك</h3>
-                <p>هنكتب أول برنامج ليك من الصفر — مفاهيم الـ variables, loops, functions.</p>
-              </div>
-            </div>
-
-            <div class="build-card">
-              <div class="build-card__visual">
+                {% elseif item.kind == 'oop' %}
                 <div class="build-mockup build-mockup--oop">
                   <div class="build-mockup-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -554,29 +542,48 @@
                   </div>
                   <span class="build-mockup-label">OOP</span>
                 </div>
-              </div>
-              <div class="build-card__body">
-                <span class="build-card__tag">OOP</span>
-                <h3>Class + Inheritance</h3>
-                <p>هنبني class كامل بـ inheritance و polymorphism — وهنفهم ليه OOP مهم.</p>
-              </div>
-            </div>
-
-            <div class="build-card">
-              <div class="build-card__visual">
+                {% elseif item.kind == 'flutter' %}
                 <div class="build-mockup build-mockup--flutter">
                   <div class="build-mockup-icon">
                     <svg viewBox="0 0 24 24" fill="#027DFD"><path d="M14.314 2L7.657 8.657l3.657 3.657 9.657-9.657L14.314 2zm-3.657 6.343L4 14.657l6.343 6.343 6.657-6.657-6.343-6z"/></svg>
                   </div>
                   <span class="build-mockup-label">Flutter</span>
                 </div>
+                {% elseif item.kind == 'backend' %}
+                <div class="build-mockup build-mockup--backend">
+                  <div class="build-mockup-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                      <circle cx="7" cy="10" r="1" fill="#22c55e"/><circle cx="12" cy="10" r="1" fill="#22c55e"/>
+                    </svg>
+                  </div>
+                  <span class="build-mockup-label">Backend</span>
+                </div>
+                {% elseif item.kind == 'python' %}
+                <div class="build-mockup build-mockup--python">
+                  <div class="build-mockup-icon">
+                    <svg viewBox="0 0 24 24" fill="#3776ab"><path d="M11.5 2c-2.65 0-3.8 1.32-3.8 3v2.2h4.3v.6H6.7c-1.85 0-3.46 1.13-3.46 3.3 0 2.18 1.61 3.3 3.46 3.3h2.08v-2.5c0-1.62 1.4-3.05 3.07-3.05h4.4c1.41 0 2.54-1.16 2.54-2.58V5c0-1.78-1.51-3-3.32-3zm-2.4 1.7a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7zM12.5 22c2.65 0 3.8-1.32 3.8-3v-2.2H12v-.6h5.3c1.85 0 3.46-1.13 3.46-3.3 0-2.18-1.61-3.3-3.46-3.3H15.2v2.5c0 1.62-1.4 3.05-3.07 3.05h-4.4c-1.41 0-2.54 1.16-2.54 2.58V19c0 1.78 1.51 3 3.32 3zm2.4-1.7a.85.85 0 1 1 0-1.7.85.85 0 0 1 0 1.7z"/></svg>
+                  </div>
+                  <span class="build-mockup-label">Python</span>
+                </div>
+                {% elseif item.kind == 'mobile' %}
+                <div class="build-mockup build-mockup--mobile">
+                  <div class="build-mockup-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/>
+                    </svg>
+                  </div>
+                  <span class="build-mockup-label">Mobile</span>
+                </div>
+                {% endif %}
               </div>
               <div class="build-card__body">
-                <span class="build-card__tag">جاهزية</span>
-                <h3>مستعد لـ Flutter</h3>
-                <p>لما تخلص الكورس، هتكون جاهز تبدأ رحلتك في Flutter — ودي الخطوة الطبيعية الجاية.</p>
+                <span class="build-card__tag">{{ item.tag }}</span>
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.desc }}</p>
               </div>
             </div>
+            {% endfor %}
           </div>
         </section>
         {% endif %}
@@ -847,7 +854,7 @@
         {# ═══════════════════════════════════════════════════════════════
            FAQ — answers to the most common questions (lift conversion)
            ═══════════════════════════════════════════════════════════════ #}
-        {% if not is_enrolled %}
+        {% if not is_enrolled and course_extras.faq_items|length > 0 %}
         <section class="course-faq">
           <div class="section-header">
             <div class="section-icon-box">
@@ -860,65 +867,17 @@
           </div>
 
           <div class="faq-list">
+            {% for faq in course_extras.faq_items %}
             <details class="faq-item">
               <summary class="faq-question">
-                <span>هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟</span>
+                <span>{{ faq.q }}</span>
                 <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
               </summary>
               <div class="faq-answer">
-                <p>أيوه، الكورس معمول للمبتدئين تماماً. بنبدأ من "إيه هو البرمجة" ونوصل لحد إنك تبني تطبيقات Dart كاملة. مش محتاج أي خلفية برمجية.</p>
+                <p>{{ faq.a }}</p>
               </div>
             </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>إيه الفرق بين الكورس ده وكورسات Java اللي عندكم؟</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </summary>
-              <div class="faq-answer">
-                <p>Java للتطبيقات العامة (Backend, Android Enterprise, Big Data). Dart/Flutter للموبايل والويب الحديث. لو هدفك الموبايل، ابدأ بـ Dart. لو هدفك Backend، ابدأ بـ Java. الاتنين في الباقة لو حابب تجرب الاتنين.</p>
-              </div>
-            </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </summary>
-              <div class="faq-answer">
-                <p>أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Dart. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة، من غير أي مصاريف إضافية.</p>
-              </div>
-            </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>لو مش فهمت درس، فيه دعم؟</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </summary>
-              <div class="faq-answer">
-                <p>أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.</p>
-              </div>
-            </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>هل في شهادة بعد ما أخلص الكورس؟</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </summary>
-              <div class="faq-answer">
-                <p>{% if has_certificate %}أيوه، بعد ما تخلص كل الدروس هتحصل على شهادة إتمام معتمدة تقدر تضيفها لـ LinkedIn بتاعك أو CV.{% else %}مفيش شهادة رسمية في الكورس ده، بس هتاخد المهارات اللي تقدر تثبتها بمشاريعك الشخصية.{% endif %}</p>
-              </div>
-            </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>ضمان استرداد الفلوس شغال إزاي؟</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </summary>
-              <div class="faq-answer">
-                <p>لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة. كل اللي محتاجه: تبعتلنا رسالة وبس.</p>
-              </div>
-            </details>
+            {% endfor %}
           </div>
         </section>
         {% endif %}

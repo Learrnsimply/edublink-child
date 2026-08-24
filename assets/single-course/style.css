@@ -5361,7 +5361,7 @@ html {
 }
 
 /* OOP and Flutter icon cards — much bigger now */
-.build-mockup--oop, .build-mockup--flutter {
+.build-mockup--oop, .build-mockup--flutter, .build-mockup--backend, .build-mockup--python, .build-mockup--mobile {
   width: 120px;
   height: 120px;
   background: linear-gradient(135deg, rgba(64, 119, 243, 0.25), rgba(6, 182, 212, 0.18));
@@ -5378,6 +5378,21 @@ html {
 .build-mockup--flutter {
   background: linear-gradient(135deg, rgba(2, 125, 253, 0.3), rgba(2, 125, 253, 0.1));
   border-color: rgba(2, 125, 253, 0.4);
+}
+.build-mockup--backend {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(34, 197, 94, 0.08));
+  border-color: rgba(34, 197, 94, 0.4);
+  box-shadow: 0 12px 32px rgba(34, 197, 94, 0.2);
+}
+.build-mockup--python {
+  background: linear-gradient(135deg, rgba(55, 118, 171, 0.3), rgba(253, 224, 71, 0.18));
+  border-color: rgba(55, 118, 171, 0.4);
+  box-shadow: 0 12px 32px rgba(55, 118, 171, 0.2);
+}
+.build-mockup--mobile {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(168, 85, 247, 0.08));
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 12px 32px rgba(168, 85, 247, 0.2);
 }
 .build-card:hover .build-mockup--oop,
 .build-card:hover .build-mockup--flutter {
