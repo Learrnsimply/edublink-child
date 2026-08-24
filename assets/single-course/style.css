@@ -5243,73 +5243,106 @@ html {
   background: linear-gradient(160deg, rgba(64, 119, 243, 0.08), rgba(6, 182, 212, 0.04));
   border: 1px solid rgba(64, 119, 243, 0.15);
   border-radius: 20px;
-  padding: 40px 30px;
+  padding: 36px 28px;
   margin: 32px 0;
 }
 
-.what-you-build .section-subtitle {
-  font-size: 16px;
+.what-you-build .section-header,
+.course-faq .section-header {
+  /* Override the flex row layout from the existing .section-header */
+  display: block !important;
+  text-align: start;
+  margin-bottom: 28px;
+}
+
+.what-you-build .section-icon-box,
+.course-faq .section-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 16px;
+  width: 56px;
+  height: 56px;
+  background: rgba(64, 119, 243, 0.15) !important;
+  border: 1px solid rgba(64, 119, 243, 0.3);
+  border-radius: 14px;
+}
+
+.what-you-build .section-title,
+.course-faq .section-title {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #ffffff;
+  margin: 0 0 8px !important;
+  line-height: 1.3;
+  text-align: start;
+}
+
+.what-you-build .section-subtitle,
+.course-faq .section-subtitle {
+  font-size: 15px;
   color: #b8c0d0;
-  margin: 0 auto 28px;
-  max-width: 540px;
-  text-align: center;
+  margin: 0 0 24px;
   line-height: 1.6;
+  text-align: start;
+  max-width: 600px;
 }
 
 .build-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-top: 8px;
+  gap: 16px;
 }
 
 .build-card {
   background: rgba(20, 25, 36, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .build-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(64, 119, 243, 0.35);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
+  border-color: rgba(64, 119, 243, 0.4);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
 }
 
+/* Tall visual area with gradient — the visual now fills more of the card */
 .build-card__visual {
-  height: 140px;
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #0f1729 0%, #1a1240 50%, #0c1d4d 100%);
 }
 
+/* Code editor mockup — bigger and more prominent */
 .build-mockup {
-  width: 80%;
-  max-width: 240px;
+  width: 88%;
+  max-width: 280px;
 }
 
 .build-mockup--code {
   background: #0d1117;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   overflow: hidden;
-  font-family: 'JetBrains Mono', 'IBM Plex Sans Arabic', monospace;
-  font-size: 10px;
   direction: ltr;
   text-align: left;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 .build-mockup--code .build-mockup-bar {
   background: #161b22;
-  padding: 6px 10px;
+  padding: 7px 10px;
   display: flex;
-  gap: 4px;
+  gap: 5px;
 }
 .build-mockup--code .build-mockup-bar span {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
 }
@@ -5318,34 +5351,39 @@ html {
 .build-mockup--code .build-mockup-bar span:nth-child(3) { background: #28c840; }
 .build-mockup--code .build-mockup-body {
   margin: 0;
-  padding: 12px 14px;
+  padding: 14px 16px;
   color: #c9d1d9;
   line-height: 1.5;
-  white-space: pre;
+  font-size: 11px;
   font-family: 'JetBrains Mono', monospace;
+  white-space: pre;
+  color: #79c0ff;
 }
 
+/* OOP and Flutter icon cards — much bigger now */
 .build-mockup--oop, .build-mockup--flutter {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(135deg, rgba(64, 119, 243, 0.15), rgba(6, 182, 212, 0.15));
-  border: 1px solid rgba(64, 119, 243, 0.25);
-  border-radius: 24px;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, rgba(64, 119, 243, 0.25), rgba(6, 182, 212, 0.18));
+  border: 2px solid rgba(64, 119, 243, 0.35);
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
   transition: transform 0.4s ease;
+  box-shadow: 0 12px 32px rgba(64, 119, 243, 0.25);
 }
 .build-mockup--flutter {
-  background: linear-gradient(135deg, rgba(2, 125, 253, 0.18), rgba(2, 125, 253, 0.06));
-  border-color: rgba(2, 125, 253, 0.3);
+  background: linear-gradient(135deg, rgba(2, 125, 253, 0.3), rgba(2, 125, 253, 0.1));
+  border-color: rgba(2, 125, 253, 0.4);
 }
-.build-mockup--oop:hover, .build-mockup--flutter:hover {
+.build-card:hover .build-mockup--oop,
+.build-card:hover .build-mockup--flutter {
   transform: scale(1.1) rotate(3deg);
 }
-.build-mockup-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+.build-mockup-icon { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
 .build-mockup-icon svg { width: 100%; height: 100%; }
 .build-mockup-label {
   font-size: 13px;
@@ -5355,7 +5393,7 @@ html {
 }
 
 .build-card__body {
-  padding: 20px 22px 24px;
+  padding: 18px 20px 20px;
 }
 .build-card__tag {
   display: inline-block;
@@ -5365,28 +5403,28 @@ html {
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 6px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   letter-spacing: 0.03em;
 }
 .build-card__body h3 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: #ffffff;
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   line-height: 1.3;
 }
 .build-card__body p {
-  font-size: 14px;
+  font-size: 13px;
   color: #b8c0d0;
-  line-height: 1.6;
+  line-height: 1.55;
   margin: 0;
 }
 
-@media (max-width: 900px) {
-  .build-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 1100px) and (min-width: 901px) {
+@media (max-width: 1100px) {
   .build-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .build-grid { grid-template-columns: 1fr; }
 }
 
 /* ── FAQ section ── */
@@ -5394,53 +5432,44 @@ html {
   background: rgba(20, 25, 36, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
-  padding: 40px 30px;
+  padding: 36px 28px;
   margin: 32px 0;
 }
 
-.course-faq .section-subtitle {
-  font-size: 16px;
-  color: #b8c0d0;
-  margin: 0 auto 28px;
-  max-width: 540px;
-  text-align: center;
-  line-height: 1.6;
-}
-
 .faq-list {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .faq-item {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 .faq-item[open] {
   background: rgba(64, 119, 243, 0.06);
-  border-color: rgba(64, 119, 243, 0.25);
+  border-color: rgba(64, 119, 243, 0.3);
 }
-.faq-item:hover { border-color: rgba(255, 255, 255, 0.12); }
-.faq-item[open]:hover { border-color: rgba(64, 119, 243, 0.4); }
+.faq-item:hover { border-color: rgba(255, 255, 255, 0.15); }
+.faq-item[open]:hover { border-color: rgba(64, 119, 243, 0.45); }
 
 .faq-question {
   list-style: none;
-  padding: 18px 22px;
+  padding: 16px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #ffffff;
   user-select: none;
+  line-height: 1.4;
 }
 .faq-question::-webkit-details-marker { display: none; }
 .faq-question::marker { display: none; content: ''; }
@@ -5455,9 +5484,9 @@ html {
 .faq-item[open] .faq-chevron { transform: rotate(180deg); }
 
 .faq-answer {
-  padding: 0 22px 20px;
+  padding: 0 20px 18px;
   color: #d1d5e0;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.75;
   animation: ls-faqFade 0.3s ease;
 }
@@ -5471,9 +5500,9 @@ html {
 /* ── Reveal-on-scroll animations (Intersection Observer) ── */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 [data-reveal].is-revealed {
   opacity: 1;
@@ -5492,8 +5521,11 @@ html {
 }
 
 @media (max-width: 768px) {
-  .what-you-build, .course-faq { padding: 28px 20px; border-radius: 16px; }
-  .faq-question { padding: 16px 18px; font-size: 15px; }
-  .faq-answer { padding: 0 18px 18px; font-size: 14px; }
-  .build-card__body { padding: 18px 18px 20px; }
+  .what-you-build, .course-faq { padding: 24px 18px; border-radius: 16px; }
+  .what-you-build .section-title,
+  .course-faq .section-title { font-size: 20px !important; }
+  .faq-question { padding: 14px 16px; font-size: 14px; }
+  .faq-answer { padding: 0 16px 16px; font-size: 13px; }
+  .build-card__body { padding: 16px 16px 18px; }
+  .build-card__visual { height: 140px; }
 }
