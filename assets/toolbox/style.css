@@ -1,277 +1,485 @@
 /* ============================================================
    TOOLBOX PAGE — صندوق الأدوات
-   Uses site design tokens from global styles.css
+   Inspired by the سپنتهاكس Academy digital library design.
    ============================================================ */
+
+:root {
+    --ls-card-bg: #141924;
+    --ls-card-border: rgba(255, 255, 255, 0.08);
+    --ls-text: #ffffff;
+    --ls-text-gray: #b8c0d0;
+    --ls-text-mute: #6b7394;
+    --ls-primary: #4077f3;
+}
 
 /* ─── Section Container ─── */
 .ls-toolbox {
     min-height: 80vh;
     padding: 0 20px 80px;
-}
-
-/* ─── Header ─── */
-.ls-toolbox-header {
-    max-width: 700px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 60px 0 20px;
-    text-align: center;
 }
 
-.ls-toolbox-badge {
-    display: inline-block;
+/* ═══════════════════════════════════════════════════════════════
+   HERO CARD — big gradient banner
+   ═══════════════════════════════════════════════════════════════ */
+.ls-toolbox-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1240 0%, #0f172a 50%, #0a1a2f 100%);
+    border: 1px solid rgba(124, 58, 237, 0.25);
+    border-radius: 24px;
+    padding: 60px 48px;
+    margin: 60px auto 56px;
+    text-align: center;
+    max-width: 1320px;
+}
+
+.ls-toolbox-hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 12% 20%, rgba(124, 58, 237, 0.15) 0, transparent 35%),
+        radial-gradient(circle at 88% 80%, rgba(6, 182, 212, 0.15) 0, transparent 35%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0, transparent 60%);
+    pointer-events: none;
+}
+
+.ls-toolbox-hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    filter: blur(40px);
+}
+
+.ls-toolbox-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.ls-toolbox-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: #fcd34d;
+    border-radius: 999px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--learnsimply-primary-blue) !important;
-    background: rgba(64, 119, 243, 0.1) !important;
-    padding: 8px 22px;
-    border-radius: 100px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
-.ls-toolbox-title {
-    font-size: 42px;
+.ls-toolbox-hero-badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: #fbbf24;
+    border-radius: 5px;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.ls-toolbox-hero-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+}
+
+.ls-toolbox-hero-desc {
+    font-size: clamp(15px, 1.6vw, 17px);
+    color: var(--ls-text-gray);
+    line-height: 1.7;
+    margin: 0 auto 32px;
+    max-width: 560px;
+}
+
+.ls-toolbox-hero-ctas {
+    display: inline-flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ls-toolbox-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.ls-toolbox-hero-cta span:nth-child(1) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border-radius: 999px;
+    font-size: 14px;
     font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 16px;
-    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.12);
 }
 
-.ls-toolbox-desc {
-    font-size: 17px;
-    font-weight: 400;
-    color: var(--learnsimply-text-gray) !important;
-    line-height: 1.8;
-    max-width: 500px;
-    margin: 0 auto;
+.ls-toolbox-hero-cta--free {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #86efac;
+}
+.ls-toolbox-hero-cta--free:hover {
+    background: rgba(34, 197, 94, 0.2);
+    color: #bbf7d0;
+    transform: translateY(-1px);
 }
 
-/* ─── Cards Grid ─── */
+.ls-toolbox-hero-cta--premium {
+    background: rgba(251, 146, 60, 0.12);
+    border-color: rgba(251, 146, 60, 0.35);
+    color: #fdba74;
+}
+.ls-toolbox-hero-cta--premium:hover {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fed7aa;
+    transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARDS GRID
+   ═══════════════════════════════════════════════════════════════ */
 .ls-toolbox-grid {
-    max-width: 900px;
-    margin: 40px auto 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1320px;
+    margin: 0 auto;
 }
 
 /* ─── Card ─── */
 .ls-toolbox-card {
-    display: block !important;
-    text-decoration: none !important;
-    color: inherit !important;
-    background: var(--learnsimply-card-bg) !important;
-    border: 1px solid var(--learnsimply-card-border) !important;
-    border-radius: 16px;
-    padding: 30px 26px !important;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--ls-card-bg);
+    border: 1px solid var(--ls-card-border);
+    border-radius: 18px;
     overflow: hidden;
+    text-decoration: none;
+    color: inherit;
     transition: all 0.3s ease;
 }
 
-.ls-toolbox-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 3px;
-    background: var(--learnsimply-primary-blue);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.ls-toolbox-card:hover,
-.ls-toolbox-card:focus-visible {
-    background: #1a2232 !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+.ls-toolbox-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    text-decoration: none !important;
-    color: inherit !important;
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
-.ls-toolbox-card:hover::before {
-    opacity: 1;
+/* ─── Card flag (top corner badge) ─── */
+.ls-toolbox-card-flag {
+    position: absolute;
+    top: 12px;
+    inset-inline-end: 12px;
+    background: rgba(34, 197, 94, 0.85);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    z-index: 3;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    line-height: 1.3;
 }
 
-/* ─── Card Icon ─── */
-.ls-toolbox-card-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
-    background: rgba(64, 119, 243, 0.1) !important;
+.ls-toolbox-card-flag--premium {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #422006;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+}
+
+.ls-toolbox-card-flag-sm {
+    position: absolute;
+    top: 14px;
+    inset-inline-start: 14px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    z-index: 3;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* ─── Card visual area (top hero with gradient + illustration) ─── */
+.ls-toolbox-card-visual {
+    position: relative;
+    height: 160px;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 22px;
+    background: #0a0f1a;
 }
 
-.ls-toolbox-card-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--learnsimply-primary-blue) !important;
-    fill: none !important;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+/* Gradient backgrounds per color theme */
+.ls-toolbox-card-visual[data-gradient="purple"] {
+    background: linear-gradient(135deg, #2e1065 0%, #4c1d95 50%, #6b21a8 100%);
+}
+.ls-toolbox-card-visual[data-gradient="cyan"] {
+    background: linear-gradient(135deg, #083344 0%, #0e7490 50%, #06b6d4 100%);
+}
+.ls-toolbox-card-visual[data-gradient="blue"] {
+    background: linear-gradient(135deg, #0c1d4d 0%, #1e40af 50%, #3b82f6 100%);
+}
+.ls-toolbox-card-visual[data-gradient="green"] {
+    background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #16a34a 100%);
+}
+.ls-toolbox-card-visual[data-gradient="orange"] {
+    background: linear-gradient(135deg, #431407 0%, #9a3412 50%, #ea580c 100%);
+}
+.ls-toolbox-card-visual[data-gradient="pink"] {
+    background: linear-gradient(135deg, #500724 0%, #9f1239 50%, #e11d48 100%);
 }
 
-/* ─── Card Text ─── */
-.ls-toolbox-card-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    line-height: 1.5;
-    color: #ffffff !important;
-}
-
-.ls-toolbox-card-desc {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--learnsimply-text-gray) !important;
-    line-height: 1.8;
-}
-
-/* ─── Card Arrow ─── */
-.ls-toolbox-card-arrow {
+/* The radial glow behind the illustration */
+.ls-toolbox-card-glow {
     position: absolute;
-    left: 24px;
-    top: 32px;
-    width: 20px;
-    height: 20px;
-    opacity: 0;
-    transform: translateX(6px);
-    transition: all 0.3s ease;
-    color: var(--learnsimply-primary-blue) !important;
-}
-
-.ls-toolbox-card:hover .ls-toolbox-card-arrow {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* ─── Card Flag (e.g. "🎬 فيديو") — sits at the start side (right in RTL) ─── */
-.ls-toolbox-card-flag {
-    position: absolute;
-    inset-block-start: 14px;
-    inset-inline-start: 14px;
-    background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
-    color: #ffffff !important;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 999px;
-    line-height: 1;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    pointer-events: none;
     z-index: 1;
 }
 
-/* ─── Featured card (e.g. Vibe Coding course) — purple/cyan accent ─── */
-.ls-toolbox-card--featured {
-    background: linear-gradient(160deg, rgba(124, 58, 237, 0.10), rgba(6, 182, 212, 0.05)) !important;
-    border-color: rgba(124, 58, 237, 0.35) !important;
+.ls-toolbox-card-visual[data-gradient="purple"] .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+}
+.ls-toolbox-card-visual[data-gradient="cyan"] .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%);
+}
+.ls-toolbox-card-visual[data-gradient="blue"] .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+}
+.ls-toolbox-card-visual[data-gradient="green"] .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.4) 0%, transparent 70%);
+}
+.ls-toolbox-card-visual[data-gradient="orange"] .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(251, 146, 60, 0.4) 0%, transparent 70%);
+}
+.ls-toolbox-card-visual[data-gradient="pink"] .ls-toolbox-card-glow {
+    background: radial-gradient(circle, rgba(244, 63, 94, 0.4) 0%, transparent 70%);
 }
 
-.ls-toolbox-card--featured::before {
-    background: linear-gradient(90deg, #7c3aed, #06b6d4) !important;
-    opacity: 1 !important;
-}
-
-.ls-toolbox-card--featured .ls-toolbox-card-icon {
-    background: rgba(124, 58, 237, 0.15) !important;
-}
-
-.ls-toolbox-card--featured .ls-toolbox-card-icon svg {
-    stroke: #c4b5fd !important;
-}
-
-.ls-toolbox-card--featured .ls-toolbox-card-arrow {
-    color: #c4b5fd !important;
-}
-
-.ls-toolbox-card--featured:hover,
-.ls-toolbox-card--featured:focus-visible {
-    border-color: rgba(124, 58, 237, 0.6) !important;
-    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.25);
-}
-
-/* ─── Thumbnail preview (used on the Vibe Coding card) ─── */
-.ls-toolbox-card-thumb {
+/* The illustration wrapper */
+.ls-toolbox-card-illustration {
     position: relative;
-    width: calc(100% + 52px);   /* extend beyond the card padding to the edge */
-    height: 140px;
-    margin: -30px -26px 18px;   /* pull the thumbnail to the top of the card */
-    overflow: hidden;
-    background: #0a0f1a;
-    flex-shrink: 0;
-}
-
-.ls-toolbox-card-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    z-index: 2;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.4s ease;
 }
 
-.ls-toolbox-card--featured:hover .ls-toolbox-card-thumb img,
-.ls-toolbox-card--featured:focus-visible .ls-toolbox-card-thumb img {
-    transform: scale(1.05);
+.ls-toolbox-card:hover .ls-toolbox-card-illustration {
+    transform: scale(1.08) translateY(-4px);
 }
 
-/* Play badge overlay */
+.ls-toolbox-card-illustration svg {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+}
+
+.ls-toolbox-card-illustration img {
+    max-width: 100%;
+    max-height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Play overlay on image-style cards */
 .ls-toolbox-card-play {
     position: absolute;
     top: 50%;
-    inset-inline-start: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     background: rgba(255, 0, 0, 0.9);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
     transition: transform 0.2s ease;
-    overflow: hidden;       /* belt-and-suspenders: clip the SVG if it tries to escape */
+    z-index: 3;
 }
 .ls-toolbox-card-play svg {
-    width: 22px;
-    height: 22px;
-    max-width: 100%;
-    max-height: 100%;
-    color: #fff;
+    width: 20px;
+    height: 20px;
     margin-inline-start: 2px;
-    flex-shrink: 0;
 }
-.ls-toolbox-card--featured:hover .ls-toolbox-card-play,
-.ls-toolbox-card--featured:focus-visible .ls-toolbox-card-play {
+.ls-toolbox-card:hover .ls-toolbox-card-play {
     transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* The "featured" flag should sit ABOVE the thumbnail (z-index) */
-.ls-toolbox-card--featured .ls-toolbox-card-flag {
+/* ─── Corner accent lines (crop marks) ─── */
+.ls-toolbox-card-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
     z-index: 2;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+.ls-toolbox-card:hover .ls-toolbox-card-corner {
+    opacity: 0.9;
 }
 
-/* ─── Mobile ─── */
-@media (max-width: 768px) {
-    .ls-toolbox-header {
-        padding: 40px 0 16px;
-    }
+.ls-toolbox-card-corner::before,
+.ls-toolbox-card-corner::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+}
 
-    .ls-toolbox-title {
-        font-size: 30px;
-    }
+/* Top-left corner */
+.ls-toolbox-card-corner--tl { top: 10px; left: 10px; }
+.ls-toolbox-card-corner--tl::before { top: 0; left: 0; width: 14px; height: 2px; }
+.ls-toolbox-card-corner--tl::after  { top: 0; left: 0; width: 2px; height: 14px; }
 
-    .ls-toolbox-desc {
-        font-size: 15px;
-    }
+/* Top-right corner */
+.ls-toolbox-card-corner--tr { top: 10px; right: 10px; }
+.ls-toolbox-card-corner--tr::before { top: 0; right: 0; width: 14px; height: 2px; }
+.ls-toolbox-card-corner--tr::after  { top: 0; right: 0; width: 2px; height: 14px; }
 
+/* Bottom-left corner */
+.ls-toolbox-card-corner--bl { bottom: 10px; left: 10px; }
+.ls-toolbox-card-corner--bl::before { bottom: 0; left: 0; width: 14px; height: 2px; }
+.ls-toolbox-card-corner--bl::after  { bottom: 0; left: 0; width: 2px; height: 14px; }
+
+/* Bottom-right corner */
+.ls-toolbox-card-corner--br { bottom: 10px; right: 10px; }
+.ls-toolbox-card-corner--br::before { bottom: 0; right: 0; width: 14px; height: 2px; }
+.ls-toolbox-card-corner--br::after  { bottom: 0; right: 0; width: 2px; height: 14px; }
+
+/* ─── Card body ─── */
+.ls-toolbox-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px 20px 10px;
+}
+
+.ls-toolbox-card-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ls-text-gray);
+    margin: 0;
+    padding: 0 20px 18px;
+    flex: 1;
+}
+
+/* ─── Card meta (price + type) ─── */
+.ls-toolbox-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-top: 1px solid var(--ls-card-border);
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.ls-toolbox-card-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #86efac;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ls-toolbox-card-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--ls-text-mute);
+}
+
+/* ─── Featured card (yellow accent border for the "مميز" card) ─── */
+.ls-toolbox-card--featured {
+    border-color: rgba(251, 191, 36, 0.4);
+}
+
+.ls-toolbox-card--featured:hover {
+    border-color: rgba(251, 191, 36, 0.7);
+    box-shadow: 0 16px 40px rgba(251, 191, 36, 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+    .ls-toolbox-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .ls-toolbox-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .ls-toolbox-hero {
+        padding: 48px 32px;
+    }
+}
+
+@media (max-width: 640px) {
     .ls-toolbox-grid {
         grid-template-columns: 1fr;
-        margin-top: 30px;
+    }
+    .ls-toolbox-hero {
+        padding: 40px 24px;
+        margin: 40px auto 40px;
+    }
+    .ls-toolbox-hero-ctas {
+        flex-direction: column;
+        width: 100%;
+    }
+    .ls-toolbox-hero-cta {
+        width: 100%;
+        justify-content: center;
     }
 }
