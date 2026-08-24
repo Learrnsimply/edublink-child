@@ -30,7 +30,7 @@ if (!class_exists('Timber\Timber')) {
  * assets/img/vibe-coding-course-thumb.png (already in the project).
  * ─────────────────────────────────────────────────────────────────
  */
-$ls_vibe_coding_video_id = 'YOUR_VIDEO_ID_HERE';
+$ls_vibe_coding_video_id = 'wMb5mYvksiM';
 
 $context = Timber::get_context();
 $context['theme_uri']      = get_stylesheet_directory_uri();
