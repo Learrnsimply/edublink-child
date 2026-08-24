@@ -5497,10 +5497,16 @@ html {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Reveal-on-scroll animations (Intersection Observer) ── */
-[data-reveal] {
+/* ── Reveal-on-scroll animations (Intersection Observer) ──
+   PROGRESSIVE ENHANCEMENT: by default, content is FULLY VISIBLE.
+   Only when JS runs and adds the `.js-ready` class to <body> do we
+   hide the elements (opacity:0) — then the IO observer reveals them.
+   This guarantees content is always visible even if JS fails. */
+.js-ready [data-reveal]:not(.is-revealed) {
   opacity: 0;
   transform: translateY(20px);
+}
+[data-reveal] {
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -5516,7 +5522,7 @@ html {
 .faq-list .faq-item[data-reveal]:nth-child(even) { transition-delay: 0.12s; }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .js-ready [data-reveal] { opacity: 1; transform: none; transition: none; }
   .faq-chevron { transition: none; }
 }
 

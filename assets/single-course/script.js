@@ -4,6 +4,10 @@
  */
 
 document.addEventListener("DOMContentLoaded", function () {
+	// Mark body as JS-ready so progressive enhancement rules in the CSS
+	// can safely hide [data-reveal] elements (they stay visible without JS).
+	document.body.classList.add("js-ready");
+
 	// Course Content Card - Week Toggle Functionality
 	const weekHeaders = document.querySelectorAll(".week-header");
 
