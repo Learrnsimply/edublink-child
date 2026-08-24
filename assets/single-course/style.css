@@ -5466,6 +5466,7 @@ html {
 }
 
 .faq-item {
+  display: block !important;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
@@ -5475,6 +5476,7 @@ html {
   direction: rtl;
 }
 .faq-item[open] {
+  display: block !important;
   background: rgba(64, 119, 243, 0.06);
   border-color: rgba(64, 119, 243, 0.3);
 }
@@ -5512,15 +5514,20 @@ html {
 .faq-item[open] .faq-chevron { transform: rotate(180deg); }
 
 .faq-answer {
-  padding: 0 20px 18px;
+  display: block !important;       /* override OLD CSS .faq-answer { display: none } */
+  visibility: visible !important;
+  opacity: 1 !important;
+  padding: 0 20px 20px;
   color: #d1d5e0;
   font-size: 14px;
   line-height: 1.75;
-  animation: ls-faqFade 0.3s ease;
   font-family: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   direction: rtl;
 }
-.faq-answer p { margin: 0; }
+.faq-answer p {
+  margin: 0;
+  padding: 14px 0 0;
+}
 
 @keyframes ls-faqFade {
   from { opacity: 0; transform: translateY(-8px); }
