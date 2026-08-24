@@ -5471,6 +5471,8 @@ html {
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
+  font-family: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  direction: rtl;
 }
 .faq-item[open] {
   background: rgba(64, 119, 243, 0.06);
@@ -5492,6 +5494,10 @@ html {
   color: #ffffff;
   user-select: none;
   line-height: 1.4;
+  /* Force Arabic-capable font — the user-agent stylesheet for <summary>
+     sometimes drops the inherited font on Linux/macOS, causing tofu boxes. */
+  font-family: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  direction: rtl;
 }
 .faq-question::-webkit-details-marker { display: none; }
 .faq-question::marker { display: none; content: ''; }
@@ -5511,6 +5517,8 @@ html {
   font-size: 14px;
   line-height: 1.75;
   animation: ls-faqFade 0.3s ease;
+  font-family: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  direction: rtl;
 }
 .faq-answer p { margin: 0; }
 
