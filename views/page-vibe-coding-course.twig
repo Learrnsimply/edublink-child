@@ -15,52 +15,115 @@
 {% block content %}
 
 {# ═══════════════════════════════════════════════════════════════
-   HERO — badge + title + subtitle + stats + dual CTAs
+   HERO — split layout: text on the left, code editor mockup on the right
    ═══════════════════════════════════════════════════════════════ #}
 <section class="lvc-hero">
     <div class="lvc-hero-bg-glow"></div>
 
-    <div class="lvc-hero-inner">
-        <span class="lvc-hero-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-            مرجع فيديو يوتيوب
-        </span>
+    {# Floating tool icons as decorative background elements #}
+    <div class="lvc-hero-floaters" aria-hidden="true">
+        <div class="lvc-floater lvc-floater--claude">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.709 15.955l4.72-2.647.079-.23-.079-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.449.255h.389l.055-.158-.073-.073-.34-.236-1.55-1.284-1.263-1.033-1.42-1.185-.723-.723-.246-.376-.158-1.479.578-.499 1.315.255.85.686 1.479 1.49 1.845 1.625 1.541 1.479.133-.085.06-.121-.048-.146-1.891-2.02-1.409-1.672-1.541-1.724-.85-1.394-.176-.722.413-.728.728-.146 1.033.255.74.522 1.599 1.625 1.394 1.394 1.672 1.964.17.17.231-.06.036-.158-.74-1.527-1.09-1.83-1.207-2.145-.643-1.77-.121-1.964.644-.34.722.17.619.74.74 1.297 1.964 3.516 1.333 2.375 1.479 3.045.231.231.255.097.152-.073.152-.231-.049-.401-.424-1.964-1.185-3.162-1.394-3.456-.91-1.83-.255-.481-.91-.91-1.829.255-.85.746-.279 1.394.279.91.85 1.61 1.952 1.297 1.83 1.297 2.036.85 1.733.146.461.158.152.231-.036.097-.231-.06-.473-.424-1.891-1.148-2.91-1.297-3.007-1.179-1.83-.74-1.006-.461-.473-1.148-.279-.085.93.279 1.394.91 1.964 1.297 2.375 1.297 2.51 1.148 2.327.097.461z"/></svg>
+        </div>
+        <div class="lvc-floater lvc-floater--vscode">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.15 2.225L18.575.075c-.688-.225-1.45-.075-2 .425L8.5 6.85 3.15 3.95c-.5-.275-1.1-.25-1.6.05C.975 4.3.7 4.875.7 5.475v13.05c0 .6.275 1.175.85 1.475.5.3 1.1.325 1.6.05L8.5 17.15l8.075 6.35c.55.5 1.312.65 2 .425l4.575-2.15c.8-.375 1.3-1.175 1.3-2.05V4.275c0-.875-.5-1.675-1.3-2.05zM9.075 14.1L4.85 11.85l4.225-2.25v4.5zm11.275 3.45c0 .275-.15.525-.4.65l-2.225 1.05c-.225.1-.5.025-.65-.15L9.55 12.5v-1l7.525-6.6c.15-.175.425-.25.65-.15l2.225 1.05c.25.125.4.375.4.65v11.1z"/></svg>
+        </div>
+        <div class="lvc-floater lvc-floater--github">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </div>
+        <div class="lvc-floater lvc-floater--sparkle">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.39 9.61L24 12L14.39 14.39L12 24L9.61 14.39L0 12L9.61 9.61L12 0Z"/></svg>
+        </div>
+    </div>
 
-        <h1 class="lvc-hero-title">
-            كورس ال <span class="lvc-gradient-text">Vibe Coding</span>
-        </h1>
+    <div class="lvc-hero-grid">
+        <div class="lvc-hero-text">
+            <span class="lvc-hero-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                مرجع فيديو يوتيوب
+            </span>
 
-        <p class="lvc-hero-subtitle">
-            5 خطوات عملية تاخدك من الصفر لموقع شغال فعلاً — من غير ما تكتب سطر كود واحد بنفسك.
-            ده <strong>مرجع الفيديو</strong> على القناة — كل الأدوات واللينكات في مكان واحد، سهل المسح على الموبايل وانت بتنفّذ.
-        </p>
+            <h1 class="lvc-hero-title">
+                <span class="lvc-hero-title-ar">كورس ال</span>
+                <span class="lvc-hero-title-en lvc-gradient-text">Vibe Coding</span>
+            </h1>
 
-        <div class="lvc-hero-stats">
-            <div class="lvc-stat">
-                <div class="lvc-stat-num">5</div>
-                <div class="lvc-stat-label">خطوات عملية</div>
+            <p class="lvc-hero-subtitle">
+                5 خطوات عملية تاخدك من الصفر لموقع شغال فعلاً — من غير ما تكتب سطر كود واحد بنفسك.
+                ده <strong>مرجع الفيديو</strong> على القناة — كل الأدوات واللينكات في مكان واحد، سهل المسح على الموبايل وانت بتنفّذ.
+            </p>
+
+            <div class="lvc-hero-stats">
+                <div class="lvc-stat">
+                    <div class="lvc-stat-num">5</div>
+                    <div class="lvc-stat-label">خطوات عملية</div>
+                </div>
+                <div class="lvc-stat-divider"></div>
+                <div class="lvc-stat">
+                    <div class="lvc-stat-num">8+</div>
+                    <div class="lvc-stat-label">أدوات مجانية</div>
+                </div>
+                <div class="lvc-stat-divider"></div>
+                <div class="lvc-stat">
+                    <div class="lvc-stat-num">100%</div>
+                    <div class="lvc-stat-label">من غير كود</div>
+                </div>
             </div>
-            <div class="lvc-stat-divider"></div>
-            <div class="lvc-stat">
-                <div class="lvc-stat-num">8+</div>
-                <div class="lvc-stat-label">أدوات مجانية</div>
-            </div>
-            <div class="lvc-stat-divider"></div>
-            <div class="lvc-stat">
-                <div class="lvc-stat-num">100%</div>
-                <div class="lvc-stat-label">من غير كود</div>
+
+            <div class="lvc-hero-ctas">
+                <a href="#lvc-video" class="lvc-btn lvc-btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    شاهد الفيديو على الموقع
+                </a>
+                <a href="#lvc-step-1" class="lvc-btn lvc-btn-ghost">
+                    ابدأ من الخطوة 1
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </a>
             </div>
         </div>
 
-        <div class="lvc-hero-ctas">
-            <a href="#lvc-video" class="lvc-btn lvc-btn-primary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                شاهد الفيديو على الموقع
-            </a>
-            <a href="#lvc-step-1" class="lvc-btn lvc-btn-ghost">
-                ابدأ من الخطوة 1
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            </a>
+        {# Code editor mockup — visual proof of what the user will build #}
+        <div class="lvc-hero-mockup" aria-hidden="true">
+            <div class="lvc-mockup-window">
+                <div class="lvc-mockup-titlebar">
+                    <span class="lvc-mockup-dot lvc-mockup-dot--red"></span>
+                    <span class="lvc-mockup-dot lvc-mockup-dot--yellow"></span>
+                    <span class="lvc-mockup-dot lvc-mockup-dot--green"></span>
+                    <span class="lvc-mockup-filename">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-inline-end:4px;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        vibe-coding.md
+                    </span>
+                    <span class="lvc-mockup-tab">Claude Code</span>
+                </div>
+                <div class="lvc-mockup-body">
+                    <pre class="lvc-mockup-code"><code><span class="lvc-ml-c">// 🚀 Vibe Coding — اعمل أي حاجة بالـ AI</span>
+<span class="lvc-ml-c">// من غير كود. من غير خبرة. من غير توتر.</span>
+
+<span class="lvc-ml-k">const</span> <span class="lvc-ml-fn">myApp</span> = <span class="lvc-ml-k">await</span> <span class="lvc-ml-fn">buildWith</span>({
+  idea:    <span class="lvc-ml-s">'فكرة موقعك'</span>,
+  ai:      <span class="lvc-ml-s">'Claude Code'</span>,
+  editor:  <span class="lvc-ml-s">'VS Code'</span>,
+  deploy:  <span class="lvc-ml-s">'GitHub Pages'</span>,
+  budget:  <span class="lvc-ml-s">'$0'</span>,
+  vibes:   <span class="lvc-ml-s">'✨ immaculate ✨'</span>,
+});
+
+<span class="lvc-ml-c">// ✅ النتيجة: موقع شغال في 5 خطوات</span>
+<span class="lvc-ml-fn">myApp</span>.<span class="lvc-ml-fn">live</span>();   <span class="lvc-ml-c">// ← ده انت بقى!</span></code></pre>
+                </div>
+                <div class="lvc-mockup-statusbar">
+                    <span class="lvc-mockup-status-dot"></span>
+                    <span>Claude Code · Ready</span>
+                    <span class="lvc-mockup-status-spacer"></span>
+                    <span>main</span>
+                </div>
+            </div>
+
+            {# Floating badge overlay on the mockup #}
+            <div class="lvc-mockup-badge">
+                <span class="lvc-mockup-badge-icon">⚡</span>
+                <span>من الصفر لموقع شغال</span>
+            </div>
         </div>
     </div>
 </section>
@@ -163,10 +226,22 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                             الأدوات اللي هتحتاجها
                         </h4>
+
+                        {# Visual strip of tool chips (pill row above the link list) #}
+                        <div class="lvc-tool-strip">
+                            {% for tool in step.tools %}
+                                <span class="lvc-tool-chip" style="--chip-color: {{ tool.color }}">
+                                    <span class="lvc-tool-chip-initial">{{ tool.short }}</span>
+                                    <span class="lvc-tool-chip-name">{{ tool.name }}</span>
+                                </span>
+                            {% endfor %}
+                        </div>
+
                         <ul class="lvc-tool-list">
                             {% for tool in step.tools %}
                                 <li class="lvc-tool">
                                     <a class="lvc-tool-link" href="{{ tool.url }}" target="_blank" rel="noopener">
+                                        <span class="lvc-tool-logo" style="background: {{ tool.color }}">{{ tool.short }}</span>
                                         <span class="lvc-tool-name">{{ tool.name }}</span>
                                         <svg class="lvc-tool-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                                     </a>
@@ -197,24 +272,32 @@
     <div class="lvc-course-grid">
         {% for course in courses %}
             <article class="lvc-course {% if course.highlight %}lvc-course--highlight{% endif %}">
-                {% if course.badge %}
-                    <span class="lvc-course-badge">{{ course.badge }}</span>
-                {% endif %}
-
-                <h3 class="lvc-course-title">{{ course.title }}</h3>
-                <p class="lvc-course-desc">{{ course.description }}</p>
-                <p class="lvc-course-meta">{{ course.meta }}</p>
-
-                <div class="lvc-course-pricing">
-                    <span class="lvc-course-price-new">{{ course.new_price }} <span class="lvc-currency">جنيه</span></span>
-                    <span class="lvc-course-price-old">{{ course.old_price }} جنيه</span>
-                    <span class="lvc-course-discount">خصم {{ course.discount }}</span>
+                {# Gradient thumbnail header (acts as a visual "cover image" for the course) #}
+                <div class="lvc-course-thumb" style="background: {{ course.thumb_bg }}">
+                    <div class="lvc-course-thumb-pattern" aria-hidden="true"></div>
+                    <span class="lvc-course-thumb-emoji">{{ course.thumb_emoji }}</span>
+                    <span class="lvc-course-thumb-label">{{ course.thumb_label }}</span>
+                    {% if course.badge %}
+                        <span class="lvc-course-badge">{{ course.badge }}</span>
+                    {% endif %}
                 </div>
 
-                <a class="lvc-course-cta" href="{{ course.url }}">
-                    {{ course.cta }}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                </a>
+                <div class="lvc-course-body">
+                    <h3 class="lvc-course-title">{{ course.title }}</h3>
+                    <p class="lvc-course-desc">{{ course.description }}</p>
+                    <p class="lvc-course-meta">{{ course.meta }}</p>
+
+                    <div class="lvc-course-pricing">
+                        <span class="lvc-course-price-new">{{ course.new_price }} <span class="lvc-currency">جنيه</span></span>
+                        <span class="lvc-course-price-old">{{ course.old_price }} جنيه</span>
+                        <span class="lvc-course-discount">خصم {{ course.discount }}</span>
+                    </div>
+
+                    <a class="lvc-course-cta" href="{{ course.url }}">
+                        {{ course.cta }}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    </a>
+                </div>
             </article>
         {% endfor %}
     </div>

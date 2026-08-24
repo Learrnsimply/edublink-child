@@ -54,8 +54,8 @@ $context['steps'] = array(
 		'description' => 'ادخل على كلود شات وحمّل مهارة "Grill Me" واعمل عصف ذهني للفكرة بتاعتك — هتطلع منها ملفات المشروع كاملة: اسم، هدف، جمهور، الـ features الأساسية.',
 		'tip'         => 'متحاولش تطلع بتفاصيل تقنية — بس فكّر "أنا عايز أداة تعمل إيه للناس"، والباقي على الـ AI.',
 		'tools'       => array(
-			array('name' => 'كلود شات',             'url' => 'https://claude.ai/new'),
-			array('name' => 'مهارة Grill Me',       'url' => 'https://awesomeskill.ai/skill/julianoczkowski-designer-skills-grill-me'),
+			array('name' => 'كلود شات',       'short' => 'C',  'color' => '#d97757', 'url' => 'https://claude.ai/new'),
+			array('name' => 'مهارة Grill Me', 'short' => 'G',  'color' => '#ef4444', 'url' => 'https://awesomeskill.ai/skill/julianoczkowski-designer-skills-grill-me'),
 		),
 	),
 	array(
@@ -65,8 +65,8 @@ $context['steps'] = array(
 		'description' => 'حمّل Claude Code (الوكيل اللي بيكتب وبيشغل كود) و Visual Studio Code (المحرر اللي بتشتغل جوّاه). الفولدر اللي هتفتحه في VS Code هو "مشروعك".',
 		'tip'         => 'بعد ما تخلّص التسطيب، جرّب تقول لـ Claude Code "اعمل فولدر باسم my-vibe-project" — لو اشتغل، أنت جاهز.',
 		'tools'       => array(
-			array('name' => 'تحميل Claude Code',   'url' => 'https://claude.com/download'),
-			array('name' => 'تحميل VS Code',       'url' => 'https://code.visualstudio.com/download'),
+			array('name' => 'تحميل Claude Code', 'short' => 'CC', 'color' => '#d97757', 'url' => 'https://claude.com/download'),
+			array('name' => 'تحميل VS Code',     'short' => 'VS', 'color' => '#0078d4', 'url' => 'https://code.visualstudio.com/download'),
 		),
 	),
 	array(
@@ -84,9 +84,9 @@ $context['steps'] = array(
 		'description' => 'خلّي Claude Code يبني النسخة الأولى Feature بـ Feature. استخدم "المهارات" من commandcode.ai دي لما تحتاج مساعدة (UI، API، Database...). ولما تخلّص، اختبر كل حاجة بـ TestSprite — Automated Testing هيوصلك تقرير بكل الـ bugs.',
 		'tip'         => 'لا تقبل output من Claude Code من غير ما تقرأه — لو فيه ملاحظات قولها فوراً، أحسن من إنك تتراكم مشاكل.',
 		'tools'       => array(
-			array('name' => 'مكتبة المهارات + Find Skills', 'url' => 'https://commandcode.ai/skills'),
-			array('name' => 'TestSprite',                    'url' => 'https://www.testsprite.com/?via=learrnsimply'),
-			array('name' => 'TestSprite CLI',                'url' => 'https://github.com/TestSprite/testsprite-cli'),
+			array('name' => 'مكتبة المهارات + Find Skills', 'short' => 'ai', 'color' => '#22c55e', 'url' => 'https://commandcode.ai/skills'),
+			array('name' => 'TestSprite',                    'short' => 'T',  'color' => '#a855f7', 'url' => 'https://www.testsprite.com/?via=learrnsimply'),
+			array('name' => 'TestSprite CLI',                'short' => 'T',  'color' => '#a855f7', 'url' => 'https://github.com/TestSprite/testsprite-cli'),
 		),
 	),
 	array(
@@ -96,8 +96,8 @@ $context['steps'] = array(
 		'description' => 'ارفع الكود على GitHub (نسخة احتياطية + شير مع ناس تانية)، وبعدين استضفه مجاناً على GitHub Pages — يبقى عندك لينك حقيقي تشاركه.',
 		'tip'         => 'لو محتاج Domain مخصص (.com / .eg)، خد واحد من Namecheap أو Cloudflare — بيبقى أرخص من شراء Domain من المنصات التانية.',
 		'tools'       => array(
-			array('name' => 'GitHub',          'url' => 'https://github.com/'),
-			array('name' => 'GitHub Pages Docs', 'url' => 'https://docs.github.com/en/pages'),
+			array('name' => 'GitHub',           'short' => 'G',  'color' => '#181717', 'url' => 'https://github.com/'),
+			array('name' => 'GitHub Pages Docs', 'short' => 'G',  'color' => '#181717', 'url' => 'https://docs.github.com/en/pages'),
 		),
 	),
 );
@@ -105,6 +105,9 @@ $context['steps'] = array(
 $context['courses'] = array(
 	array(
 		'badge'       => 'الأكثر مبيعاً',
+		'thumb_bg'    => 'linear-gradient(135deg, #f59e0b, #ef4444)',
+		'thumb_emoji' => '☕',
+		'thumb_label' => 'Java',
 		'title'       => 'كورس جافا للمبتدئين + كتاب هدية',
 		'description' => 'ابدأ رحلتك في البرمجة من الصفر بلغة جافا — هتفهم الـ AI كود لما يبني ليك، وتقدر تعدّل فيه بنفسك.',
 		'meta'        => '74 درس · 13 ساعة محتوى',
@@ -117,6 +120,9 @@ $context['courses'] = array(
 	),
 	array(
 		'badge'       => 'الأفضل لتطبيقات الموبايل',
+		'thumb_bg'    => 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+		'thumb_emoji' => '🎯',
+		'thumb_label' => 'Dart',
 		'title'       => 'أساسيات Dart من الصفر لـ OOP — أول خطوة لـ Flutter',
 		'description' => 'لو عايز تبني تطبيقات موبايل، ده أول خطوة ليك — هتبدأ من Dart (لغة Flutter) وتفهم الـ OOP قبل ما تدخل في الـ Framework.',
 		'meta'        => '112 درس · 20 ساعة محتوى',
@@ -129,6 +135,9 @@ $context['courses'] = array(
 	),
 	array(
 		'badge'       => 'أفضل قيمة',
+		'thumb_bg'    => 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+		'thumb_emoji' => '🎁',
+		'thumb_label' => 'الباقة الكاملة',
 		'title'       => 'باقة كل الكورسات',
 		'description' => '6 كورسات كاملة، 422 درس، وصول مدى الحياة — جافا + OOP + هياكل بيانات (مستويين) + Dart + مشاريع بايثون. وفّر 2,300 جنيه.',
 		'meta'        => '6 كورسات · 422 درس · وصول مدى الحياة',

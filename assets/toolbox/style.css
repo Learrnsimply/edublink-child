@@ -195,6 +195,62 @@
     box-shadow: 0 12px 40px rgba(124, 58, 237, 0.25);
 }
 
+/* ─── Thumbnail preview (used on the Vibe Coding card) ─── */
+.ls-toolbox-card-thumb {
+    position: relative;
+    width: calc(100% + 52px);   /* extend beyond the card padding to the edge */
+    height: 140px;
+    margin: -30px -26px 18px;   /* pull the thumbnail to the top of the card */
+    overflow: hidden;
+    background: #0a0f1a;
+}
+
+.ls-toolbox-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.ls-toolbox-card--featured:hover .ls-toolbox-card-thumb img,
+.ls-toolbox-card--featured:focus-visible .ls-toolbox-card-thumb img {
+    transform: scale(1.05);
+}
+
+/* Play badge overlay */
+.ls-toolbox-card-play {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 0, 0, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease;
+}
+.ls-toolbox-card-play svg {
+    width: 22px;
+    height: 22px;
+    color: #fff;
+    margin-inline-start: 2px;
+}
+.ls-toolbox-card--featured:hover .ls-toolbox-card-play,
+.ls-toolbox-card--featured:focus-visible .ls-toolbox-card-play {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* The "featured" flag should sit ABOVE the thumbnail (z-index) */
+.ls-toolbox-card--featured .ls-toolbox-card-flag {
+    z-index: 2;
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 768px) {
     .ls-toolbox-header {
