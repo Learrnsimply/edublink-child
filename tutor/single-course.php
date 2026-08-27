@@ -632,6 +632,112 @@ function learnsimply_get_course_extras( $slug ) {
 			),
 		),
 
+		// ───────────────────────────────────────────────
+		// DATA STRUCTURE — المستوى الأول (arrays → linked list → stack → queue)
+		// ───────────────────────────────────────────────
+		'data-structure-c' => array(
+			'build_items' => array(
+				array(
+					'kind'  => 'code',
+					'code'  => '<span class="lvc-kw">struct</span> Node {\n    <span class="lvc-kw">int</span> data;\n    <span class="lvc-kw">struct</span> Node* next;\n};\n\n<span class="lvc-cmt">// أول linked list بإيدك</span>\nhead-&gt;next = newNode;',
+					'tag'   => 'تطبيقي',
+					'title' => 'أول Linked List بإيدك',
+					'desc'  => 'هنبدأ من المصفوفة ومشاكلها، وبعدين نبني linked list من الصفر بـ struct و pointers — insert و delete و display خطوة بخطوة.',
+				),
+				array(
+					'kind'  => 'oop',
+					'tag'   => 'هياكل',
+					'title' => 'Stack + Queue',
+					'desc'  => 'هنعمل الـ stack والـ queue بطريقتين — بالمصفوفة وبالـ linked list — مع push و pop و enqueue و dequeue و peek كاملين.',
+				),
+				array(
+					'kind'  => 'backend',
+					'tag'   => 'جاهزية',
+					'title' => 'مستعد للمستوى التاني',
+					'desc'  => 'لما تخلص، هتكون فاهم الـ pointers والـ double linked list كويس — وجاهز تدخل على الـ trees والـ BST في المستوى التاني.',
+				),
+			),
+			'faq_items' => array(
+				array(
+					'q' => 'هل الكورس ده مناسب لو عمري ما اتعاملت مع هياكل البيانات قبل كده؟',
+					'a' => 'أيوه. بنبدأ من "ما هي هياكل البيانات" و"ليه محتاجين المصفوفة" ونمشي بالتدريج لحد الـ double linked list. مش محتاج أي خلفية في الموضوع.',
+				),
+				array(
+					'q' => 'محتاج أعرف إيه قبل ما أبدأ الكورس؟',
+					'a' => 'محتاج بس أساسيات البرمجة — المتغيرات، الشروط، اللوبات، والدوال. الكورس بيشرح المصفوفات والمؤشرات (pointers) من الصفر جواه.',
+				),
+				array(
+					'q' => 'إيه اللي هتغطيه بالظبط في المستوى الأول؟',
+					'a' => 'المصفوفات والمؤشرات، الـ linked list (single و double) بكل عملياتها، الـ stack بالمصفوفة وبالـ linked list، والـ queue بالمصفوفة وبالـ linked list — 76 درس تطبيقي.',
+				),
+				array(
+					'q' => 'الكورس نظري ولا فيه كود فعلي؟',
+					'a' => 'كل عملية بنكتبها كود كامل قدامك ونتتبعها خطوة بخطوة — insert node، delete node، display، push، pop، enqueue، dequeue. مش شرح نظري على السبورة.',
+				),
+				array(
+					'q' => 'لو مش فهمت درس، فيه دعم؟',
+					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
+				),
+				array(
+					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
+					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
+				),
+			),
+		),
+
+		// ───────────────────────────────────────────────
+		// DATA STRUCTURE — المستوى الثاني (circular, stack apps, trees, BST)
+		// ───────────────────────────────────────────────
+		'data_structure_level2' => array(
+			'build_items' => array(
+				array(
+					'kind'  => 'code',
+					'code'  => '<span class="lvc-kw">if</span> (value &lt; root-&gt;data)\n    root-&gt;left  = insert(root-&gt;left, value);\n<span class="lvc-kw">else</span>\n    root-&gt;right = insert(root-&gt;right, value);\n\n<span class="lvc-cmt">// Binary Search Tree</span>',
+					'tag'   => 'تطبيقي',
+					'title' => 'Binary Search Tree كامل',
+					'desc'  => 'هنبني BST من الصفر — create node، insert، search، find min و max، وdelete بكل حالاتها.',
+				),
+				array(
+					'kind'  => 'oop',
+					'tag'   => 'أشجار',
+					'title' => 'الشجر والـ Traversal',
+					'desc'  => 'مصطلحات الشجرة، أنواعها (full، perfect، complete)، والـ traversals الثلاثة — inorder و preorder و postorder بالشرح والكود.',
+				),
+				array(
+					'kind'  => 'backend',
+					'tag'   => 'مسائل',
+					'title' => 'مسائل الـ interviews',
+					'desc'  => 'تطبيقات الـ stack الحقيقية — balanced parentheses، تحويل infix لـ postfix، وحساب الـ postfix expression خطوة بخطوة.',
+				),
+			),
+			'faq_items' => array(
+				array(
+					'q' => 'لازم أخلص المستوى الأول قبل ما أبدأ ده؟',
+					'a' => 'الأفضل أيوه. المستوى ده بيبني على الـ linked list والـ stack والـ queue. فيه مراجعة سريعة عليهم في أول الكورس، بس لو مش عارفهم خالص ابدأ بالمستوى الأول.',
+				),
+				array(
+					'q' => 'إيه الفرق بين المستوى الأول والتاني؟',
+					'a' => 'الأول بيغطي الأساسيات: المصفوفات، الـ linked list، الـ stack، والـ queue. التاني بيدخل على الـ circular linked list والـ circular queue، تطبيقات الـ stack، والأشجار بأنواعها والـ Binary Search Tree.',
+				),
+				array(
+					'q' => 'إيه اللي هتغطيه بالظبط في المستوى التاني؟',
+					'a' => 'circular linked list و circular queue، تطبيقات الـ stack (balanced parentheses و infix/postfix/prefix)، مصطلحات الشجر وأنواعه، الـ traversals، والـ Binary Search Tree كامل — 87 درس.',
+				),
+				array(
+					'q' => 'الكورس ده هيفيدني في الـ interviews؟',
+					'a' => 'أيوه. أسئلة الـ trees والـ BST والـ traversals وتحويل الـ expressions من أكتر الأسئلة اللي بتتسأل في interviews الشركات — والكورس بيغطيها بالكود مش بالنظري.',
+				),
+				array(
+					'q' => 'فيه تمارين وواجبات؟',
+					'a' => 'أيوه. فيه أسئلة على أنواع الشجر، اختبار على المصطلحات، حل واجب، وأمثلة متعددة على infix to postfix — كل جزء بينتهي بتطبيق.',
+				),
+				array(
+					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
+					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
+				),
+			),
+		),
+
 	);
 
 	// Fallback: use the Dart content for any course we haven't mapped yet.
