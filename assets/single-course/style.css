@@ -5349,14 +5349,19 @@ html {
 .build-mockup--code .build-mockup-bar span:first-child { background: #ff5f57; }
 .build-mockup--code .build-mockup-bar span:nth-child(2) { background: #febc2e; }
 .build-mockup--code .build-mockup-bar span:nth-child(3) { background: #28c840; }
+/* The parent theme (edublink/assets/css/main.css) styles every <pre> with
+   `color: var(--edublink-color-body) !important` (#0A0A0A) plus !important on
+   white-space, font-size, padding and margin. That paints this snippet black on
+   the #0d1117 box — invisible — and re-wraps it. !important is the only way to
+   beat !important, so it is required here, not a shortcut. */
 .build-mockup--code .build-mockup-body {
-  margin: 0;
-  padding: 14px 16px;
-  color: #ffffff;     /* ALL text white — was hard to read with mixed colors */
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  color: #ffffff !important;     /* ALL text white — was hard to read with mixed colors */
   line-height: 1.6;
-  font-size: 12px;
+  font-size: 12px !important;
   font-family: 'JetBrains Mono', 'IBM Plex Sans Arabic', monospace;
-  white-space: pre;
+  white-space: pre !important;
   overflow-x: auto;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
