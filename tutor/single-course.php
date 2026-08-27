@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Template for displaying single course - Custom HTML Structure
  * 
@@ -101,7 +101,7 @@ $context['quiz_count'] = tutor_utils()->get_quiz_count_by_course( $course_id );
 $context['assignment_count'] = tutor_utils()->get_assignment_count_by_course( $course_id );
 $context['course_level'] = get_tutor_course_level( $course_id );
 if ( empty( $context['course_level'] ) ) {
-	$context['course_level'] = 'Ù…Ø¨ØªØ¯Ø¦';
+	$context['course_level'] = 'مبتدئ';
 }
 
 // Get instructors
@@ -173,7 +173,7 @@ if ( $topics && $topics->have_posts() ) {
 				// Check if lesson is a free preview
 				$is_preview = get_post_meta( $content_id, '_is_preview', true );
 				
-				// Lesson permalink â€” used by the twig for the enrolled "go to lesson" link
+				// Lesson permalink — used by the twig for the enrolled "go to lesson" link
 				// and the non-enrolled preview link. Non-enrolled LOCKED rows never render
 				// it (they link to #course-buy), so no paid-content URL is exposed.
 				$content_url = get_permalink( $content_id );
@@ -203,7 +203,7 @@ if ( $topics && $topics->have_posts() ) {
 	wp_reset_postdata();
 }
 
-// Get course reviews (include current user's review even if pending, so they see "Ù‚ÙŠØ¯ Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©")
+// Get course reviews (include current user's review even if pending, so they see "قيد المراجعة")
 $current_user_id_for_reviews = get_current_user_id();
 $course_reviews = tutor_utils()->get_course_reviews( $course_id, 0, 10, false, array( 'approved' ), $current_user_id_for_reviews );
 $context['course_reviews'] = array();
@@ -264,7 +264,7 @@ $context['course_benefits'] = get_post_meta( $course_id, '_tutor_course_benefits
 }
 $context['course_requirements'] = get_post_meta( $course_id, '_tutor_course_requirements', true );
 
-// Target audience + material includes: same normalization as benefits above â€”
+// Target audience + material includes: same normalization as benefits above —
 // Tutor may store these as arrays, and the twig splits them on newlines.
 if ( function_exists( 'tutor_course_target_audience' ) ) {
 	$audience_array = tutor_course_target_audience( $course_id );
@@ -410,10 +410,10 @@ $context['preview_count'] = $preview_count;
 $context['first_preview_url'] = $first_preview_url;
 
 /* ==========================================================================
-   COURSE-SPECIFIC EXTRAS â€” "What you'll build" + FAQ per course
+   COURSE-SPECIFIC EXTRAS — "What you'll build" + FAQ per course
    --------------------------------------------------------------------------
    The "what-you-build" and "course-faq" sections in single-course.twig are
-   driven from here. Each course has its own copy (Java â‰  Dart â‰  Python).
+   driven from here. Each course has its own copy (Java ≠ Dart ≠ Python).
    The map is keyed by the course SLUG (post_name). Unknown courses fall
    back to a sensible default so a new course never shows wrong content.
    ========================================================================== */
@@ -430,105 +430,105 @@ $course_slug = $course ? $course->post_name : '';
 function learnsimply_get_course_extras( $slug ) {
 	$map = array(
 
-		// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-		// DART â€” Flutter / Mobile focus
-		// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+		// ───────────────────────────────────────────────
+		// DART — Flutter / Mobile focus
+		// ───────────────────────────────────────────────
 		'dart' => array(
 			'build_items' => array(
 				array(
 					'kind'  => 'code',
 					'code'  => '<span class="lvc-kw">void</span> main() {\n  print(<span class="lvc-str">\'Hello, Dart!\'</span>);\n  <span class="lvc-kw">for</span> (<span class="lvc-kw">var</span> i = <span class="lvc-num">0</span>; i &lt; <span class="lvc-num">5</span>; i++) {\n    print(i);\n  }\n}',
-					'tag'   => 'ØªØ·Ø¨ÙŠÙ‚ÙŠ',
-					'title' => 'Ø£ÙˆÙ„ Dart app Ù„ÙŠÙƒ',
-					'desc'  => 'Ù‡Ù†ÙƒØªØ¨ Ø£ÙˆÙ„ Ø¨Ø±Ù†Ø§Ù…Ø¬ Ù„ÙŠÙƒ Ù…Ù† Ø§Ù„ØµÙØ± â€” variables, loops, functions.',
+					'tag'   => 'تطبيقي',
+					'title' => 'أول Dart app ليك',
+					'desc'  => 'هنكتب أول برنامج ليك من الصفر — variables, loops, functions.',
 				),
 				array(
 					'kind'  => 'oop',
 					'tag'   => 'OOP',
 					'title' => 'Class + Inheritance',
-					'desc'  => 'Ù‡Ù†Ø¨Ù†ÙŠ class ÙƒØ§Ù…Ù„ Ø¨Ù€ inheritance Ùˆ polymorphism â€” ÙˆÙ‡Ù†ÙÙ‡Ù… Ù„ÙŠÙ‡ OOP Ù…Ù‡Ù… Ù‚Ø¨Ù„ Ù…Ø§ ØªØ¯Ø®Ù„ Flutter.',
+					'desc'  => 'هنبني class كامل بـ inheritance و polymorphism — وهنفهم ليه OOP مهم قبل ما تدخل Flutter.',
 				),
 				array(
 					'kind'  => 'flutter',
-					'tag'   => 'Ø¬Ø§Ù‡Ø²ÙŠØ©',
-					'title' => 'Ù…Ø³ØªØ¹Ø¯ Ù„Ù€ Flutter',
-					'desc'  => 'Ù„Ù…Ø§ ØªØ®Ù„Øµ Ø§Ù„ÙƒÙˆØ±Ø³ØŒ Ù‡ØªÙƒÙˆÙ† Ø¬Ø§Ù‡Ø² ØªØ¨Ø¯Ø£ Ø±Ø­Ù„ØªÙƒ ÙÙŠ Flutter â€” ÙˆØ¯ÙŠ Ø§Ù„Ø®Ø·ÙˆØ© Ø§Ù„Ø·Ø¨ÙŠØ¹ÙŠØ© Ø§Ù„Ø¬Ø§ÙŠØ©.',
+					'tag'   => 'جاهزية',
+					'title' => 'مستعد لـ Flutter',
+					'desc'  => 'لما تخلص الكورس، هتكون جاهز تبدأ رحلتك في Flutter — ودي الخطوة الطبيعية الجاية.',
 				),
 			),
 			'faq_items' => array(
 				array(
-					'q' => 'Ù‡Ù„ Ø§Ù„ÙƒÙˆØ±Ø³ Ø¯Ù‡ Ù…Ù†Ø§Ø³Ø¨ Ù„Ùˆ Ø¹Ù…Ø±ÙŠ Ù…Ø§ Ø¨Ø±Ù…Ø¬Øª Ù‚Ø¨Ù„ ÙƒØ¯Ù‡ØŸ',
-					'a' => 'Ø£ÙŠÙˆÙ‡ØŒ Ø§Ù„ÙƒÙˆØ±Ø³ Ù…Ø¹Ù…ÙˆÙ„ Ù„Ù„Ù…Ø¨ØªØ¯Ø¦ÙŠÙ† ØªÙ…Ø§Ù…Ø§Ù‹. Ø¨Ù†Ø¨Ø¯Ø£ Ù…Ù† "Ø¥ÙŠÙ‡ Ù‡Ùˆ Ø§Ù„Ø¨Ø±Ù…Ø¬Ø©" ÙˆÙ†ÙˆØµÙ„ Ù„Ø­Ø¯ Ø¥Ù†Ùƒ ØªØ¨Ù†ÙŠ ØªØ·Ø¨ÙŠÙ‚Ø§Øª Dart ÙƒØ§Ù…Ù„Ø©. Ù…Ø´ Ù…Ø­ØªØ§Ø¬ Ø£ÙŠ Ø®Ù„ÙÙŠØ© Ø¨Ø±Ù…Ø¬ÙŠØ©.',
+					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
+					'a' => 'أيوه، الكورس معمول للمبتدئين تماماً. بنبدأ من "إيه هو البرمجة" ونوصل لحد إنك تبني تطبيقات Dart كاملة. مش محتاج أي خلفية برمجية.',
 				),
 				array(
-					'q' => 'Ø¥ÙŠÙ‡ Ø§Ù„ÙØ±Ù‚ Ø¨ÙŠÙ† Ø§Ù„ÙƒÙˆØ±Ø³ Ø¯Ù‡ ÙˆÙƒÙˆØ±Ø³Ø§Øª Java Ø§Ù„Ù„ÙŠ Ø¹Ù†Ø¯ÙƒÙ…ØŸ',
-					'a' => 'Java Ù„Ù„ØªØ·Ø¨ÙŠÙ‚Ø§Øª Ø§Ù„Ø¹Ø§Ù…Ø© (Backend, Android Enterprise, Big Data). Dart/Flutter Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ ÙˆØ§Ù„ÙˆÙŠØ¨ Ø§Ù„Ø­Ø¯ÙŠØ«. Ù„Ùˆ Ù‡Ø¯ÙÙƒ Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ØŒ Ø§Ø¨Ø¯Ø£ Ø¨Ù€ Dart. Ù„Ùˆ Ù‡Ø¯ÙÙƒ BackendØŒ Ø§Ø¨Ø¯Ø£ Ø¨Ù€ Java. Ø§Ù„Ø§ØªÙ†ÙŠÙ† ÙÙŠ Ø§Ù„Ø¨Ø§Ù‚Ø© Ù„Ùˆ Ø­Ø§Ø¨Ø¨ ØªØ¬Ø±Ø¨ Ø§Ù„Ø§ØªÙ†ÙŠÙ†.',
+					'q' => 'إيه الفرق بين الكورس ده وكورسات Java اللي عندكم؟',
+					'a' => 'Java للتطبيقات العامة (Backend, Android Enterprise, Big Data). Dart/Flutter للموبايل والويب الحديث. لو هدفك الموبايل، ابدأ بـ Dart. لو هدفك Backend، ابدأ بـ Java. الاتنين في الباقة لو حابب تجرب الاتنين.',
 				),
 				array(
-					'q' => 'Ù‡Ù„ Ø§Ù„ÙƒÙˆØ±Ø³ Ø¨ÙŠØªØ¬Ø¯Ø¯ØŸ ÙˆÙ„Ùˆ Ø§Ø´ØªØ±ÙŠØªØŒ Ù‡Ø§Ø®Ø¯ Ø§Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª Ø¨Ø¨Ù„Ø§Ø´ØŸ',
-					'a' => 'Ø£ÙŠÙˆÙ‡ØŒ Ø§Ù„ÙƒÙˆØ±Ø³ Ø¨ÙŠØªØ­Ø¯Ø« Ø¨Ø´ÙƒÙ„ Ø¯ÙˆØ±ÙŠ Ù…Ø¹ ÙƒÙ„ Ø¥ØµØ¯Ø§Ø± Ø¬Ø¯ÙŠØ¯ Ù…Ù† Dart. Ø£ÙŠ ØªØ­Ø¯ÙŠØ« Ø¨Ù†Ø¶ÙŠÙÙ‡ Ø¨ÙŠÙƒÙˆÙ† Ù…ØªØ§Ø­ Ù„ÙƒÙ„ Ø§Ù„Ù„ÙŠ Ø§Ø´ØªØ±ÙˆØ§ Ø§Ù„ÙƒÙˆØ±Ø³ â€” Ù…Ø¯Ù‰ Ø§Ù„Ø­ÙŠØ§Ø©ØŒ Ù…Ù† ØºÙŠØ± Ø£ÙŠ Ù…ØµØ§Ø±ÙŠÙ Ø¥Ø¶Ø§ÙÙŠØ©.',
+					'q' => 'هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟',
+					'a' => 'أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Dart. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة، من غير أي مصاريف إضافية.',
 				),
 				array(
-					'q' => 'Ù„Ùˆ Ù…Ø´ ÙÙ‡Ù…Øª Ø¯Ø±Ø³ØŒ ÙÙŠÙ‡ Ø¯Ø¹Ù…ØŸ',
-					'a' => 'Ø£ÙƒÙŠØ¯. Ø£ÙŠ Ø³Ø¤Ø§Ù„ ÙŠØ¬ÙŠÙ„ÙƒØŒ ØªÙ‚Ø¯Ø± ØªØ¨Ø¹Øª Ù…Ù† Ø®Ù„Ø§Ù„ Ø¬Ø±ÙˆØ¨ Ø§Ù„Ù€ Telegram Ø§Ù„Ù…Ø®ØµØµ Ù„Ù„Ø·Ù„Ø§Ø¨ â€” ÙˆØºØ§Ù„Ø¨Ø§Ù‹ Ø¨ÙŠØ±Ø¯ Ø¹Ù„ÙŠÙƒ Ø§Ù„Ù…Ø¯Ø±Ø¨ Ù†ÙØ³Ù‡ (Ø£Ø­Ù…Ø¯) Ø£Ùˆ Ø­Ø¯ Ù…Ù† Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ÙŠÙ† ÙÙŠ Ø£Ù‚Ù„ Ù…Ù† 24 Ø³Ø§Ø¹Ø©.',
+					'q' => 'لو مش فهمت درس، فيه دعم؟',
+					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
 				),
 				array(
-					'q' => 'Ø¶Ù…Ø§Ù† Ø§Ø³ØªØ±Ø¯Ø§Ø¯ Ø§Ù„ÙÙ„ÙˆØ³ Ø´ØºØ§Ù„ Ø¥Ø²Ø§ÙŠØŸ',
-					'a' => 'Ù„Ùˆ Ø®Ù„Ø§Ù„ Ø£ÙˆÙ„ 7 Ø£ÙŠØ§Ù… Ù…Ù† Ø§Ù„Ø§Ø´ØªØ±Ø§Ùƒ Ø­Ø³ÙŠØª Ø¥Ù† Ø§Ù„ÙƒÙˆØ±Ø³ Ù…Ø´ Ù…Ù†Ø§Ø³Ø¨ÙƒØŒ Ø§Ø¨Ø¹ØªÙ„Ù†Ø§ ÙˆÙ‡Ù†Ø±Ø¬Ø¹Ù„Ùƒ ÙÙ„ÙˆØ³Ùƒ Ø¨Ø§Ù„ÙƒØ§Ù…Ù„ â€” Ù…Ù† ØºÙŠØ± Ø£ÙŠ Ø£Ø³Ø¦Ù„Ø©.',
+					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
+					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
 				),
 			),
 		),
 
-		// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-		// JAVA â€” Backend / general-purpose focus
-		// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+		// ───────────────────────────────────────────────
+		// JAVA — Backend / general-purpose focus
+		// ───────────────────────────────────────────────
 		'java-course-level1' => array(
 			'build_items' => array(
 				array(
 					'kind'  => 'code',
 					'code'  => '<span class="lvc-kw">public class</span> Main {\n  <span class="lvc-kw">public static void</span> main(String[] args) {\n    System.out.<span class="lvc-kw">println</span>(<span class="lvc-str">"Hello, Java!"</span>);\n    <span class="lvc-kw">for</span> (<span class="lvc-kw">int</span> i = <span class="lvc-num">0</span>; i &lt; <span class="lvc-num">5</span>; i++) {\n      System.out.<span class="lvc-kw">println</span>(i);\n    }\n  }\n}',
-					'tag'   => 'ØªØ·Ø¨ÙŠÙ‚ÙŠ',
-					'title' => 'Ø£ÙˆÙ„ Java app Ù„ÙŠÙƒ',
-					'desc'  => 'Ù‡Ù†ÙƒØªØ¨ Ø£ÙˆÙ„ Java program Ù…Ù† Ø§Ù„ØµÙØ± â€” variables, loops, methods, Ø§Ù„Ù€ main class.',
+					'tag'   => 'تطبيقي',
+					'title' => 'أول Java app ليك',
+					'desc'  => 'هنكتب أول Java program من الصفر — variables, loops, methods, الـ main class.',
 				),
 				array(
 					'kind'  => 'oop',
 					'tag'   => 'OOP',
 					'title' => 'Class + Inheritance',
-					'desc'  => 'Java = Ù„ØºØ© OOP Ù…Ù† Ø§Ù„Ø·Ø±Ø§Ø² Ø§Ù„Ø£ÙˆÙ„. Ù‡Ù†ØºØ·ÙŠ encapsulation, inheritance, polymorphism, interfaces Ø¨Ø§Ù„ØªÙØµÙŠÙ„.',
+					'desc'  => 'Java = لغة OOP من الطراز الأول. هنغطي encapsulation, inheritance, polymorphism, interfaces بالتفصيل.',
 				),
 				array(
 					'kind'  => 'backend',
-					'tag'   => 'Ø¬Ø§Ù‡Ø²ÙŠØ©',
-					'title' => 'Ù…Ø³ØªØ¹Ø¯ Ù„Ù€ Backend',
-					'desc'  => 'Ù„Ù…Ø§ ØªØ®Ù„Øµ Ø§Ù„ÙƒÙˆØ±Ø³ØŒ Ù‡ØªÙƒÙˆÙ† Ø¬Ø§Ù‡Ø² ØªØªØ¹Ù„Ù… Spring Boot Ø£Ùˆ Ø£ÙŠ framework ØªØ§Ù†ÙŠ.',
+					'tag'   => 'جاهزية',
+					'title' => 'مستعد لـ Backend',
+					'desc'  => 'لما تخلص الكورس، هتكون جاهز تتعلم Spring Boot أو أي framework تاني.',
 				),
 			),
 			'faq_items' => array(
 				array(
-					'q' => 'Ù‡Ù„ Ø§Ù„ÙƒÙˆØ±Ø³ Ø¯Ù‡ Ù…Ù†Ø§Ø³Ø¨ Ù„Ùˆ Ø¹Ù…Ø±ÙŠ Ù…Ø§ Ø¨Ø±Ù…Ø¬Øª Ù‚Ø¨Ù„ ÙƒØ¯Ù‡ØŸ',
-					'a' => 'Ø£ÙŠÙˆÙ‡ØŒ Ø§Ù„ÙƒÙˆØ±Ø³ Ù…Ø¹Ù…ÙˆÙ„ Ù„Ù„Ù…Ø¨ØªØ¯Ø¦ÙŠÙ† ØªÙ…Ø§Ù…Ø§Ù‹. Java Ù„ØºØ© Ù…Ù…ØªØ§Ø²Ø© ÙƒØ£ÙˆÙ„ Ù„ØºØ© Ù„Ø£Ù†Ù‡Ø§ Ø¨ØªØ¹Ù„Ù…Ùƒ Ø§Ù„Ù€ fundamentals Ø¨Ø´ÙƒÙ„ ØµØ§Ø±Ù….',
+					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
+					'a' => 'أيوه، الكورس معمول للمبتدئين تماماً. Java لغة ممتازة كأول لغة لأنها بتعلمك الـ fundamentals بشكل صارم.',
 				),
 				array(
-					'q' => 'Ø¥ÙŠÙ‡ Ø§Ù„Ù„ÙŠ Ø£Ù‚Ø¯Ø± Ø£Ø¹Ù…Ù„Ù‡ Ø¨Ø¹Ø¯ Ù…Ø§ Ø£Ø®Ù„Øµ Ø§Ù„ÙƒÙˆØ±Ø³ØŸ',
-					'a' => 'ØªÙ‚Ø¯Ø± ØªØªÙ‚Ø¯Ù… Ù„Ø´ØºÙ„ Junior Java DeveloperØŒ ØªØªØ¹Ù„Ù… Spring Boot Ù„Ù„Ù€ BackendØŒ Ø£Ùˆ ØªØ¯Ø®Ù„ Ù…Ø¬Ø§Ù„ Ø§Ù„Ù€ Android Ø¨Ù€ Java.',
+					'q' => 'إيه اللي أقدر أعمله بعد ما أخلص الكورس؟',
+					'a' => 'تقدر تتقدم لشغل Junior Java Developer، تتعلم Spring Boot للـ Backend، أو تدخل مجال الـ Android بـ Java.',
 				),
 				array(
-					'q' => 'Ù‡Ù„ Ø§Ù„ÙƒÙˆØ±Ø³ Ø¨ÙŠØªØ¬Ø¯Ø¯ØŸ ÙˆÙ„Ùˆ Ø§Ø´ØªØ±ÙŠØªØŒ Ù‡Ø§Ø®Ø¯ Ø§Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª Ø¨Ø¨Ù„Ø§Ø´ØŸ',
-					'a' => 'Ø£ÙŠÙˆÙ‡ØŒ Ø§Ù„ÙƒÙˆØ±Ø³ Ø¨ÙŠØªØ­Ø¯Ø« Ø¨Ø´ÙƒÙ„ Ø¯ÙˆØ±ÙŠ Ù…Ø¹ ÙƒÙ„ Ø¥ØµØ¯Ø§Ø± Ø¬Ø¯ÙŠØ¯ Ù…Ù† Java. Ø£ÙŠ ØªØ­Ø¯ÙŠØ« Ø¨Ù†Ø¶ÙŠÙÙ‡ Ø¨ÙŠÙƒÙˆÙ† Ù…ØªØ§Ø­ Ù„ÙƒÙ„ Ø§Ù„Ù„ÙŠ Ø§Ø´ØªØ±ÙˆØ§ Ø§Ù„ÙƒÙˆØ±Ø³ â€” Ù…Ø¯Ù‰ Ø§Ù„Ø­ÙŠØ§Ø©.',
+					'q' => 'هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟',
+					'a' => 'أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Java. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة.',
 				),
 				array(
-					'q' => 'Ù„Ùˆ Ù…Ø´ ÙÙ‡Ù…Øª Ø¯Ø±Ø³ØŒ ÙÙŠÙ‡ Ø¯Ø¹Ù…ØŸ',
-					'a' => 'Ø£ÙƒÙŠØ¯. Ø£ÙŠ Ø³Ø¤Ø§Ù„ ÙŠØ¬ÙŠÙ„ÙƒØŒ ØªÙ‚Ø¯Ø± ØªØ¨Ø¹Øª Ù…Ù† Ø®Ù„Ø§Ù„ Ø¬Ø±ÙˆØ¨ Ø§Ù„Ù€ Telegram Ø§Ù„Ù…Ø®ØµØµ Ù„Ù„Ø·Ù„Ø§Ø¨ â€” ÙˆØºØ§Ù„Ø¨Ø§Ù‹ Ø¨ÙŠØ±Ø¯ Ø¹Ù„ÙŠÙƒ Ø§Ù„Ù…Ø¯Ø±Ø¨ Ù†ÙØ³Ù‡ (Ø£Ø­Ù…Ø¯) Ø£Ùˆ Ø­Ø¯ Ù…Ù† Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ÙŠÙ† ÙÙŠ Ø£Ù‚Ù„ Ù…Ù† 24 Ø³Ø§Ø¹Ø©.',
+					'q' => 'لو مش فهمت درس، فيه دعم؟',
+					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
 				),
 				array(
-					'q' => 'Ø¶Ù…Ø§Ù† Ø§Ø³ØªØ±Ø¯Ø§Ø¯ Ø§Ù„ÙÙ„ÙˆØ³ Ø´ØºØ§Ù„ Ø¥Ø²Ø§ÙŠØŸ',
-					'a' => 'Ù„Ùˆ Ø®Ù„Ø§Ù„ Ø£ÙˆÙ„ 7 Ø£ÙŠØ§Ù… Ù…Ù† Ø§Ù„Ø§Ø´ØªØ±Ø§Ùƒ Ø­Ø³ÙŠØª Ø¥Ù† Ø§Ù„ÙƒÙˆØ±Ø³ Ù…Ø´ Ù…Ù†Ø§Ø³Ø¨ÙƒØŒ Ø§Ø¨Ø¹ØªÙ„Ù†Ø§ ÙˆÙ‡Ù†Ø±Ø¬Ø¹Ù„Ùƒ ÙÙ„ÙˆØ³Ùƒ Ø¨Ø§Ù„ÙƒØ§Ù…Ù„ â€” Ù…Ù† ØºÙŠØ± Ø£ÙŠ Ø£Ø³Ø¦Ù„Ø©.',
+					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
+					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
 				),
 			),
 		),
 
-		// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+		// ───────────────────────────────────────────────
 
 		// ───────────────────────────────────────────────
 		// JAVA OOP — Object-Oriented Programming focus
@@ -581,50 +581,50 @@ function learnsimply_get_course_extras( $slug ) {
 				),
 			),
 		),
-		// PYTHON PROJECTS â€” Free / project-focused
-		// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-		'Ù…Ø´Ø§Ø±ÙŠØ¹-Ø¨Ø§ÙŠØ«ÙˆÙ†-Ù„Ù„Ù…Ø¨ØªØ¯Ø¦ÙŠÙ†' => array(
+		// PYTHON PROJECTS — Free / project-focused
+		// ───────────────────────────────────────────────
+		'مشاريع-بايثون-للمبتدئين' => array(
 			'build_items' => array(
 				array(
 					'kind'  => 'code',
 					'code'  => '<span class="lvc-kw">def</span> greet(name):\n    <span class="lvc-kw">return</span> <span class="lvc-str">f\'Hello, {name}!\'</span>\n\n<span class="lvc-kw">for</span> i <span class="lvc-kw">in</span> <span class="lvc-kw">range</span>(<span class="lvc-num">5</span>):\n    print(greet(<span class="lvc-str">f\'World {i}\'</span>))',
-					'tag'   => 'ØªØ·Ø¨ÙŠÙ‚ÙŠ',
-					'title' => 'Ø£ÙˆÙ„ Python script',
-					'desc'  => 'Ù‡Ù†ÙƒØªØ¨ Ø£ÙˆÙ„ Python script Ù…Ù† Ø§Ù„ØµÙØ± â€” functions, loops, string formatting.',
+					'tag'   => 'تطبيقي',
+					'title' => 'أول Python script',
+					'desc'  => 'هنكتب أول Python script من الصفر — functions, loops, string formatting.',
 				),
 				array(
 					'kind'  => 'python',
-					'tag'   => 'Ù…Ø´Ø§Ø±ÙŠØ¹',
-					'title' => 'Ù…Ø´Ø§Ø±ÙŠØ¹ Ø­Ù‚ÙŠÙ‚ÙŠØ©',
-					'desc'  => 'Ù…Ø´Ø§Ø±ÙŠØ¹ ØªØ·Ø¨ÙŠÙ‚ÙŠØ© Ø¨ØªØ­Ø§ÙƒÙŠ Ù…Ø´Ø§ÙƒÙ„ Ø­Ù‚ÙŠÙ‚ÙŠØ© â€” to-do list, calculator, simple game.',
+					'tag'   => 'مشاريع',
+					'title' => 'مشاريع حقيقية',
+					'desc'  => 'مشاريع تطبيقية بتحاكي مشاكل حقيقية — to-do list, calculator, simple game.',
 				),
 				array(
 					'kind'  => 'backend',
-					'tag'   => 'Ø¬Ø§Ù‡Ø²ÙŠØ©',
-					'title' => 'Ù…Ø³ØªØ¹Ø¯ Ù„Ù€ Flask / Django',
-					'desc'  => 'Ù„Ù…Ø§ ØªØ®Ù„ØµØŒ Ù‡ØªÙƒÙˆÙ† Ø¬Ø§Ù‡Ø² ØªØªØ¹Ù„Ù… Ø£ÙŠ web framework Ø£Ùˆ Ø­ØªÙ‰ ØªØ¯Ø®Ù„ Ù…Ø¬Ø§Ù„ Ø§Ù„Ù€ data science.',
+					'tag'   => 'جاهزية',
+					'title' => 'مستعد لـ Flask / Django',
+					'desc'  => 'لما تخلص، هتكون جاهز تتعلم أي web framework أو حتى تدخل مجال الـ data science.',
 				),
 			),
 			'faq_items' => array(
 				array(
-					'q' => 'Ù‡Ù„ Ø§Ù„ÙƒÙˆØ±Ø³ Ø¯Ù‡ Ù…Ù†Ø§Ø³Ø¨ Ù„Ùˆ Ø¹Ù…Ø±ÙŠ Ù…Ø§ Ø¨Ø±Ù…Ø¬Øª Ù‚Ø¨Ù„ ÙƒØ¯Ù‡ØŸ',
-					'a' => 'Ø£ÙŠÙˆÙ‡! Python Ù‡ÙŠ Ø£Ø³Ù‡Ù„ Ù„ØºØ© ØªØ¨Ø¯Ø£ Ø¨ÙŠÙ‡Ø§. Ø§Ù„ÙƒÙˆØ±Ø³ Ù…Ø¹Ù…ÙˆÙ„ Ø®ØµÙŠØµØ§Ù‹ Ù„Ù„Ù…Ø¨ØªØ¯Ø¦ÙŠÙ† â€” Ù‡Ù†Ø¨Ø¯Ø£ Ù…Ù† Ø§Ù„ØµÙØ±.',
+					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
+					'a' => 'أيوه! Python هي أسهل لغة تبدأ بيها. الكورس معمول خصيصاً للمبتدئين — هنبدأ من الصفر.',
 				),
 				array(
-					'q' => 'Ø¥ÙŠÙ‡ Ø§Ù„ÙØ±Ù‚ Ø¨ÙŠÙ† Ø§Ù„ÙƒÙˆØ±Ø³ Ø¯Ù‡ ÙˆØ¨Ø§Ù‚ÙŠ ÙƒÙˆØ±Ø³Ø§Øª Python Ø¹Ù„Ù‰ Ø§Ù„ÙŠÙˆØªÙŠÙˆØ¨ØŸ',
-					'a' => 'Ø§Ù„ÙØ±Ù‚ Ø¥Ù† Ø§Ù„ÙƒÙˆØ±Ø³ Ø¯Ù‡ Ù…Ø¨Ù†ÙŠ Ø¹Ù„Ù‰ Ù…Ø´Ø§Ø±ÙŠØ¹ ØªØ·Ø¨ÙŠÙ‚ÙŠØ©. Ù…Ø´ Ø¨Ø³ syntax â€” ÙƒÙ„ Ø¯Ø±Ø³ Ø¨ÙŠÙ†ØªÙ‡ÙŠ Ø¨Ù…Ø´Ø±ÙˆØ¹ ØµØºÙŠØ± ØªØ¶ÙŠÙÙ‡ Ù„Ù„Ù€ Portfolio Ø¨ØªØ§Ø¹Ùƒ.',
+					'q' => 'إيه الفرق بين الكورس ده وباقي كورسات Python على اليوتيوب؟',
+					'a' => 'الفرق إن الكورس ده مبني على مشاريع تطبيقية. مش بس syntax — كل درس بينتهي بمشروع صغير تضيفه للـ Portfolio بتاعك.',
 				),
 				array(
-					'q' => 'Ù‡Ù„ Ø§Ù„ÙƒÙˆØ±Ø³ Ù…Ø¬Ø§Ù†ÙŠ ÙØ¹Ù„Ø§Ù‹ØŸ',
-					'a' => 'Ø£ÙŠÙˆÙ‡ØŒ Ø§Ù„ÙƒÙˆØ±Ø³ Ù…Ø¬Ø§Ù†ÙŠ ØªÙ…Ø§Ù…Ø§Ù‹. Ù…Ù† ØºÙŠØ± Ø§Ø´ØªØ±Ø§ÙƒØŒ Ù…Ù† ØºÙŠØ± Ø¨Ø·Ø§Ù‚Ø© Ø§Ø¦ØªÙ…Ø§Ù†. ÙƒÙ„ Ø§Ù„Ù„ÙŠ Ù…Ø­ØªØ§Ø¬Ù‡ Ø¥Ù†Ùƒ ØªØ³Ø¬Ù„ ÙÙŠ Ø§Ù„Ù…ÙˆÙ‚Ø¹.',
+					'q' => 'هل الكورس مجاني فعلاً؟',
+					'a' => 'أيوه، الكورس مجاني تماماً. من غير اشتراك، من غير بطاقة ائتمان. كل اللي محتاجه إنك تسجل في الموقع.',
 				),
 				array(
-					'q' => 'Ù„Ùˆ Ù…Ø´ ÙÙ‡Ù…Øª Ø¯Ø±Ø³ØŒ ÙÙŠÙ‡ Ø¯Ø¹Ù…ØŸ',
-					'a' => 'Ø£ÙƒÙŠØ¯. Ø£ÙŠ Ø³Ø¤Ø§Ù„ ÙŠØ¬ÙŠÙ„ÙƒØŒ ØªÙ‚Ø¯Ø± ØªØ¨Ø¹Øª Ù…Ù† Ø®Ù„Ø§Ù„ Ø¬Ø±ÙˆØ¨ Ø§Ù„Ù€ Telegram Ø§Ù„Ù…Ø®ØµØµ Ù„Ù„Ø·Ù„Ø§Ø¨.',
+					'q' => 'لو مش فهمت درس، فيه دعم؟',
+					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب.',
 				),
 				array(
-					'q' => 'Ø¥ÙŠÙ‡ Ø§Ù„ÙƒÙˆØ±Ø³ Ø§Ù„Ù…Ù†Ø§Ø³Ø¨ Ø§Ù„Ù„ÙŠ Ø¨Ø¹Ø¯Ù‡ØŸ',
-					'a' => 'Ø¨Ø¹Ø¯ Ù…Ø§ ØªØ®Ù„ØµØŒ Ø£Ù†ØµØ­Ùƒ Ø¨Ù€ "Ø£Ø³Ø§Ø³ÙŠØ§Øª Dart" Ù„Ùˆ Ù‡Ø¯ÙÙƒ Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ØŒ Ø£Ùˆ "Ø¬Ø§ÙØ§" Ù„Ùˆ Ù‡Ø¯ÙÙƒ Backend Ù…ØªÙƒØ§Ù…Ù„.',
+					'q' => 'إيه الكورس المناسب اللي بعده؟',
+					'a' => 'بعد ما تخلص، أنصحك بـ "أساسيات Dart" لو هدفك الموبايل، أو "جافا" لو هدفك Backend متكامل.',
 				),
 			),
 		),
@@ -632,14 +632,27 @@ function learnsimply_get_course_extras( $slug ) {
 	);
 
 	// Fallback: use the Dart content for any course we haven't mapped yet.
-	// This way a new course never shows wrong content â€” it shows the most
+	// This way a new course never shows wrong content — it shows the most
 	// useful default. You can add a real entry above for each new course.
 	$fallback = isset( $map['dart'] ) ? $map['dart'] : array(
 		'build_items' => array(),
 		'faq_items'   => array(),
 	);
 
-	return isset( $map[ $slug ] ) ? $map[ $slug ] : $fallback;
+	$extras = isset( $map[ $slug ] ) ? $map[ $slug ] : $fallback;
+
+	// The 'code' snippets above are single-quoted, so their \n stays a literal
+	// backslash-n. Turn it into a real line break so the <pre> mockup renders
+	// the snippet on multiple lines instead of one long line.
+	if ( ! empty( $extras['build_items'] ) ) {
+		foreach ( $extras['build_items'] as $i => $item ) {
+			if ( isset( $item['code'] ) ) {
+				$extras['build_items'][ $i ]['code'] = str_replace( '\n', "\n", $item['code'] );
+			}
+		}
+	}
+
+	return $extras;
 }
 
 $context['course_extras'] = learnsimply_get_course_extras( $course_slug );
