@@ -417,7 +417,10 @@ $context['first_preview_url'] = $first_preview_url;
    The map is keyed by the course SLUG (post_name). Unknown courses fall
    back to a sensible default so a new course never shows wrong content.
    ========================================================================== */
-$course_slug = $course ? $course->post_name : '';
+// WordPress stores non-Latin slugs percent-encoded (post_name for the Python
+// course is '%d9%85%d8%b4...', not 'مشاريع-بايثون-للمبتدئين'), so decode before
+// matching against the Arabic keys in the map below.
+$course_slug = $course ? urldecode( $course->post_name ) : '';
 
 /**
  * @param string $slug  Course slug (post_name).
