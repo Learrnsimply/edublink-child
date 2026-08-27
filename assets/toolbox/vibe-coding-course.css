@@ -250,20 +250,15 @@
     background: #0d1117;
     overflow-x: auto;
 }
-/* Same parent-theme override as .build-mockup-body on the course page:
-   edublink/assets/css/main.css sets `pre { color: #0A0A0A !important }` plus
-   !important on white-space, font-size, padding and margin — which paints this
-   snippet black on the #0d1117 window. !important is required to win. */
 .lvc-mockup-code {
-    margin: 0 !important;
-    padding: 0 !important;
+    margin: 0;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px !important;
+    font-size: 12.5px;
     line-height: 1.7;
-    color: #c9d1d9 !important;
+    color: #c9d1d9;
     direction: ltr;
     text-align: left;
-    white-space: pre !important;
+    white-space: pre;
 }
 .lvc-ml-c  { color: #6e7681; font-style: italic; }   /* comment */
 .lvc-ml-k  { color: #ff7b72; }                       /* keyword */
