@@ -684,7 +684,7 @@ body.woocommerce-checkout body,
     justify-content: center !important;
     gap: 8px !important;
     width: 100% !important;
-    background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+    background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
     border: none !important;
     color: #ffffff !important;
     border-radius: 14px !important;
@@ -818,7 +818,7 @@ body.woocommerce-checkout body,
 
 .woocommerce-checkout .woocommerce-form-coupon .button,
 .woocommerce-checkout .woocommerce-form-login .button {
-    background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+    background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
@@ -1308,7 +1308,7 @@ body.woocommerce-checkout body,
 .woocommerce-checkout #payment #place_order,
 .woocommerce-checkout #place_order {
     width: 100% !important;
-    background: linear-gradient(90deg, #2f6df6 0%, #4077f3 100%) !important;
+    background: linear-gradient(90deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 14px !important;

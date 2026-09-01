@@ -260,7 +260,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #4077f3, #2563eb);
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   color: #fff;
   font-size: 16px;
   font-weight: 600;

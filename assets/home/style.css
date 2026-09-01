@@ -269,7 +269,7 @@
 }
 
 .search-button {
-	background: linear-gradient(135deg, #4077F3, #3461d9);
+	background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
 	color: #fff;
 	border: none;
 	outline: none !important;
@@ -285,7 +285,7 @@
 }
 
 .search-button:hover {
-	background: linear-gradient(135deg, #5086f5, #4077F3);
+	background: linear-gradient(135deg, var(--ls-blue-cta-hover, #2a57bf) 0%, var(--ls-blue-cta, #3566d9) 100%);
 	transform: translateY(-2px);
 	box-shadow: 0 6px 20px rgba(64, 119, 243, 0.4);
 }
