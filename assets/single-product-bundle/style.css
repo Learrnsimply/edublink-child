@@ -1,20 +1,20 @@
 /* ===== ROOT VARIABLES ===== */
 :root {
-  --learnsimply-primary-blue: #4077f3;
+  --learnsimply-primary-blue: var(--ls-blue, #4077f3);
   --primary: #4077f3;
-  --learnsimply-dark-bg: #0a0f1a;
-  --learnsimply-card-bg: #141924;
+  --learnsimply-dark-bg: var(--ls-bg, #0a0f1a);
+  --learnsimply-card-bg: var(--ls-surface, #141924);
   --learnsimply-card-border: rgba(255, 255, 255, 0.1);
-  --learnsimply-text-white: #ffffff;
-  --learnsimply-text-gray: #999eb2;
+  --learnsimply-text-white: var(--ls-text, #ffffff);
+  --learnsimply-text-gray: var(--ls-text-muted, #999eb2);
   --learnsimply-text-dark-gray: #6c7278;
-  --learnsimply-success-green: #18a963;
+  --learnsimply-success-green: var(--ls-success, #18a963);
   --learnsimply-warning-orange: #ff8904;
-  --learnsimply-error-red: #f96a7b;
-  --learnsimply-purple: #c27aff;
+  --learnsimply-error-red: var(--ls-danger, #f96a7b);
+  --learnsimply-purple: var(--ls-accent, #c27aff);
   --learnsimply-cyan: #00d5be;
   --learnsimply-pink: #fb64b6;
-  --learnsimply-yellow: #ffbb54;
+  --learnsimply-yellow: var(--ls-warning, #ffbb54);
 
   --learnsimply-font-primary:
     "IBM Plex Sans Arabic", "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont,
@@ -22,9 +22,9 @@
   --learnsimply-font-code: "Consolas", "Courier New", monospace;
 
   --learnsimply-transition: all 0.3s ease;
-  --learnsimply-border-radius-sm: 10px;
-  --learnsimply-border-radius-md: 20px;
-  --learnsimply-border-radius-lg: 30px;
+  --learnsimply-border-radius-sm: var(--ls-radius, 10px);
+  --learnsimply-border-radius-md: var(--ls-radius-lg, 20px);
+  --learnsimply-border-radius-lg: var(--ls-radius-xl, 30px);
   --learnsimply-border-radius-xl: 40px;
 }
 

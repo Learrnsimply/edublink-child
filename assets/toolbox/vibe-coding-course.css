@@ -27,14 +27,14 @@
 :root {
     --lvc-grad-from: #7c3aed;       /* purple */
     --lvc-grad-to:   #06b6d4;       /* cyan   */
-    --lvc-bg:        #0a0f1a;
-    --lvc-card:      #141924;
-    --lvc-card-2:    #1b2133;
-    --lvc-border:    rgba(255, 255, 255, 0.08);
-    --lvc-text:      #e2e6f0;
-    --lvc-text-dim:  #999eb2;
+    --lvc-bg:        var(--ls-bg, #0a0f1a);
+    --lvc-card:      var(--ls-surface, #141924);
+    --lvc-card-2:    var(--ls-surface-2, #1b2133);
+    --lvc-border:    var(--ls-border, rgba(255, 255, 255, 0.08));
+    --lvc-text:      var(--ls-text-2, #e2e6f0);
+    --lvc-text-dim:  var(--ls-text-muted, #999eb2);
     --lvc-text-mute: #6b7394;
-    --lvc-accent:    #4077f3;
+    --lvc-accent:    var(--ls-blue, #4077f3);
     --lvc-success:   #22c55e;
 }
 
