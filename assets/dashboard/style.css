@@ -1515,7 +1515,7 @@ body .tutor-wrap .woocommerce-ResetPassword {
 .tutor-dashboard-content-inner .woocommerce-ResetPassword .button,
 .tutor-dashboard-content-inner form.lost_password .button,
 .tutor-dashboard-content-inner .woocommerce-ResetPassword button[type="submit"] {
-    background: #4077f3 !important;
+    background: var(--ls-blue-cta, #3566d9) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;

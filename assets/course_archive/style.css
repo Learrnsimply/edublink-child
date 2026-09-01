@@ -55,7 +55,7 @@
 
 .filter-search-box button {
   padding: 12px 30px;
-  background: #4077F3;
+  background: var(--ls-blue-cta, #3566d9);
   border: none;
   border-radius: 10px;
   color: #fff;

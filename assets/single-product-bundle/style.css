@@ -254,11 +254,11 @@
 }
 
 .learnsimply-header-btn-login {
-  background: #4077f3 !important;
+  background: var(--ls-blue-cta, #3566d9) !important;
 }
 
 .learnsimply-header-btn-login:hover {
-  background-color: #3566d9;
+  background-color: var(--ls-blue-cta-hover, #2a57bf);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(64, 119, 243, 0.3);
 }
@@ -3201,7 +3201,7 @@
 
 .learnsimply-buy-now-button {
   flex: 1;
-  background: var(--learnsimply-primary-blue);
+  background: var(--ls-blue-cta, #3566d9);
   color: var(--learnsimply-text-white);
   padding: 12px 20px;
   border-radius: var(--learnsimply-border-radius-sm);
@@ -3210,7 +3210,7 @@
 }
 
 .learnsimply-buy-now-button:hover {
-  background: #3566d4;
+  background: var(--ls-blue-cta-hover, #2a57bf);
   transform: translateY(-2px);
 }
 
@@ -3566,7 +3566,7 @@
 }
 
 .buy-button {
-  background: #4077f3;
+  background: var(--ls-blue-cta, #3566d9);
   border-radius: 10px;
   height: 48px;
   flex: 1;
@@ -3804,7 +3804,7 @@
 
 .about-cta-button {
   padding: 19px 34px 19px 24px;
-  background: #4077f3 !important;
+  background: var(--ls-blue-cta, #3566d9) !important;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -4342,7 +4342,7 @@
 }
 
 .learnsimply-primary-cta-btn {
-  background: var(--learnsimply-primary-blue);
+  background: var(--ls-blue-cta, #3566d9);
   color: var(--learnsimply-text-white);
 }
 
@@ -6256,7 +6256,7 @@ width: 100%;
 .book-card .buy-button,
 .learnsimply-buy-now-button,
 .buy-button {
-  background: var(--learnsimply-primary-blue) !important;
+  background: var(--ls-blue-cta, #3566d9) !important;
   color: #fff !important;
 }
 
@@ -6646,7 +6646,7 @@ width: 100%;
 }
 
 .buy-button {
-  background: #4077f3;
+  background: var(--ls-blue-cta, #3566d9);
   border-radius: 10px;
   height: 48px;
   flex: 1;
@@ -6805,7 +6805,7 @@ width: 100%;
 /* Button */
 .cta-button {
   padding: 19px 34px 19px 24px;
-  background: #4077f3;
+  background: var(--ls-blue-cta, #3566d9);
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -10097,7 +10097,7 @@ width: 100%;
 }
 
 .buy-button {
-  background: #4077f3;
+  background: var(--ls-blue-cta, #3566d9);
   color: white;
   border: none;
   border-radius: 10px;
