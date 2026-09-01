@@ -756,7 +756,7 @@ body.blog .edu-blog .read-more-button .edu-btn {
 
 body.archive .edu-blog .read-more-button .edu-btn:hover,
 body.blog .edu-blog .read-more-button .edu-btn:hover {
-    background-color: #4077f3 !important;
+    background-color: var(--ls-blue-cta-hover, #2a57bf) !important;
     color: #ffffff !important;
 }
 
@@ -1145,7 +1145,7 @@ body.woocommerce-checkout .entry-header {
         width: 100% !important;
         display: block !important;
         padding: 14px !important;
-        background: #4077f3 !important;
+        background: var(--ls-blue-cta, #3566d9) !important;
         color: #fff !important;
         font-weight: bold !important;
         border-radius: 10px !important;
@@ -1459,7 +1459,7 @@ div[class*="quiz-action"] {
 .tutor-start-quiz,
 button.tutor-start-quiz,
 a.tutor-start-quiz {
-    background-color: #4077f3 !important;
+    background-color: var(--ls-blue-cta, #3566d9) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
@@ -1482,7 +1482,7 @@ a.tutor-start-quiz {
 .tutor-btn-quiz-next,
 .tutor-btn-quiz-prev,
 .tutor-quiz-answer-submit {
-    background-color: #4077f3 !important;
+    background-color: var(--ls-blue-cta, #3566d9) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 10px !important;

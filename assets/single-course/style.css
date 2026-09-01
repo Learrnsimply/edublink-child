@@ -574,7 +574,7 @@
 }
 
 .buy-button {
-  background: #4077f3;
+  background: var(--ls-blue-cta, #3566d9);
   color: white;
   border: none;
   border-radius: 10px;
@@ -4541,7 +4541,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 
 .mid-cta__btn {
   flex-shrink: 0;
-  background: #4077f3;
+  background: var(--ls-blue-cta, #3566d9);
   color: #ffffff !important;
   font-size: 16px;
   font-weight: 700;

@@ -223,7 +223,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--learnsimply-primary-blue);
+    background: var(--ls-blue-cta, #3566d9);
     color: var(--learnsimply-text-white);
     text-decoration: none;
     padding: 13px 30px;

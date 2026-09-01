@@ -136,7 +136,7 @@
 
 /* CTA Button/Link */
 .learnsimply-promo-cta-btn {
-  background-color: var(--learnsimply-primary-blue) !important;
+  background-color: var(--ls-blue-cta, #3566d9) !important;
   border: none;
   border-radius: 8px;
   padding: 10px 28px;

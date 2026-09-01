@@ -357,7 +357,7 @@
     gap: 10px;
     margin: 0 24px 24px;
     padding: 15px 20px;
-    background: var(--learnsimply-primary-blue);
+    background: var(--ls-blue-cta, #3566d9);
     color: var(--learnsimply-text-white);
     border-radius: 14px;
     font-size: 1rem;
@@ -466,7 +466,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--learnsimply-primary-blue);
+    background: var(--ls-blue-cta, #3566d9);
     color: var(--learnsimply-text-white);
     border-radius: 14px;
     padding: 14px 36px;
@@ -2255,7 +2255,7 @@ body.woocommerce-cart .page-content:has(.ls-empty-cart) {
 
 /* 5. Fix Login Button styling */
 .woocommerce-checkout .woocommerce-form-login .button {
-    background: #4077f3 !important;
+    background: var(--ls-blue-cta, #3566d9) !important;
     color: white !important;
     padding: 15px !important;
     border-radius: 10px !important;
