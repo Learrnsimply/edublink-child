@@ -1111,7 +1111,7 @@ body.woocommerce-cart,
 
 /* Coupon Apply button — blue accent */
 .woocommerce-cart table.shop_table .coupon button[name="apply_coupon"] {
-  background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
   border: none !important;
   border-radius: 0 !important;
   color: #ffffff !important;
@@ -1353,7 +1353,7 @@ body.woocommerce-cart,
   justify-content: center !important;
   gap: 8px !important;
   width: 100% !important;
-  background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
   border: none !important;
   color: #ffffff !important;
   border-radius: 14px !important;
@@ -1449,7 +1449,7 @@ body.woocommerce-cart .page-content:has(.ls-empty-cart) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
   color: #ffffff !important;
   border-radius: 14px !important;
   padding: 14px 36px !important;
@@ -1490,7 +1490,7 @@ body.woocommerce-cart .page-content:has(.ls-empty-cart) {
   align-items: center !important;
   justify-content: center !important;
   gap: 8px !important;
-  background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
   color: #ffffff !important;
   border-radius: 14px !important;
   padding: 16px 40px !important;
@@ -1806,7 +1806,7 @@ body.woocommerce-cart .page-content:has(.ls-empty-cart) {
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
-  background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
   border: none !important;
   color: #ffffff !important;
   border-radius: 14px !important;
@@ -1866,7 +1866,7 @@ body.woocommerce-cart .page-content:has(.ls-empty-cart) {
   align-items: center !important;
   justify-content: center !important;
   gap: 8px !important;
-  background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
   color: #ffffff !important;
   border-radius: 14px !important;
   padding: 16px 40px !important;
@@ -2803,7 +2803,7 @@ body.woocommerce-checkout body,
     justify-content: center !important;
     gap: 8px !important;
     width: 100% !important;
-    background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+    background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
     border: none !important;
     color: #ffffff !important;
     border-radius: 14px !important;
@@ -2856,7 +2856,7 @@ body.woocommerce-checkout body,
 
 .woocommerce-checkout .woocommerce-form-coupon .button,
 .woocommerce-checkout .woocommerce-form-login .button {
-    background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+    background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
@@ -3173,7 +3173,7 @@ body.woocommerce-checkout .woocommerce {
 .woocommerce-checkout .woocommerce-form-login button[name="login"],
 .woocommerce-checkout .woocommerce-form-login .woocommerce-button.button {
     width: 100% !important;
-    background: linear-gradient(135deg, #4077f3 0%, #3568d4 100%) !important;
+    background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;

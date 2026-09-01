@@ -3994,7 +3994,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 
 /* Buy Button - Gradient */
 .buy-button {
-  background: linear-gradient(135deg, #4077f3 0%, #5b8ff9 100%) !important;
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%) !important;
   color: white !important;
   border: none !important;
   border-radius: 12px !important;
@@ -4389,7 +4389,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  background: linear-gradient(135deg, #4077f3 0%, #3567e0 100%);
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   color: #ffffff !important;
   font-size: 18px;
   font-weight: 700;
@@ -4669,7 +4669,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 }
 
 .final-cta__btn {
-  background: linear-gradient(135deg, #4077f3 0%, #3567e0 100%);
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   color: #ffffff !important;
   font-size: 19px;
   font-weight: 700;

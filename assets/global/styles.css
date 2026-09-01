@@ -443,7 +443,7 @@ main {
   min-width: 20px;
   height: 20px;
   padding: 0 6px;
-  background: linear-gradient(135deg, #4077f3, #2563eb);
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   color: #fff;
   font-size: 11px;
   font-weight: 600;
@@ -12977,7 +12977,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 
 .add-review-section .submit-review-btn {
   border-radius: 999px;
-  background: linear-gradient(90deg, #4077f3, #60a5fa);
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   border: none;
   padding: 12px 28px;
   color: #fff;
@@ -13091,7 +13091,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .learnsimply-pagination .page-numbers.current {
-  background: linear-gradient(90deg, #4077f3, #60a5fa);
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   border-color: #4077f3;
   color: #fff;
 }
@@ -13327,7 +13327,7 @@ iframe[id*="profile_ifr"],
 
 .unified-search-box .search-button,
 .shop-search-box .search-button {
-  background: linear-gradient(135deg, #4077F3, #3461d9);
+  background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   color: #fff;
   border: none;
   outline: none !important;
@@ -13344,7 +13344,7 @@ iframe[id*="profile_ifr"],
 
 .unified-search-box .search-button:hover,
 .shop-search-box .search-button:hover {
-  background: linear-gradient(135deg, #5086f5, #4077F3);
+  background: linear-gradient(135deg, var(--ls-blue-cta-hover, #2a57bf) 0%, var(--ls-blue-cta, #3566d9) 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(64, 119, 243, 0.4);
 }
