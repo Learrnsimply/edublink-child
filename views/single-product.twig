@@ -124,7 +124,7 @@
               </button>
               {% if is_in_stock %}
                 {# Direct add to cart link - PHP handles redirect to cart #}
-                <a href="{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ product_id }}" class="buy-button">اشتر الآن</a>
+                <a href="{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ product_id }}" class="buy-button">اشتري الآن</a>
               {% else %}
                 <button class="buy-button" disabled>غير متوفر</button>
               {% endif %}
