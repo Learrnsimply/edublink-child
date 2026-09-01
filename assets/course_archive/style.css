@@ -22,7 +22,7 @@
 .courses-filter-title {
   font-size: 20px;
   font-weight: 600;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   margin-bottom: 20px;
 }
 
@@ -42,7 +42,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 16px;
   outline: none;
   transition: all 0.3s ease;
@@ -58,7 +58,7 @@
   background: var(--ls-blue-cta, #3566d9);
   border: none;
   border-radius: 10px;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -83,7 +83,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  color: #999EB2;
+  color: var(--ls-text-muted, #999eb2);
   text-decoration: none;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -98,7 +98,7 @@
 .filter-category-btn.active {
   background: rgba(64, 119, 243, 0.2);
   border-color: rgba(64, 119, 243, 0.5);
-  color: #4077F3;
+  color: var(--ls-blue, #4077f3);
 }
 
 /* ========================================

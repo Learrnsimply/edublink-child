@@ -17,7 +17,7 @@
 
 /* Hero section typography overrides (home page) */
 .hero-wrapper .main-title {
-	color: #FFF;
+	color: var(--ls-text, #ffffff);
 	text-align: right;
 	font-family: "IBM Plex Sans Arabic";
 	font-size: 33px !important;
@@ -36,7 +36,7 @@
 }
 
 .hero-wrapper .check-text {
-    color: #FFF;
+    color: var(--ls-text, #ffffff);
     font-family: "IBM Plex Sans Arabic";
     font-size: 16px;
     font-style: normal;
@@ -57,12 +57,12 @@
     align-items: center;
     gap: 4px;
     border-radius: 50000px;
-    border: 1px solid #4077F3;
+    border: 1px solid var(--ls-blue, #4077f3);
 }
 
 /* Blue card title inside hero */
 .hero-wrapper .blue-card-content .card-title {
-    color: #FFF;
+    color: var(--ls-text, #ffffff);
     text-align: right;
     font-family: "IBM Plex Sans Arabic";
     font-size: 58px;
@@ -73,7 +73,7 @@
 
 /* Certificate section title styling (home page) */
 .learnsimply-certificate-title {
-    color: #FFF;
+    color: var(--ls-text, #ffffff);
     text-align: right;
     font-family: "IBM Plex Sans Arabic";
     font-size: 56px;
@@ -219,7 +219,7 @@
 	background: transparent;
 	border: none;
 	outline: none !important;
-	color: #fff;
+	color: var(--ls-text, #ffffff);
 	font-size: 16px;
 	font-family: "IBM Plex Sans Arabic", sans-serif;
 	padding: 14px 8px;
@@ -270,7 +270,7 @@
 
 .search-button {
 	background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
-	color: #fff;
+	color: var(--ls-text, #ffffff);
 	border: none;
 	outline: none !important;
 	padding: 14px 32px;
@@ -315,7 +315,7 @@
 
 /* override learning card heading to white (single course page) */
 .learning-card .section-title {
-    color: #fff !important;
+    color: var(--ls-text, #ffffff) !important;
 }
 
 /* ============================================
@@ -365,7 +365,7 @@
 .pagination-btn:hover:not(.disabled) {
 	background: rgba(160, 100, 255, 0.15);
 	border-color: rgba(160, 100, 255, 0.3);
-	color: #fff;
+	color: var(--ls-text, #ffffff);
 }
 
 .pagination-btn.disabled {
@@ -401,12 +401,12 @@
 .pagination-number:hover:not(.current) {
 	background: rgba(255, 255, 255, 0.05);
 	border-color: rgba(255, 255, 255, 0.1);
-	color: #fff;
+	color: var(--ls-text, #ffffff);
 }
 
 .pagination-number.current {
 	background: linear-gradient(135deg, #a064ff, #8b5cf6);
-	color: #fff;
+	color: var(--ls-text, #ffffff);
 	font-weight: 600;
 	box-shadow: 0 4px 15px rgba(160, 100, 255, 0.4);
 }
@@ -662,7 +662,7 @@
 }
 
 .bundle-discount p {
-	color: #18A963 !important;
+	color: var(--ls-success, #18a963) !important;
 }
 
 .bundle-card-premium .action-buttons a.learnsimply-buy-now-button.bundle-btn {

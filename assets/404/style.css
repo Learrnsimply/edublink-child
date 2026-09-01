@@ -28,7 +28,7 @@
 }
 
 .error-404-section {
-  background: #141924;
+  background: var(--ls-surface, #141924);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 40px;
   width: 100%;
@@ -151,7 +151,7 @@
   font-family: "IBM Plex Sans Arabic";
   font-size: 236px;
   line-height: 256px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   letter-spacing: -4.72px;
   text-align: center;
   margin: 0;

@@ -39,13 +39,13 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #4077f3;
+    background: var(--ls-blue, #4077f3);
     box-shadow: 0 0 16px rgba(64, 119, 243, 0.9);
   }
 
   .ls-path-title {
     margin: 0 0 14px;
-    color: #ffffff;
+    color: var(--ls-text, #ffffff);
     font-size: 38px;
     font-weight: 800;
     line-height: 1.45;
@@ -88,7 +88,7 @@
     display: grid;
     place-items: center;
     border-radius: 18px;
-    color: #ffffff;
+    color: var(--ls-text, #ffffff);
     font-size: 20px;
     font-weight: 800;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
@@ -99,7 +99,7 @@
   }
 
   .ls-path-number.dsa {
-    background: linear-gradient(135deg, #18a963, #0f8f52);
+    background: linear-gradient(135deg, var(--ls-success, #18a963), #0f8f52);
   }
 
   .ls-path-item:not(:last-child) .ls-path-track::after {
@@ -149,7 +149,7 @@
   }
 
   .ls-path-card.dsa::before {
-    background: linear-gradient(180deg, #18a963, #0f8f52);
+    background: linear-gradient(180deg, var(--ls-success, #18a963), #0f8f52);
   }
 
   .ls-path-top {
@@ -188,7 +188,7 @@
 
   .ls-path-card-title {
     margin: 0 0 10px;
-    color: #ffffff;
+    color: var(--ls-text, #ffffff);
     font-size: 22px;
     font-weight: 800;
     line-height: 1.5;

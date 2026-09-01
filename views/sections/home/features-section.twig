@@ -82,7 +82,7 @@
                 border-radius: inherit;
                 padding: 1px;
                 background: linear-gradient(90deg, transparent 50%, rgba(255, 255, 255, 0.8) 100%);
-                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask: linear-gradient(var(--ls-text, #ffffff) 0 0) content-box, linear-gradient(var(--ls-text, #ffffff) 0 0);
                 -webkit-mask-composite: xor;
                 mask-composite: exclude;
                 opacity: 0;
@@ -158,7 +158,7 @@
             }
 
             .startright-title {
-                color: #FFF;
+                color: var(--ls-text, #ffffff);
                 text-align: center;
                 font-family: "IBM Plex Sans Arabic";
                 font-size: 60px;
@@ -194,7 +194,7 @@
             .startright-btn-primary {
                 padding: 12px 32px;
                 border-radius: 9999px;
-                background: #ffffff;
+                background: var(--ls-text, #ffffff);
                 color: #000000;
                 font-weight: 500;
                 font-size: 14px;
@@ -230,7 +230,7 @@
 
             .startright-btn-secondary:hover {
                 background: #18181b;
-                color: #ffffff;
+                color: var(--ls-text, #ffffff);
                 border-color: #52525b;
             }
 
@@ -433,7 +433,7 @@
 
             .startright-carousel-btn:hover {
                 background: rgba(255, 255, 255, 0.1);
-                color: #ffffff;
+                color: var(--ls-text, #ffffff);
             }
 
             .startright-carousel-container {
@@ -505,7 +505,7 @@
                 margin: 4px 0;
             }
 
-            .startright-code-purple { color: #c27aff; }
+            .startright-code-purple { color: var(--ls-accent, #c27aff); }
             .startright-code-blue { color: #51a2ff; }
             .startright-code-orange { color: #ff8904; }
             .startright-code-green { color: #05df72; }
@@ -627,7 +627,7 @@
                 align-items: center;
                 justify-content: center;
                 font-size: 10px;
-                color: #ffffff;
+                color: var(--ls-text, #ffffff);
                 font-weight: 700;
             }
 

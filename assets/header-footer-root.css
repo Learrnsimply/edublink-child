@@ -26,7 +26,7 @@
 .learnsimply-header-menu-text,
 .learnsimply-header-btn-text {
   font-family: "IBM Plex Sans Arabic", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 .learnsimply-header-logo-image,
@@ -41,7 +41,7 @@
   position: relative !important;
   width: 100% !important;
   background-color: #050816 !important;
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 .learnsimply-footer-section a {

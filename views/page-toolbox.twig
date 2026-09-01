@@ -12,9 +12,9 @@
    stylesheets and guarantee our colors and gradients apply. #}
 {% block head_extra %}
 <style id="ls-toolbox-critical">
-html, body.ls-toolbox-body, .ls-toolbox { color: #ffffff !important; overflow-x: hidden; }
+html, body.ls-toolbox-body, .ls-toolbox { color: var(--ls-text, #ffffff) !important; overflow-x: hidden; }
 .ls-toolbox-hero {
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     text-align: center !important;
     background:
         radial-gradient(ellipse at 20% 0%, rgba(124, 58, 237, 0.45) 0%, transparent 50%),
@@ -22,11 +22,11 @@ html, body.ls-toolbox-body, .ls-toolbox { color: #ffffff !important; overflow-x:
         linear-gradient(135deg, #1a1240 0%, #0f172a 50%, #0a1a2f 100%) !important;
 }
 .ls-toolbox-hero-content { text-align: center !important; margin: 0 auto !important; }
-.ls-toolbox-hero-title { color: #ffffff !important; text-align: center !important; }
-.ls-toolbox-hero-desc { color: #e2e6f0 !important; text-align: center !important; }
+.ls-toolbox-hero-title { color: var(--ls-text, #ffffff) !important; text-align: center !important; }
+.ls-toolbox-hero-desc { color: var(--ls-text-2, #e2e6f0) !important; text-align: center !important; }
 .ls-toolbox-hero-cta { text-decoration: none !important; }
-.ls-toolbox-card { color: #ffffff !important; background: #141924 !important; }
-.ls-toolbox-card-title { color: #ffffff !important; }
+.ls-toolbox-card { color: var(--ls-text, #ffffff) !important; background: var(--ls-surface, #141924) !important; }
+.ls-toolbox-card-title { color: var(--ls-text, #ffffff) !important; }
 .ls-toolbox-card-desc { color: #d1d5e0 !important; }
 .ls-toolbox-card-visual--purple {
     background:

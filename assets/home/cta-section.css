@@ -35,7 +35,7 @@
 .ls-cta-glow-1 {
   width: 350px;
   height: 350px;
-  background: #4077f3;
+  background: var(--ls-blue, #4077f3);
   opacity: 0.12;
   top: -80px;
   right: -40px;
@@ -83,7 +83,7 @@
 
 /* ── Title ── */
 .ls-cta-title {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 30px;
   font-weight: 700;
   line-height: 1.6;
@@ -92,7 +92,7 @@
 }
 
 .ls-cta-title span {
-  background: linear-gradient(135deg, #4077f3, #60a5fa);
+  background: linear-gradient(135deg, var(--ls-blue, #4077f3), #60a5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -126,7 +126,7 @@
 }
 
 .ls-cta-timer-num {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 32px;
   font-weight: 700;
   line-height: 1;
@@ -214,7 +214,7 @@
 
 .ls-cta-price-save {
   background: rgba(24, 169, 99, 0.12);
-  color: #18A963;
+  color: var(--ls-success, #18a963);
   font-size: 13px;
   font-weight: 600;
   padding: 6px 14px;
@@ -223,7 +223,7 @@
 }
 
 .ls-cta-price-new {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 28px;
   font-weight: 700;
   font-family: "IBM Plex Sans Arabic", sans-serif;
@@ -261,7 +261,7 @@
   align-items: center;
   gap: 8px;
   background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 16px;
   font-weight: 600;
   padding: 16px 36px;
@@ -276,7 +276,7 @@
 .ls-cta-btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(64, 119, 243, 0.35);
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-decoration: none;
 }
 
@@ -298,7 +298,7 @@
 
 .ls-cta-btn-secondary:hover {
   border-color: rgba(255, 255, 255, 0.25);
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-decoration: none;
 }
 

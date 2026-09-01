@@ -78,7 +78,7 @@
 }
 
 .learnsimply-code-button-closed svg path {
-  stroke: #ffffff !important;
+  stroke: var(--ls-text, #ffffff) !important;
   stroke-opacity: 1 !important;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .learnsimply-header-logo-text {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 21.605px;
   font-style: normal;
@@ -212,7 +212,7 @@
 }
 
 .learnsimply-header-menu-text {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 18px;
   font-style: normal;
@@ -228,7 +228,7 @@
 
 .learnsimply-header-menu-text-active {
   opacity: 1;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
 }
 
 /* Auth Buttons Container */
@@ -321,7 +321,7 @@
 .learnsimply-mobile-toggle-bar {
   width: 100%;
   height: 2.5px;
-  background: #fff;
+  background: var(--ls-text, #ffffff);
   border-radius: 3px;
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   display: block;
@@ -369,7 +369,7 @@
 }
 
 .add-review-section .section-title {
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 22px;
   font-weight: 600;
@@ -451,7 +451,7 @@
   background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   border: none;
   padding: 10px 26px;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 14px;
   font-weight: 600;
@@ -482,7 +482,7 @@
   height: 16px;
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #ffffff;
+  border-top-color: var(--ls-text, #ffffff);
   transform: translateY(-50%);
   animation: learnsimply-spin 0.8s linear infinite;
 }
@@ -785,7 +785,7 @@
 
 .hero-background {
   position: relative;
-  background: #141924;
+  background: var(--ls-surface, #141924);
   border-radius: 40.145px;
   flex-shrink: 0;
   /* Make the hero card slightly narrower than the viewport so its edges never touch the page */
@@ -864,14 +864,14 @@
   align-items: center;
   gap: 4px;
   border-radius: 50000px;
-  border: 1px solid #4077f3;
+  border: 1px solid var(--ls-blue, #4077f3);
   position: relative;
   flex-shrink: 0;
 }
 
 .badge-border {
   position: absolute;
-  border: 1px solid #4077f3;
+  border: 1px solid var(--ls-blue, #4077f3);
   border-radius: 50000px;
   inset: 0;
   pointer-events: none;
@@ -890,7 +890,7 @@
 /* Main Title */
 .main-title {
   align-self: stretch;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: right;
   font-family: "IBM Plex Sans Arabic";
   font-size: 59px;
@@ -905,7 +905,7 @@
 /* Description */
 .description {
   align-self: stretch;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: right;
   font-family: "IBM Plex Sans Arabic";
   font-size: 30px;
@@ -935,7 +935,7 @@
 }
 
 .check-text {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 16px;
   font-style: normal;
@@ -1015,7 +1015,7 @@
 
 /* Card Title */
 .card-title {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: right;
   font-family: "IBM Plex Sans Arabic";
   font-size: 58px;
@@ -1162,7 +1162,7 @@
 }
 
 .button-dark:hover {
-  background: #141924;
+  background: var(--ls-surface, #141924);
   transform: translateY(-2px);
 }
 
@@ -1175,7 +1175,7 @@
 }
 
 .button-dark span {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: center;
   font-family: "IBM Plex Sans Arabic";
   font-size: 16px;
@@ -1202,7 +1202,7 @@
 }
 
 .button-light:hover {
-  background: #ffffff;
+  background: var(--ls-text, #ffffff);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(249, 249, 252, 0.3);
 }
@@ -1397,7 +1397,7 @@
 }
 
 .stat-label {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: center;
   font-family: "IBM Plex Sans Arabic";
   font-size: 18px;
@@ -1621,7 +1621,7 @@
 }
 
 .learnsimply-partners-title {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 27.61px;
   font-style: normal;
@@ -2876,7 +2876,7 @@
 }
 
 .learnsimply-section-title {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: center;
   font-family: "IBM Plex Sans Arabic";
   font-size: 60px;
@@ -3111,7 +3111,7 @@
 }
 
 .learnsimply-students-count {
-  background: #ffce31 !important;
+  background: var(--ls-star, #ffce31) !important;
   color: #000 !important;
   width: 36px !important;
   height: 36px !important;
@@ -3242,7 +3242,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   /* make the default background the same as the previous hover color */
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: center;
   font-family: "IBM Plex Sans Arabic";
   font-size: 16px;
@@ -3269,7 +3269,7 @@
 /* Force the default and hover backgrounds to override any other rules or caching oddities */
 .learnsimply-view-all-button {
   background: rgba(255, 255, 255, 0.1) !important;
-  color: #fff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 .learnsimply-view-all-button:hover {
   background: rgba(255, 255, 255, 0.14) !important;
@@ -3307,7 +3307,7 @@
 }
 
 .book-card:hover {
-  border-color: #4077f3;
+  border-color: var(--ls-blue, #4077f3);
   transform: translateY(-5px);
 }
 
@@ -3347,7 +3347,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 1;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   margin: 0;
 }
 
@@ -3474,7 +3474,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 25px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   text-align: right;
 }
@@ -3527,7 +3527,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: normal;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-decoration: line-through;
   text-decoration-skip-ink: none;
   margin: 0;
@@ -3538,7 +3538,7 @@
   font-weight: 600;
   font-size: 16px;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   margin: 0;
 }
 
@@ -3657,7 +3657,7 @@
 
 .about-badge {
   padding: 5px 30px;
-  border: 1px solid #4077f3;
+  border: 1px solid var(--ls-blue, #4077f3);
   border-radius: 80px;
   display: inline-flex;
   align-items: center;
@@ -3671,7 +3671,7 @@
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.6px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   margin: 0;
 }
 
@@ -3693,7 +3693,7 @@
   font-weight: 400;
   font-size: 21px;
   line-height: 30px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   /* text-align: right; */
   width: 100%;
@@ -3770,7 +3770,7 @@
 }
 
 .about-stat-number .plus {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
 }
 
 /* Ensure the numeric values in About stats sit at the right edge
@@ -3789,7 +3789,7 @@
 }
 
 .about-stat-number .plus {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
 }
 
 .about-stat-label {
@@ -3798,7 +3798,7 @@
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.32px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   text-align: right;
 }
@@ -3935,7 +3935,7 @@
   font-size: 20px;
   line-height: 32px;
   letter-spacing: -0.32px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   position: relative;
   z-index: 1;
@@ -4365,7 +4365,7 @@
 /* ===== MARQUEE BANNER ===== */
 .marquee-section {
   width: 100%;
-  background: #4077f3;
+  background: var(--ls-blue, #4077f3);
   padding: 50px 0;
   overflow: hidden;
   position: relative;
@@ -4690,7 +4690,7 @@
 }
 
 .learnsimply-code-keyword {
-  color: #c27aff;
+  color: var(--ls-accent, #c27aff);
 }
 
 .learnsimply-code-string {
@@ -5537,7 +5537,7 @@ width: 100%;
   display: block;
   width: 22px;
   height: 22px;
-  fill: #ffffff;
+  fill: var(--ls-text, #ffffff);
 }
 
 .learnsimply-footer-bottom {
@@ -6258,7 +6258,7 @@ width: 100%;
 .learnsimply-buy-now-button,
 .buy-button {
   background: var(--ls-blue-cta, #3566d9) !important;
-  color: #fff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 .course-card .cart-button,
@@ -6266,18 +6266,18 @@ width: 100%;
 .learnsimply-add-cart-button,
 .cart-button {
   background: rgba(255, 255, 255, 0.05) !important;
-  color: #fff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 .buy-button span,
 .buy-button p,
 .learnsimply-buy-now-button {
-  color: #fff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 .cart-button svg path,
 .cart-button .cart-icon path {
-  stroke: #fff !important;
+  stroke: var(--ls-text, #ffffff) !important;
 }
 
 .buy-button:hover,
@@ -6311,7 +6311,7 @@ width: 100%;
   font-weight: 500;
   font-size: 16px;
   line-height: 1;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   margin: 0;
 }
 
@@ -6399,7 +6399,7 @@ width: 100%;
   font-weight: 400;
   font-size: 14px;
   line-height: 2;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
 }
 
@@ -6419,7 +6419,7 @@ width: 100%;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
 }
 
@@ -6520,7 +6520,7 @@ width: 100%;
   font-weight: 400;
   font-size: 16px;
   line-height: 25px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   text-align: right;
 }
@@ -6605,7 +6605,7 @@ width: 100%;
   font-weight: 400;
   font-size: 14px;
   line-height: normal;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-decoration: line-through;
   text-decoration-skip-ink: none;
   margin: 0;
@@ -6616,7 +6616,7 @@ width: 100%;
   font-weight: 600;
   font-size: 16px;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   margin: 0;
 }
 
@@ -6724,7 +6724,7 @@ width: 100%;
 /* Badge */
 .badge {
   padding: 5px 30px;
-  border: 1px solid #4077f3;
+  border: 1px solid var(--ls-blue, #4077f3);
   border-radius: 80px;
   display: inline-flex;
   align-items: center;
@@ -6737,7 +6737,7 @@ width: 100%;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.6px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   margin: 0;
 }
 
@@ -6788,11 +6788,11 @@ width: 100%;
 }
 
 .stat-number .plus {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
 }
 
 .stat-label {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   text-align: center;
   font-family: "IBM Plex Sans Arabic";
   font-size: 18px;
@@ -6933,7 +6933,7 @@ width: 100%;
   font-size: 20px;
   line-height: 1.47;
   letter-spacing: -0.6px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
 }
 
@@ -7033,7 +7033,7 @@ width: 100%;
   font-weight: 400;
   font-size: 25px;
   line-height: 33px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   text-align: right;
 }
@@ -7077,7 +7077,7 @@ width: 100%;
 
 .learnsimply-code-button svg path,
 .learnsimply-code-button-closed svg path {
-  stroke: #ffffff !important;
+  stroke: var(--ls-text, #ffffff) !important;
 }
 
 .learnsimply-code-card-header {
@@ -7152,7 +7152,7 @@ width: 100%;
 }
 
 .learnsimply-code-keyword {
-  color: #c27aff;
+  color: var(--ls-accent, #c27aff);
 }
 
 .learnsimply-code-variable {
@@ -9137,7 +9137,7 @@ width: 100%;
   font-size: 20px;
   line-height: 1.47;
   text-align: center;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   letter-spacing: -0.6px;
   max-width: 723px;
   margin: 0;
@@ -9515,7 +9515,7 @@ width: 100%;
 /* شارة كورس */
 .course-badge {
   background: rgba(64, 119, 243, 0.05);
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   padding: 10px 15px;
   border-radius: 30px;
   font-size: 18px;
@@ -9539,7 +9539,7 @@ width: 100%;
 }
 
 .students-count-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
 }
 
@@ -9572,7 +9572,7 @@ width: 100%;
   width: 37px !important;
   height: 37px !important;
   border-radius: 50% !important;
-  background: #ffce31 !important;
+  background: var(--ls-star, #ffce31) !important;
   border: 2px solid #26292e;
   display: flex !important;
   align-items: center !important;
@@ -9598,7 +9598,7 @@ width: 100%;
 }
 
 .rating-text {
-  color: #ffbb54;
+  color: var(--ls-warning, #ffbb54);
   font-size: 14px;
   line-height: 2;
 }
@@ -9623,7 +9623,7 @@ width: 100%;
   line-height: 1.8;
   text-align: right;
   width: 100%;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   font-weight: 400;
   white-space: pre-line;
 }
@@ -9640,7 +9640,7 @@ width: 100%;
 .course-description li,
 .course-description strong,
 .course-description em {
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 /* استجابة للشاشات الصغيرة */
@@ -9784,7 +9784,7 @@ width: 100%;
   background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   border: none;
   padding: 10px 26px;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 14px;
   font-weight: 600;
@@ -9994,7 +9994,7 @@ width: 100%;
 }
 
 .stat-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   white-space: nowrap;
   margin: 0;
@@ -10033,7 +10033,7 @@ width: 100%;
 }
 
 .detail-label {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   font-weight: 500;
   white-space: nowrap;
@@ -10046,7 +10046,7 @@ width: 100%;
   background: rgba(255, 255, 255, 0.05);
   padding: 10px 15px;
   border-radius: 10px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   flex-shrink: 0;
   margin: 0;
@@ -10074,13 +10074,13 @@ width: 100%;
 }
 
 .current-price {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   font-size: 16px;
   font-weight: 600;
 }
 
 .old-price {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 14px;
   text-decoration: line-through;
 }
@@ -10163,7 +10163,7 @@ width: 100%;
 }
 
 .feature-text {
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
   font-size: 16px;
   line-height: 1;
   flex: 1;
@@ -10361,7 +10361,7 @@ width: 100%;
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 18px;
   line-height: 1.47;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: center;
   letter-spacing: -0.6px;
   max-width: 723px;
@@ -10442,7 +10442,7 @@ width: 100%;
   font-family: "IBM Plex Sans Arabic", "IBM Plex Sans Arabic", sans-serif;
   font-size: 16px;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
 }
 
@@ -10796,7 +10796,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 /* force white text in left details card to cover any stray lines */
 .course-details-card,
 .course-details-card * {
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 /* عناوين داخل نص الوصف */
@@ -11532,7 +11532,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .star-icon.filled path {
-  fill: #ffbb54;
+  fill: var(--ls-warning, #ffbb54);
 }
 
 .star-icon.empty path {
@@ -11554,7 +11554,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .progress-fill {
-  background: #ffbb54;
+  background: var(--ls-warning, #ffbb54);
   border-radius: 2.5px;
   position: absolute;
   inset: 0 0 16.67% auto;
@@ -11566,7 +11566,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: left;
   flex-shrink: 0;
 }
@@ -11698,7 +11698,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 14px;
   font-weight: 400;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   text-align: center;
 }
 
@@ -11740,7 +11740,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .review-date {
   font-size: 14px;
   font-weight: 400;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   flex-shrink: 0;
 }
@@ -11794,7 +11794,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 16px;
   font-weight: 600;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   cursor: pointer;
   text-decoration: none;
   border: none;
@@ -12177,7 +12177,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 14px;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: right;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -12219,7 +12219,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   justify-content: flex-end;
   gap: 5px;
   font-family: "IBM Plex Sans Arabic", sans-serif;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
 }
 
 .course-duration {
@@ -12401,7 +12401,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .error-404-section {
-  background: #141924;
+  background: var(--ls-surface, #141924);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 40px;
   width: 100%;
@@ -12521,7 +12521,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 236px;
   line-height: 256px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   letter-spacing: -4.72px;
   text-align: center;
   margin: 0;
@@ -12631,7 +12631,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .error-contact-container .learnsimply-contact-value {
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 16px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   letter-spacing: -0.32px;
 }
 

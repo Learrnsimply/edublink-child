@@ -265,7 +265,7 @@
         position: relative;
         background: linear-gradient(100deg, #b91c1c 0%, #dc2626 45%, #ea580c 100%);
         padding: 12px 24px;
-        color: #ffffff;
+        color: var(--ls-text, #ffffff);
         overflow: hidden;
       }
 
@@ -305,7 +305,7 @@
       }
 
       .promo-pill {
-        background: #ffffff;
+        background: var(--ls-text, #ffffff);
         color: #b91c1c;
         font-size: 13px;
         font-weight: 800;
@@ -370,7 +370,7 @@
         font-size: 24px;
         font-weight: 900;
         line-height: 1;
-        color: #ffffff;
+        color: var(--ls-text, #ffffff);
         font-family: 'Segoe UI', Arial, sans-serif;
         font-variant-numeric: tabular-nums;
       }
@@ -392,7 +392,7 @@
 
       .promo-link {
         color: #b91c1c !important;
-        background: #ffffff;
+        background: var(--ls-text, #ffffff);
         text-decoration: none;
         font-weight: 800;
         font-size: 15px;
@@ -488,7 +488,7 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #18A963;
+        background: var(--ls-success, #18a963);
         box-shadow: 0 0 0 0 rgba(24, 169, 99, 0.6);
         animation: dotPulse 1.8s ease-out infinite;
       }
@@ -503,17 +503,17 @@
         font-size: 52px;
         font-weight: 800;
         line-height: 1.22;
-        color: #ffffff;
+        color: var(--ls-text, #ffffff);
         margin: 0;
         letter-spacing: -0.5px;
       }
 
       .hero-title-accent {
-        background: linear-gradient(120deg, #4077F3 0%, #18A963 100%);
+        background: linear-gradient(120deg, var(--ls-blue, #4077f3) 0%, var(--ls-success, #18a963) 100%);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
-        color: #4077F3;
+        color: var(--ls-blue, #4077f3);
       }
 
       .hero-description {
@@ -580,7 +580,7 @@
 
       .hero-cta-note svg {
         flex-shrink: 0;
-        color: #18A963;
+        color: var(--ls-success, #18a963);
       }
 
       /* Features */
@@ -659,7 +659,7 @@
       .counter-static {
         font-size: 50px;
         font-weight: 900;
-        color: #ffffff;
+        color: var(--ls-text, #ffffff);
         font-family: 'Segoe UI', Arial, sans-serif;
         line-height: 1;
       }
@@ -673,7 +673,7 @@
       .stat-suffix {
         font-size: 26px;
         font-weight: 800;
-        color: #4077F3;
+        color: var(--ls-blue, #4077f3);
       }
 
       .stat-text {

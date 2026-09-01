@@ -158,7 +158,7 @@
 .learnsimply-promo-cta-text {
   font-family: var(--learnsimply-font-primary, "Cairo", sans-serif);
   font-size: 15px;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   line-height: 22px;
   white-space: nowrap;
   font-weight: 700;
