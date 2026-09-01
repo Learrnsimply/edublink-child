@@ -5515,7 +5515,10 @@ width: 100%;
   }
 }
 
-@media (min-width: 769px) {
+/* القائمة بتختفي عند 1200px (شوف قاعدة max-width: 1200px فوق)، فزرار الموبايل
+   لازم يفضل ظاهر لحد 1200. كان min-width: 769px وده كان بيخفيه من 769 لـ 1200
+   فيفضل الهيدر من غير أي وسيلة تنقل في النطاق ده. */
+@media (min-width: 1201px) {
   .learnsimply-header-mobile-toggle {
     display: none;
   }
