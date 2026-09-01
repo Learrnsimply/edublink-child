@@ -41,6 +41,47 @@ add_action('template_redirect', function () {
 }, 0);
 
 /**
+ * Design tokens — the single source of truth for every colour, size, radius,
+ * shadow and duration in the theme. Loaded at priority 0 so it is the FIRST
+ * stylesheet in the document.
+ *
+ * Order is a convention here, not a requirement: a custom property is resolved
+ * on the element at computed-value time, so var(--ls-*) works even from a sheet
+ * that loaded earlier. Loading first states the dependency plainly, and leaves
+ * later :root blocks free to override a token deliberately (a page that wants
+ * its own theme can redefine one in a scoped block and win on source order).
+ *
+ * Every var(--ls-*) reference in the theme carries the original literal as a
+ * fallback — var(--ls-blue, #4077f3) — so the site renders identically even if
+ * this file is missing (a deploy that skips it, a 404, an over-eager cache).
+ * That fallback is a safety net, not a second source of truth: when this file
+ * loads, which is the normal case, the token always wins.
+ *
+ * Rule for all new CSS: use var(--ls-*). No new raw hex values.
+ * Reference: assets/global/tokens.css
+ */
+add_action('wp_enqueue_scripts', 'learnsimply_enqueue_design_tokens', 0);
+function learnsimply_enqueue_design_tokens()
+{
+	$tokens = get_stylesheet_directory() . '/assets/global/tokens.css';
+
+	if (file_exists($tokens)) {
+		wp_enqueue_style(
+			'ls-tokens',
+			get_stylesheet_directory_uri() . '/assets/global/tokens.css',
+			array(),
+			filemtime($tokens)
+		);
+	}
+}
+
+/**
+ * The login screen renders outside wp_enqueue_scripts, so the tokens have to
+ * be enqueued there separately — assets/wp-login/style.css depends on them.
+ */
+add_action('login_enqueue_scripts', 'learnsimply_enqueue_design_tokens', 0);
+
+/**
  * Enqueue IBM Plex Sans Arabic from Google Fonts (site-wide font)
  */
 add_action('wp_enqueue_scripts', 'learnsimply_enqueue_ibm_plex_font', 1);
@@ -1264,7 +1305,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260824-11');
+	define('LS_ASSETS_VERSION', '20260901-1');
 }
 
 /**

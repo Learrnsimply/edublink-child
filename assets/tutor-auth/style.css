@@ -14,16 +14,16 @@
    ========================================================================== */
 
 .tutor-login-wrap {
-    --sp-blue: #4077f3;
+    --sp-blue: var(--ls-blue, #4077f3);
     --sp-blue-light: #658FF2;
-    --sp-blue-soft: rgba(64, 119, 243, 0.12);
-    --sp-blue-glow: rgba(64, 119, 243, 0.22);
-    --sp-white: #ffffff;
+    --sp-blue-soft: var(--ls-blue-soft, rgba(64, 119, 243, 0.12));
+    --sp-blue-glow: var(--ls-blue-glow, rgba(64, 119, 243, 0.22));
+    --sp-white: var(--ls-text, #ffffff);
     --sp-white-soft: #d0d4e0;
     --sp-gray: #94a3b8;
     --sp-gray-dim: #64748b;
-    --sp-green: #18a963;
-    --sp-red: #f96a7b;
+    --sp-green: var(--ls-success, #18a963);
+    --sp-red: var(--ls-danger, #f96a7b);
     --sp-font: "IBM Plex Sans Arabic";
     --sp-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     /* Tutor variable overrides */

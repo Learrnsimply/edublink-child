@@ -11,19 +11,19 @@
    ========================================================================== */
 
 :root {
-    --lsw-bg: #0a0f1a;
+    --lsw-bg: var(--ls-bg, #0a0f1a);
     --lsw-card: #111827;
-    --lsw-blue: #4077f3;
+    --lsw-blue: var(--ls-blue, #4077f3);
     --lsw-blue-light: #658FF2;
-    --lsw-blue-soft: rgba(64, 119, 243, 0.12);
-    --lsw-blue-glow: rgba(64, 119, 243, 0.22);
-    --lsw-white: #ffffff;
+    --lsw-blue-soft: var(--ls-blue-soft, rgba(64, 119, 243, 0.12));
+    --lsw-blue-glow: var(--ls-blue-glow, rgba(64, 119, 243, 0.22));
+    --lsw-white: var(--ls-text, #ffffff);
     --lsw-white-soft: #d0d4e0;
     --lsw-gray: #94a3b8;
     --lsw-gray-dim: #64748b;
     --lsw-green: #2ecc87;
-    --lsw-red: #f96a7b;
-    --lsw-border: rgba(255, 255, 255, 0.08);
+    --lsw-red: var(--ls-danger, #f96a7b);
+    --lsw-border: var(--ls-border, rgba(255, 255, 255, 0.08));
     --lsw-font: "IBM Plex Sans Arabic", -apple-system, sans-serif;
 }
 
