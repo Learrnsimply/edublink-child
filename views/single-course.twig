@@ -150,7 +150,7 @@
                 {% endif %}
               {% elseif is_purchasable and not is_free %}
                 {% if product_id %}
-                <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="buy-button">اشتر الآن</a>
+                <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="buy-button">اشتري الآن</a>
                 {% else %}
                 {% if is_user_logged_in %}
                   <form method="POST" style="width: 100%;">
@@ -986,7 +986,7 @@
           <span class="course-sticky-buy__current">{{ regular_price_formatted }} <span class="course-sticky-buy__cur">ج.م</span></span>
         {% endif %}
       </div>
-      <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="course-sticky-buy__btn buy-button">اشتر الآن</a>
+      <a href="{{ site.url }}/checkout/?add-to-cart={{ product_id }}" class="course-sticky-buy__btn buy-button">اشتري الآن</a>
     </div>
     {% endif %}
 
