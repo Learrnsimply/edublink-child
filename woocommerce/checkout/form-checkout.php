@@ -40,10 +40,14 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
 			<?php do_action('woocommerce_checkout_before_customer_details'); ?>
 
 			<?php
-			// Billing fields are visually hidden (design shows no billing form);
-			// they stay in the DOM so pre-filled values are submitted normally.
+			// A signed-in buyer has their name and email on file, so the block
+			// stays hidden and submits the pre-filled values. A first-time buyer
+			// has to type them — the account is created from what they enter —
+			// so for them the block is visible. Hiding it from a guest would
+			// leave them staring at a required-field error with no field to fill.
+			$ls_details_class = is_user_logged_in() ? 'ls-customer-details-hidden' : 'ls-customer-details-visible';
 			?>
-			<div class="ls-customer-details-hidden">
+			<div class="<?php echo esc_attr($ls_details_class); ?>">
 				<div class="col2-set" id="customer_details">
 					<div class="col-1">
 						<?php do_action('woocommerce_checkout_billing'); ?>

@@ -1470,12 +1470,68 @@ body.woocommerce-checkout body,
    on this site the order review + payment are nested inside them, so
    hiding the wrapper nukes the whole checkout form. Hide the billing
    sub-sections instead; the emptied wrapper collapses on its own. */
+/* Hidden only inside the hidden wrapper — a guest needs these fields on screen.
+   Scoping them to .ls-customer-details-hidden means the same rules stop
+   applying the moment the template marks the block visible. */
 .woocommerce-checkout .ls-customer-details-hidden,
-.woocommerce-checkout .woocommerce-billing-fields,
-.woocommerce-checkout .woocommerce-additional-fields,
+.woocommerce-checkout .ls-customer-details-hidden .woocommerce-billing-fields,
+.woocommerce-checkout .ls-customer-details-hidden .woocommerce-additional-fields,
 .woocommerce-checkout .woocommerce-shipping-fields,
 .woocommerce-checkout #order_comments_field {
     display: none !important;
+}
+
+/* ─── Guest details: the two fields a first-time buyer fills ─── */
+.woocommerce-checkout .ls-customer-details-visible {
+    margin-bottom: var(--ls-space-6, 24px);
+}
+.woocommerce-checkout .ls-customer-details-visible .col2-set,
+.woocommerce-checkout .ls-customer-details-visible .col-1,
+.woocommerce-checkout .ls-customer-details-visible .col-2 {
+    width: 100% !important;
+    float: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.woocommerce-checkout .ls-customer-details-visible .woocommerce-billing-fields h3 {
+    font-size: var(--ls-text-lg, 18px) !important;
+    font-weight: var(--ls-weight-semibold, 600) !important;
+    color: var(--ls-text, #ffffff) !important;
+    margin: 0 0 var(--ls-space-4, 16px) !important;
+}
+.woocommerce-checkout .ls-customer-details-visible .form-row {
+    padding: 0 !important;
+    margin: 0 0 var(--ls-space-4, 16px) !important;
+    width: 100% !important;
+}
+.woocommerce-checkout .ls-customer-details-visible label {
+    display: block !important;
+    font-size: var(--ls-text-sm, 14px) !important;
+    color: var(--ls-text-muted, #999eb2) !important;
+    margin-bottom: var(--ls-space-2, 8px) !important;
+}
+.woocommerce-checkout .ls-customer-details-visible input.input-text {
+    width: 100% !important;
+    background: var(--ls-surface-2, #1b2133) !important;
+    border: 1px solid var(--ls-border, rgba(255, 255, 255, 0.08)) !important;
+    border-radius: var(--ls-radius, 10px) !important;
+    color: var(--ls-text, #ffffff) !important;
+    font-family: var(--ls-font, "IBM Plex Sans Arabic") !important;
+    font-size: var(--ls-text-base, 16px) !important;
+    padding: 14px 16px !important;
+    transition: border-color var(--ls-duration, 0.3s) var(--ls-ease, ease) !important;
+}
+.woocommerce-checkout .ls-customer-details-visible input.input-text:focus {
+    outline: none !important;
+    border-color: var(--ls-blue, #4077f3) !important;
+    box-shadow: 0 0 0 3px var(--ls-blue-soft, rgba(64, 119, 243, 0.12)) !important;
+}
+.woocommerce-checkout .ls-customer-details-visible input.input-text::placeholder {
+    color: var(--ls-text-dim, #7a7f96) !important;
+}
+.woocommerce-checkout .ls-customer-details-visible .required {
+    color: var(--ls-danger, #f96a7b) !important;
+    text-decoration: none !important;
 }
 
 /* Collapse the now-empty customer-details wrapper */

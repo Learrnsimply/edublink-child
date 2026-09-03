@@ -1305,7 +1305,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260901-1');
+	define('LS_ASSETS_VERSION', '20260903-1');
 }
 
 /**
@@ -3378,11 +3378,26 @@ function learnsimply_save_single_user_pledge($order_id)
 add_filter('woocommerce_checkout_fields', 'learnsimply_strip_checkout_fields', 9999);
 function learnsimply_strip_checkout_fields($fields)
 {
+	// The name stays. Tutor prints it on the certificate and wp-admin lists
+	// orders by it, so an account created without one produces a blank
+	// certificate and an order nobody can identify.
+	$keep = array('billing_email', 'billing_first_name');
+
 	if (isset($fields['billing'])) {
 		foreach ($fields['billing'] as $key => $field) {
-			if ('billing_email' !== $key) {
+			if (!in_array($key, $keep, true)) {
 				unset($fields['billing'][$key]);
 			}
+		}
+		if (isset($fields['billing']['billing_first_name'])) {
+			$fields['billing']['billing_first_name']['label']    = 'الاسم';
+			$fields['billing']['billing_first_name']['required'] = true;
+			$fields['billing']['billing_first_name']['priority']  = 10;
+			$fields['billing']['billing_first_name']['class']     = array('form-row-wide');
+		}
+		if (isset($fields['billing']['billing_email'])) {
+			$fields['billing']['billing_email']['priority'] = 20;
+			$fields['billing']['billing_email']['class']    = array('form-row-wide');
 		}
 	}
 	$fields['shipping'] = array();
@@ -3399,6 +3414,9 @@ function learnsimply_fill_order_from_account($order)
 {
 	$user = wp_get_current_user();
 	if (!$user || !$user->ID) {
+		// An account is always created at checkout, so this branch means
+		// something upstream failed. Leave whatever the buyer typed on the
+		// order rather than blanking it.
 		return;
 	}
 	if (!$order->get_billing_first_name()) {
@@ -3419,25 +3437,104 @@ function learnsimply_fill_order_from_account($order)
 }
 
 /**
- * Guests cannot fill the hidden billing form, so checkout requires an account:
- * instead of showing the login form/notice at the top of the checkout page,
- * send logged-out visitors to the login page and bring them back afterwards.
+ * Copy the checkout name onto the account WooCommerce just created.
+ *
+ * With username and password generated, a new account carries no name at all —
+ * its display name would be the generated username. Tutor prints that on the
+ * certificate, so without this the buyer's certificate reads like a login
+ * handle. Runs on the customer-creation filter so it lands before the order
+ * and before enrolment.
  */
-add_action('template_redirect', 'learnsimply_checkout_require_login');
-function learnsimply_checkout_require_login()
+add_filter('woocommerce_new_customer_data', 'learnsimply_name_new_customer');
+function learnsimply_name_new_customer($data)
 {
-	if (!function_exists('is_checkout') || !is_checkout() || is_user_logged_in()) {
-		return;
+	$typed = isset($_POST['billing_first_name'])
+		? sanitize_text_field(wp_unslash($_POST['billing_first_name']))
+		: '';
+
+	if ('' === $typed) {
+		return $data;
 	}
-	if (is_wc_endpoint_url('order-received') || is_wc_endpoint_url('order-pay')) {
-		return;
-	}
-	// The site's login lives on the Tutor dashboard page (same URL the header
-	// "تسجيل دخول" button uses), not on the WooCommerce My Account page.
-	$login_url = add_query_arg('redirect_to', rawurlencode(wc_get_checkout_url()), home_url('/dashboard/'));
-	wp_safe_redirect($login_url);
-	exit;
+
+	// "أحمد عادل" -> first "أحمد", last "عادل". A single word stays first-only.
+	$parts = preg_split('/\s+/u', trim($typed), 2);
+	$data['first_name'] = $parts[0];
+	$data['last_name']  = isset($parts[1]) ? $parts[1] : '';
+	$data['display_name'] = $typed;
+
+	return $data;
 }
+
+/**
+ * WooCommerce sets display_name from the generated username after the account
+ * is created, so it has to be set back afterwards too.
+ */
+add_action('woocommerce_created_customer', 'learnsimply_set_new_customer_display_name', 10, 1);
+function learnsimply_set_new_customer_display_name($customer_id)
+{
+	$typed = isset($_POST['billing_first_name'])
+		? sanitize_text_field(wp_unslash($_POST['billing_first_name']))
+		: '';
+
+	if ('' === $typed) {
+		return;
+	}
+
+	wp_update_user(array(
+		'ID'           => $customer_id,
+		'display_name' => $typed,
+		'nickname'     => $typed,
+	));
+}
+
+/**
+ * Checkout no longer sends logged-out visitors to a login page.
+ *
+ * It used to: the billing form is stripped down to the email, so there was no
+ * name to put on the order unless the buyer already had an account, and
+ * template_redirect pushed them to /dashboard/ to sign in first. Measured over
+ * 28 days, 657 carts produced 36 orders — 94.5% left, and the barrier is where
+ * they left.
+ *
+ * What replaces it: the account is still created — this is a course platform
+ * and Tutor enrols a *user*, so an order with no account behind it would take
+ * the money and hand over nothing — but the buyer never sees it happen.
+ * WooCommerce builds the account from the checkout email, generating the
+ * username and password and mailing them out, so the two fields on the page
+ * (name and email) are the whole of it.
+ *
+ * The settings are forced here rather than left in wp-admin so the behaviour
+ * travels with the code and cannot be switched off by accident.
+ */
+add_filter('option_woocommerce_enable_guest_checkout', 'learnsimply_force_account_creation');
+function learnsimply_force_account_creation($value)
+{
+	// 'no' keeps an account attached to every order — required for enrolment.
+	return 'no';
+}
+
+add_filter('option_woocommerce_enable_signup_and_login_from_checkout', 'learnsimply_allow_signup_at_checkout');
+function learnsimply_allow_signup_at_checkout($value)
+{
+	// Lets that account be created during checkout instead of before it.
+	return 'yes';
+}
+
+add_filter('option_woocommerce_registration_generate_username', 'learnsimply_generate_account_credentials');
+add_filter('option_woocommerce_registration_generate_password', 'learnsimply_generate_account_credentials');
+function learnsimply_generate_account_credentials($value)
+{
+	// Username and password are derived and emailed, so the buyer is never
+	// asked to invent either one at the moment of purchase.
+	return 'yes';
+}
+
+/**
+ * Returning customers need a way in, since WooCommerce refuses an email that
+ * already has an account. The login form was removed from the checkout page
+ * when the redirect existed; with the redirect gone it has to come back.
+ */
+add_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10);
 
 /**
  * After logging in through the Tutor dashboard form, honour the redirect_to
@@ -3471,11 +3568,6 @@ function learnsimply_login_redirect_back_to_checkout($redirect, $user)
 	return $redirect;
 }
 
-/**
- * The checkout page no longer hosts the login form — logged-out users are
- * redirected before rendering — so drop the built-in login form output too.
- */
-remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10);
 
 /**
  * Show the pledge inside the admin order screen (billing address block).
