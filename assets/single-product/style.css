@@ -54,7 +54,7 @@
 /* Course badge */
 .course-badge {
   background: rgba(64, 119, 243, 0.05);
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   padding: 10px 15px;
   border-radius: 30px;
   font-size: 18px;
@@ -78,7 +78,7 @@
 }
 
 .students-count-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
 }
 
@@ -111,7 +111,7 @@
   width: 37px !important;
   height: 37px !important;
   border-radius: 50% !important;
-  background: #ffce31 !important;
+  background: var(--ls-star, #ffce31) !important;
   border: 2px solid #26292e;
   display: flex !important;
   align-items: center !important;
@@ -137,7 +137,7 @@
 }
 
 .rating-text {
-  color: #ffbb54;
+  color: var(--ls-warning, #ffbb54);
   font-size: 14px;
   line-height: 2;
 }
@@ -162,7 +162,7 @@
   line-height: 2.2;
   text-align: right;
   width: 100%;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   font-weight: 400;
   white-space: pre-line;
 }
@@ -189,7 +189,7 @@
 }
 
 .add-review-section .section-title {
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 22px;
   font-weight: 600;
@@ -271,7 +271,7 @@
   background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   border: none;
   padding: 10px 26px;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 14px;
   font-weight: 600;
@@ -302,7 +302,7 @@
   height: 16px;
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #ffffff;
+  border-top-color: var(--ls-text, #ffffff);
   transform: translateY(-50%);
   animation: learnsimply-spin 0.8s linear infinite;
 }
@@ -493,7 +493,7 @@
   background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
   border: none;
   padding: 10px 26px;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic";
   font-size: 14px;
   font-weight: 600;
@@ -1021,7 +1021,7 @@
 }
 
 .badge-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 14px;
   font-weight: 400;
 }
@@ -1044,7 +1044,7 @@
   line-height: 1.45;
   text-align: right;
   width: 100%;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   letter-spacing: -0.5px;
 }
 
@@ -1241,7 +1241,7 @@
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 18px;
   line-height: 1.47;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: center;
   letter-spacing: -0.6px;
   max-width: 723px;
@@ -1322,7 +1322,7 @@
   font-family: "IBM Plex Sans Arabic", "IBM Plex Sans Arabic", sans-serif;
   font-size: 16px;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
 }
 
@@ -2390,7 +2390,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .star-icon.filled path {
-  fill: #ffbb54;
+  fill: var(--ls-warning, #ffbb54);
 }
 
 .star-icon.empty path {
@@ -2412,7 +2412,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .progress-fill {
-  background: #ffbb54;
+  background: var(--ls-warning, #ffbb54);
   border-radius: 2.5px;
   position: absolute;
   inset: 0 0 16.67% auto;
@@ -2424,7 +2424,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: left;
   flex-shrink: 0;
 }
@@ -2562,7 +2562,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 14px;
   font-weight: 400;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   text-align: center;
 }
 
@@ -2604,7 +2604,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .review-date {
   font-size: 14px;
   font-weight: 400;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   flex-shrink: 0;
 }
@@ -2669,7 +2669,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 16px;
   font-weight: 600;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   cursor: pointer;
   text-decoration: none;
   border: none;
@@ -3068,7 +3068,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 14px;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: right;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -3110,7 +3110,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   justify-content: flex-end;
   gap: 5px;
   font-family: "IBM Plex Sans Arabic", sans-serif;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
 }
 
 .course-duration {
@@ -3292,7 +3292,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .error-404-section {
-  background: #141924;
+  background: var(--ls-surface, #141924);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 40px;
   width: 100%;
@@ -3412,7 +3412,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 236px;
   line-height: 256px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   letter-spacing: -4.72px;
   text-align: center;
   margin: 0;
@@ -3522,7 +3522,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .error-contact-container .learnsimply-contact-value {
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 16px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   letter-spacing: -0.32px;
 }
 
@@ -3798,7 +3798,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .students-badge .badge-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 14px;
 }
@@ -3817,8 +3817,8 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .students-badge .avatar-badge {
-  background: linear-gradient(135deg, #ffce31, #f5a623);
-  color: #fff;
+  background: linear-gradient(135deg, var(--ls-star, #ffce31), #f5a623);
+  color: var(--ls-text, #ffffff);
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 9px;
   font-weight: bold;

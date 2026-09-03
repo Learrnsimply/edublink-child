@@ -5,7 +5,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .ls-vibe-body {
-    background: #0a0f1a;
+    background: var(--ls-bg, #0a0f1a);
 }
 
 /* Safety: never let any SVG blow up past its container */
@@ -116,11 +116,11 @@
     line-height: 1.05;
     margin: 0 0 20px;
     letter-spacing: -0.02em;
-    color: #ffffff;     /* hard guarantee that "كورس" reads white */
+    color: var(--ls-text, #ffffff);     /* hard guarantee that "كورس" reads white */
 }
 .lvc-hero-title-ar {
     display: inline;
-    color: #ffffff;     /* hard guarantee that "كورس" reads white */
+    color: var(--ls-text, #ffffff);     /* hard guarantee that "كورس" reads white */
 }
 .lvc-hero-title-en {
     display: inline-block;
@@ -295,7 +295,7 @@
     gap: 8px;
     padding: 10px 18px;
     background: linear-gradient(135deg, var(--lvc-grad-from), var(--lvc-grad-to));
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     font-size: 13px;
     font-weight: 700;
     border-radius: 999px;
@@ -327,13 +327,13 @@
 
 .lvc-btn-primary {
     background: linear-gradient(135deg, var(--lvc-grad-from), var(--lvc-grad-to));
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
 }
 .lvc-btn-primary:hover {
     transform: translateY(-1px);
     box-shadow: 0 12px 32px rgba(124, 58, 237, 0.5);
-    color: #fff;
+    color: var(--ls-text, #ffffff);
 }
 
 .lvc-btn-ghost {
@@ -381,7 +381,7 @@
     inset: 0;
     display: block;
     text-decoration: none;
-    color: #fff;
+    color: var(--ls-text, #ffffff);
 }
 .lvc-video-poster img {
     width: 100%;
@@ -414,7 +414,7 @@
 .lvc-video-play svg {
     width: 36px;
     height: 36px;
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     margin-inline-start: 4px; /* optical alignment */
 }
 
@@ -424,7 +424,7 @@
     inset-inline-start: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     padding: 10px 20px;
     border-radius: 999px;
     font-size: 14px;
@@ -500,7 +500,7 @@
 }
 .lvc-step-nav-pill.is-active {
     background: linear-gradient(135deg, var(--lvc-grad-from), var(--lvc-grad-to));
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     border-color: transparent;
     box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
 }
@@ -563,7 +563,7 @@
     width: 64px;
     height: 64px;
     background: linear-gradient(135deg, var(--lvc-grad-from), var(--lvc-grad-to));
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -699,7 +699,7 @@
     width: 24px;
     height: 24px;
     background: var(--chip-color, #4077f3);
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     font-size: 11px;
     font-weight: 700;
     border-radius: 50%;
@@ -738,7 +738,7 @@
     justify-content: center;
     width: 28px;
     height: 28px;
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     font-size: 11px;
     font-weight: 700;
     font-family: 'JetBrains Mono', monospace;
@@ -865,7 +865,7 @@
     background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     padding: 4px 12px;
     border-radius: 6px;
     font-size: 12px;
@@ -881,7 +881,7 @@
     background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     padding: 5px 12px;
     border-radius: 999px;
     font-size: 11px;
@@ -971,13 +971,13 @@
 .lvc-course-cta:hover {
     background: linear-gradient(135deg, var(--lvc-grad-from), var(--lvc-grad-to));
     border-color: transparent;
-    color: #fff;
+    color: var(--ls-text, #ffffff);
     box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
 }
 .lvc-course--highlight .lvc-course-cta {
     background: linear-gradient(135deg, var(--lvc-grad-from), var(--lvc-grad-to));
     border-color: transparent;
-    color: #fff;
+    color: var(--ls-text, #ffffff);
 }
 .lvc-course--highlight .lvc-course-cta:hover {
     box-shadow: 0 8px 20px rgba(124, 58, 237, 0.5);

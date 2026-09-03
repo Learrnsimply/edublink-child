@@ -594,11 +594,11 @@ body.tutor-screen-frontend-dashboard .entry-content {
 
 /* Catch-all: any Tutor LMS bg-white / bg-light utility inside dashboard tables */
 .tutor-wrap.tutor-dashboard .tutor-table-responsive .tutor-bg-white,
-.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background: #fff"],
-.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background:#fff"],
+.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background: var(--ls-text, #ffffff)"],
+.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background:var(--ls-text, #ffffff)"],
 .tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background: white"],
-.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background-color: #fff"],
-.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background-color:#fff"] {
+.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background-color: var(--ls-text, #ffffff)"],
+.tutor-wrap.tutor-dashboard .tutor-table-responsive [style*="background-color:var(--ls-text, #ffffff)"] {
     background: var(--db-card) !important;
     background-color: var(--db-card) !important;
 }
@@ -811,7 +811,7 @@ body.tutor-screen-frontend-dashboard .entry-content {
 .tutor-wrap.tutor-dashboard .tutor-btn-tertiary span,
 .tutor-wrap.tutor-dashboard .tutor-btn-tertiary i {
     background-color: var(--db-blue) !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     border: none !important;
     opacity: 1 !important;
     visibility: visible !important;
@@ -819,7 +819,7 @@ body.tutor-screen-frontend-dashboard .entry-content {
 
 .tutor-wrap.tutor-dashboard .tutor-btn-tertiary:hover {
     background-color: #3366d9 !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
 }
 
 /* Danger / delete buttons */
@@ -1423,7 +1423,7 @@ body.tutor-screen-frontend-dashboard .entry-content {
 .tutor-empty-state .tutor-fs-6,
 .tutor-wrap.tutor-dashboard .tutor-no-data-found p,
 .tutor-wrap.tutor-dashboard .tutor-empty-state p {
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
 }
 
 /* WP Editor (About You) - Global Aggressive Dark Theme Fix */
@@ -1438,20 +1438,20 @@ body.tutor-screen-frontend-dashboard .entry-content {
 [id^="wp-"][id$="-container"] {
     background-color: #1a2232 !important;
     background: #1a2232 !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     border-color: rgba(255,255,255,0.1) !important;
 }
 
 .quicktags-toolbar input {
     background: rgba(255,255,255,0.08) !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     border: 1px solid rgba(255,255,255,0.1) !important;
 }
 
 /* Ensure editor icons (Dashicons) are visible */
 .wp-core-ui .dashicons, 
 .wp-core-ui .dashicons-before:before {
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
 }
 
 /* Force ALL dropdowns and selects in dashboard to be dark */
@@ -1462,13 +1462,13 @@ body.tutor-screen-frontend-dashboard .entry-content {
 .tutor-wrap.tutor-dashboard [class*="tutor-"][class*="-dropdown"] {
     background-color: #1a2232 !important;
     background: #1a2232 !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     border-color: rgba(255,255,255,0.1) !important;
 }
 
 .tutor-wrap.tutor-dashboard select option {
     background-color: #1a2232 !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
 }
 
 /* ==========================================================
@@ -1484,7 +1484,7 @@ body .tutor-wrap .woocommerce-ResetPassword {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 20px !important;
     padding: 50px 40px !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     max-width: 600px !important;
     margin: 100px auto !important; /* Added more space from top and bottom */
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3) !important;
@@ -1505,7 +1505,7 @@ body .tutor-wrap .woocommerce-ResetPassword {
 .tutor-dashboard-content-inner form.lost_password input.input-text {
     background: rgba(255, 255, 255, 0.04) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     border-radius: 12px !important;
     padding: 14px 20px !important;
     width: 100% !important;
@@ -1516,7 +1516,7 @@ body .tutor-wrap .woocommerce-ResetPassword {
 .tutor-dashboard-content-inner form.lost_password .button,
 .tutor-dashboard-content-inner .woocommerce-ResetPassword button[type="submit"] {
     background: var(--ls-blue-cta, #3566d9) !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     border: none !important;
     border-radius: 12px !important;
     padding: 14px 32px !important;
@@ -1535,7 +1535,7 @@ body .tutor-wrap .woocommerce-ResetPassword {
 .tutor-dashboard-content-inner .woocommerce-info {
     background: rgba(24, 169, 99, 0.08) !important;
     border: 1px solid rgba(24, 169, 99, 0.2) !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     border-radius: 14px !important;
     padding: 20px 24px !important;
     margin-bottom: 24px !important;
@@ -1545,7 +1545,7 @@ body .tutor-wrap .woocommerce-ResetPassword {
 
 .tutor-dashboard-content-inner .woocommerce-message::before,
 .tutor-dashboard-content-inner .woocommerce-info::before {
-    color: #18a963 !important;
+    color: var(--ls-success, #18a963) !important;
 }
 
 /* ==========================================================
@@ -1573,7 +1573,7 @@ body form.tutor-forgot-password-form {
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 20px !important;
     padding: 32px 28px !important;
-    color: #ffffff !important;
+    color: var(--ls-text, #ffffff) !important;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3) !important;
 }
 
@@ -1594,7 +1594,7 @@ body .tutor-alert.tutor-alert-warning {
     background: rgba(249, 106, 123, 0.1) !important;
     border: 1px solid rgba(249, 106, 123, 0.3) !important;
     border-radius: 12px !important;
-    color: #f96a7b !important;
+    color: var(--ls-danger, #f96a7b) !important;
     padding: 14px 18px !important;
 }
 
@@ -1604,7 +1604,7 @@ body .tutor-alert.tutor-alert-danger .tutor-alert-content,
 body .tutor-alert.tutor-alert-danger .tutor-alert-content *,
 body .tutor-alert.tutor-alert-warning .tutor-alert-content,
 body .tutor-alert.tutor-alert-warning .tutor-alert-content * {
-    color: #f96a7b !important;
+    color: var(--ls-danger, #f96a7b) !important;
 }
 
 body .tutor-alert.tutor-alert-success,

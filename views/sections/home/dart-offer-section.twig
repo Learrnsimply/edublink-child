@@ -7,7 +7,7 @@
 .ls-dart-section .learnsimply-section-container{max-width:1440px;margin:0 auto;padding:30px 16px 8px}
 .ls-dart{position:relative;background:linear-gradient(135deg,#0b1026 0%,#141b3d 55%,#0d1220 100%);border:1px solid rgba(64,119,243,0.25);border-radius:24px;overflow:hidden;display:flex;align-items:center;gap:32px;padding:40px 44px}
 .ls-dart-glow{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none}
-.ls-dart-glow-1{width:380px;height:380px;background:#4077f3;opacity:0.18;top:-120px;left:-60px}
+.ls-dart-glow-1{width:380px;height:380px;background:var(--ls-blue, #4077f3);opacity:0.18;top:-120px;left:-60px}
 .ls-dart-glow-2{width:300px;height:300px;background:#01c2f3;opacity:0.10;bottom:-140px;right:-40px}
 .ls-dart-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(64,119,243,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(64,119,243,0.05) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
 
@@ -16,7 +16,7 @@
 .ls-dart-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:100px;padding:6px 18px;margin-bottom:14px;animation:ls-dart-badge-pulse 2s ease-in-out infinite}
 .ls-dart-badge-text{color:#ff6b6b;font-size:13px;font-weight:600}
 @keyframes ls-dart-badge-pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.35)}50%{box-shadow:0 0 0 10px rgba(239,68,68,0)}}
-.ls-dart-title{color:#fff;font-size:32px;font-weight:700;line-height:1.5;margin:0 0 8px}
+.ls-dart-title{color:var(--ls-text, #ffffff);font-size:32px;font-weight:700;line-height:1.5;margin:0 0 8px}
 .ls-dart-title span{background:linear-gradient(135deg,#5b9df9,#01c2f3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .ls-dart-subtitle{color:#93a0c2;font-size:15px;line-height:1.8;margin:0 0 20px;max-width:520px}
 
@@ -24,7 +24,7 @@
 .ls-dart-timer-label-top{color:#8893b0;font-size:13px;margin:0 0 8px;display:flex;align-items:center;gap:6px}
 .ls-dart-timer{display:flex;gap:10px;margin-bottom:22px}
 .ls-dart-timer-box{background:rgba(64,119,243,0.1);border:1px solid rgba(64,119,243,0.25);border-radius:12px;padding:12px 6px;min-width:72px;text-align:center;transition:background .4s,border-color .4s}
-.ls-dart-timer-num{color:#fff;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums;transition:transform .3s,color .3s}
+.ls-dart-timer-num{color:var(--ls-text, #ffffff);font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums;transition:transform .3s,color .3s}
 .ls-dart-timer-num.ls-dart-flip{animation:ls-dart-num-flip .4s ease-out}
 @keyframes ls-dart-num-flip{0%{transform:translateY(-8px);opacity:.3}100%{transform:translateY(0);opacity:1}}
 .ls-dart-timer-unit{color:#6b7394;font-size:11px}
@@ -38,14 +38,14 @@
 
 /* ── Price + CTA ── */
 .ls-dart-price-row{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
-.ls-dart-price-new{color:#fff;font-size:34px;font-weight:700;line-height:1}
+.ls-dart-price-new{color:var(--ls-text, #ffffff);font-size:34px;font-weight:700;line-height:1}
 .ls-dart-price-new small{font-size:16px;font-weight:500;color:#93a0c2}
 .ls-dart-price-old{color:#6b7394;font-size:18px;text-decoration:line-through}
 .ls-dart-price-save{background:rgba(24,169,99,0.14);color:#2ecc80;font-size:13px;font-weight:600;padding:6px 14px;border-radius:8px;animation:ls-dart-save-pulse 2s ease-in-out infinite .5s}
 @keyframes ls-dart-save-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .ls-dart-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.ls-dart-btn{display:inline-flex;align-items:center;gap:10px;background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);color:#fff;font-size:16px;font-weight:600;padding:15px 34px;border-radius:12px;text-decoration:none;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;animation:ls-dart-btn-glow 2.5s ease-in-out infinite}
-.ls-dart-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(64,119,243,0.4);color:#fff;text-decoration:none}
+.ls-dart-btn{display:inline-flex;align-items:center;gap:10px;background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);color:var(--ls-text, #ffffff);font-size:16px;font-weight:600;padding:15px 34px;border-radius:12px;text-decoration:none;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;animation:ls-dart-btn-glow 2.5s ease-in-out infinite}
+.ls-dart-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(64,119,243,0.4);color:var(--ls-text, #ffffff);text-decoration:none}
 .ls-dart-btn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);animation:ls-dart-btn-shine 3s ease-in-out infinite}
 @keyframes ls-dart-btn-glow{0%,100%{box-shadow:0 0 0 0 rgba(64,119,243,0)}50%{box-shadow:0 0 22px 4px rgba(64,119,243,0.35)}}
 @keyframes ls-dart-btn-shine{0%{left:-100%}50%{left:120%}100%{left:120%}}
@@ -60,7 +60,7 @@
 .ls-dart:hover .ls-dart-media-inner{transform:rotate(0deg) scale(1.015)}
 .ls-dart-media-inner img{display:block;width:100%;height:auto}
 .ls-dart-media-inner a{display:block}
-.ls-dart-ribbon{position:absolute;top:14px;right:14px;z-index:2;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:14px;font-weight:700;padding:7px 16px;border-radius:10px;box-shadow:0 6px 18px rgba(239,68,68,0.45);font-family:"IBM Plex Sans Arabic",sans-serif}
+.ls-dart-ribbon{position:absolute;top:14px;right:14px;z-index:2;background:linear-gradient(135deg,#ef4444,#dc2626);color:var(--ls-text, #ffffff);font-size:14px;font-weight:700;padding:7px 16px;border-radius:10px;box-shadow:0 6px 18px rgba(239,68,68,0.45);font-family:"IBM Plex Sans Arabic",sans-serif}
 
 /* ── Responsive ── */
 @media(max-width:1024px){

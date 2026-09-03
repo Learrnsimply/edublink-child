@@ -242,7 +242,7 @@ body.single-product .woocommerce li {
 	display: inline-block;
 	padding: 12px 24px;
 	background-color: #0073aa;
-	color: #fff;
+	color: var(--ls-text, #ffffff);
 	text-decoration: none;
 	border-radius: 4px;
 	font-weight: bold;
@@ -251,7 +251,7 @@ body.single-product .woocommerce li {
 
 .custom-buy-now-btn:hover {
 	background-color: #005a87;
-	color: #fff;
+	color: var(--ls-text, #ffffff);
 	text-decoration: none;
 }
 

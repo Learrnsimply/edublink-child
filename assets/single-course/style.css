@@ -54,7 +54,7 @@
 /* شارة كورس */
 .course-badge {
   background: rgba(64, 119, 243, 0.05);
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   padding: 10px 15px;
   border-radius: 30px;
   font-size: 18px;
@@ -78,7 +78,7 @@
 }
 
 .students-count-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
 }
 
@@ -112,7 +112,7 @@
   min-width: 37px !important;
   height: 37px !important;
   border-radius: 50% !important;
-  background: #ffce31 !important;
+  background: var(--ls-star, #ffce31) !important;
   border: 2px solid #26292e;
   display: flex !important;
   align-items: center !important;
@@ -139,7 +139,7 @@
 }
 
 .rating-text {
-  color: #ffbb54;
+  color: var(--ls-warning, #ffbb54);
   font-size: 14px;
   line-height: 2;
 }
@@ -164,7 +164,7 @@
   line-height: 1.8;
   text-align: right;
   width: 100%;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   font-weight: 400;
   white-space: pre-line;
 }
@@ -467,7 +467,7 @@
 }
 
 .stat-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   white-space: nowrap;
   margin: 0;
@@ -506,7 +506,7 @@
 }
 
 .detail-label {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   font-weight: 500;
   white-space: nowrap;
@@ -519,7 +519,7 @@
   background: rgba(255, 255, 255, 0.05);
   padding: 10px 15px;
   border-radius: 10px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   flex-shrink: 0;
   line-height: 1;
@@ -547,13 +547,13 @@
 }
 
 .current-price {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   font-size: 16px;
   font-weight: 600;
 }
 
 .old-price {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 14px;
   text-decoration: line-through;
 }
@@ -636,7 +636,7 @@
 }
 
 .feature-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   line-height: 1;
   flex: 1;
@@ -890,7 +890,7 @@
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 18px;
   line-height: 1.47;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: center;
   letter-spacing: -0.6px;
   max-width: 723px;
@@ -971,7 +971,7 @@
   font-family: "IBM Plex Sans Arabic", "IBM Plex Sans Arabic", sans-serif;
   font-size: 16px;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
 }
 
@@ -1169,7 +1169,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   border: 1px solid rgba(64, 119, 243, 0.2);
   border-radius: 10px;
   padding: 8px 18px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
@@ -1481,7 +1481,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .learning-show-more {
   font-size: 16px;
   font-weight: 500;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   cursor: pointer;
   pointer-events: all;
   font-family: "IBM Plex Sans Arabic", sans-serif;
@@ -1713,7 +1713,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .curriculum-hint strong {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   font-weight: 600;
 }
 
@@ -2147,7 +2147,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .star-icon.filled path {
-  fill: #ffbb54;
+  fill: var(--ls-warning, #ffbb54);
 }
 
 .star-icon.empty path {
@@ -2169,7 +2169,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .progress-fill {
-  background: #ffbb54;
+  background: var(--ls-warning, #ffbb54);
   border-radius: 2.5px;
   position: absolute;
   inset: 0 0 16.67% auto;
@@ -2181,7 +2181,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: left;
   flex-shrink: 0;
 }
@@ -2313,7 +2313,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 14px;
   font-weight: 400;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   text-align: center;
 }
 
@@ -2355,7 +2355,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .review-date {
   font-size: 14px;
   font-weight: 400;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   margin: 0;
   flex-shrink: 0;
 }
@@ -2420,7 +2420,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-size: 16px;
   font-weight: 600;
   line-height: normal;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   cursor: pointer;
   text-decoration: none;
   border: none;
@@ -2803,7 +2803,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 14px;
   line-height: 24px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   text-align: right;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -2845,7 +2845,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   justify-content: flex-end;
   gap: 5px;
   font-family: "IBM Plex Sans Arabic", sans-serif;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
 }
 
 .course-duration {
@@ -3027,7 +3027,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .error-404-section {
-  background: #141924;
+  background: var(--ls-surface, #141924);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 40px;
   width: 100%;
@@ -3147,7 +3147,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 236px;
   line-height: 256px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   letter-spacing: -4.72px;
   text-align: center;
   margin: 0;
@@ -3257,7 +3257,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 .error-contact-container .learnsimply-contact-value {
   font-family: "IBM Plex Sans Arabic", sans-serif;
   font-size: 16px;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   letter-spacing: -0.32px;
 }
 
@@ -3463,7 +3463,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   border: none;
   border-radius: 12px;
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -3527,7 +3527,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 
 .preview-badge {
   background: rgba(64, 119, 243, 0.12);
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   padding: 4px 12px;
   border-radius: 6px;
   font-size: 13px;
@@ -3566,7 +3566,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .guarantee-text {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 16px;
   line-height: 1.7;
   margin: 0;
@@ -3642,7 +3642,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .faq-answer-text {
-  color: #999eb2 !important;
+  color: var(--ls-text-muted, #999eb2) !important;
   font-size: 16px !important;
   line-height: 1.8 !important;
   margin: 0 !important;
@@ -3733,7 +3733,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   border: 1px solid rgba(64, 119, 243, 0.15);
   border-radius: 10px;
   padding: 10px 16px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   font-size: 14px;
   font-weight: 500;
   line-height: 1.6;
@@ -3772,14 +3772,14 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .preview-cta-title {
-  color: #fff;
+  color: var(--ls-text, #ffffff);
   font-size: 16px;
   font-weight: 700;
 }
 
 .preview-cta-badge {
   background: rgba(64, 119, 243, 0.15);
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   padding: 5px 12px;
   border-radius: 8px;
   font-size: 13px;
@@ -3817,7 +3817,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .sidebar-guarantee-desc {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -3855,7 +3855,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .sidebar-detail-label {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 14px;
 }
 
@@ -3874,7 +3874,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .sidebar-share-label {
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 14px;
 }
 
@@ -3964,7 +3964,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .current-price {
-  color: #4077f3 !important;
+  color: var(--ls-blue, #4077f3) !important;
   font-size: 32px !important;
   font-weight: 800 !important;
   margin: 0 !important;
@@ -4048,7 +4048,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
 }
 
 .preview-cta-title {
-  color: #fff !important;
+  color: var(--ls-text, #ffffff) !important;
   font-size: 16px !important;
   font-weight: 700 !important;
 }
@@ -4195,7 +4195,7 @@ background: linear-gradient(131deg, rgba(100, 84, 213, 0.20) -66.81%, rgba(100, 
   }
 
   .course-sticky-buy__current {
-    color: #4077f3;
+    color: var(--ls-blue, #4077f3);
     font-size: 20px;
     font-weight: 800;
     white-space: nowrap;
@@ -4264,7 +4264,7 @@ a.lecture-item {
 a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .lecture-clickable:hover { background: rgba(64, 119, 243, 0.06); }
 .lecture-locked-buy:hover { background: rgba(64, 119, 243, 0.08); }
-.lecture-locked-buy:hover .lecture-title { color: #4077f3; }
+.lecture-locked-buy:hover .lecture-title { color: var(--ls-blue, #4077f3); }
 .lecture-clickable:focus-visible { outline: 2px solid #5b8ff9; outline-offset: 2px; }
 
 /* clicking a locked lesson scrolls to the buy CTA (reduced-motion-safe) */
@@ -4315,7 +4315,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .course-hero__badge {
   background: rgba(64, 119, 243, 0.08);
   border: 1px solid rgba(64, 119, 243, 0.25);
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   padding: 7px 16px;
   border-radius: 30px;
   font-size: 14px;
@@ -4338,7 +4338,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   font-size: clamp(28px, 5vw, 46px);
   font-weight: 700;
   line-height: 1.4;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   max-width: 900px;
   margin: 0;
 }
@@ -4390,7 +4390,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   align-items: center;
   gap: 3px;
   background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
   font-size: 18px;
   font-weight: 700;
   padding: 16px 42px;
@@ -4406,7 +4406,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .course-hero__buy:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 34px rgba(64, 119, 243, 0.45);
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
 }
 
 .course-hero__buy-price {
@@ -4423,7 +4423,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--learnsimply-card-border);
   padding: 14px 26px;
@@ -4452,7 +4452,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .course-about-heading {
   font-size: 22px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   margin: 0;
   width: 100%;
   text-align: right;
@@ -4529,7 +4529,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .mid-cta__title {
   font-size: 20px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   margin: 0 0 6px;
 }
 
@@ -4542,7 +4542,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .mid-cta__btn {
   flex-shrink: 0;
   background: var(--ls-blue-cta, #3566d9);
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
   font-size: 16px;
   font-weight: 700;
   padding: 14px 34px;
@@ -4579,7 +4579,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   border-radius: 50%;
   background: rgba(64, 119, 243, 0.12);
   border: 1px solid rgba(64, 119, 243, 0.35);
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   font-size: 18px;
   font-weight: 700;
   display: flex;
@@ -4590,7 +4590,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .after-buy-step__body h4 {
   font-size: 17px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   margin: 0 0 8px;
 }
 
@@ -4621,7 +4621,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .final-cta__title {
   font-size: clamp(24px, 4vw, 34px);
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   margin: 0;
 }
 
@@ -4644,7 +4644,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .final-cta__current {
   font-size: 40px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
 }
 
 .final-cta__current span {
@@ -4670,7 +4670,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 
 .final-cta__btn {
   background: linear-gradient(135deg, var(--ls-blue-cta, #3566d9) 0%, var(--ls-blue-cta-hover, #2a57bf) 100%);
-  color: #ffffff !important;
+  color: var(--ls-text, #ffffff) !important;
   font-size: 19px;
   font-weight: 700;
   padding: 18px 56px;
@@ -4794,7 +4794,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .desc-card .course-description h3,
 .desc-card .course-description h4,
 .desc-card .course-description h5 {
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   font-weight: 700;
   margin: 30px 0 12px;
   line-height: 1.5;
@@ -4807,12 +4807,12 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 
 .desc-card .course-description strong,
 .desc-card .course-description b {
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   font-weight: 700;
 }
 
 .desc-card .course-description a {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   text-decoration: none;
 }
 
@@ -4832,7 +4832,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 }
 
 .desc-card .course-description ul li::marker {
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
 }
 
 .desc-card .course-description img {
@@ -4846,9 +4846,9 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   margin: 0 0 16px;
   padding: 14px 18px;
   background: rgba(64, 119, 243, 0.06);
-  border-right: 3px solid #4077f3;
+  border-right: 3px solid var(--ls-blue, #4077f3);
   border-radius: 10px;
-  color: #e2e6f0;
+  color: var(--ls-text-2, #e2e6f0);
 }
 
 @media (max-width: 768px) {
@@ -4912,14 +4912,14 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 }
 
 .learning-card .learning-item .check-icon circle {
-  fill: #4077f3;
+  fill: var(--ls-blue, #4077f3);
 }
 
 /* Comfortable readable text */
 .learning-card .learning-text {
   font-size: 16px;
   line-height: 1.9;
-  color: #e2e6f0;
+  color: var(--ls-text-2, #e2e6f0);
   margin: 0;
 }
 
@@ -4941,7 +4941,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 
 /* ─── Overview card ─── */
 .ratings-overview {
-  background: #1b2133;
+  background: var(--ls-surface-2, #1b2133);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
 }
@@ -4976,7 +4976,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 }
 
 .ratings-overview .rating-row-label {
-  color: #e2e6f0;
+  color: var(--ls-text-2, #e2e6f0);
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
@@ -4999,14 +4999,14 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   bottom: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #ffd27a, #ffbb54);
+  background: linear-gradient(90deg, #ffd27a, var(--ls-warning, #ffbb54));
   border-radius: 99px;
 }
 
 .ratings-overview .percentage {
   min-width: 44px;
   text-align: left;
-  color: #999eb2;
+  color: var(--ls-text-muted, #999eb2);
   font-size: 13px;
 }
 
@@ -5042,14 +5042,14 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .ratings-overview .summary-rating {
   font-size: 42px;
   font-weight: 800;
-  color: #ffbb54;
+  color: var(--ls-warning, #ffbb54);
   line-height: 1.1;
   margin: 0;
 }
 
 /* ─── Review list: one card, rows separated by dividers ─── */
 .review-cards {
-  background: #1b2133;
+  background: var(--ls-surface-2, #1b2133);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 8px 26px;
@@ -5084,7 +5084,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .review-card .user-name {
   font-size: 15px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   margin: 0;
 }
 
@@ -5109,7 +5109,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 .review-card .show-more-review {
   background: none;
   border: none;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   font-size: 14px;
   cursor: pointer;
   padding: 0;
@@ -5135,8 +5135,8 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 
 .reviews-load-more-btn:hover {
   background: rgba(64, 119, 243, 0.16);
-  border-color: #4077f3;
-  color: #ffffff;
+  border-color: var(--ls-blue, #4077f3);
+  color: var(--ls-text, #ffffff);
 }
 
 /* ─── Mobile ─── */
@@ -5163,7 +5163,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
   justify-content: center;
   gap: 8px;
   background: #e11d48;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   border: none;
   border-radius: 14px;
   padding: 15px 30px;
@@ -5178,7 +5178,7 @@ a.lecture-item .lecture-title { color: var(--learnsimply-text-white); }
 
 .course-hero__reviews-cta:hover {
   background: #be123c;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(225, 29, 72, 0.4);
 }
@@ -5215,7 +5215,7 @@ html {
 
 /* ── Body class fix: was "learnsimply-homepage-body" — replaced with
        course-specific class so global styles can differentiate. */
-.learnsimply-course-body { background: #0a0f1a; }
+.learnsimply-course-body { background: var(--ls-bg, #0a0f1a); }
 
 /* ── Sticky course details card (desktop ≥1100px).
        The card already uses flex order to appear on the right. We add
@@ -5272,7 +5272,7 @@ html {
 .course-faq .section-title {
   font-size: 24px !important;
   font-weight: 700 !important;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   margin: 0 0 8px !important;
   line-height: 1.3;
   text-align: start;
@@ -5352,7 +5352,7 @@ html {
 .build-mockup--code .build-mockup-body {
   margin: 0;
   padding: 14px 16px;
-  color: #ffffff;     /* ALL text white — was hard to read with mixed colors */
+  color: var(--ls-text, #ffffff);     /* ALL text white — was hard to read with mixed colors */
   line-height: 1.6;
   font-size: 12px;
   font-family: 'JetBrains Mono', 'IBM Plex Sans Arabic', monospace;
@@ -5362,9 +5362,9 @@ html {
 }
 /* Subtle syntax highlighting — keeps a soft tint difference between
    keywords/strings/numbers without compromising readability. */
-.build-mockup--code .build-mockup-body .lvc-kw  { color: #ffffff; font-weight: 600; }
-.build-mockup--code .build-mockup-body .lvc-str { color: #ffffff; }
-.build-mockup--code .build-mockup-body .lvc-num { color: #ffffff; }
+.build-mockup--code .build-mockup-body .lvc-kw  { color: var(--ls-text, #ffffff); font-weight: 600; }
+.build-mockup--code .build-mockup-body .lvc-str { color: var(--ls-text, #ffffff); }
+.build-mockup--code .build-mockup-body .lvc-num { color: var(--ls-text, #ffffff); }
 .build-mockup--code .build-mockup-body .lvc-cmt { color: rgba(255, 255, 255, 0.6); font-style: italic; }
 
 /* OOP and Flutter icon cards — much bigger now */
@@ -5410,7 +5410,7 @@ html {
 .build-mockup-label {
   font-size: 13px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   letter-spacing: 0.05em;
 }
 
@@ -5431,7 +5431,7 @@ html {
 .build-card__body h3 {
   font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   margin: 0 0 6px;
   line-height: 1.3;
 }
@@ -5493,7 +5493,7 @@ html {
   gap: 16px;
   font-size: 15px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--ls-text, #ffffff);
   user-select: none;
   line-height: 1.4;
   /* Force Arabic-capable font — the user-agent stylesheet for <summary>
@@ -5507,7 +5507,7 @@ html {
 .faq-chevron {
   width: 20px;
   height: 20px;
-  color: #4077f3;
+  color: var(--ls-blue, #4077f3);
   transition: transform 0.3s ease;
   flex-shrink: 0;
 }
