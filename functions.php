@@ -1030,6 +1030,13 @@ if (file_exists(__DIR__ . '/inc/academy-structure.php')) {
 }
 
 /**
+ * عدّاد عناصر الباقات — حارس على جدول بلجن خارجي + استعلام واحد بدل N.
+ */
+if (file_exists(__DIR__ . '/inc/bundles.php')) {
+	require_once __DIR__ . '/inc/bundles.php';
+}
+
+/**
  * Load Composer dependencies
  */
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
@@ -2202,12 +2209,7 @@ function edublink_child_load_page_assets()
 		$page_type = 'signup';
 	elseif (is_product()) {
 		// Check if product has bundles
-		global $wpdb;
-		$product_id = get_the_ID();
-		$has_bundles = $wpdb->get_var($wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->prefix}asnp_wepb_simple_bundle_items WHERE bundle_id = %d",
-			$product_id
-		));
+		$has_bundles = learnsimply_bundle_item_count(get_the_ID());
 		$page_type = ($has_bundles > 0) ? 'single-product-bundle' : 'single-product';
 	} elseif (is_shop() || is_product_category() || is_product_tag())
 		$page_type = 'product_archive';
@@ -2312,12 +2314,7 @@ function edublink_child_add_page_css_late()
 	elseif (is_page('signup'))
 		$page_type = 'signup';
 	elseif (is_product()) {
-		global $wpdb;
-		$product_id = get_the_ID();
-		$has_bundles = $wpdb->get_var($wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->prefix}asnp_wepb_simple_bundle_items WHERE bundle_id = %d",
-			$product_id
-		));
+		$has_bundles = learnsimply_bundle_item_count(get_the_ID());
 		$page_type = ($has_bundles > 0) ? 'single-product-bundle' : 'single-product';
 	} elseif (is_shop() || is_product_category() || is_product_tag())
 		$page_type = 'product_archive';

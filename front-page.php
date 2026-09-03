@@ -39,10 +39,12 @@ if ( function_exists( 'tutor_utils' ) ) {
 	$course_post_type = tutor()->course_post_type;
 	
 	// Get featured courses (limit to 6)
+	// كان -1 والتعليق بيقول 6 — التعليق بيوصف النية والكود كان بيجيب كل كورس
+	// على الموقع. مع نمو الكتالوج ده استعلام غير محدود على أعلى صفحة في الترافيك.
 	$args = array(
 		'post_type'      => $course_post_type,
 		'post_status'    => 'publish',
-		'posts_per_page' => -1,
+		'posts_per_page' => 6,
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 	);
@@ -250,10 +252,12 @@ if ( class_exists( 'WooCommerce' ) ) {
 $context['bundles'] = array();
 if ( class_exists( 'WooCommerce' ) && class_exists( 'AsanaPlugins\WooCommerce\ProductBundles\Plugin' ) ) {
 	// Get all products of type 'easy_product_bundle'
+	// حد أعلى بدل -1. المتجر بيعرض ٣ باقات، والرقم ده واسع جدًا عليها — الغرض
+	// منه إن الاستعلام يفضل محدود مهما اتضاف باقات، مش إخفاء أي حاجة موجودة.
 	$args = array(
 		'post_type'      => 'product',
 		'post_status'    => 'publish',
-		'posts_per_page' => -1,
+		'posts_per_page' => 12,
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 		'tax_query'      => array(
@@ -266,7 +270,11 @@ if ( class_exists( 'WooCommerce' ) && class_exists( 'AsanaPlugins\WooCommerce\Pr
 	);
 	
 	$bundles_query = new WP_Query( $args );
-	
+
+	// عدد عناصر كل الباقات في **استعلام واحد** قبل الحلقة. قبل كده كان فيه
+	// استعلام $wpdb منفصل لكل باقة جوه الحلقة (N+1) على أعلى صفحة في الترافيك.
+	$bundle_counts = learnsimply_bundle_item_counts( wp_list_pluck( $bundles_query->posts, 'ID' ) );
+
 	if ( $bundles_query->have_posts() ) {
 		while ( $bundles_query->have_posts() ) {
 			$bundles_query->the_post();
@@ -275,14 +283,8 @@ if ( class_exists( 'WooCommerce' ) && class_exists( 'AsanaPlugins\WooCommerce\Pr
 			
 			// Verify it's actually a bundle product
 			if ( $product && $product->is_type( 'easy_product_bundle' ) ) {
-				global $wpdb;
-				$table_name = $wpdb->prefix . 'asnp_wepb_simple_bundle_items';
-				
-				// Get bundle items count
-				$has_bundles = $wpdb->get_var( $wpdb->prepare(
-					"SELECT COUNT(*) FROM {$table_name} WHERE bundle_id = %d",
-					$bundle_product_id
-				) );
+				// من الاستعلام الواحد اللي فوق — مفيش استعلام جوه الحلقة
+				$has_bundles = isset( $bundle_counts[ $bundle_product_id ] ) ? $bundle_counts[ $bundle_product_id ] : 0;
 				
 				if ( $has_bundles > 0 ) {
 					// Get bundle items count

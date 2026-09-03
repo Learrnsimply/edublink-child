@@ -40,3 +40,6 @@ jobs:
 
       - name: مراجع قوالب Twig
         run: php tools-twig-check.php
+
+      - name: اختبارات السلوك
+        run: php tests/bundles-test.php

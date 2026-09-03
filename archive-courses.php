@@ -44,15 +44,23 @@ if ( isset( $get['course_filter'] ) ) {
 	global $wp_query;
 	$course_post_type = tutor()->course_post_type;
 	
+	// 'paged' كان ناقص — من غيره نتيجة البحث بترجع صفحة ١ مهما طلبت صفحة ٢،
+	// وروابط الترقيم تحت بتبقى بتلف على نفسها.
 	$args = array(
 		'post_type'      => $course_post_type,
 		'post_status'    => 'publish',
 		's'              => $search_query,
 		'posts_per_page' => get_option( 'posts_per_page', 12 ),
+		'paged'          => max( 1, (int) get_query_var( 'paged' ) ),
 	);
-	
+
 	query_posts( $args );
 }
+
+// ملاحظة مقصودة: query_posts() فوق مهجورة وبتشغّل الاستعلام تاني. تحويلها
+// لـpre_get_posts تغيير بنيوي بيلمس ملفين، على صفحة وزنها 2.1% من الترافيك —
+// المخاطرة أكبر من العائد دلوقتي. اتأجّل عن قصد ومسجّل في CODE-AUDIT.md.
+// اللي اتعمل هنا: 'paged' الناقص + wp_reset_query() في الآخر.
 
 // Get archive title - use professional title instead of "Archive"
 $raw_title = get_the_archive_title();
@@ -237,6 +245,10 @@ $context['current_course_category_slug'] = ( $current_term && isset( $current_te
 // Pagination
 global $wp_query;
 $context['pagination'] = Timber::get_pagination();
+
+// query_posts() فوق بتستبدل الاستعلام العام وبتسيبه مستبدَل لباقي الطلب —
+// فأي حاجة بعد كده (الفوتر، الودجت، أي هوك) بتشوف استعلام مش بتاعها.
+wp_reset_query();
 
 // Render Twig template
 Timber::render( 'archive-courses.twig', $context );
