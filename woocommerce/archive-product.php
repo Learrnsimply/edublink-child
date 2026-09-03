@@ -45,19 +45,20 @@ if ( is_shop() || is_product_category() || is_product_tag() || is_post_type_arch
     $is_shop_2_url = ( strpos( $request_uri, '/shop-2' ) !== false || strpos( $request_uri, '/shop-2/' ) !== false );
 
     if ( $woocommerce_shop_page_id == 22662 || $is_shop_2_url ) {
-    // Use custom shop-2 template
-    if ( class_exists( 'Timber\Timber' ) ) {
-        $shop_2_template = get_stylesheet_directory() . '/page-shop-2.php';
-        if ( file_exists( $shop_2_template ) ) {
-            // Prevent Elementor
-            add_filter( 'elementor/frontend/print_google_fonts', '__return_false' );
-            add_filter( 'elementor/theme/get_location_templates', '__return_empty_array', 999 );
-            add_filter( 'elementor/theme/get_location_template_id', '__return_false', 999 );
-            add_filter( 'hfe_header_enabled', '__return_false' );
-            add_filter( 'hfe_footer_enabled', '__return_false' );
-            
-            include( $shop_2_template );
-            exit;
+        // Use custom shop-2 template
+        if ( class_exists( 'Timber\Timber' ) ) {
+            $shop_2_template = get_stylesheet_directory() . '/page-shop-2.php';
+            if ( file_exists( $shop_2_template ) ) {
+                // Prevent Elementor
+                add_filter( 'elementor/frontend/print_google_fonts', '__return_false' );
+                add_filter( 'elementor/theme/get_location_templates', '__return_empty_array', 999 );
+                add_filter( 'elementor/theme/get_location_template_id', '__return_false', 999 );
+                add_filter( 'hfe_header_enabled', '__return_false' );
+                add_filter( 'hfe_footer_enabled', '__return_false' );
+
+                include( $shop_2_template );
+                exit;
+            }
         }
     }
 }

@@ -1,0 +1,39 @@
+# فحص بنية PHP على كل push و pull request.
+#
+# ليه: functions.php عدّى 3,600 سطر، وأي غلطة syntax بتوقّع الموقع كله — والديبلوي
+# يدوي، فالغلطة بتوصل السيرفر قبل ما حد ياخد باله. الفحص ده بيشتغل على سيرفرات
+# GitHub، فمحتاجش PHP متثبت على أي جهاز.
+#
+# النسخة 8.2 هي نسخة السيرفر الحي.
+
+name: PHP Lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: php -l على كل ملف
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            if ! out=$(php -l "$f" 2>&1); then
+              echo "::error file=$f::$out"
+              fail=1
+            fi
+          done < <(find . -path ./vendor -prune -o -name '*.php' -print)
+          if [ "$fail" -ne 0 ]; then
+            echo "فيه أخطاء syntax — متعملش merge."
+            exit 1
+          fi
+          echo "كل ملفات PHP سليمة."
