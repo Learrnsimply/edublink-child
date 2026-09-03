@@ -140,6 +140,7 @@ function learnsimply_assign_courses_to_departments()
 		}
 
 		$level = 1;
+		$prev  = 0; // آخر كورس منشور شفناه — مش اللي قبله في المصفوفة
 		foreach ($dept['courses'] as $course_id) {
 			if ('publish' !== get_post_status($course_id)) {
 				continue; // كورس اتشال أو لسه draft
@@ -151,10 +152,12 @@ function learnsimply_assign_courses_to_departments()
 			update_post_meta($course_id, 'ls_department', $slug);
 			update_post_meta($course_id, 'ls_level', $level);
 
-			// المتطلب السابق = اللي قبله في نفس المسار
-			$prev = $level > 1 ? $dept['courses'][$level - 2] : 0;
+			// المتطلب السابق لازم يبقى كورس الطالب يقدر يفتحه فعلاً. لو اتفهرس
+			// بالمستوى (`courses[$level - 2]`) وكان فيه كورس draft في وسط المسار،
+			// المتطلب بيشاور على كورس مخفي والطالب بيقف مستني حاجة مش موجودة.
 			update_post_meta($course_id, 'ls_prerequisite', $prev);
 
+			$prev = $course_id;
 			$level++;
 		}
 	}
@@ -177,6 +180,7 @@ function learnsimply_get_department_courses($slug)
 
 	$out   = array();
 	$level = 1;
+	$prev  = 0; // نفس قاعدة الإسناد: آخر كورس منشور، مش اللي قبله في المصفوفة
 
 	foreach ($depts[$slug]['courses'] as $course_id) {
 		if ('publish' !== get_post_status($course_id)) {
@@ -188,8 +192,9 @@ function learnsimply_get_department_courses($slug)
 			'title'        => get_the_title($course_id),
 			'url'          => get_permalink($course_id),
 			'thumbnail'    => get_the_post_thumbnail_url($course_id, 'medium_large'),
-			'prerequisite' => $level > 1 ? $depts[$slug]['courses'][$level - 2] : 0,
+			'prerequisite' => $prev,
 		);
+		$prev = $course_id;
 		$level++;
 	}
 
