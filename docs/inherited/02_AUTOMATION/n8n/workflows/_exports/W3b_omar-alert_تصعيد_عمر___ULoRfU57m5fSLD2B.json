@@ -1,0 +1,778 @@
+{
+  "updatedAt": "2026-06-10T16:34:57.685Z",
+  "createdAt": "2026-06-09T23:20:46.627Z",
+  "id": "ULoRfU57m5fSLD2B",
+  "name": "W3b — omar-alert (تصعيد عمر)",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "a1",
+      "name": "Escalate Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "type",
+              "type": "string"
+            },
+            {
+              "name": "priority",
+              "type": "string"
+            },
+            {
+              "name": "summary",
+              "type": "string"
+            },
+            {
+              "name": "phone",
+              "type": "string"
+            },
+            {
+              "name": "customerName",
+              "type": "string"
+            },
+            {
+              "name": "customerEmail",
+              "type": "string"
+            },
+            {
+              "name": "orderId",
+              "type": "string"
+            },
+            {
+              "name": "screenshotUrl",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "a2",
+      "name": "Normalize & Resolve",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// دفاعي — مايرميش أبداً (نمط W2). يطبّع type ويحسب priority + reassurance_flow.\nconst TYPES = ['access','certificate','payment','payment_intl','site_access','refund','angry','for_ahmed'];\nconst PRIORITY_BY_TYPE = { angry:'urgent', refund:'high', payment:'high', access:'high', site_access:'high', payment_intl:'normal', certificate:'normal', for_ahmed:'normal' };\nconst j = $json;\nlet type = String(j.type || '').toLowerCase().trim().replace(/-/g,'_');\nlet flag = '';\nif (!TYPES.includes(type)) { flag = '⚠️ نوع غير معروف: ' + (j.type || '(فاضي)') + ' — '; type = 'for_ahmed'; }\nlet priority = String(j.priority || '').toLowerCase().trim();\nif (!['normal','high','urgent'].includes(priority)) priority = PRIORITY_BY_TYPE[type] || 'normal';\nif (type === 'angry') priority = 'urgent';\nconst phone = String(j.phone || '').replace(/\\D/g,'');\nlet summary = String(j.summary || '').trim();\nif (!summary) summary = '(عمر مبعتش ملخص — راجع المحادثة)';\nsummary = flag + summary;\nreturn { json: {\n  type, priority, phone, summary,\n  customerName: String(j.customerName || '').trim(),\n  customerEmail: String(j.customerEmail || '').trim(),\n  orderId: String(j.orderId || '').trim(),\n  screenshotUrl: String(j.screenshotUrl || '').trim(),\n  reassuranceFlow: type === 'for_ahmed' ? 'ahmed' : 'support'\n} };"
+      }
+    },
+    {
+      "id": "a3",
+      "name": "Insert Escalation",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        400,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH recent AS (\n  SELECT id, type::text AS type, priority::text AS priority, context_snapshot\n  FROM omar.escalations\n  WHERE phone = $1 AND created_at > now() - interval '90 seconds'\n  ORDER BY id DESC LIMIT 1\n),\nins AS (\n  INSERT INTO omar.escalations\n    (phone, type, priority, summary, customer_email, order_id, screenshot_url, context_snapshot)\n  SELECT $1, $2::omar.escalation_type, $3::omar.priority, $4,\n         NULLIF($5,''), NULLIF($6,''), NULLIF($7,''),\n         COALESCE((SELECT jsonb_agg(jsonb_build_object('role', m.role, 'body', m.body, 'at', m.created_at) ORDER BY m.created_at)\n                   FROM (SELECT role, body, created_at FROM omar.messages WHERE phone = $1 ORDER BY created_at DESC LIMIT 10) m), '[]'::jsonb)\n  WHERE NOT EXISTS (SELECT 1 FROM recent)\n  RETURNING id, type::text AS type, priority::text AS priority, context_snapshot\n)\nSELECT id, type, priority, context_snapshot, 1 AS is_new FROM ins\nUNION ALL\nSELECT id, type, priority, context_snapshot, 0 AS is_new FROM recent WHERE NOT EXISTS (SELECT 1 FROM ins)\nLIMIT 1;",
+        "options": {
+          "queryReplacement": "={{ [$json.phone, $json.type, $json.priority, $json.summary, $json.customerEmail, $json.orderId, $json.screenshotUrl] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "zCWs84St5G8Iw8TS",
+          "name": "Postgres — omar_agent"
+        }
+      }
+    },
+    {
+      "id": "a4",
+      "name": "Build Alert Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const n = $('Normalize & Resolve').first().json;\nconst ins = $json;\nconst TYPE_LABEL = {\n  access:       'دفع وملقاش الكورس (تفعيل)',\n  certificate:  'الشهادة (مش ظاهرة/تحميل/اسم)',\n  payment:      'فشل دفع داخلي / تحويل يدوي',\n  payment_intl: 'دفع من برّه مصر (كارت أجنبي)',\n  site_access:  'الموقع/الحصص مش بتفتح',\n  refund:       'طلب استرجاع',\n  angry:        'عميل غاضب',\n  for_ahmed:    'تواصل خاص لأحمد',\n};\nconst PRIORITY_LABEL = { urgent: 'عاجل', high: 'مهم', normal: 'عادي' };\nconst PRIORITY_EMOJI = { urgent: '🔴', high: '🟠', normal: '🟢' };\nconst ROLE_LABEL = { customer: 'العميل', omar: 'عمر', system: 'النظام' };\nconst snap = Array.isArray(ins.context_snapshot) ? ins.context_snapshot : [];\nconst chat = snap.map(m => (ROLE_LABEL[m.role] || m.role) + ': ' + m.body).join('\\n') || '(مفيش رسائل متسجلة)';\nconst pe = PRIORITY_EMOJI[n.priority] || '🟢';\nconst subject = `[عمر] ${pe} تصعيد ${TYPE_LABEL[n.type]} — ${n.customerName || 'عميل'} (${n.phone})`;\nconst body = `🔔 تصعيد جديد من عمر (خدمة عملاء اتعلم ببساطة)\\n\\n🏷️ النوع: ${TYPE_LABEL[n.type]}\\n${pe} الأولوية: ${PRIORITY_LABEL[n.priority]}\\n\\n👤 العميل: ${n.customerName || '—'}\\n📱 واتساب: ${n.phone}\\n📧 إيميل: ${n.customerEmail || '—'}\\n🧾 رقم الأوردر: ${n.orderId || '—'}\\n\\n📝 ملخص عمر:\\n${n.summary}\\n\\n📎 سكرين شوت: ${n.screenshotUrl || 'مفيش'}\\n\\n💬 آخر رسائل المحادثة:\\n${chat}\\n\\n—————\\n🆔 escalation #${ins.id} · الحالة: مفتوح\\nالحل بشري: ادخل ظبّط الموضوع، وبعد ما تخلص علّم التصعيد كـ resolved.`;\nconst esc = String(body).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); return { json: { subject, body: esc.slice(0, 3900), escalationId: ins.id } };"
+      }
+    },
+    {
+      "id": "a8",
+      "name": "Finalize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Telegram-only: يفحص نجاح رنّة التليجرام. الضمان الحقيقي = الـ DB row (Insert Escalation).\nconst ok = name => { try { const j = $(name).first().json; return !(j && j.error); } catch (e) { return false; } };\nconst telegram = ok('Telegram Alert');\nconst ins = $('Insert Escalation').first().json;\nconst n = $('Normalize & Resolve').first().json;\nreturn { json: {\n  ok: true,\n  escalation_id: ins.id,\n  priority: n.priority,\n  type: n.type,\n  alerted: { telegram },\n  reassurance_flow: n.reassuranceFlow,\n  anyOk: telegram\n} };"
+      }
+    },
+    {
+      "id": "a9",
+      "name": "Mark Alerted",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1600,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE omar.escalations SET alerted_at = now() WHERE id = $1 AND $2::boolean RETURNING id;",
+        "options": {
+          "queryReplacement": "={{ [$json.escalation_id, $json.anyOk] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "zCWs84St5G8Iw8TS",
+          "name": "Postgres — omar_agent"
+        }
+      }
+    },
+    {
+      "id": "a10",
+      "name": "Return Ack",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1800,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// آخر نود = اللي بيرجع لأداة escalate (الموديل بيستخدم reassurance_flow بس)\nconst f = $('Finalize').first().json;\nreturn { json: { ok: f.ok, escalation_id: f.escalation_id, priority: f.priority, type: f.type, alerted: f.alerted, reassurance_flow: f.reassurance_flow } };"
+      }
+    },
+    {
+      "id": "b57b3e7c-b2b8-4ce7-b6cf-0baa3ee33667",
+      "name": "Telegram Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        950,
+        0
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "-5163152342",
+        "text": "={{ $('Build Alert Message').first().json.body }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_web_page_preview": true,
+          "parse_mode": "HTML"
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "rvECFnBLZhbV2ADN",
+          "name": "Telegram — GrowthMora Shared Bot"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "webhookId": "23161931-61fd-406b-8d20-738b45da39d7"
+    },
+    {
+      "id": "0411ba0b-b49c-4286-bc8a-6737710bb00b",
+      "name": "Is New Escalation?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        180
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.is_new }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              },
+              "id": "condition-1781093617991-nn5jjqm15"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "notes": "dedup gate: is_new=1 (اتعمل insert جديد) → رنّة تيليجرام. is_new=0 (تكرار خلال 90 ثانية) → ack صامت، مفيش رنّة."
+    },
+    {
+      "id": "21a96d05-b174-4a90-b545-8e4f4f7d06dc",
+      "name": "Ack Deduped",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        820,
+        320
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// تصعيد مكرر خلال 90 ثانية (وكيل + حارس، أو retry) — مفيش رنّة تانية. بنرجّع ack سليم للأداة.\nconst n = $('Normalize & Resolve').first().json;\nconst ins = $('Insert Escalation').first().json;\nreturn { json: { ok: true, escalation_id: ins.id, priority: n.priority, type: n.type, alerted: { telegram: false }, reassurance_flow: n.reassuranceFlow, deduped: true } };"
+      }
+    }
+  ],
+  "connections": {
+    "Escalate Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize & Resolve",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize & Resolve": {
+      "main": [
+        [
+          {
+            "node": "Insert Escalation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Finalize": {
+      "main": [
+        [
+          {
+            "node": "Mark Alerted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Alerted": {
+      "main": [
+        [
+          {
+            "node": "Return Ack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Alert Message": {
+      "main": [
+        [
+          {
+            "node": "Telegram Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Alert": {
+      "main": [
+        [
+          {
+            "node": "Finalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Escalation": {
+      "main": [
+        [
+          {
+            "node": "Is New Escalation?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is New Escalation?": {
+      "main": [
+        [
+          {
+            "node": "Build Alert Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ack Deduped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo",
+    "errorWorkflow": "YktkjLMI12YUGWfc",
+    "callerPolicy": "workflowsFromSameOwner",
+    "saveDataErrorExecution": "all",
+    "executionTimeout": 120
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+  "activeVersionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+  "versionCounter": 8,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-09T23:20:46.627Z",
+      "createdAt": "2026-06-09T23:20:46.627Z",
+      "role": "workflow:owner",
+      "workflowId": "ULoRfU57m5fSLD2B",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-06-10T16:34:02.671Z",
+    "createdAt": "2026-06-10T16:34:02.671Z",
+    "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+    "workflowId": "ULoRfU57m5fSLD2B",
+    "nodes": [
+      {
+        "id": "a1",
+        "name": "Escalate Trigger",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "type",
+                "type": "string"
+              },
+              {
+                "name": "priority",
+                "type": "string"
+              },
+              {
+                "name": "summary",
+                "type": "string"
+              },
+              {
+                "name": "phone",
+                "type": "string"
+              },
+              {
+                "name": "customerName",
+                "type": "string"
+              },
+              {
+                "name": "customerEmail",
+                "type": "string"
+              },
+              {
+                "name": "orderId",
+                "type": "string"
+              },
+              {
+                "name": "screenshotUrl",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "a2",
+        "name": "Normalize & Resolve",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          200,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// دفاعي — مايرميش أبداً (نمط W2). يطبّع type ويحسب priority + reassurance_flow.\nconst TYPES = ['access','certificate','payment','payment_intl','site_access','refund','angry','for_ahmed'];\nconst PRIORITY_BY_TYPE = { angry:'urgent', refund:'high', payment:'high', access:'high', site_access:'high', payment_intl:'normal', certificate:'normal', for_ahmed:'normal' };\nconst j = $json;\nlet type = String(j.type || '').toLowerCase().trim().replace(/-/g,'_');\nlet flag = '';\nif (!TYPES.includes(type)) { flag = '⚠️ نوع غير معروف: ' + (j.type || '(فاضي)') + ' — '; type = 'for_ahmed'; }\nlet priority = String(j.priority || '').toLowerCase().trim();\nif (!['normal','high','urgent'].includes(priority)) priority = PRIORITY_BY_TYPE[type] || 'normal';\nif (type === 'angry') priority = 'urgent';\nconst phone = String(j.phone || '').replace(/\\D/g,'');\nlet summary = String(j.summary || '').trim();\nif (!summary) summary = '(عمر مبعتش ملخص — راجع المحادثة)';\nsummary = flag + summary;\nreturn { json: {\n  type, priority, phone, summary,\n  customerName: String(j.customerName || '').trim(),\n  customerEmail: String(j.customerEmail || '').trim(),\n  orderId: String(j.orderId || '').trim(),\n  screenshotUrl: String(j.screenshotUrl || '').trim(),\n  reassuranceFlow: type === 'for_ahmed' ? 'ahmed' : 'support'\n} };"
+        }
+      },
+      {
+        "id": "a3",
+        "name": "Insert Escalation",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          400,
+          0
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH recent AS (\n  SELECT id, type::text AS type, priority::text AS priority, context_snapshot\n  FROM omar.escalations\n  WHERE phone = $1 AND created_at > now() - interval '90 seconds'\n  ORDER BY id DESC LIMIT 1\n),\nins AS (\n  INSERT INTO omar.escalations\n    (phone, type, priority, summary, customer_email, order_id, screenshot_url, context_snapshot)\n  SELECT $1, $2::omar.escalation_type, $3::omar.priority, $4,\n         NULLIF($5,''), NULLIF($6,''), NULLIF($7,''),\n         COALESCE((SELECT jsonb_agg(jsonb_build_object('role', m.role, 'body', m.body, 'at', m.created_at) ORDER BY m.created_at)\n                   FROM (SELECT role, body, created_at FROM omar.messages WHERE phone = $1 ORDER BY created_at DESC LIMIT 10) m), '[]'::jsonb)\n  WHERE NOT EXISTS (SELECT 1 FROM recent)\n  RETURNING id, type::text AS type, priority::text AS priority, context_snapshot\n)\nSELECT id, type, priority, context_snapshot, 1 AS is_new FROM ins\nUNION ALL\nSELECT id, type, priority, context_snapshot, 0 AS is_new FROM recent WHERE NOT EXISTS (SELECT 1 FROM ins)\nLIMIT 1;",
+          "options": {
+            "queryReplacement": "={{ [$json.phone, $json.type, $json.priority, $json.summary, $json.customerEmail, $json.orderId, $json.screenshotUrl] }}"
+          }
+        },
+        "credentials": {
+          "postgres": {
+            "id": "zCWs84St5G8Iw8TS",
+            "name": "Postgres — omar_agent"
+          }
+        }
+      },
+      {
+        "id": "a4",
+        "name": "Build Alert Message",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          600,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const n = $('Normalize & Resolve').first().json;\nconst ins = $json;\nconst TYPE_LABEL = {\n  access:       'دفع وملقاش الكورس (تفعيل)',\n  certificate:  'الشهادة (مش ظاهرة/تحميل/اسم)',\n  payment:      'فشل دفع داخلي / تحويل يدوي',\n  payment_intl: 'دفع من برّه مصر (كارت أجنبي)',\n  site_access:  'الموقع/الحصص مش بتفتح',\n  refund:       'طلب استرجاع',\n  angry:        'عميل غاضب',\n  for_ahmed:    'تواصل خاص لأحمد',\n};\nconst PRIORITY_LABEL = { urgent: 'عاجل', high: 'مهم', normal: 'عادي' };\nconst PRIORITY_EMOJI = { urgent: '🔴', high: '🟠', normal: '🟢' };\nconst ROLE_LABEL = { customer: 'العميل', omar: 'عمر', system: 'النظام' };\nconst snap = Array.isArray(ins.context_snapshot) ? ins.context_snapshot : [];\nconst chat = snap.map(m => (ROLE_LABEL[m.role] || m.role) + ': ' + m.body).join('\\n') || '(مفيش رسائل متسجلة)';\nconst pe = PRIORITY_EMOJI[n.priority] || '🟢';\nconst subject = `[عمر] ${pe} تصعيد ${TYPE_LABEL[n.type]} — ${n.customerName || 'عميل'} (${n.phone})`;\nconst body = `🔔 تصعيد جديد من عمر (خدمة عملاء اتعلم ببساطة)\\n\\n🏷️ النوع: ${TYPE_LABEL[n.type]}\\n${pe} الأولوية: ${PRIORITY_LABEL[n.priority]}\\n\\n👤 العميل: ${n.customerName || '—'}\\n📱 واتساب: ${n.phone}\\n📧 إيميل: ${n.customerEmail || '—'}\\n🧾 رقم الأوردر: ${n.orderId || '—'}\\n\\n📝 ملخص عمر:\\n${n.summary}\\n\\n📎 سكرين شوت: ${n.screenshotUrl || 'مفيش'}\\n\\n💬 آخر رسائل المحادثة:\\n${chat}\\n\\n—————\\n🆔 escalation #${ins.id} · الحالة: مفتوح\\nالحل بشري: ادخل ظبّط الموضوع، وبعد ما تخلص علّم التصعيد كـ resolved.`;\nconst esc = String(body).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); return { json: { subject, body: esc.slice(0, 3900), escalationId: ins.id } };"
+        }
+      },
+      {
+        "id": "a8",
+        "name": "Finalize",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1400,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// Telegram-only: يفحص نجاح رنّة التليجرام. الضمان الحقيقي = الـ DB row (Insert Escalation).\nconst ok = name => { try { const j = $(name).first().json; return !(j && j.error); } catch (e) { return false; } };\nconst telegram = ok('Telegram Alert');\nconst ins = $('Insert Escalation').first().json;\nconst n = $('Normalize & Resolve').first().json;\nreturn { json: {\n  ok: true,\n  escalation_id: ins.id,\n  priority: n.priority,\n  type: n.type,\n  alerted: { telegram },\n  reassurance_flow: n.reassuranceFlow,\n  anyOk: telegram\n} };"
+        }
+      },
+      {
+        "id": "a9",
+        "name": "Mark Alerted",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1600,
+          0
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true,
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "UPDATE omar.escalations SET alerted_at = now() WHERE id = $1 AND $2::boolean RETURNING id;",
+          "options": {
+            "queryReplacement": "={{ [$json.escalation_id, $json.anyOk] }}"
+          }
+        },
+        "credentials": {
+          "postgres": {
+            "id": "zCWs84St5G8Iw8TS",
+            "name": "Postgres — omar_agent"
+          }
+        }
+      },
+      {
+        "id": "a10",
+        "name": "Return Ack",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1800,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// آخر نود = اللي بيرجع لأداة escalate (الموديل بيستخدم reassurance_flow بس)\nconst f = $('Finalize').first().json;\nreturn { json: { ok: f.ok, escalation_id: f.escalation_id, priority: f.priority, type: f.type, alerted: f.alerted, reassurance_flow: f.reassurance_flow } };"
+        }
+      },
+      {
+        "id": "b57b3e7c-b2b8-4ce7-b6cf-0baa3ee33667",
+        "name": "Telegram Alert",
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          950,
+          0
+        ],
+        "parameters": {
+          "resource": "message",
+          "operation": "sendMessage",
+          "chatId": "-5163152342",
+          "text": "={{ $('Build Alert Message').first().json.body }}",
+          "additionalFields": {
+            "appendAttribution": false,
+            "disable_web_page_preview": true,
+            "parse_mode": "HTML"
+          }
+        },
+        "credentials": {
+          "telegramApi": {
+            "id": "rvECFnBLZhbV2ADN",
+            "name": "Telegram — GrowthMora Shared Bot"
+          }
+        },
+        "onError": "continueRegularOutput",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "webhookId": "23161931-61fd-406b-8d20-738b45da39d7"
+      },
+      {
+        "id": "0411ba0b-b49c-4286-bc8a-6737710bb00b",
+        "name": "Is New Escalation?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          560,
+          180
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.is_new }}",
+                "rightValue": 1,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                },
+                "id": "condition-1781093617991-nn5jjqm15"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "notes": "dedup gate: is_new=1 (اتعمل insert جديد) → رنّة تيليجرام. is_new=0 (تكرار خلال 90 ثانية) → ack صامت، مفيش رنّة."
+      },
+      {
+        "id": "21a96d05-b174-4a90-b545-8e4f4f7d06dc",
+        "name": "Ack Deduped",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          820,
+          320
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// تصعيد مكرر خلال 90 ثانية (وكيل + حارس، أو retry) — مفيش رنّة تانية. بنرجّع ack سليم للأداة.\nconst n = $('Normalize & Resolve').first().json;\nconst ins = $('Insert Escalation').first().json;\nreturn { json: { ok: true, escalation_id: ins.id, priority: n.priority, type: n.type, alerted: { telegram: false }, reassurance_flow: n.reassuranceFlow, deduped: true } };"
+        }
+      }
+    ],
+    "connections": {
+      "Escalate Trigger": {
+        "main": [
+          [
+            {
+              "node": "Normalize & Resolve",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize & Resolve": {
+        "main": [
+          [
+            {
+              "node": "Insert Escalation",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Finalize": {
+        "main": [
+          [
+            {
+              "node": "Mark Alerted",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mark Alerted": {
+        "main": [
+          [
+            {
+              "node": "Return Ack",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Alert Message": {
+        "main": [
+          [
+            {
+              "node": "Telegram Alert",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Telegram Alert": {
+        "main": [
+          [
+            {
+              "node": "Finalize",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert Escalation": {
+        "main": [
+          [
+            {
+              "node": "Is New Escalation?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is New Escalation?": {
+        "main": [
+          [
+            {
+              "node": "Build Alert Message",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Ack Deduped",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Omar Abdelrahman",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-10T16:34:02.706Z",
+        "id": 118,
+        "workflowId": "ULoRfU57m5fSLD2B",
+        "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T16:34:02.725Z",
+        "id": 119,
+        "workflowId": "ULoRfU57m5fSLD2B",
+        "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T16:34:57.711Z",
+        "id": 120,
+        "workflowId": "ULoRfU57m5fSLD2B",
+        "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T16:34:57.727Z",
+        "id": 121,
+        "workflowId": "ULoRfU57m5fSLD2B",
+        "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T16:34:58.004Z",
+        "id": 122,
+        "workflowId": "ULoRfU57m5fSLD2B",
+        "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T16:34:58.014Z",
+        "id": 123,
+        "workflowId": "ULoRfU57m5fSLD2B",
+        "versionId": "2ed33184-ed6f-4ada-840a-5330449774f3",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "n8n-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "n8n-mcp"],
+      "env": {
+        "MCP_MODE": "stdio",
+        "LOG_LEVEL": "error",
+        "DISABLE_CONSOLE_OUTPUT": "true",
+        "N8N_API_URL": "https://n8n.learrnsimply.com",
+        "N8N_API_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGNkMGUyMi0yMDk3LTRiNmUtYTA5Zi1lZjQwNDAzYmRjYTUiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiZjdiMjFhZjctY2E4MS00NWQ3LTg0MjItMzAwMDA5NzJmNzU0IiwiaWF0IjoxNzgwMjcwOTY0fQ.KKdurccu59lbG2t-PSBqMAlqtAQO5t-8n-LnBY5bukA"
+      }
+    }
+  }
+}

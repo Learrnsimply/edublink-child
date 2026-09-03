@@ -1,0 +1,27 @@
+# Playwright Verification — Task 2.11 X-Powered-By Removal
+# Captured: 2026-05-24
+# Browser: Chromium (real, not curl)
+# URL: https://learrnsimply.com/
+
+## Response Headers Present
+alt-svc: h3=":443"; ma=86400
+cache-control: no-cache
+content-encoding: br
+content-security-policy: upgrade-insecure-requests
+content-type: text/html; charset=UTF-8
+date: Sun, 24 May 2026 10:41:02 GMT
+last-modified: Sun, 24 May 2026 07:13:52 GMT
+panel: hpanel
+platform: hostinger
+server: hcdn
+wpo-cache-status: cached
+x-hcdn-cache-status: DYNAMIC
+x-hcdn-request-id: 791c10497cf79bf571a4a05df99f9562-fra-edge4
+x-hcdn-upstream-rt: 0.113
+
+## Headers REMOVED (verified absent)
+X-Powered-By  ← was: "PHP/8.2.30", now: not present ✅
+
+## Pre-existing console 404s (NOT caused by Task 2.11)
+- /wp-content/themes/edublink/assets/js/init.js?ver=2.0.8 → 404
+- /wp-content/themes/edublink-child/assets/img/icon-courses.png → 404

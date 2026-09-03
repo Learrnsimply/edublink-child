@@ -1,0 +1,37 @@
+# Verification — Task 2.12 chmod 600 wp-config.php
+# Captured: 2026-05-24
+
+## Pre-state
+File: /home/u700430280/domains/learrnsimply.com/public_html/wp-config.php
+Owner: u700430280
+Group: o200100801
+Mode: 644 (-rw-r--r--) — WORLD READABLE (issue)
+
+## Hostinger environment confirmed
+- Web server: LiteSpeed (lsphp processes)
+- PHP execution: suEXEC (PHP runs as file owner u700430280)
+- File owner == PHP runtime user → chmod 600 safe
+
+## Change applied
+chmod 600 wp-config.php
+New mode: 600 (-rw-------)  — owner-only read/write, no group/world access
+
+## Verification (immediate smoke test)
+- / → 200 OK ✓
+- /courses/ → 200 OK ✓
+- /wp-json/ → 200 OK ✓
+- /wp-admin/ → 302 (login redirect, expected) ✓
+- Playwright homepage: Title "اتعلم ببساطة - تعلم البرمجة من الصفر" ✓
+
+## Why this matters
+wp-config.php contains:
+- WordPress DB credentials (DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
+- Auth keys + salts
+- Possibly: SMTP secrets, API keys (if added as constants)
+
+Mode 644 allowed any user with shell access on shared hosting to read.
+Mode 600 restricts to the file owner only (which is also the PHP user).
+
+## Rollback if needed
+ssh learnsimply 'cd /home/u700430280/domains/learrnsimply.com/public_html && \
+  chmod 644 wp-config.php'

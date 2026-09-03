@@ -1,0 +1,599 @@
+{
+  "updatedAt": "2026-06-06T14:08:08.857Z",
+  "createdAt": "2026-06-02T23:42:12.067Z",
+  "id": "VMVSlPEcwNr1Bd6J",
+  "name": "W2 — Dart Waitlist Popup → Mautic",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "popup_webhook",
+      "name": "Dart Popup Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        300
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dart-waitlist-97ae34dfa856",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://learrnsimply.com,https://www.learrnsimply.com"
+        }
+      },
+      "webhookId": "b8803386-bf93-4e3d-a784-2c14d8285664"
+    },
+    {
+      "id": "validate_code",
+      "name": "Validate & Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// W2: validate a Dart-waitlist popup submission and build a Mautic contact body.\n// Never throws — always emits exactly one item describing the outcome so the\n// Respond nodes can return clean JSON to the browser fetch().\nconst items = $input.all();\nconst root = (items[0] && items[0].json) ? items[0].json : {};\nconst b = (root.body && typeof root.body === 'object') ? root.body : root;\n\n// Honeypot: a hidden field real users never fill. Non-empty => bot => silent skip.\nconst honeypot = String(b.website || b.hp || '').trim();\nif (honeypot) {\n  return [{ json: { valid: false, success: true, statusCode: 200, message: 'ok' } }];\n}\n\nconst email = String(b.email || '').trim().toLowerCase();\nconst emailOk = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\nif (!emailOk) {\n  return [{ json: { valid: false, success: false, statusCode: 400, message: 'من فضلك أدخل بريدًا إلكترونيًا صحيحًا' } }];\n}\n\nconst firstname = String(b.firstname || b.first_name || b.name || '').trim();\nconst contactBody = { email, tags: ['dart-waitlist'] };\nif (firstname) contactBody.firstname = firstname;\n\nreturn [{ json: { valid: true, success: true, statusCode: 200, email, firstname, contactBody } }];"
+      }
+    },
+    {
+      "id": "is_valid_if",
+      "name": "Is Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        680,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-valid",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "mautic_create",
+      "name": "Mautic Create Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        900,
+        200
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://mautic.learrnsimply.com/api/contacts/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.contactBody) }}",
+        "options": {}
+      },
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "HcKVugtv8k1Yr47c",
+          "name": "Mautic HTTP Basic — Learn Simply"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "id": "mautic_segment",
+      "name": "Add to Segment 10",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        200
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "=https://mautic.learrnsimply.com/api/segments/10/contact/{{ $json.contact.id }}/add",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "HcKVugtv8k1Yr47c",
+          "name": "Mautic HTTP Basic — Learn Simply"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "id": "respond_ok",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1340,
+        200
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, message: 'تم تسجيلك في قائمة انتظار كورس Dart 🎉' }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "respond_reject",
+      "name": "Respond Rejected",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        900,
+        420
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: $json.success, message: $json.message }) }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode }}"
+        }
+      }
+    },
+    {
+      "id": "mautic_welcome",
+      "name": "Send Dart Welcome",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1560,
+        200
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://mautic.learrnsimply.com/api/emails/2/contact/{{ $('Mautic Create Contact').item.json.contact.id }}/send",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "HcKVugtv8k1Yr47c",
+          "name": "Mautic HTTP Basic — Learn Simply"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    }
+  ],
+  "connections": {
+    "Dart Popup Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate & Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate & Build": {
+      "main": [
+        [
+          {
+            "node": "Is Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Valid?": {
+      "main": [
+        [
+          {
+            "node": "Mautic Create Contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mautic Create Contact": {
+      "main": [
+        [
+          {
+            "node": "Add to Segment 10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Segment 10": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond Success": {
+      "main": [
+        [
+          {
+            "node": "Send Dart Welcome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "6ee401d0-64c2-45e1-a1d5-73e9511d43b1",
+  "activeVersionId": "6ee401d0-64c2-45e1-a1d5-73e9511d43b1",
+  "versionCounter": 2,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-06-02T23:42:12.067Z",
+      "createdAt": "2026-06-02T23:42:12.067Z",
+      "role": "workflow:owner",
+      "workflowId": "VMVSlPEcwNr1Bd6J",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-06-06T14:08:08.861Z",
+    "createdAt": "2026-06-06T14:08:08.861Z",
+    "versionId": "6ee401d0-64c2-45e1-a1d5-73e9511d43b1",
+    "workflowId": "VMVSlPEcwNr1Bd6J",
+    "nodes": [
+      {
+        "id": "popup_webhook",
+        "name": "Dart Popup Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          240,
+          300
+        ],
+        "onError": "continueRegularOutput",
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "dart-waitlist-97ae34dfa856",
+          "responseMode": "responseNode",
+          "options": {
+            "allowedOrigins": "https://learrnsimply.com,https://www.learrnsimply.com"
+          }
+        },
+        "webhookId": "b8803386-bf93-4e3d-a784-2c14d8285664"
+      },
+      {
+        "id": "validate_code",
+        "name": "Validate & Build",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          460,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// W2: validate a Dart-waitlist popup submission and build a Mautic contact body.\n// Never throws — always emits exactly one item describing the outcome so the\n// Respond nodes can return clean JSON to the browser fetch().\nconst items = $input.all();\nconst root = (items[0] && items[0].json) ? items[0].json : {};\nconst b = (root.body && typeof root.body === 'object') ? root.body : root;\n\n// Honeypot: a hidden field real users never fill. Non-empty => bot => silent skip.\nconst honeypot = String(b.website || b.hp || '').trim();\nif (honeypot) {\n  return [{ json: { valid: false, success: true, statusCode: 200, message: 'ok' } }];\n}\n\nconst email = String(b.email || '').trim().toLowerCase();\nconst emailOk = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\nif (!emailOk) {\n  return [{ json: { valid: false, success: false, statusCode: 400, message: 'من فضلك أدخل بريدًا إلكترونيًا صحيحًا' } }];\n}\n\nconst firstname = String(b.firstname || b.first_name || b.name || '').trim();\nconst contactBody = { email, tags: ['dart-waitlist'] };\nif (firstname) contactBody.firstname = firstname;\n\nreturn [{ json: { valid: true, success: true, statusCode: 200, email, firstname, contactBody } }];"
+        }
+      },
+      {
+        "id": "is_valid_if",
+        "name": "Is Valid?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          680,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "cond-valid",
+                "leftValue": "={{ $json.valid }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "mautic_create",
+        "name": "Mautic Create Contact",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          900,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://mautic.learrnsimply.com/api/contacts/new",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.contactBody) }}",
+          "options": {}
+        },
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "HcKVugtv8k1Yr47c",
+            "name": "Mautic HTTP Basic — Learn Simply"
+          }
+        },
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000
+      },
+      {
+        "id": "mautic_segment",
+        "name": "Add to Segment 10",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          1120,
+          200
+        ],
+        "onError": "continueRegularOutput",
+        "parameters": {
+          "method": "POST",
+          "url": "=https://mautic.learrnsimply.com/api/segments/10/contact/{{ $json.contact.id }}/add",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "options": {}
+        },
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "HcKVugtv8k1Yr47c",
+            "name": "Mautic HTTP Basic — Learn Simply"
+          }
+        },
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000
+      },
+      {
+        "id": "respond_ok",
+        "name": "Respond Success",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1340,
+          200
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ success: true, message: 'تم تسجيلك في قائمة انتظار كورس Dart 🎉' }) }}",
+          "options": {
+            "responseCode": 200
+          }
+        }
+      },
+      {
+        "id": "respond_reject",
+        "name": "Respond Rejected",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          900,
+          420
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ success: $json.success, message: $json.message }) }}",
+          "options": {
+            "responseCode": "={{ $json.statusCode }}"
+          }
+        }
+      },
+      {
+        "id": "mautic_welcome",
+        "name": "Send Dart Welcome",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          1560,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "=https://mautic.learrnsimply.com/api/emails/2/contact/{{ $('Mautic Create Contact').item.json.contact.id }}/send",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "options": {}
+        },
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "HcKVugtv8k1Yr47c",
+            "name": "Mautic HTTP Basic — Learn Simply"
+          }
+        },
+        "onError": "continueRegularOutput",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000
+      }
+    ],
+    "connections": {
+      "Dart Popup Webhook": {
+        "main": [
+          [
+            {
+              "node": "Validate & Build",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate & Build": {
+        "main": [
+          [
+            {
+              "node": "Is Valid?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is Valid?": {
+        "main": [
+          [
+            {
+              "node": "Mautic Create Contact",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respond Rejected",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mautic Create Contact": {
+        "main": [
+          [
+            {
+              "node": "Add to Segment 10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Add to Segment 10": {
+        "main": [
+          [
+            {
+              "node": "Respond Success",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Respond Success": {
+        "main": [
+          [
+            {
+              "node": "Send Dart Welcome",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Omar Abdelrahman",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-06T14:08:08.943Z",
+        "id": 13,
+        "workflowId": "VMVSlPEcwNr1Bd6J",
+        "versionId": "6ee401d0-64c2-45e1-a1d5-73e9511d43b1",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-06T14:08:08.969Z",
+        "id": 14,
+        "workflowId": "VMVSlPEcwNr1Bd6J",
+        "versionId": "6ee401d0-64c2-45e1-a1d5-73e9511d43b1",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    ]
+  }
+}

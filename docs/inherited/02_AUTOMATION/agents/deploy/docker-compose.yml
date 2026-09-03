@@ -1,0 +1,133 @@
+# ============================================================================
+# "Omar" agent stack — VPS deploy (187.124.9.249)
+# ============================================================================
+# Lives at /docker/omar-agent/ on the VPS. Separate lifecycle from n8n/Mautic.
+#
+# Topology trick: `pgvector` joins BOTH this stack's network AND the existing
+# external `n8n_default` network — so n8n reaches it as host `pgvector:5432`
+# WITHOUT touching the n8n stack at all (zero n8n downtime).
+#
+# Services:
+#   - pgvector  : Postgres 16 + pgvector. DBs: omar_agent (agent memory + RAG)
+#                 and evolution (Evolution API's own data).
+#   - redis     : dedicated cache for Evolution (isolated from n8n's redis).
+#   - evolution : WhatsApp gateway (Evolution API v2), routed at
+#                 evolution.learrnsimply.com. Connect a number later via QR.
+#
+# Secrets come from ./.env (generated server-side, chmod 600, NEVER committed).
+# ============================================================================
+
+services:
+  pgvector:
+    image: pgvector/pgvector:pg16
+    container_name: omar-pgvector
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: omar_agent
+      POSTGRES_PASSWORD: ${OMAR_PG_PASSWORD}
+      POSTGRES_DB: omar_agent
+      TZ: Africa/Cairo
+    volumes:
+      - omar-pgdata:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d:ro   # runs once on first boot
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omar_agent -d omar_agent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - omar_default
+      - n8n_default            # external — lets n8n reach pgvector:5432
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  redis:
+    image: redis:7-alpine
+    container_name: omar-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --requirepass
+      - ${OMAR_REDIS_PASSWORD}
+      - --maxmemory
+      - 256mb
+      - --maxmemory-policy
+      - allkeys-lru
+      - --appendonly
+      - "yes"
+    volumes:
+      - omar-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${OMAR_REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - omar_default
+    deploy:
+      resources:
+        limits:
+          memory: 320M
+
+  evolution:
+    image: atendai/evolution-api:v2.2.3       # pinned; verify latest stable before deploy
+    container_name: omar-evolution
+    restart: unless-stopped
+    depends_on:
+      pgvector:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SERVER_URL: https://evolution.learrnsimply.com
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY}
+      AUTHENTICATION_TYPE: apikey
+      # --- Database (Prisma → its own `evolution` DB on the shared pgvector) ---
+      DATABASE_ENABLED: "true"
+      DATABASE_PROVIDER: postgresql
+      DATABASE_CONNECTION_URI: postgresql://omar_agent:${OMAR_PG_PASSWORD}@pgvector:5432/evolution
+      DATABASE_CONNECTION_CLIENT_NAME: evolution_omar
+      DATABASE_SAVE_DATA_INSTANCE: "true"
+      DATABASE_SAVE_DATA_NEW_MESSAGE: "true"
+      DATABASE_SAVE_MESSAGE_UPDATE: "true"
+      DATABASE_SAVE_DATA_CONTACTS: "true"
+      DATABASE_SAVE_DATA_CHATS: "true"
+      # --- Cache (Redis) ---
+      CACHE_REDIS_ENABLED: "true"
+      # use the unique container name (not the service name `redis`) — evolution is on n8n_default too,
+      # which ALSO has a `redis` service; `omar-redis` disambiguates to our own cache.
+      CACHE_REDIS_URI: redis://default:${OMAR_REDIS_PASSWORD}@omar-redis:6379/0
+      CACHE_REDIS_PREFIX_KEY: evolution
+      CACHE_REDIS_SAVE_INSTANCES: "true"
+      CACHE_LOCAL_ENABLED: "false"
+      # --- Behaviour ---
+      DEL_INSTANCE: "false"
+      TZ: Africa/Cairo
+      LANGUAGE: en
+    volumes:
+      - evolution-instances:/evolution/instances
+    networks:
+      - omar_default
+      - n8n_default            # external — lets n8n reach evolution:8080 and evolution reach n8n:5678 internally
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.evolution.rule=Host(`evolution.learrnsimply.com`)
+      - traefik.http.routers.evolution.entrypoints=websecure
+      - traefik.http.routers.evolution.tls.certresolver=letsencrypt
+      - traefik.http.services.evolution.loadbalancer.server.port=8080
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+volumes:
+  omar-pgdata:
+  omar-redis:
+  evolution-instances:
+
+networks:
+  omar_default:
+  n8n_default:
+    external: true

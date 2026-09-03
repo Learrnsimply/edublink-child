@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<title>تحليل تنافسي — Dart من الصفر</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap">
+<style>
+  :root{
+    --ink:#14181f; --ink-soft:#3a4250; --muted:#737d8c; --line:#e7e8ee;
+    --paper:#ffffff; --surface:#f6f5fb; --surface-2:#f0eefb;
+    --accent:#6d4aff; --accent-deep:#4a2fd6; --accent-soft:#efeaff;
+    --ok:#138a5e; --ok-soft:#e3f5ec; --warn:#c47d00; --warn-soft:#fdf2db;
+    --bad:#d23b54; --bad-soft:#fde8ec; --gold:#caa23a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{ font-family:'Cairo',sans-serif; color:var(--ink); background:var(--paper);
+        font-size:13px; line-height:1.7; }
+  @page{ size:A4; margin:0; }
+  .page{ width:210mm; min-height:297mm; padding:18mm 16mm; margin:0 auto;
+         position:relative; background:var(--paper); }
+  .break{ break-before:page; }
+  h1,h2,h3,h4{ line-height:1.25; }
+  strong{ font-weight:700; color:var(--ink); }
+  .accent{ color:var(--accent-deep); }
+  .small{ font-size:11px; } .muted{ color:var(--muted); }
+
+  /* ---------- COVER ---------- */
+  .cover{ display:flex; flex-direction:column; justify-content:space-between;
+          background:linear-gradient(155deg,#1a1430 0%,#2a1d54 45%,#4a2fd6 120%);
+          color:#fff; min-height:297mm; padding:24mm 18mm; }
+  .cover .topbar{ display:flex; justify-content:space-between; align-items:center;
+                  font-size:12px; letter-spacing:.5px; opacity:.85; }
+  .cover .badge{ border:1px solid rgba(255,255,255,.35); border-radius:999px;
+                 padding:5px 14px; font-weight:600; }
+  .cover .mid{ }
+  .cover .kicker{ font-size:14px; font-weight:600; color:#c9b8ff; letter-spacing:1px;
+                  margin-bottom:14px; }
+  .cover h1{ font-size:62px; font-weight:900; letter-spacing:-1px; line-height:1.05; }
+  .cover h1 .hl{ background:linear-gradient(120deg,#fff,#c9b8ff); -webkit-background-clip:text;
+                 background-clip:text; -webkit-text-fill-color:transparent; }
+  .cover .sub{ font-size:20px; font-weight:500; margin-top:18px; color:#e8e2ff; max-width:75%; }
+  .cover .rule{ width:64px; height:5px; background:#8b6dff; border-radius:3px; margin:26px 0; }
+  .cover .meta{ display:flex; gap:36px; margin-top:10px; }
+  .cover .meta div .l{ font-size:11px; opacity:.6; margin-bottom:3px; }
+  .cover .meta div .v{ font-size:15px; font-weight:700; }
+  .cover .foot{ display:flex; justify-content:space-between; align-items:flex-end;
+                font-size:12px; opacity:.8; }
+  .cover .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:24px; }
+  .cover .chip{ background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18);
+                border-radius:8px; padding:7px 12px; font-size:12px; font-weight:600; }
+
+  /* ---------- SECTION SHELL ---------- */
+  .sec-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:18px;
+             padding-bottom:12px; border-bottom:2px solid var(--ink); }
+  .sec-no{ font-size:13px; font-weight:800; color:#fff; background:var(--accent);
+           border-radius:8px; width:30px; height:30px; display:flex; align-items:center;
+           justify-content:center; flex:none; }
+  .sec-head h2{ font-size:24px; font-weight:800; }
+  .sec-head .en{ margin-inline-start:auto; font-size:11px; color:var(--muted);
+                 font-weight:600; letter-spacing:1px; align-self:center; }
+  p.lead{ font-size:14px; color:var(--ink-soft); margin-bottom:14px; }
+
+  /* ---------- EXEC CARDS ---------- */
+  .cards{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .card{ border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+         background:var(--paper); position:relative; overflow:hidden; }
+  .card::before{ content:""; position:absolute; inset-inline-start:0; top:0; bottom:0;
+                 width:5px; background:var(--accent); }
+  .card .n{ font-size:12px; font-weight:800; color:var(--accent-deep); margin-bottom:6px; }
+  .card h3{ font-size:15px; font-weight:800; margin-bottom:7px; }
+  .card p{ font-size:12px; color:var(--ink-soft); line-height:1.65; }
+  .card.threat::before{ background:var(--bad); } .card.threat .n{ color:var(--bad); }
+
+  /* ---------- TABLE ---------- */
+  table{ width:100%; border-collapse:collapse; font-size:11px; }
+  thead th{ background:var(--ink); color:#fff; font-weight:700; padding:10px 8px;
+            text-align:right; font-size:11px; }
+  tbody td{ padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top;
+            color:var(--ink-soft); }
+  tbody tr:nth-child(even){ background:var(--surface); }
+  .row-ahmed{ background:var(--accent-soft)!important; }
+  .row-ahmed td{ color:var(--ink); }
+  .row-star td:first-child{ box-shadow:inset 3px 0 0 var(--gold); }
+  td .name{ font-weight:800; color:var(--ink); display:block; }
+  .pill{ display:inline-block; border-radius:999px; padding:2px 8px; font-size:10px;
+         font-weight:700; white-space:nowrap; }
+  .p-ok{ background:var(--ok-soft); color:var(--ok); }
+  .p-warn{ background:var(--warn-soft); color:var(--warn); }
+  .p-bad{ background:var(--bad-soft); color:var(--bad); }
+  .legend{ display:flex; gap:16px; margin-top:10px; font-size:11px; color:var(--muted);
+           flex-wrap:wrap; }
+  .legend span b{ font-weight:700; }
+
+  /* ---------- POSITIONING MAP ---------- */
+  .map-wrap{ border:1px solid var(--line); border-radius:16px; padding:22px; background:var(--surface);
+             margin-top:6px; }
+  .map{ position:relative; height:330px; direction:ltr; background:
+        linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 50%,
+        linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/50% 100%;
+        border:1.5px solid #d8dae3; border-radius:10px; }
+  .map .axis{ position:absolute; font-size:10.5px; font-weight:700; color:var(--muted); }
+  .ax-top{ top:6px; left:50%; transform:translateX(-50%);}
+  .ax-bottom{ bottom:6px; left:50%; transform:translateX(-50%);}
+  .ax-left{ left:8px; top:50%; transform:translateY(-50%) rotate(180deg); writing-mode:vertical-rl;}
+  .ax-right{ right:8px; top:50%; transform:translateY(-50%); writing-mode:vertical-rl;}
+  .pt{ position:absolute; transform:translate(-50%,-50%); text-align:center; }
+  .pt .dot{ width:13px; height:13px; border-radius:50%; background:var(--ink-soft);
+            margin:0 auto 3px; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.2); }
+  .pt .lbl{ font-size:10px; font-weight:700; color:var(--ink); white-space:nowrap;
+            direction:rtl; background:rgba(255,255,255,.82); padding:1px 5px; border-radius:5px; }
+  .pt.ahmed .dot{ width:20px; height:20px; background:var(--accent); border:3px solid #fff;
+                  box-shadow:0 0 0 4px var(--accent-soft); }
+  .pt.ahmed .lbl{ color:var(--accent-deep); font-weight:800; font-size:11px; }
+  .pt.star .dot{ background:var(--gold); }
+  .map-note{ font-size:11px; color:var(--warn); margin-top:12px; display:flex; gap:6px; }
+
+  /* ---------- SWOT ---------- */
+  .swot{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .q{ border-radius:12px; padding:14px 16px; border:1px solid var(--line); }
+  .q h4{ font-size:14px; font-weight:800; margin-bottom:8px; display:flex; gap:7px; align-items:center; }
+  .q ul{ list-style:none; } .q li{ font-size:11px; color:var(--ink-soft); padding:3px 0 3px 0;
+         padding-inline-start:14px; position:relative; line-height:1.55; }
+  .q li::before{ content:""; position:absolute; inset-inline-start:0; top:9px; width:5px; height:5px;
+                 border-radius:50%; }
+  .q.s{ background:var(--ok-soft); border-color:#bfe6d2;} .q.s li::before{ background:var(--ok);}
+  .q.w{ background:var(--warn-soft); border-color:#f0deb0;} .q.w li::before{ background:var(--warn);}
+  .q.o{ background:var(--accent-soft); border-color:#d9cdff;} .q.o li::before{ background:var(--accent);}
+  .q.t{ background:var(--bad-soft); border-color:#f2c6cf;} .q.t li::before{ background:var(--bad);}
+
+  /* ---------- REC BLOCKS ---------- */
+  .rec{ border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:11px;
+        background:var(--paper); }
+  .rec h4{ font-size:14px; font-weight:800; margin-bottom:6px; color:var(--accent-deep); }
+  .rec p{ font-size:12px; color:var(--ink-soft); }
+  .rec ul{ margin:5px 14px 0; font-size:12px; color:var(--ink-soft); }
+  .rec li{ margin:3px 0; }
+  .twocol{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .do,.dont{ border-radius:12px; padding:13px 15px; }
+  .do{ background:var(--ok-soft); border:1px solid #bfe6d2; }
+  .dont{ background:var(--bad-soft); border:1px solid #f2c6cf; }
+  .do h4{ color:var(--ok); } .dont h4{ color:var(--bad); }
+  .do ul,.dont ul{ list-style:none; margin-top:6px; }
+  .do li,.dont li{ font-size:11.5px; padding:3px 0; }
+
+  /* ---------- BLOCKERS ---------- */
+  .blockers{ background:linear-gradient(135deg,#fdecef,#fdf4e3); border:1.5px solid #f1c9cf;
+             border-radius:16px; padding:20px 22px; }
+  .blockers h3{ font-size:17px; font-weight:800; color:var(--bad); margin-bottom:14px;
+                display:flex; gap:8px; align-items:center; }
+  .blockers ol{ list-style:none; counter-reset:b; }
+  .blockers li{ counter-increment:b; position:relative; padding:9px 44px 9px 0; font-size:13px;
+                border-bottom:1px dashed #e8c4ca; }
+  .blockers li:last-child{ border:0; }
+  .blockers li::before{ content:counter(b); position:absolute; inset-inline-start:0; top:8px;
+       width:28px; height:28px; background:var(--bad); color:#fff; border-radius:8px;
+       display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; }
+  .blockers li b{ color:var(--ink); }
+
+  /* ---------- APPENDIX CARDS ---------- */
+  .comp{ border:1px solid var(--line); border-radius:14px; padding:15px 17px; margin-bottom:12px;
+         background:var(--paper); break-inside:avoid; }
+  .comp .top{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .comp .top h4{ font-size:15px; font-weight:800; }
+  .comp .tag{ font-size:10px; font-weight:700; padding:2px 9px; border-radius:999px;
+              background:var(--surface-2); color:var(--accent-deep); }
+  .comp .grid{ display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:11.5px; }
+  .comp .k{ font-weight:700; color:var(--muted); } .comp .v{ color:var(--ink-soft); }
+  .comp .v b{ color:var(--ink); }
+
+  .pagefoot{ position:absolute; bottom:9mm; inset-inline:16mm; display:flex;
+             justify-content:space-between; font-size:9.5px; color:var(--muted);
+             border-top:1px solid var(--line); padding-top:6px; }
+  .star-tag{ color:var(--gold); font-weight:800; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="topbar">
+    <span>GrowthMora · تقرير استخبارات تنافسية</span>
+    <span class="badge">سرّي — داخلي</span>
+  </div>
+  <div class="mid">
+    <div class="kicker">اتعلم ببساطة · أحمد عادل</div>
+    <h1>تحليل <span class="hl">تنافسي</span><br>شامل</h1>
+    <div class="sub">5 منافسين على سوق كورسات Dart / Flutter العربي — مقابل أحمد عادل، قبل إطلاق كورس «Dart من الصفر».</div>
+    <div class="rule"></div>
+    <div class="meta">
+      <div><div class="l">التاريخ</div><div class="v">3 يونيو 2026</div></div>
+      <div><div class="l">المنهجية</div><div class="v">8 وكلاء + مراجعة نقدية</div></div>
+      <div><div class="l">الأبعاد</div><div class="v">7 لكل منافس</div></div>
+    </div>
+    <div class="chips">
+      <span class="chip">⭐ أسامة الجندي</span>
+      <span class="chip">ثروت سامي (GDE)</span>
+      <span class="chip">عبدالله منصور</span>
+      <span class="chip">علي حسن</span>
+      <span class="chip">عمر أحمد</span>
+    </div>
+  </div>
+  <div class="foot">
+    <span>أُعدّ لـ: أحمد عادل · GTM Engineering بواسطة GrowthMora</span>
+    <span>learrnsimply.com</span>
+  </div>
+</section>
+
+<!-- ============ PAGE 1 — EXEC + TABLE ============ -->
+<section class="page">
+  <div class="sec-head"><span class="sec-no">١</span><h2>الملخص التنفيذي</h2><span class="en">EXECUTIVE SUMMARY</span></div>
+  <p class="lead">أحمد داخل سوق <strong>مزدحم بالفعل</strong> بكورسات Flutter/Dart عربية — بس بميزة مفيش حد عنده زيها: <strong>توزيع جماهيري ضخم ورخيص</strong> (369K يوتيوب + 24.4K تيليجرام بتفاعل 60-86% + 13,140 إيميل نايمين).</p>
+  <div class="cards">
+    <div class="card"><div class="n">استنتاج ٠١</div><h3>منافس مباشر واحد بس</h3><p><strong>أسامة الجندي</strong> هو الوحيد اللي بايع كورس Dart <strong>مستقل</strong> (14-21 ساعة، ~98 درس، تقييم 5.0). بسعر <strong>399ج موثّق</strong>. الباقيين بيحطّوا Dart <em>جوه</em> كورس Flutter — مش منافسة مباشرة.</p></div>
+    <div class="card"><div class="n">استنتاج ٠٢</div><h3>تسعير أحمد لسه مجهول</h3><p>سعر 600/300 <strong>وعمق الكورس غير مؤكدين</strong> — القرار متوقّف عليهم. لو 300 فعلاً، فهو أرخص من أسامة 399، بس كورس أسامة أعمق → المعركة <strong>قيمة/ساعة</strong> مش سعر مطلق.</p></div>
+    <div class="card"><div class="n">استنتاج ٠٣</div><h3>الميزة = التوزيع مش المحتوى</h3><p>369K يوتيوب + تيليجرام بتفاعل 60-86% — <strong>مفيش منافس عنده زيها</strong>. مكان أحمد الطبيعي: «أبسط شرح، من أكبر مدرّس بتثق فيه» — مساحة لوحده فيها.</p></div>
+    <div class="card threat"><div class="n">استنتاج ٠٤ · خطر</div><h3>أخطر تهديد = التنفيذ</h3><p><strong>~30% فشل checkout</strong> (~200-350K ج/سنة) + صفر email على 13K مشترك + <strong>social proof مزيّف</strong> بيضرب الثقة اللي هي ميزته. الجمهور الضخم نفسه هيتسرّب لو الـ funnel مكسور.</p></div>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px;"><span class="sec-no">٢</span><h2>جدول المقارنة الشامل</h2><span class="en">COMPETITIVE MATRIX</span></div>
+  <table>
+    <thead><tr><th>اللاعب</th><th>الجمهور (موثّق)</th><th>Dart؟</th><th>سعر Dart (EGP)</th><th>الموديل</th><th>أقوى نقطة</th></tr></thead>
+    <tbody>
+      <tr class="row-ahmed"><td><span class="name">أحمد عادل</span><span class="small muted">هدفنا</span></td><td>369K يوتيوب · 24.4K تيليجرام · 13,140 إيميل</td><td>أول منتج</td><td><span class="pill p-warn">600/300 غير مؤكد</span></td><td>منصة خاصة، شراء مرة</td><td>توزيع + ثقة + مجتمع</td></tr>
+      <tr class="row-star"><td><span class="name">أسامة الجندي <span class="star-tag">⭐</span></span></td><td>23,048 طالب Udemy · يوتيوب غير مؤكد</td><td><b>Standalone</b> ✓</td><td><span class="pill p-ok">399 موثّق</span></td><td>منصة + Udemy، roadmap</td><td>كورس Dart مستقل أعمق + سعر أرخص</td></tr>
+      <tr><td><span class="name">ثروت سامي</span><span class="small muted">GDE Flutter</span></td><td><b>46,332</b> Udemy · 11,340 review</td><td>جوه Flutter</td><td><span class="pill p-warn">~650 غ.م</span> · لايف <span class="pill p-ok">8,800</span></td><td>متعدد قنوات + لايف</td><td>Google Developer Expert</td></tr>
+      <tr><td><span class="name">عبدالله منصور</span></td><td><b>62,300</b> Udemy · 10.4K review · 72K لينكدإن</td><td>جوه Flutter (42h)</td><td><span class="pill p-ok">$19.99</span> · <span class="pill p-warn">EGP غ.م</span></td><td>Udemy حصري</td><td>أكبر social proof عربي</td></tr>
+      <tr><td><span class="name">علي حسن</span><span class="small muted">الريّس</span></td><td><b>87,195</b> يوتيوب (تفاعل ~0.6%) · 16.4K Udemy</td><td>جوه Flutter (7.5h)</td><td><span class="pill p-warn">EGP غ.م</span></td><td>Freemium + Udemy</td><td>كتالوج full-stack عريض</td></tr>
+      <tr><td><span class="name">عمر أحمد</span><span class="small muted">x14</span></td><td>يوتيوب صغير · 38K لينكدإن</td><td>مجاناً فقط</td><td><span class="pill p-bad">لا منتج Dart مدفوع</span></td><td>منصة، كورس AI واحد</td><td>محتوى مجاني senior-level</td></tr>
+    </tbody>
+  </table>
+  <div class="legend">
+    <span><span class="pill p-ok">موثّق</span> ثقة عالية بمصدر</span>
+    <span><span class="pill p-warn">غ.م</span> غير مؤكد (null/منخفض)</span>
+    <span><b>⚠️ كل أسعار Udemy بالـ EGP غير مؤكدة</b> — Udemy بيسعّر حسب البلد، لازم تأكيد من IP مصري.</span>
+  </div>
+  <div class="pagefoot"><span>تحليل تنافسي — Dart من الصفر</span><span>GrowthMora · سرّي</span></div>
+</section>
+
+<!-- ============ PAGE 2 — MAP + USAMA ============ -->
+<section class="page break">
+  <div class="sec-head"><span class="sec-no">٣</span><h2>خريطة التموضع</h2><span class="en">POSITIONING MAP</span></div>
+  <div class="map-wrap">
+    <div class="map">
+      <span class="axis ax-top">توزيع جماهيري واسع ▲</span>
+      <span class="axis ax-bottom">▼ جمهور نيتشي تقني</span>
+      <span class="axis ax-right">◄ احتراف / credential</span>
+      <span class="axis ax-left">بساطة / دفء ►</span>
+      <div class="pt ahmed" style="left:16%; top:14%;"><div class="dot"></div><div class="lbl">★ أحمد عادل</div></div>
+      <div class="pt" style="left:42%; top:32%;"><div class="dot"></div><div class="lbl">علي حسن</div></div>
+      <div class="pt star" style="left:66%; top:56%;"><div class="dot"></div><div class="lbl">أسامة الجندي</div></div>
+      <div class="pt" style="left:82%; top:62%;"><div class="dot"></div><div class="lbl">ثروت سامي</div></div>
+      <div class="pt" style="left:72%; top:70%;"><div class="dot"></div><div class="lbl">عبدالله منصور</div></div>
+      <div class="pt" style="left:55%; top:76%;"><div class="dot"></div><div class="lbl">عمر أحمد</div></div>
+    </div>
+    <div class="map-note">⚠️ <span>مواقع المنافسين على محور التوزيع تقريبية (اشتراكات يوتيوبهم غير مؤكدة). المؤكد: كلهم أصغر من أحمد على يوتيوب. أحمد (369K) وعلي حسن (87K) النقطتان المثبتتان الوحيدتان.</span></div>
+  </div>
+  <div class="cards" style="margin-top:16px; grid-template-columns:1fr;">
+    <div class="card"><div class="n">القراءة الأساسية</div><p><strong>أحمد لوحده في الربع الأعلى-الأيسر</strong> — أكبر توزيع موثّق + أدفأ positioning. محدش بيزاحمه هناك = <strong>مساحة بيضاء حقيقية</strong>. باقي الكل متكدّس في الربع الأيمن-التحت (engineer/credential، نبرة أبرد، جمهور أصغر). <strong>أسامة الأقرب</strong> لأحمد لأنه بيستخدم نفس كلمة «البساطة» — بس بيضيف فوقها طبقة credential. لو أحمد نزل لتحت-يمين هيتنافس على أرض المنافسين الأقوى تقنياً — <strong>مكانه الطبيعي فوق-شمال</strong>.</p></div>
+  </div>
+
+  <div class="sec-head" style="margin-top:24px;"><span class="sec-no">٤</span><h2>أسامة الجندي — المنافس الأهم</h2><span class="en">KEY RIVAL</span></div>
+  <p class="lead">ليه أسامة الخطر الأول مش ثروت أو عبدالله رغم إن أرقامهم أكبر؟ لأنه الوحيد اللي <strong>منتجه يطابق منتج أحمد</strong>: كورس Dart مستقل، بنفس زاوية «البساطة»، بسعر موثّق (399) أرخص من سعر أحمد المفترض.</p>
+  <div class="twocol">
+    <div class="do"><h4>ليه الناس بتشتري منه</h4><ul>
+      <li>كورس Dart مستقل عميق (14-21h, 98 درس) بـ <b>399ج موثّق</b></li>
+      <li>Credential مؤسسي: مدرّب ITI + EDPI</li>
+      <li><b>Roadmap كامل</b>: Dart = خطوة 1 في سلّم 5 كورسات (bundle 1,999) → LTV أعلى</li>
+      <li>Social proof على كل صفحة (5.0/104 على Dart)</li>
+      <li>شفافية السعر (معلن، مش DM-gated)</li>
+    </ul></div>
+    <div class="dont" style="background:var(--accent-soft); border-color:#d9cdff;"><h4 style="color:var(--accent-deep);">نقاط ضعفه = فرص أحمد</h4><ul>
+      <li>توزيع أصغر → أحمد يطغى في <b>حجم الإطلاق</b></li>
+      <li>مفيش دليل على مجتمع/cohort حيّ ولا cart-recovery</li>
+      <li>خصم دائم (900→399) بيآكل مصداقية السعر</li>
+      <li>نبرة أبرد → أحمد يكسب على الدفء والثقة بمقياس</li>
+      <li>مفيش onboarding متميّز → أحمد يكسب على التجربة (mobile/RTL)</li>
+    </ul></div>
+  </div>
+  <div class="pagefoot"><span>تحليل تنافسي — Dart من الصفر</span><span>GrowthMora · سرّي</span></div>
+</section>
+
+<!-- ============ PAGE 3 — SWOT ============ -->
+<section class="page break">
+  <div class="sec-head"><span class="sec-no">٥</span><h2>تحليل SWOT لأحمد</h2><span class="en">SWOT vs THE FIELD</span></div>
+  <div class="swot">
+    <div class="q s"><h4>💪 القوة</h4><ul>
+      <li>أكبر top-of-funnel في السوق — 369K يوتيوب، +17K/شهر</li>
+      <li>تيليجرام 24.4K بتفاعل 60-86% — قناة تحويل استثنائية مفيش منافس عنده زيها</li>
+      <li>ثقة حقيقية بمقياس — 4.9-5.0 على مئات الـ reviews</li>
+      <li>منصة خاصة فعلية = هامش كامل + ملكية العميل</li>
+      <li>هو نفسه المطوّر — يشحن تعديلات funnel بنفسه</li>
+    </ul></div>
+    <div class="q w"><h4>⚠️ الضعف</h4><ul>
+      <li>عمق/ساعات كورس Dart مجهول تماماً — blocker للتسعير</li>
+      <li>Funnel مكسور: 369K → ~2,700 مدفوع فقط؛ ~30% فشل checkout</li>
+      <li>صفر email marketing على 13,140 مشترك</li>
+      <li>منتج معزول مفيش بعده سلّم (المنافسين عندهم roadmap)</li>
+      <li>Social proof مزيّف على الموقع — بيضرب ميزته الأساسية</li>
+    </ul></div>
+    <div class="q o"><h4>🎯 الفرص</h4><ul>
+      <li>أنضف منتج Dart مستقل في السوق — mobile-first، RTL، <b>2026-fresh</b> (محتوى المنافسين 2022/2023)</li>
+      <li>يبني السلّم اللي مالوش: Dart → Flutter → Firebase</li>
+      <li>يفعّل 13,140 إيميل النايمين</li>
+      <li>تيليجرام كسلاح إطلاق (تحويل 60-86%)</li>
+      <li>يكسب على المجتمع + المتابعة (المنافسين مفيش عندهم cohort)</li>
+    </ul></div>
+    <div class="q t"><h4>🔻 التهديدات</h4><ul>
+      <li>أسامة بكورس Dart أعمق وسعره موثّق أرخص (399 ضد 300 غ.م)</li>
+      <li>ثروت/عبدالله بيدّوا Dart «مجاناً» جوه Flutter على Udemy</li>
+      <li>محتوى Flutter/Dart مجاني عالي الجودة من عمر أحمد</li>
+      <li>سباق القاع السعري على Udemy</li>
+      <li>تهديد ذاتي: إطلاق فوق funnel فيه 30% فشل دفع = تقييمات سلبية</li>
+    </ul></div>
+  </div>
+
+  <div class="sec-head" style="margin-top:24px;"><span class="sec-no">٦</span><h2>التوصيات الاستراتيجية</h2><span class="en">STRATEGY</span></div>
+  <div class="rec"><h4>أ · التسعير</h4><p>مينفعش نحسمه — الرقم نفسه غير مؤكد. لو 300 launch فعلاً فهو منطقي كـ entry، والمعركة مع أسامة (399) هي <strong>قيمة/ساعة</strong>. <strong>ماتعملش anchor وهمي دايم</strong> (أنت البراند الوحيد ميزته الثقة). الأقوى: اربط الكوبون بقيمة مضافة — «السعر + مجتمع تيليجرام خاص + متابعة شخصية أول أسبوع». متنزلش تحت 300.</p></div>
+  <div class="rec"><h4>ب · التمايز (على 4 حاجات موثّقة)</h4><ul><li><strong>«أبسط شرح Dart، من أكبر مدرّس بتثق فيه»</strong> — البساطة + حجم الثقة أقوى عاطفياً من credential للمبتدئين</li><li><strong>محدّث 2026</strong> — محتوى المنافسين 2022/2023</li><li><strong>المجتمع + المتابعة الشخصية</strong> — moat مبني على تيليجرام 24.4K</li><li><strong>Mobile-first + RTL نظيف</strong> — ~80% جمهورك موبايل</li></ul></div>
+  <div class="twocol" style="margin-top:4px;">
+    <div class="do"><h4>✓ يقلّد</h4><ul><li>شفافية السعر المعلن (أسامة)</li><li>social proof حقيقي على صفحة الكورس</li><li>فكرة السلّم/roadmap — بنسخة بمجتمع</li><li>كوبون إطلاق بمدة محدودة حقيقية</li></ul></div>
+    <div class="dont"><h4>✗ يتجنّب</h4><ul><li><b>social proof مزيّف — شيله فوراً</b> (أخطر حاجة)</li><li>الاعتماد على Udemy (يآكل الهامش)</li><li>الخصم الدائم الوهمي</li><li>النبرة التقنية الباردة</li></ul></div>
+  </div>
+  <div class="pagefoot"><span>تحليل تنافسي — Dart من الصفر</span><span>GrowthMora · سرّي</span></div>
+</section>
+
+<!-- ============ PAGE 4 — BLOCKERS + APPENDIX ============ -->
+<section class="page break">
+  <div class="sec-head"><span class="sec-no">٧</span><h2>الـ Blockers قبل الإطلاق</h2><span class="en">PRE-LAUNCH BLOCKERS</span></div>
+  <div class="blockers">
+    <h3>🚧 3 حاجات لازم تتحسم قبل أي قرار إطلاق</h3>
+    <ol>
+      <li><b>سعر + عمق كورس أحمد النهائي.</b> الاتنين غير معروفين/غير مؤكدين — كل التحليل التسعيري معلّق عليهم. <span class="muted">(سؤال لأحمد: السعر النهائي؟ كام ساعة/درس؟)</span></li>
+      <li><b>سعر كورس Dart أسامة الفعلي وقت الإطلاق.</b> 399 ثقة عالية دلوقتي — أكّد إنه لسه كده، هو المنافس المباشر الوحيد. <span class="muted">(تأكيد يدوي من usamaelgendy.com)</span></li>
+      <li><b>صحة الـ payment gateway.</b> التهديد الداخلي الأخطر — ~30% فشل دفع تاريخياً (Kashier غير رسمي = جذر محتمل لـ 909 فشل). <span class="muted">(فحص قبل الإطلاق)</span></li>
+    </ol>
+  </div>
+
+  <div class="sec-head" style="margin-top:26px;"><span class="sec-no" style="background:var(--ink);">A</span><h2>ملحق — بطاقات المنافسين</h2><span class="en">EVIDENCE CARDS</span></div>
+
+  <div class="comp">
+    <div class="top"><h4>أسامة الجندي</h4><span class="tag">⭐ المنافس الأهم</span><span class="tag">Pesa Coder</span></div>
+    <div class="grid">
+      <span class="k">الجمهور</span><span class="v">23,048 طالب Udemy (4.8) · يوتيوب غير مؤكد · ادّعاء 77K غير مؤكد</span>
+      <span class="k">الكتالوج</span><span class="v">Dart+OOP standalone (14-21h) · Flutter Master 70h · Clean Arch · Firebase · Git · Kotlin · <b>Roadmap 151h</b></span>
+      <span class="k">الأسعار</span><span class="v"><b>Dart 399</b> (مرساة 900) · Flutter 599 · Firebase 499 · <b>Bundle 1,999</b> — كلها موثّقة</span>
+      <span class="k">الموديل</span><span class="v">منصة خاصة + Udemy · roadmap funnel · شفافية سعر</span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <div class="top"><h4>ثروت سامي</h4><span class="tag">Google Developer Expert</span></div>
+    <div class="grid">
+      <span class="k">الجمهور</span><span class="v"><b>46,332</b> طالب Udemy · 11,340 review · 4.8</span>
+      <span class="k">الكتالوج</span><span class="v">Complete Flutter & Dart (34h, Dart-first) · Diploma 82h · <b>Live cohort 4 شهور</b> · BLoC/MVVM · E-commerce</span>
+      <span class="k">الأسعار</span><span class="v">self-paced ~650 (غ.م) · <b>Live 8,800</b> · <b>Diploma 13,800</b></span>
+      <span class="k">الموديل</span><span class="v">متعدد قنوات + لايف cohort عالي السعر</span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <div class="top"><h4>عبدالله منصور</h4><span class="tag">Bestseller Udemy</span></div>
+    <div class="grid">
+      <span class="k">الجمهور</span><span class="v"><b>62,300</b> طالب Udemy · 10.4K review · 4.6 · ~72K لينكدإن</span>
+      <span class="k">الكتالوج</span><span class="v">كورس واحد ضخم — Flutter & Dart 42h (Dart-first) · <b>مؤرّخ 2022 = freshness liability</b></span>
+      <span class="k">الأسعار</span><span class="v">Udemy ~$19.99 · كوبونات مجانية · <b>EGP غير مؤكد</b></span>
+      <span class="k">الموديل</span><span class="v">Udemy حصري — مفيش منصة/إيميل مملوكة</span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <div class="top"><h4>علي حسن</h4><span class="tag">Courses 4 Arab</span></div>
+    <div class="grid">
+      <span class="k">الجمهور</span><span class="v"><b>87,195</b> يوتيوب (تفاعل ضعيف ~0.6%) · ~16.4K Udemy (4.7)</span>
+      <span class="k">الكتالوج</span><span class="v">generalist full-stack (21 كورس) — Flutter+Dart+Firebase 7.5h فقط (4.0) · مفيش Dart standalone</span>
+      <span class="k">الأسعار</span><span class="v">Flutter Udemy غير مؤكد · JS course $49.99 (Teachable)</span>
+      <span class="k">الموديل</span><span class="v">Freemium → Udemy + Teachable</span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <div class="top"><h4>عمر أحمد</h4><span class="tag">OmarAhmedx14</span></div>
+    <div class="grid">
+      <span class="k">الجمهور</span><span class="v">~38K لينكدإن (الأقوى) · يوتيوب «صغير» غير مؤكد · GitHub 1.2K</span>
+      <span class="k">الكتالوج</span><span class="v">Flutter/Dart <b>كله مجاني</b> على يوتيوب · المدفوع الوحيد = Code with AI (مش Dart)</span>
+      <span class="k">الأسعار</span><span class="v">Code with AI 999 (موثّق) · مفيش منتج Dart مدفوع</span>
+      <span class="k">الموديل</span><span class="v">منصة خاصة، كورس AI واحد — ضغط مجاني مش سعري</span>
+    </div>
+  </div>
+
+  <p class="small muted" style="margin-top:14px; text-align:center;">أُعدّ عبر workflow متعدد الوكلاء (8 وكلاء · ~709K توكن) + مراجعة نقدية fact-check. أرقام أحمد من مصادر موثّقة (WooCommerce API + عدّادات القنوات + comprehensive-audit). · GrowthMora © 2026</p>
+  <div class="pagefoot"><span>تحليل تنافسي — Dart من الصفر</span><span>GrowthMora · سرّي</span></div>
+</section>
+
+</body>
+</html>

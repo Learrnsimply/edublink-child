@@ -1,0 +1,2 @@
+# empty — Playwright audit reports land here as `YYYY-MM-DDTHH-MM-SS/` folders
+# each containing report.json + screenshots for every (page, viewport) combo

@@ -1,0 +1,45 @@
+# Playwright Verification — Task 2.10 HSTS Header
+# Captured: 2026-05-24
+# Browser: Chromium (real, not curl)
+
+## What was deployed
+- File: /home/u700430280/domains/learrnsimply.com/public_html/.htaccess
+- Backup: .htaccess.bak-pre-task-2.10 (POST-2.11 state, MD5 6e2c79a3b9d6994dff58b29c28ef01e9)
+- New content: 1747 bytes (was 1666 bytes; +81 bytes for HSTS line)
+- MD5 after: 5a8417092317f72d64d56ba4ee3b936d
+
+## Header Rule Added
+Inside existing <IfModule mod_headers.c> block in .htaccess:
+
+  Header always set Strict-Transport-Security "max-age=300; includeSubDomains"
+
+## Conservative Ramp-Up Strategy (per spec)
+- Phase 1 (NOW):  max-age=300 (5 min) — short window so any breakage forgets quickly
+- Phase 2 (when stable): max-age=86400 (1 day)
+- Phase 3 (after 1 week clean): max-age=2592000 (30 days)
+- Phase 4 (after 1 month clean): max-age=31536000 (1 year) — required for preload submission
+- Phase 5 (eventually): add preload directive + submit to https://hstspreload.org
+
+## Verification (via Playwright Chromium)
+URL: https://learrnsimply.com/
+Status: 200 OK
+
+Response headers include:
+  strict-transport-security: max-age=300; includeSubDomains
+
+Other security headers status:
+  X-Powered-By: REMOVED (Task 2.11) ✅
+  Content-Security-Policy: upgrade-insecure-requests (pre-existing, Hostinger default)
+
+## DNS subdomain scan (pre-deploy, none active)
+- www.learrnsimply.com → 000 (no resolve)
+- mail, mautic, staging, dev, test, cdn, assets → all 000
+
+→ Safe to use includeSubDomains since no HTTP-only subdomain exists.
+→ When Mautic deploys, it MUST be HTTPS (HSTS includes it).
+
+## Rollback if needed
+ssh learnsimply 'cd /home/u700430280/domains/learrnsimply.com/public_html && \
+  cp .htaccess.bak-pre-task-2.10 .htaccess'
+(Note: browsers will remember HSTS for 5 minutes after seeing it. Even after rollback,
+existing visitors continue to be forced HTTPS for 5 min. Then they forget. This is by design.)

@@ -1,0 +1,595 @@
+{
+  "summary": "Classify all 134 learn-simply bugs vs current synced theme code → SOLO-theme batch (verified) + SOLO-server batch + already-fixed + needs-Ahmed",
+  "agentCount": 31,
+  "logs": [
+    "parallel[0] failed: agent({schema}): StructuredOutput retry cap (5) exceeded — 5 failed calls with no valid output",
+    "parallel[8] failed: agent({schema}): StructuredOutput retry cap (5) exceeded — 5 failed calls with no valid output",
+    "parallel[10] failed: agent({schema}): StructuredOutput retry cap (5) exceeded — 5 failed calls with no valid output"
+  ],
+  "result": {
+    "totals": {
+      "all": 133,
+      "confirmed_solo_theme": 20,
+      "solo_server_candidates": 33,
+      "needs_ahmed": 30,
+      "already_fixed": 14
+    },
+    "confirmedThemeFixes": [
+      {
+        "id": "HIGH-02",
+        "title": "IBM Plex Sans Arabic font enqueued twice with same handle + 3rd @import",
+        "severity": "High",
+        "fix": "Target file 1 — functions.php (child theme): DELETE the duplicate block at lines 1793-1806 in full: the docblock (1794-1796), the function `edublink_child_enqueue_fonts() {...}` (1797-1805), and its `add_action('wp_enqueue_scripts', 'edublink_child_enqueue_fonts', 1);` (1806). KEEP `learnsimply_enqueue_ibm_plex_font` (lines 29-41) as the single source of truth. Verify no other call site references `edublink_child_enqueue_fonts` (grep confirms only the definition + its own add_action exist) before deleting. Net effect: removes one redundant hook callback; rendered HTML output is unchanged (handle dedup already collapsed it). Target file 2 — views/sections/home/features-section.twig:5 (the actual render-blocking fix): REMOVE the `@import url('https://fonts.googleapis.com/css2?family=Inter...&family=Readex+Pro...&display=swap');` line from the inline `<style>`. Replace by enqueuing it properly in functions.php so it is parallel-loaded and version-controlled — e.g. inside the existing `learnsimply_enqueue_ibm_plex_font()` add a second `wp_enqueue_style('ls-home-inter-readex', 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Readex+Pro:wght@200;300;400;500;600&display=swap', array(), null);` (or conditionally only on the front page via `is_front_page()` to avoid loading it site-wide, since it's only used by the homepage features section). This eliminates the render-blocking `@import` while preserving the Inter/Readex Pro fonts the section depends on. Single PR, both files; run `npm run audit` (Playwright) on the homepage after deploy + cache flush to confirm fonts still render and no layout shift.",
+        "confidence": "high",
+        "where": "CONFIRMED present in current HEAD (9a7a78b). Two identical font-enqueue functions both still exist and both register unconditionally: (1) functions.php:33 `learnsimply_enqueue_ibm_plex_font()` hooked at functions.php:32 `add_action('wp_enqueue_scripts', ..., 1)`; (2) functions.php:1797 `edublink_child_enqueue_fonts()` hooked at functions.php:1806 `add_action('wp_enqueue_scripts', ..., 1)`. Both call `wp_enqueue_style('ibm-plex-sans-arabic', 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap', array(), null)` — byte-identical handle + URL. No conditional guards on either (the only nearby `if` statements at lines ~21-24 belong to the REST /wp/v2/users disable code, unrelated). NUANCE: because WP `wp_enqueue_style` dedupes by handle, the font is emitted only ONCE in the rendered HTML — so this is duplicate/dead PHP (maintenance hazard + a wasted second hook callback), NOT a double network request. The genuinely render-blocking item is the 3rd font call: views/sections/home/features-section.twig:5 has `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Readex+Pro:wght@200;300;400;500;600&display=swap')` inside an inline `<style>` block. That twig IS live (included via views/front-page.twig:20, and the @import renders at homepage.html:2972). `@import` inside `<style>` is render-blocking and uncontrolled by WP enqueue. Title's \"enqueued twice\" is technically dead-code duplication rather than double-output; the render-blocking concern is real and lives in the twig @import. SOLO-theme (PR Omar merges himself)."
+      },
+      {
+        "id": "HIGH-05",
+        "title": "instructor.title property doesn't exist on Timber User → always 'مدرب' fallback",
+        "severity": "High",
+        "fix": "SOLO-theme (PR Omar merges himself). Edit views/single-course.twig:285. Replace:\n  <p class=\"instructor-title\">{{ instructors[0].title ?: 'مدرب' }}</p>\nwith:\n  <p class=\"instructor-title\">{{ instructor_title }}</p>\n\nRationale for correcting the proposed fix: the original sketch (`instructor_title|default('مدرب')`) is functionally safe but slightly off — `instructor_title` is ALWAYS set (functions.php:1205, value 'مهندس برمجيات'), so the `|default('مدرب')` branch is dead code, and its 'مدرب' default contradicts the value shown by the 16 other templates. Use bare `{{ instructor_title }}` to exactly match every other instructor-role output in the theme (consistency + shows the intended 'مهندس برمجيات'). The context var requires no PHP change — it is already merged via Timber::context() in single-course.php:30. Optional hardening if a real per-instructor role is ever wanted later: `{{ instructors[0].meta('job_title')|default(instructor_title) }}` — but bare `instructor_title` is the minimal, consistent solo fix.",
+        "confidence": "high",
+        "where": "CONFIRMED still present. views/single-course.twig:285 reads `<p class=\"instructor-title\">{{ instructors[0].title ?: 'مدرب' }}</p>` exactly as claimed (checkout at origin/main HEAD 9a7a78b). The `instructors` array is populated in tutor/single-course.php:107-114 via `Timber::get_user($instructor->ID)` — i.e. \\Timber\\User objects, which have NO `title` property/method (only name/display_name/avatar/id/description/meta). So `.title` resolves empty and the `?: 'مدرب'` fallback ALWAYS fires, hardcoding 'مدرب'. Meanwhile the correct context var `instructor_title` ('مهندس برمجيات') IS set globally in functions.php:1205 and reaches this template because single-course.php:30 calls `Timber::context()`. Decisive corroboration: single-course.twig:285 is the ONLY twig in the whole theme using `instructors[0].title`; all 16 other instructor-role outputs (single-product-bundle.twig:243, bundles-section.twig:97, featured-courses-section.twig:34/105, archive-courses.twig:117, page-shop-2.twig:272/275, articles-section, books-section, archive-posts) correctly render `{{ instructor_title }}`. This file is the inconsistent outlier — exactly the bug described."
+      },
+      {
+        "id": "HIGH-07",
+        "title": "Hardcoded product ID 33336 in bundles section buy button",
+        "severity": "High",
+        "fix": "Do NOT add a new `$context['java_bundle_product_id']` via SKU lookup — that work is redundant. The dynamic ID already exists as `bundles[0].id` (set in front-page.php:293) and the array already reaches Twig. Just consume it in views/sections/home/bundles-section.twig. Guard with the same `bundles is defined and bundles|length > 0` check already used at line 89 so the card still renders if WooCommerce/the bundle plugin is inactive.\n\nLine 129 (primary buy button) — replace hardcoded `33336` with the dynamic id, falling back to 33336 only if no bundle is loaded:\n  `<a class=\"ls-bundle-btn-primary\" href=\"{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ (bundles is defined and bundles|length > 0) ? bundles[0].id : 33336 }}\">`\n\nLine 134 (secondary \"تفاصيل الباقة\" button) — replace hardcoded slug with the dynamic permalink already in context:\n  `<a class=\"ls-bundle-btn-secondary\" href=\"{{ (bundles is defined and bundles|length > 0) ? bundles[0].link : site.url ~ '/product/java-basics-oop-bundle/' }}\">`\n\nRECOMMENDED (same root cause, drift risk) — also drive the prices from context so displayed price can't diverge from WC:\n  Line 123: `<span class=\"ls-bundle-price-new\">{{ (bundles is defined and bundles|length > 0 and bundles[0].price) ? bundles[0].price|round ~ ' ج.م' : '849 ج.م' }}</span>`\n  Line 124: `<span class=\"ls-bundle-price-old\">{{ (bundles is defined and bundles|length > 0 and bundles[0].regular_price) ? bundles[0].regular_price|round ~ ' ج.م' : '2,150 ج.م' }}</span>`\n\nVERIFY before merge: confirm `bundles[0]` is the Java Basics+OOP bundle (front-page.php orders bundles by date DESC, so index 0 = newest bundle — if Ahmed has/adds multiple `easy_product_bundle` products this could point at the wrong one). If multiple bundles can exist, match by id/slug in front-page.php instead of trusting index 0. The actual WC product ID (33336) is unverified against live WC — `bundles[0].id` removes the need to verify it, but confirm the homepage bundle product is published and of type `easy_product_bundle` so it makes it into the array.",
+        "confidence": "high",
+        "where": "CONFIRMED still present. views/sections/home/bundles-section.twig:129 — `<a class=\"ls-bundle-btn-primary\" href=\"{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart=33336\">`. Product ID 33336 is hardcoded (also mirrored in the static reference homepage.html:2352). Critically, the WHOLE bundle card is static-hardcoded — not just the ID: price `849 ج.م` / `2,150 ج.م` (lines 123-124), the product details slug `/product/java-basics-oop-bundle/` (line 134), the 3-item list (lines 106/112/118), save% and tag. If the bundle product is ever renamed/re-IDed/re-priced, the add-to-cart link 404s or adds the wrong product and the displayed price drifts from WooCommerce. SOLO-theme (Omar can fix + PR-merge himself). KEY FINDING contradicting the proposed fix: front-page.php ALREADY builds a fully dynamic `$context['bundles']` array (lines 250-349) where each entry carries `'id' => $bundle_product_id` (line 293), plus `link`, `regular_price`, `sale_price`, `price`, `discount_percent`, `title`, `author_avatar`. That array already reaches Twig — the template consumes `bundles[0].author_avatar` at lines 89-90. So a dynamic product ID is ALREADY available as `bundles[0].id`; nothing new needs to be fetched by SKU/slug."
+      },
+      {
+        "id": "HIGH-08",
+        "title": "Hardcoded bundle prices (849 / 2,150) not from WooCommerce",
+        "severity": "High",
+        "fix": "SOLO-theme, template-only (no front-page.php edit needed — data already in context). Edit views/sections/home/bundles-section.twig. Replace the price block (lines 122-126):\n\n  <div class=\"ls-bundle-price-area\">\n    <span class=\"ls-bundle-price-new\">849 ج.م</span>\n    <span class=\"ls-bundle-price-old\">2,150 ج.م</span>\n    <span class=\"ls-bundle-price-save\">وفّر 61%</span>\n  </div>\n\nwith context-driven values + the existing literals as fallback (preserves current render if WC has no bundle):\n\n  {% set _b = (bundles is defined and bundles|length > 0) ? bundles[0] : null %}\n  <div class=\"ls-bundle-price-area\">\n    <span class=\"ls-bundle-price-new\">{{ _b and _b.price ? (_b.price|round) ~ ' ج.م' : '849 ج.م' }}</span>\n    {% if _b and _b.regular_price and _b.sale_price and _b.regular_price > _b.sale_price %}\n      <span class=\"ls-bundle-price-old\">{{ _b.regular_price|round }} ج.م</span>\n    {% elseif not _b %}\n      <span class=\"ls-bundle-price-old\">2,150 ج.م</span>\n    {% endif %}\n    {% if _b and _b.discount_percent and _b.discount_percent > 0 %}\n      <span class=\"ls-bundle-price-save\">وفّر {{ _b.discount_percent }}%</span>\n    {% elseif not _b %}\n      <span class=\"ls-bundle-price-save\">وفّر 61%</span>\n    {% endif %}\n  </div>\n\nThen also de-hardcode the actions block (lines 129 & 134) using the same _b so the cart id and details link follow the real product:\n  - line 129 href: `{{ cart_url|default(site.url ~ '/cart-1/') }}?add-to-cart={{ _b ? _b.id : 33336 }}`\n  - line 134 href: `{{ _b ? _b.link : (site.url ~ '/product/java-basics-oop-bundle/') }}`\n\nVERIFY before merge: WC actually has the Java Basics+OOP bundle as type easy_product_bundle with current regular/sale prices; sanity-check rendered 849/2150/61% against live WC (front-page.php already computes discount_percent the same way at line 311). After deploy + cache flush, run `npm run audit` (01_WEB/_tools/ui-audit) per team rule 5. If the bundle ever has multiple products, follow up by wrapping the single card in `{% for _b in bundles %}` — out of scope for this minimal fix.",
+        "confidence": "high",
+        "where": "CONFIRMED PRESENT on origin/main (HEAD 9a7a78b). views/sections/home/bundles-section.twig:123 `<span class=\"ls-bundle-price-new\">849 ج.م</span>` and :124 `<span class=\"ls-bundle-price-old\">2,150 ج.م</span>` are hardcoded. The matching discount badge :125 `<span class=\"ls-bundle-price-save\">وفّر 61%</span>` is ALSO hardcoded (same bug, missed by the original sketch). Add-to-cart id 33336 (:129) and the product slug link (:134) are static too. CRITICAL CORRECTION to the proposed fix: front-page.php does NOT need new WC-loading code — it ALREADY builds $context['bundles'] (lines 249-349 via wc_get_product) with live per-bundle fields: bundles[0].price, .regular_price, .sale_price, .discount_percent, .title, .link, .id. The template already consumes bundles[0].author_avatar at :90, so the live data is in scope but the price/discount/cart-link block ignores it. This is a template-only fix; no PHP change is required. Note: the section currently renders ONE static card, while $context['bundles'] is an array — true correctness means looping, but the minimal SOLO-safe fix maps the first bundle."
+      },
+      {
+        "id": "HIGH-09",
+        "title": "ajaxurl exposed via inline script in single-course.twig (should be wp_localize_script)",
+        "severity": "High",
+        "fix": "Target file 1 — views/single-course.twig: DELETE lines 675-677 (the entire `<script> window.ajaxurl = '{{ site.url }}/wp-admin/admin-ajax.php'; </script>` block) so only `{{ fn('wp_footer') }}` remains before `</body>`.\n\nTarget file 2 — functions.php, inside edublink_child_load_page_assets(), in the `if (file_exists($js_file))` branch (currently lines 1961-1963). After the existing wp_enqueue_script(...) line, add a single-course-specific localize. Because the consuming JS reads the GLOBAL `window.ajaxurl` (not a namespaced object), localize a property and assign it to window.ajaxurl. Minimal, no JS change needed:\n\n    if (file_exists($js_file)) {\n        wp_enqueue_script('edublink-' . $page_type . '-script', $assets_uri . '/' . $page_type . '/script.js', array('jquery'), filemtime($js_file), true);\n\n        if ($page_type === 'single-course') {\n            wp_localize_script('edublink-single-course-script', 'learnsimplyData', array(\n                'ajaxurl' => admin_url('admin-ajax.php'),\n            ));\n        }\n    }\n\nThen update assets/single-course/script.js:274 to read the localized value (keeping the relative fallback already present):\n  FROM: fetch(window.ajaxurl || \"/wp-admin/admin-ajax.php\", {\n  TO:   fetch((window.learnsimplyData && window.learnsimplyData.ajaxurl) || window.ajaxurl || \"/wp-admin/admin-ajax.php\", {\n\nWhy localize INSIDE the page-asset enqueue (not a separate enqueue function): the handle `edublink-single-course-script` only exists after this wp_enqueue_script call, and wp_localize_script must run against an already-registered/enqueued handle on the same request. admin_url('admin-ajax.php') is the correct WP API (returns the absolute, scheme-correct URL) and avoids the `{{ site.url }}` template interpolation entirely. If you prefer zero JS edits, you may instead localize the global directly: wp_add_inline_script('edublink-single-course-script', 'window.ajaxurl = ' . wp_json_encode(admin_url('admin-ajax.php')) . ';', 'before'); — but the localize-object approach above is the cleaner, convention-matching fix the bug report intends. Verify after deploy: load a single course page, submit a review, confirm the POST hits /wp-admin/admin-ajax.php (network tab) and no inline ajaxurl script remains in the page source.",
+        "confidence": "high",
+        "where": "CONFIRMED still present. views/single-course.twig:676 contains the inline `<script>window.ajaxurl = '{{ site.url }}/wp-admin/admin-ajax.php';</script>` block (inside a raw <script> at lines 675-677), at repo HEAD 9a7a78b. Consumer confirmed: assets/single-course/script.js:274 uses `fetch(window.ajaxurl || \"/wp-admin/admin-ajax.php\", ...)` for the review-submit AJAX. The single-course script.js IS enqueued in PHP (functions.php:1962, function edublink_child_load_page_assets @ priority 999) as handle `'edublink-' . $page_type . '-script'`, which resolves to `edublink-single-course-script` for single-course pages ($page_type set at functions.php:1913). The theme already uses wp_localize_script (functions.php:1119), so the convention exists. SOLO-theme (Omar merges PR himself). Note: severity is arguably MEDIUM not HIGH — admin-ajax.php is a public WP endpoint and the inline script only exposes the site's own ajax URL (not a secret); the real issues are (a) using an unmanaged inline script instead of localize, and (b) a `{{ site.url }}` interpolation that, while Timber-escaped, is better handled via admin_url()."
+      },
+      {
+        "id": "MED-01",
+        "title": "Promo countdown uses browser-local time + fabricates fake 3-day deadline on fallback",
+        "severity": "Medium",
+        "fix": "File: assets/global/website (theme) → assets/global/script.js, function initPromoCountdown(). Replace the whole stale-fallback block (lines 470-476):\n\n    if (!deadline || isNaN(deadline)) {\n      deadline = parseInt(localStorage.getItem(STORAGE_KEY), 10);\n    }\n    if (!deadline || isNaN(deadline)) {\n      deadline = Date.now() + 3 * 24 * 60 * 60 * 1000;\n      localStorage.setItem(STORAGE_KEY, deadline);\n    }\n\nwith a single honest guard that hides the timer when the server sent no authoritative deadline:\n\n    if (!deadline || isNaN(deadline)) {\n      // No server-side deadline → don't fabricate one. Hide the timer.\n      var countdownEl = daysEl.closest(\".learnsimply-promo-countdown\");\n      if (countdownEl) countdownEl.style.display = \"none\";\n      return;\n    }\n\nAlso delete the now-unused `var STORAGE_KEY = \"learnsimply_promo_deadline\";` line (:465) since nothing reads/writes it after this change (verified sole writer was the removed fabrication line). The epoch-ms comparison at tick() (`deadline - Date.now()`) is left as-is — it is timezone-correct because functions.php:1119 sends a UTC epoch-ms value. This is SOLO-theme (Omar merges via PR). Optional belt-and-braces hardening (NEEDS-AHMED-adjacent, but theme-side): in functions.php:1102 `learnsimply_enqueue_promo_assets`, the banner is gated on `learnsimply_promo_enabled` while the deadline localize is conditional — consider also hiding/var-guarding the countdown server-side when deadline is empty, but the JS guard above is sufficient and is the minimal surgical fix.",
+        "confidence": "high",
+        "where": "CONFIRMED present. assets/global/script.js:473-476 still fabricates a fake browser-local 3-day deadline (`deadline = Date.now() + 3*24*60*60*1000;` at :474) and persists it to localStorage (:475) when no server deadline exists; tick() compares `deadline - Date.now()` (:483). Server localization is authoritative and timezone-CORRECT: functions.php:1119 sends `learnsimplyPromoDeadline` as epoch-MS (`(int)$deadline * 1000`), and epoch-ms vs Date.now() (also UTC epoch-ms) is timezone-agnostic — so the title's \"browser-local time\" wording is a partial misdiagnosis; the real defect is purely the fabricated fallback. The broken state IS reachable: header.twig:85 renders the timer markup whenever `promo_banner_enabled` (option `learnsimply_promo_enabled`) is on, but the deadline is a SEPARATE option (`learnsimply_promo_deadline`) only localized when set+numeric (functions.php:1118). Admin enables banner + leaves deadline empty → JS shows a fake rolling 3-day countdown, different per browser. Note: localStorage read at :471 has NO legitimate writer — the ONLY setter of STORAGE_KEY is the fabrication line :475 itself (verified via grep across assets/), so removing the fabrication makes the localStorage fallback dead code too."
+      },
+      {
+        "id": "MED-02",
+        "title": "Page-type detection logic duplicated in functions.php",
+        "severity": "Medium",
+        "fix": "Target file: /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/functions.php (theme code → SOLO-theme, PR Omar merges himself).\n\n1) Add one helper above edublink_child_load_page_assets() (i.e. before line 1879). It must take $assets_dir as a param OR derive it itself, and return the detected string:\n\nfunction learnsimply_detect_page_type() {\n    $page_type = '';\n    if (is_404()) $page_type = '404';\n    elseif (is_front_page()) $page_type = 'home';\n    elseif (is_page('about_me') || is_page_template('page-about_me.php')) $page_type = 'about-me';\n    elseif (is_page('dashboard')) $page_type = 'dashboard';\n    elseif (is_page('signup')) $page_type = 'signup';\n    elseif (is_product()) {\n        global $wpdb;\n        $product_id = get_the_ID();\n        $has_bundles = $wpdb->get_var($wpdb->prepare(\n            \"SELECT COUNT(*) FROM {$wpdb->prefix}asnp_wepb_simple_bundle_items WHERE bundle_id = %d\",\n            $product_id\n        ));\n        $page_type = ($has_bundles > 0) ? 'single-product-bundle' : 'single-product';\n    } elseif (is_shop() || is_product_category() || is_product_tag()) $page_type = 'product_archive';\n    elseif (is_cart() || is_page('cart-1')) $page_type = 'cart';\n    elseif (is_checkout()) $page_type = 'checkout';\n    elseif (function_exists('tutor_utils')) {\n        $cpt = tutor()->course_post_type;\n        if (is_singular($cpt)) $page_type = 'single-course';\n        elseif (is_post_type_archive($cpt) || is_tax('course-category')) $page_type = 'course_archive';\n    }\n    if (empty($page_type)) {\n        $template = get_page_template_slug();\n        if (!empty($template)) $page_type = str_replace(array('.php','-','/'), array('','_','_'), basename($template));\n        if (empty($page_type) && is_page()) {\n            $page_slug = get_post_field('post_name', get_the_ID());\n            if ($page_slug === 'about_me') $page_type = 'about-me';\n            elseif ($page_slug === 'dashboard') $page_type = 'dashboard';\n            elseif ($page_slug === 'signup') $page_type = 'signup';\n        }\n        if (empty($page_type) && function_exists('tutor_utils')) {\n            global $wp_query;\n            if (isset($wp_query->query_vars['tutor_dashboard_page']) || isset($wp_query->query_vars['tutor_dashboard'])) $page_type = 'dashboard';\n        }\n        if (empty($page_type)) {\n            $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';\n            if (!empty($request_uri)) {\n                if (strpos($request_uri, '/dashboard') !== false) $page_type = 'dashboard';\n                elseif (strpos($request_uri, '/signup') !== false) $page_type = 'signup';\n            }\n        }\n    }\n    return $page_type;\n}\n\n2) In edublink_child_load_page_assets(): replace lines 1883-1950 (the `$page_type = '';` line through the closing brace of the final `if (empty($page_type)) { ... }` URL-path block) with a single line:\n    $page_type = learnsimply_detect_page_type();\nKeep lines 1952-1973 (the is_dir/enqueue + dashboard-not-logged-in signup-CSS block) unchanged.\n\n3) In edublink_child_add_page_css_late(): replace lines 1985-2049 (same `$page_type = '';` through the closing brace of its final URL-path block, including the line-1987 \"Re-detect\" comment) with:\n    $page_type = learnsimply_detect_page_type();\nKeep lines 2051-2072 (the in_array dashboard/signup late <link> echo, the dashboard not-logged-in signup echo, and the always-on header-footer-root.css echo) unchanged.\n\nNet: removes ~130 lines of duplication down to one helper + two call sites, and eliminates the double $wpdb bundle-count query per product-page render. Note one harmless cleanup: original strpos checks tested both '/dashboard/' and '/dashboard' — collapsing to the substring '/dashboard' is equivalent (the '/dashboard/' check was already redundant). Behavior is otherwise identical. NO server/SSH/Ahmed dependency. After merge: deploy functions.php via scp, smoke-test home + a course page + dashboard (logged-out) to confirm page-type CSS still enqueues; no cache purge needed for a PHP file.",
+        "confidence": "high",
+        "where": "CONFIRMED still present in /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/functions.php. The page-type detection ladder is duplicated verbatim across two functions: (1) edublink_child_load_page_assets() — hook wp_enqueue_scripts@999, detection at lines 1883-1950; (2) edublink_child_add_page_css_late() — hook wp_head@9999, detection at lines 1985-2049. The second block's own comment (line 1987) reads \"Re-detect page type (same logic as edublink_child_load_page_assets)\". A `diff` of lines 1885-1950 vs 1988-2049 with comment lines stripped returns ZERO differences — the two ~66-line branch ladders (404/home/about-me/dashboard/signup/product+bundle-wpdb-query/product_archive/cart/checkout/single-course/course_archive, plus the empty()-fallback template-slug / page-slug / tutor query-var / REQUEST_URI sub-ladder) are byte-for-byte identical. This is genuine duplication (~66 lines), including a duplicated $wpdb bundle-count query that runs twice per product page request."
+      },
+      {
+        "id": "MED-04",
+        "title": "'3 أيام' hardcoded in discount banner, decoupled from real promo timer",
+        "severity": "Medium",
+        "fix": "Target both Twig files (identical change, byte-identical lines). Simplest solo fix = drop the fixed-days phrasing while keeping the discount percent and urgency. In views/single-product.twig line 23 AND views/single-product-bundle.twig line 23, replace:\n  خصم {{ discount_percent }}% لمدة 3 أيام فقط — العرض سينتهي قريبًا!\nwith:\n  خصم {{ discount_percent }}% — العرض سينتهي قريبًا!\n\nThis removes the false \"3 days\" claim with zero new dependencies and matches the truthful, deadline-agnostic urgency wording. NOTE: do NOT swap in `{{ promo_text_primary }}` as a \"derive from header timer\" fix — that variable is only injected into the context when `promo_banner_enabled` is true (functions.php:1248-1250) and is NOT guaranteed present in the single-product/single-product-bundle render context, so referencing it would render empty whenever the promo banner is off while a product discount is still active. The literal-removal edit above is the safe, correct minimal fix. (Optional follow-up, NOT required: a future enhancement could pass the real deadline into these templates, but that needs a functions.php context change and is out of scope for the simple solo fix.)",
+        "confidence": "high",
+        "where": "CONFIRMED still present. Both views/single-product.twig:23 and views/single-product-bundle.twig:23 contain the identical literal line `خصم {{ discount_percent }}% لمدة 3 أيام فقط — العرض سينتهي قريبًا!` (verified by grep + Read). single-course.twig has 0 matches (clean), matching the \"partial\" note. The \"3 أيام\" is hardcoded static copy decoupled from any real deadline. The header promo banner (views/components/header.twig:98-100 + countdown timer lines 113+) IS driven by a real configurable deadline (option `learnsimply_promo_deadline` set in functions.php:923/1005-1052, consumed by assets/global/script.js:454-465 via localStorage key `learnsimply_promo_deadline`), but the product/bundle discount ribbon ignores that context entirely and asserts a fixed 3-day window. This is a SOLO-theme bug (Twig-only edit, no PHP/context change needed for the simple fix) — Omar can PR + merge himself."
+      },
+      {
+        "id": "MED-07",
+        "title": "Social-proof toast with fake hardcoded buyer names (dark pattern)",
+        "severity": "Medium",
+        "fix": "File: views/sections/home/cta-section.twig (theme repo ahmedlearnSimply/edublink-child). SOLO-theme — Omar PRs and self-merges; no Ahmed data needed. Recommend REMOVAL (consumer-protection / dark-pattern risk). Delete the fake social-proof toast in three places (use exact text-anchored deletes, line numbers below are at current HEAD): (1) CSS — remove the toast style block: the `/* FOMO: social proof toast */` comment + `.ls-cta-toast`, `.ls-cta-toast.ls-show`, `.ls-cta-toast-icon`, `.ls-cta-toast-text`, `.ls-cta-toast-text strong`, `.ls-cta-toast-time` rules (lines 72-78), AND strip the trailing `.ls-cta-toast{right:12px;left:12px;bottom:16px;max-width:none}` from the 768px media query (line 81) and `.ls-cta-toast` doesn't appear in 480px so leave that. (2) MARKUP — remove the entire `<!-- FOMO: social proof toast -->` block, the `<div class=\"ls-cta-toast\" id=\"ls-cta-toast\">...</div>` (lines 192-201). (3) JS — inside the IIFE remove the `names`/`times` arrays, toast element lookups, `shuffleArray()` definition + call, `showToast()` function, and the bottom `setTimeout(...)`/`scheduleNext()` scheduler (lines 264-292). Keep the countdown-timer logic (lines 203-262) intact since this bug is scoped to the toast. After edit, verify the IIFE still closes cleanly `})();` and the section renders without JS console errors. STRONGLY RECOMMEND folding two adjacent dark patterns into the same PR: delete line 154 `باقي 12 مكان بس بالسعر ده` (the `.ls-cta-spots` block lines 150-156 + its CSS lines 65-70), and either remove the countdown or make the fallback deadline a real fixed server-set date instead of now+3-days-on-every-load (lines 206-211). Deploy = merge PR → bump submodule → scp updated twig (it's a Timber/Twig view) → purge wp-optimize cache → confirm on a promo-enabled page that no toast appears.",
+        "confidence": "high",
+        "where": "CONFIRMED present in views/sections/home/cta-section.twig. The hardcoded fake buyer-name array is at line 264 (`var names = ['أحمد م.','سارة ك.','محمد ع.',...]` — 15 fabricated names), shuffled at line 274 (`shuffleArray(names)`), and rendered as a fake \"subscribed\" toast in showToast() lines 276-284 ('<strong>'+name+'</strong> اشترك في حزمة Java الكاملة'), scheduled to recur at lines 286-292. Toast markup is lines 192-201, toast CSS is lines 72-78 (plus mobile overrides inside the media queries at lines 81-82). This is a dark pattern (fabricated social proof). NOTE: the proposed fix's line refs are slightly off — JS extends to 292 not 280, markup to 201 not 193, CSS to 78 not 81. Also note the whole section is gated behind `{% if promo_banner_enabled|default(false) %}` (line 2 / line 297), so it only fires when the promo banner is on — but it is genuinely active then. Two SIBLING dark patterns live in the same block and are NOT covered by the proposed fix: line 154 fake scarcity \"باقي 12 مكان بس بالسعر ده\" (only 12 spots left), and the countdown timer (lines 99-117, 203-262) which resets to now+3 days on every load via the fallback at lines 206-211 when no real deadline is set (perpetually-resetting fake urgency)."
+      },
+      {
+        "id": "LOW-01",
+        "title": "Hero stats hardcoded (+1000 students, 98%, +7Y)",
+        "severity": "Low",
+        "fix": "Correction to the proposed fix: do NOT compute the \"+1000 students\" figure from tutor_utils enrolled counts. `count_enrolled_users_by_course()` is per-course, so summing across courses double-counts any student enrolled in multiple courses (Ahmed's catalog is exactly that — multi-course buyers), producing an inflated/wrong number. And `98%` satisfaction + `+7Y` experience have no DB source at all — they are pure marketing claims. So an \"auto-computed\" hero stat would be misleading, not an improvement.\n\nSolid fix = make all three editable via WP theme-mods (Customizer) with the current literals as defaults, so Omar/Ahmed change them in wp-admin without touching code, and the rendered value never goes stale or fake:\n\n1) front-page.php — before `Timber::render(...)` (around line 397), add:\n```php\n// Hero stats (editable via Customizer; current values are defaults)\n$context['hero_stats'] = array(\n    array(\n        'value' => get_theme_mod( 'ls_hero_stat1_value', '+1000' ),\n        'label' => get_theme_mod( 'ls_hero_stat1_label', 'طالب بدأوا من الصفر' ),\n    ),\n    array(\n        'value' => get_theme_mod( 'ls_hero_stat2_value', '98%' ),\n        'label' => get_theme_mod( 'ls_hero_stat2_label', 'رضا الطلاب عن المحتوى' ),\n    ),\n    array(\n        'value' => get_theme_mod( 'ls_hero_stat3_value', '+7Y' ),\n        'label' => get_theme_mod( 'ls_hero_stat3_label', 'خبرة في تعليم البرمجة' ),\n    ),\n);\n```\n\n2) views/sections/home/hero-section.twig — replace the hardcoded `stats-row` block (lines 151-170) with a loop over context (escaped output; no |safe needed since these are admin-set plain strings):\n```twig\n<div class=\"stats-row\">\n  {% for s in hero_stats %}\n    <div class=\"stat-item\">\n      <p class=\"stat-number\">\n        <span class=\"stat-value\" dir=\"ltr\">{{ s.value }}</span>\n      </p>\n      <p class=\"stat-label\">{{ s.label }}</p>\n    </div>\n  {% endfor %}\n</div>\n```\n\n3) (Optional, recommended) register the 6 settings in the theme Customizer so they're actually editable in wp-admin (functions.php → `customize_register` hook). If you skip step 3, the theme-mods still work but can only be set programmatically; with defaults in place the page renders identically to today either way, so it is a zero-visual-regression change.\n\nNote: hero-section.twig is included by front-page.twig, which is rendered ONLY by front-page.php — so adding `hero_stats` to that one context is sufficient; no other template renders this partial.",
+        "confidence": "high",
+        "where": "CONFIRMED STILL PRESENT. All three hero stats are hardcoded literals in views/sections/home/hero-section.twig, exactly as claimed: line 154 `<span class=\"stat-value\" dir=\"ltr\">+1000</span>` + line 156 label `طالب بدأوا من الصفر`; line 160 `98%` + line 162 `رضا الطلاب عن المحتوى`; line 166 `+7Y` + line 168 `خبرة في تعليم البرمجة`. front-page.php (renders front-page.twig which includes hero-section.twig) sets NO hero-stats context variable — it only computes per-course `$course->students_count` at line 90 for the featured-courses cards, never an aggregate for the hero bar. So the Twig has no dynamic value to read. SOLO-theme (Omar can PR-merge himself; default numbers are a marketing call but the current values are safe defaults). Severity is genuinely LOW (cosmetic/marketing, not a functional or security bug). Note: the same hardcoded pattern repeats in about-section.twig (17M/10K/7Y), cta-section.twig (+1000), and bundles-section.twig (+1000) — out of scope for this bug id but worth a consolidated pass."
+      },
+      {
+        "id": "LOW-02",
+        "title": "'باقي 12 مكان بس' fake scarcity not tied to stock",
+        "severity": "Low",
+        "fix": "SOLO-theme (Omar PR, no Ahmed needed). Simplest correct fix = delete the entire spots block in views/sections/home/cta-section.twig. Remove lines 150-156 (the `<!-- FOMO: spots left ... -->` comment through the closing `</div>` of `.ls-cta-spots`):\n\n    <!-- FOMO: spots left — no border, just text + blinking dot -->\n    <div class=\"ls-cta-spots\">\n      <div class=\"ls-cta-spots-inner\">\n        <span class=\"ls-cta-spots-dot\"></span>\n        <span class=\"ls-cta-spots-text\">باقي 12 مكان بس بالسعر ده</span>\n      </div>\n    </div>\n\nOptional cleanup (same file, not required for correctness): also drop the now-unused CSS rules at lines 66-69 (.ls-cta-spots, .ls-cta-spots-inner, .ls-cta-spots-dot, .ls-cta-spots-text) and the @keyframes ls-dot-blink it references, to avoid dead CSS.\n\nDo NOT pursue the \"bind to $product->get_stock_quantity()\" option: this twig receives no product context (static include in front-page.twig), so binding would force editing front-page.php to inject a stock var AND the bundle product would need real stock management enabled in WooCommerce — that crosses into NEEDS-AHMED (stock config is a business/data decision). Removal is the clean, fully-solo fix. Deploy: PR merge → scp views/sections/home/cta-section.twig to server theme path → purge WP-Optimize/page cache → verify the line is gone on the homepage CTA.",
+        "confidence": "high",
+        "where": "STILL PRESENT. views/sections/home/cta-section.twig:154 contains the exact static literal `<span class=\"ls-cta-spots-text\">باقي 12 مكان بس بالسعر ده</span>` inside the `.ls-cta-spots` block (lines 151-156). Local checkout HEAD = origin/main = 9a7a78b (verified), so this is the live shipped theme. The template is a context-free static include (front-page.twig:11 → `{% include 'sections/home/cta-section.twig' %}` with no per-product variables passed). The \"12\" is a hardcoded literal — the whole CTA card (price 850, save 1,300, old 2,150, countdown timer, spots) is static marketing copy, and the bundle link is a fixed URL (java-basics-oop-bundle). grep confirms get_stock_quantity() IS used elsewhere (front-page.php:222, single-product.php:97) but NONE of it feeds this twig. Classic unfounded fake-scarcity / dark pattern. Severity is correctly LOW (no functional/security impact; marketing-honesty issue)."
+      },
+      {
+        "id": "LOW-03",
+        "title": "'40 ساعة' hardcoded duration fallback",
+        "severity": "Low",
+        "fix": "SOLO-theme (Omar merges own PR). Two-line edit, no logic/layout change, low risk. In /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website edit both templates, replacing the fabricated number with an honest placeholder:\n  • views/archive-courses.twig line 258: `            <p>{{ course.duration|default('40 ساعة') }}</p>` → `            <p>{{ course.duration|default('غير محدد') }}</p>`\n  • views/sections/home/featured-courses-section.twig line 177: `                <p>{{ course.duration|default('40 ساعة') }}</p>` → `                <p>{{ course.duration|default('غير محدد') }}</p>`\nPreserve each line's existing indentation exactly (12 spaces in archive-courses, 16 spaces in featured-courses). This keeps the clock-icon stat row intact and stops mislabeling unknown-duration courses as \"40 hours\". \nOptional stricter alternative (more invasive, NOT recommended for a two-line fix): wrap the parent `<div class=\"info-item\">` (the block containing the clock SVG + this <p>) in `{% if course.duration %}...{% endif %}` in both files to hide the stat entirely when missing — cleaner UX but touches ~6 lines each and removes the icon too. Recommend shipping the |default('غير محدد') change as the surgical fix; consider the conditional-hide as a follow-up polish only if Ahmed prefers omitting the row over showing \"غير محدد\".",
+        "confidence": "high",
+        "where": "CONFIRMED still present, exactly as claimed. The hardcoded fabricated fallback exists verbatim in two child-theme templates at the precise lines claimed: views/archive-courses.twig:258 → `<p>{{ course.duration|default('40 ساعة') }}</p>` and views/sections/home/featured-courses-section.twig:177 → identical. grep across the whole theme (*.twig + *.php) shows these are the ONLY two occurrences; no third instance. Both files are at clean HEAD (commit 9a7a78b) with no uncommitted changes — the fix was never applied. course.duration is populated by get_tutor_course_duration_context() (called in archive-courses.php:107 and front-page.php:84, which feed these two templates respectively); that helper is defined in the parent theme/plugin, not the child theme, so its empty-return behavior is out of scope — but whenever it returns empty/null, Twig's |default fires and the course is silently mislabeled \"40 ساعة\". On a course-selling site this fabricates a duration figure, a real accuracy/trust defect (correctly rated LOW severity, cosmetic/data-honesty, no security impact). The functions.php \"duration\" matches are only CSS (.tutor-course-topic-item-duration), not the helper — irrelevant."
+      },
+      {
+        "id": "LOW-04",
+        "title": "single-product.twig & single-product-bundle.twig don't extend layouts/base.twig",
+        "severity": "Low",
+        "fix": "Refactor BOTH files to extend the base layout. Solo-theme PR; no PHP change (Timber::render already injects context + wp_head/wp_footer come from base). For EACH file:\n\n1. Replace the entire head/body shell (current lines 1-12, i.e. `<!doctype html>` through the `{% include 'components/header.twig' %}` line) with:\n   ```\n   {% extends \"layouts/base.twig\" %}\n\n   {% block title %}{{ product_title }} - {{ site.name }}{% endblock %}\n\n   {% block main_attributes %}class=\"course-main-content\"{% endblock %}\n\n   {% block content %}\n   ```\n   (This preserves the current hardcoded <title>, moves the existing `<main class=\"course-main-content\">` class into the main_attributes block, and keeps the default header from base. Do NOT add a body_class block — base already defaults to `learnsimply-homepage-body`, identical to the current value.)\n\n2. Drop the now-duplicated `<main class=\"course-main-content\">` opening tag and its `<div class=\"container\">` wrapper stays; remove the `</main>` closing tag at the end and replace the file tail (the `</main>` + `{% include 'components/footer.twig' %}` + `{% include 'components/whatsapp-button.twig' %}` + `{{ fn('wp_footer') }}` + `</body></html>`) with a single `{% endblock %}`.\n   - IMPORTANT mapping detail: base.twig renders `<main {% block main_attributes %}{% endblock %}>{% block content %}...{% endblock %}</main>`, so the `content` block must contain everything that is currently INSIDE `<main class=\"course-main-content\">` — i.e. start the content block at the current `<div class=\"container\">` (line 15) and end it at the matching `</div>` that closes that container (single-product.twig line 335; single-product-bundle.twig line 506). Do NOT include the `<main>`/`</main>` tags inside the content block (base supplies them).\n   - The footer and whatsapp button are supplied by base's `{% block footer %}` (default include) and `{% block body_extra %}` (default already includes components/whatsapp-button.twig), so remove them from the product templates entirely.\n\n3. Verify parity after merge+deploy+cache-flush: run `cd 01_WEB/_tools/ui-audit && npm run audit` against a /product/ and a bundle URL, and diff rendered header/footer/whatsapp-button HTML vs current production to confirm zero visual regression (per 01_WEB CLAUDE.md rule 5). Confirm <title>, header, footer, and whatsapp button all still render once (not zero, not duplicated).",
+        "confidence": "high",
+        "where": "CONFIRMED still present. views/single-product.twig lines 1-9 and views/single-product-bundle.twig lines 1-9 both open with `<!doctype html>` + `<html lang=\"ar\" dir=\"rtl\">` + `<head>...{{ fn('wp_head') }}...</head>` + `<body class=\"learnsimply-homepage-body\">`, then manually `{% include 'components/header.twig' %}` (line 11), `{% include 'components/footer.twig' %}` + `{% include 'components/whatsapp-button.twig' %}` + `{{ fn('wp_footer') }}` at the end. Neither uses `{% extends \"layouts/base.twig\" %}`. This duplicates the shell that views/layouts/base.twig already provides via blocks (title, body_class, header, main+main_attributes, content, footer, body_extra). 11 sibling views already extend base.twig (e.g. archive-courses.twig:1), so the standalone duplication is a real inconsistency/maintenance risk (header/footer markup drift). Both render through Timber::render($template_name,$context) at woocommerce/single-product.php:369. SOLO-theme (PR Omar merges himself). Note: severity is genuinely LOW — it renders correctly today; this is a DRY/maintainability fix, not a user-facing bug."
+      },
+      {
+        "id": "LOW-05",
+        "title": "single-post.twig doesn't extend layouts/base.twig",
+        "severity": "Low",
+        "fix": "Target: views/single-post.twig (SOLO-theme, PR Omar merges himself). Refactor to extend the layout, mirroring archive-posts.twig/about-me.twig. Replace lines 1-13 (doctype through the page-specific <link> stylesheet) and lines 279-299 (footer/whatsapp/wp_footer/script/closing tags) so the file becomes: `{% extends \"layouts/base.twig\" %}` / `{% block title %}{{ post_title }} - {{ site.name }}{% endblock %}` / `{% block body_class %}learnsimply-homepage-body single-post{% endblock %}` / `{% block styles %}<link rel=\"stylesheet\" href=\"{{ theme_uri }}/assets/single-post/style.css\" />{% endblock %}` / `{% block content %}` ...existing markup from the .sp-hero div (line 17) through the related-posts section (line 277)... `{% endblock %}` / `{% block scripts %}` ...the existing copy-link script lines 284-296... `{% endblock %}`. CRITICAL (the naive wrap-everything version double-renders chrome): (1) DROP `{% include 'components/header.twig' %}` (line 12) — base renders header via its default block. (2) DROP `{% include 'components/footer.twig' %}` (279) and `{% include 'components/whatsapp-button.twig' %}` (280) — base provides both (footer + body_extra blocks). (3) DROP `{{ fn('wp_head') }}` (7) and `{{ fn('wp_footer') }}` (282) — base already calls both. (4) base wraps content in its own `<main>` (line 32); single-post has its own `<main class=\"sp-main\">` (line 66, closed 248). To avoid <main> nested in <main>, either move the class onto base's main via `{% block main_attributes %}class=\"sp-main\"{% endblock %}` and convert single-post's `<main class=\"sp-main\">...</main>` to a plain `<div class=\"sp-main\">`, OR (lower-risk) just change that element to `<div class=\"sp-main\">` and leave base's <main> as the semantic wrapper. Verify assets/single-post/style.css selectors still match after main→div. After deploy: purge wp-optimize cache + run `npm run audit` to confirm header/footer render exactly once and styling intact.",
+        "confidence": "high",
+        "where": "CONFIRMED PRESENT. /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/views/single-post.twig:1-2 opens with `<!doctype html>` + `<html lang=\"ar\" dir=\"rtl\">` and closes at lines 298-299 with `</body></html>`, hand-rolling the entire HTML scaffold (own <head>, wp_head line 7, header include line 12, footer include line 279, whatsapp-button line 280, wp_footer line 282) instead of extending the layout. views/layouts/base.twig exists and already provides all of these via blocks: title, styles, head_extra, body_class, header, main_attributes, content, footer, body_extra, scripts. 11 sibling views (about-me, front-page, 404, archive-posts, archive-courses, page-* etc.) correctly `{% extends \"layouts/base.twig\" %}`; single-post.twig is one of only 4 raw-doctype holdouts (with single-product, single-course, single-product-bundle). Real, still-present inconsistency."
+      },
+      {
+        "id": "BUG-006",
+        "title": "زرار 'تواصل معي' في section المدرب يروح لصفحة about_me بدل تواصل",
+        "severity": "High",
+        "fix": "SOLO-theme (PR Omar merges, no Ahmed needed). Edit views/sections/home/about-me-section.twig line 202. Change the href from \"{{ site.url }}/about_me/\" to the theme's canonical support WhatsApp link, matching the existing pattern in views/components/footer.twig:100 and views/components/whatsapp-button.twig:3 (number 201030127228 = support line; NOT 201102681074, which is Ahmed's personal number used only on legal pages). Add target=\"_blank\" and rel=\"noopener\" for an external link.\n\nExact replacement of line 202:\n  FROM: <a href=\"{{ site.url }}/about_me/\" class=\"about-btn about-btn-primary\">  تواصل معي </a>\n  TO:   <a href=\"https://wa.me/201030127228\" class=\"about-btn about-btn-primary\" target=\"_blank\" rel=\"noopener\">  تواصل معي </a>\n\nOptional polish: the two buttons share the identical class \"about-btn-primary\"; if a visual distinction is wanted, give the contact button a secondary variant (e.g. about-btn-secondary) — purely cosmetic, not required for the fix. Line 201 stays as-is (it is the correct 'learn more' link).",
+        "confidence": "high",
+        "where": "STILL PRESENT. In views/sections/home/about-me-section.twig the two CTA buttons inside .about-button-group BOTH point to the same target: line 201 ('تعرّف عليّ أكثر') = href=\"{{ site.url }}/about_me/\" (correct), and line 202 ('تواصل معي') = href=\"{{ site.url }}/about_me/\" (WRONG — identical to the learn-more button). The 'تواصل معي' (contact me) button does not lead to any contact destination. Independently verified by reading the file; claimed line numbers 201/202 match exactly."
+      },
+      {
+        "id": "BUG-011",
+        "title": "أخطاء إملائية في الفوتر: 'الرئيسيه' و 'نبذه عني'",
+        "severity": "Medium",
+        "fix": "SOLO-theme (PR Omar merges, ahmedlearnSimply/edublink-child). In views/components/footer.twig: line 78 replace the anchor text 'الرئيسيه' with 'الرئيسية' (full line: <li><a href=\"{{ site.url }}\" class=\"learnsimply-footer-link\">الرئيسية</a></li>); line 79 replace 'نبذه عني' with 'نبذة عني' (full line: <li><a href=\"{{ site.url }}/about_me/\" class=\"learnsimply-footer-link\">نبذة عني</a></li>). Change is text-only — leave the href, classes, and markup untouched. Two-character fix; no cache/asset rebuild needed beyond the normal Timber/Twig template (deploy file + clear page cache).",
+        "confidence": "high",
+        "where": "CONFIRMED still present. /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/views/components/footer.twig:78 contains the link text 'الرئيسيه' (hard ـه, should be ـة) and :79 contains 'نبذه عني' (should be 'نبذة عني'). Both are hardcoded inside the 'روابط الموقع' footer column anchor text. Each target string is unique within the file (single occurrence each), so a literal edit is safe. Repo at origin/main HEAD 9a7a78b. The proposed fix's claimed line numbers (78, 79) match exactly."
+      },
+      {
+        "id": "BUG-014",
+        "title": "رابط 'الرئيسيه' في الفوتر بدون trailing slash",
+        "severity": "Medium",
+        "fix": "SOLO-theme (PR Omar merges). In /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/views/components/footer.twig: line 78 change `href=\"{{ site.url }}\"` -> `href=\"{{ site.url }}/\"` (الرئيسيه link), and line 46 change `href=\"{{ site.url }}\"` -> `href=\"{{ site.url }}/\"` (footer logo link). Two one-char Twig edits. The original sketch is accurate. OPTIONAL same-batch extension for sitewide consistency (out of BUG-014 scope but identical trivial fix): header.twig:15, header.twig:42, 404.twig:59 carry the same bare `href=\"{{ site.url }}\"`. Cosmetic-only; no functional risk. Verify with `npm run audit` + cache flush after deploy per 01_WEB workflow rule.",
+        "confidence": "high",
+        "where": "CONFIRMED present in current theme. /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/views/components/footer.twig:78 `<a href=\"{{ site.url }}\" class=\"learnsimply-footer-link\">الرئيسيه</a>` and footer.twig:46 `<a href=\"{{ site.url }}\" class=\"learnsimply-footer-logo-link\">` both render the homepage URL with NO trailing slash. Proof site.url has no trailing slash: every other footer/theme link appends an explicit path to it (footer.twig:79 `{{ site.url }}/about_me/`, :80 `{{ site.url }}/courses`, :82 `{{ site.url }}/blog`) and never produces a double slash — confirming Timber's site.url == home_url() with no trailing slash. Pure cosmetic/canonical-consistency only; WordPress canonicalizes the homepage regardless, so no functional breakage. Note: the SAME bare `href=\"{{ site.url }}\"` pattern also exists outside the footer — header.twig:15, header.twig:42, and 404.twig:59 — but those are outside BUG-014's stated scope (footer)."
+      },
+      {
+        "id": "BUG-017",
+        "title": "Author pages /author/ahmedadel123422/ و /author/omar/ مكشوفة (username enumeration)",
+        "severity": "Low",
+        "fix": "SOLO-theme (PR Omar merges into Learrnsimply/edublink-child). Add to functions.php a frontend-only author-archive block. Place it right after the existing rest_endpoints filter (after line 27) so the two enumeration vectors (REST + author archive) live together:\n\n/**\n * Block author archive pages (/author/{slug}/) — prevents username (login slug)\n * enumeration. Pairs with the rest_endpoints filter above (BUG-004/BUG-017).\n * Also stop WP from mapping ?author=N to a redirect that leaks the slug.\n */\nadd_action('template_redirect', function () {\n    if (is_admin()) {\n        return;\n    }\n    // Catch both pretty author archives and the ?author=N numeric probe.\n    if (is_author() || (isset($_GET['author']) && (int) $_GET['author'] > 0)) {\n        wp_safe_redirect(home_url('/'), 301);\n        exit;\n    }\n}, 1); // priority 1: runs after the theme's own template_redirect at priority 0 (functions.php:1453) so custom-template logic is unaffected, but still early enough to short-circuit author rendering.\n\nNotes / corrections to the original sketch:\n1. The sketch missed the ?author=N numeric form. Even with pretty permalinks, /?author=1 makes WP issue a canonical 301 to /author/{slug}/, leaking the slug in the Location header BEFORE any is_author() template fires. The added $_GET['author'] guard closes that. (Defense-in-depth: optionally also add `add_filter('redirect_canonical', function($r,$req){ return (is_string($req) && strpos($req,'author=')!==false) ? false : $r; }, 10, 2);` to suppress that canonical redirect — but the template_redirect block alone already short-circuits it since it runs and exit()s.)\n2. Use is_admin() guard (not a broad bail) so wp-admin author filters keep working; do NOT guard on is_user_logged_in() — the leak must be closed for anonymous visitors who may be logged-in too.\n3. Use wp_safe_redirect (not wp_redirect) + explicit exit; 301 is correct for a permanent block.\n4. Do NOT additionally unset rewrite rules / flush — that requires a flush_rewrite_rules() lifecycle and risks breaking other routes on a shared host; the template_redirect approach is zero-flush and reversible. This is the lower-risk fix for this theme.\nVerify live after merge+deploy: `curl -sI 'https://learrnsimply.com/?author=1'` and `curl -sI 'https://learrnsimply.com/author/ahmedadel123422/'` should both return 301 to home (Location: https://learrnsimply.com/) with no author slug exposed.",
+        "confidence": "high",
+        "where": "CONFIRMED STILL PRESENT. /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/functions.php (full 111KB file, at origin/main HEAD 9a7a78b) contains ZERO author-archive mitigation: grep for is_author / author_rewrite / wp_safe_redirect / wp_redirect / author_base / author_link all return nothing relevant. The only 'author' hits are Timber::get_user() post-author lookups for card display (index.php:69, home.php:69, page-shop-2.php:147, front-page.php:232/329). No author.php template exists in the theme. BUG-004 IS fixed separately — the rest_endpoints filter at functions.php:19-27 unsets /wp/v2/users and /wp/v2/users/(id) — but that does NOT cover the front-end author archive at /author/{slug}/, which still resolves and leaks the login slug (username) for ahmedadel123422, omar, etc., enabling username enumeration + targeted brute force. Confirmed refute-default cleared: I found nothing in the theme that disables, redirects, or rewrites the author route."
+      },
+      {
+        "id": "perf-H-2",
+        "title": "child theme functions.php is 106 KB (now ~111 KB) monolith — tech debt",
+        "severity": "High",
+        "fix": "THEME PR Omar merges. Two-part split (the original 5-file taxonomy is partly wrong — there is no real \"tutor-overrides\" PHP domain and almost no \"security-hardening\" code beyond the L19 rest_endpoints users-disable filter + promo-form sanitize_callbacks, so don't create those files). PART A (PHP partials, low-risk pure require_once): create edublink-child/includes/ and split into (1) twig-setup.php — Timber::init, Twig safe_html/safe_embed filters (~L1127-1180), timber/context filters; (2) font-enqueue.php — learnsimply_enqueue_ibm_plex_font (L33) + edublink_child_enqueue_fonts (L1797) + asset enqueues; (3) woo-overrides.php — WC template overrides, course-archive override (L2623), cart redirect, checkout/paypal button text; (4) template-routing.php — the many template_include force-filters (L109/1331/1597/1609/1625) + elementor unload; (5) admin-promo.php — promo settings menu/page/save (L890-1122). functions.php becomes a thin loader: foreach(glob(__DIR__.'/includes/*.php')) require_once. PART B (the higher-value perf win, do as a follow-up PR): extract the 21 inline <style> heredocs / 244 !important rules into real .css files in assets/css/ enqueued conditionally via wp_enqueue_style — this is what actually removes per-request inline-CSS weight, not just moving PHP around. Test each surface (home, course archive, single post, cart, checkout, legal pages, promo bar, Tutor dark-mode) after each part; verify md5 of rendered <head> CSS unchanged for Part A.",
+        "confidence": "high",
+        "where": "CONFIRMED still present. /01_WEB/website/functions.php is exactly 111470 bytes / 3025 lines (both in working tree AND at git HEAD — tracked, zero diff), matching the claim. No includes/ refactor dir exists (ls includes/ = \"No such file or directory\"); only theme dirs are assets/, tutor/, vendor/, views/, woocommerce/. The file holds 56 function definitions + 133 hook/function declarations, but the true bulk is inline CSS-in-PHP: 21 emitted <style> blocks and 244 lines containing \"!important\" across heredocs (legal pages L130+, signup fix, checkout-mobile fix L169+, sidebar dark-mode, certificate contrast, promo admin/bar, single-post dark-mode). It is a single monolith = real, unremediated tech debt. SOLO-theme (pure mechanical refactor, Omar PRs + self-merges)."
+      },
+      {
+        "id": "perf-H-3",
+        "title": "homepage.html 330 KB orphan artifact in child theme",
+        "severity": "High",
+        "fix": "THEME PR (SOLO-theme, Omar merges): run `git rm homepage.html` from /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website (removes the 330550-byte tracked orphan). Then to prevent re-adding demo exports, append a TARGETED ignore line to the theme .gitignore — prefer `homepage.html` (or `/homepage.html` to anchor at theme root) rather than the proposed blanket `*.html`, because a child theme may legitimately ship a static .html partial later and a wildcard would silently untrack it. Commit message e.g. \"chore(theme): remove 330KB orphan homepage.html demo export (not loaded by WP)\". Zero functional risk: file is not referenced by any PHP/template loader and has no inbound links; WP never serves theme-root .html files. No server/.htaccess/DB action needed (the live server copy, if any, can be cleaned separately, but the bug as scoped is the in-repo theme artifact). Deploy = next theme sync to server; nothing else to wire.",
+        "confidence": "high",
+        "where": "CONFIRMED still present. /home/omar/Documents/Claude/brands/learn-simply/01_WEB/website/homepage.html exists, exactly 330550 bytes (wc -c matches claimed evidence), git-tracked. Zero references in any .php (grep returned nothing) and zero references across ALL file types. Last commit touching it: e6c5e5b dated 2026-04-17 (matches \"untouched since 2026-04-17\"). This is a child theme (style.css: \"Theme Name: EduBlink Child\", \"Template: edublink\"); WP resolves templates via PHP (front-page.php/home.php/index.php all present) and never loads .html as templates. File content is a full standalone <!doctype html> demo export with hardcoded beta.learrnsimply.com URLs + Rank Math comments = orphan demo-download artifact. .gitignore currently has no *.html rule (only .DS_Store, *.log). It is the only orphan .html at the theme root. SOLO-theme: Omar merges the PR himself."
+      }
+    ],
+    "soloServer": [
+      {
+        "id": "BUG-009",
+        "title": "robots.txt فيه كتلتين User-agent: * مكررتين",
+        "severity": "Medium",
+        "source": "bugs-functional.md",
+        "fix": "SOLO-server: dedupe via robots_txt filter (could live in functions.php as a theme hook — making it borderline solo-theme) OR adjust Rank Math/WP-Optimize robots settings. Lowest-risk path is a robots_txt filter in functions.php to merge the two User-agent: * blocks."
+      },
+      {
+        "id": "BUG-018",
+        "title": "/checkout/ يعمل 302 redirect لـ /cart-1/ لما السلة فاضية",
+        "severity": "Low",
+        "source": "bugs-functional.md",
+        "fix": "SOLO-server (optional, non-issue): verify WooCommerce Settings→Advanced→Page Setup checkout/cart pages are correct via wp-cli. No real defect; can close as won't-fix."
+      },
+      {
+        "id": "runtime-C-2",
+        "title": "wp-content is 13GB; 5.6GB is stale ai1wm-backups from abandoned plugin",
+        "severity": "Critical",
+        "source": "bugs-runtime.md",
+        "fix": "SSH: rm -rf wp-content/ai1wm-backups/*.wpress (or find -mtime +90 -delete); deactivate/remove All-in-One WP Migration plugin via wp-cli. Disk-only, no Ahmed needed."
+      },
+      {
+        "id": "runtime-H-1",
+        "title": "4 backup plugins running in parallel (AIWM, WPvivid, Duplicator, UpdraftPlus)",
+        "severity": "High",
+        "source": "bugs-runtime.md",
+        "fix": "wp-cli: pick one backup tool (or rely on Hostinger daily + GitHub weekly), then wp plugin deactivate/delete all-in-one-wp-migration wpvivid-backuprestore duplicator updraftplus; rm orphan dirs. Reversible, solo-server."
+      },
+      {
+        "id": "runtime-M-2",
+        "title": "OptinMonster Elementor widget: PHP 8.2+ deprecated dynamic property OMAPI_Elementor_Widget::$base",
+        "severity": "Medium",
+        "source": "bugs-runtime.md",
+        "fix": "wp plugin update optinmonster. Solo-server via wp-cli. (Only deprecation notice today; would fatal on PHP 9.)"
+      },
+      {
+        "id": "runtime-M-4",
+        "title": "WP cron runs on every page load (DISABLE_WP_CRON not defined)",
+        "severity": "Medium",
+        "source": "bugs-runtime.md",
+        "fix": "Add define('DISABLE_WP_CRON', true) to wp-config.php + add hPanel cron: */5 * * * * curl -s https://learrnsimply.com/wp-cron.php?doing_wp_cron. Solo-server."
+      },
+      {
+        "id": "runtime-M-5",
+        "title": "Action Scheduler runs every 1 minute (overkill on shared hosting)",
+        "severity": "Medium",
+        "source": "bugs-runtime.md",
+        "fix": "Add filter('action_scheduler_run_schedule', fn=>'every_5_minutes') via MU-plugin or child functions.php (after M-4 system cron). Solo. Low-risk."
+      },
+      {
+        "id": "runtime-M-6",
+        "title": "Facebook for WooCommerce heartbeat crons every 5 min / hourly / daily",
+        "severity": "Medium",
+        "source": "bugs-runtime.md",
+        "fix": "Verify FB for WooCommerce catalog-sync settings; keep plugin (Pixel/CAPI live) but confirm 5-min heartbeat is needed. Mostly observe/tune; solo."
+      },
+      {
+        "id": "runtime-M-7",
+        "title": "Mixed caching: WP-Optimize active + LiteSpeed inactive but litespeed/ dir (720KB) lingers",
+        "severity": "Medium",
+        "source": "bugs-runtime.md",
+        "fix": "Decide WP-Optimize (keep) vs LiteSpeed; if keeping WP-Optimize, rm -rf wp-content/litespeed/ and leave LiteSpeed plugin inactive. Solo-server."
+      },
+      {
+        "id": "runtime-L-1",
+        "title": "Orphan plugin folders from deleted plugins (webtoffee_*, wpvivid_staging/uploads)",
+        "severity": "Low",
+        "source": "bugs-runtime.md",
+        "fix": "SSH: rm -rf wp-content/webtoffee_* and (after WPvivid removed) wp-content/wpvivid_*. Zero functional impact, solo-server."
+      },
+      {
+        "id": "C-1",
+        "title": "From-Address inconsistency: WC option = personal Gmail, wp-mail-smtp force-overrides to contact@learrnsimply.com",
+        "severity": "Medium",
+        "source": "bugs-integrity.md",
+        "fix": "Over SSH/wp-cli: wp option update woocommerce_email_from_address 'contact@learrnsimply.com' so WC matches the SMTP plugin (removes surprise if plugin is ever disabled). Optional: SPF/DKIM/DMARC is DNS (separate). No theme change."
+      },
+      {
+        "id": "M-6",
+        "title": "2927 stacked post revisions; no WP_POST_REVISIONS limit",
+        "severity": "Medium",
+        "source": "bugs-integrity.md",
+        "fix": "Over SSH: add define('WP_POST_REVISIONS',5); to wp-config.php; DELETE FROM wp_posts WHERE post_type='revision' AND post_modified < DATE_SUB(NOW(), INTERVAL 90 DAY); after dump. No theme change."
+      },
+      {
+        "id": "plugins-C-4",
+        "title": "4 backup plugins active in parallel (all-in-one-wp-migration, wpvivid 0.9.127 alpha, duplicator, wpsynchro) — duplication + ~6 GB disk + 3 competing crons",
+        "severity": "Critical",
+        "source": "bugs-plugins.md",
+        "fix": "SOLO-server. wp plugin uninstall all-in-one-wp-migration wpvivid-backuprestore duplicator (wpsynchro is active v1.14.0 — confirm not needed before removing), then rm the 5 stale backup folders. Backup system already = Hostinger daily + GitHub weekly, so plugin backups redundant. Get rm -rf paths reviewed by Omar per folder rule."
+      },
+      {
+        "id": "plugins-H-4",
+        "title": "HPOS disabled on WC 10.7 with two-way sync on — every order duplicated (wp_wc_orders + wp_posts, 4567 rows each), wasted sync cron, slower analytics",
+        "severity": "High",
+        "source": "bugs-plugins.md",
+        "fix": "SOLO-server (but commerce-sensitive — coordinate timing). WooCommerce > Settings > Advanced > Features > enable HPOS; let sync verify; then set woocommerce_custom_orders_table_data_sync_enabled=no. Full DB backup first; do off-peak. Legacy wp_posts shop_order cleanup only after 2 weeks stable."
+      },
+      {
+        "id": "plugins-H-5",
+        "title": "Two SVG plugins active (safe-svg 2.4.0 + svg-support 2.5.14) — conflicting sanitization rules, SVG XSS vector",
+        "severity": "High",
+        "source": "bugs-plugins.md",
+        "fix": "SOLO-server. Keep safe-svg (better sanitization / security priority), deactivate svg-support — unless theme animations need svg-support's CSS support (check before). wp plugin deactivate svg-support."
+      },
+      {
+        "id": "plugins-L-1",
+        "title": "3 inactive plugins occupying disk: airlift (2 MB), litespeed-cache (6 MB), nextend-facebook-connect (5 MB) ~13 MB",
+        "severity": "Low",
+        "source": "bugs-plugins.md",
+        "fix": "SOLO-server, mostly. Delete airlift (ties to C-3) + litespeed-cache after confirming WP-Optimize is the chosen cache. nextend-facebook-connect: confirm with Ahmed it isn't wanted for social login before deleting (it was deliberately restored once)."
+      },
+      {
+        "id": "plugins-L-2",
+        "title": "tutor-lms-migration-tool 2.4.1 active — likely unneeded after the original LMS migration",
+        "severity": "Low",
+        "source": "bugs-plugins.md",
+        "fix": "SOLO-server. wp plugin deactivate + delete tutor-lms-migration-tool (no recurring use after migration). Quick win."
+      },
+      {
+        "id": "perf-C-1",
+        "title": "918 autoloaded options = ~987 KB loaded on every request (autoload bloat)",
+        "severity": "Critical",
+        "source": "bugs-perf.md",
+        "fix": "SSH/wp-cli: UPDATE wp_options SET autoload='no' WHERE option_name IN ('cartflows_docs_data','astra-settings','aioseo_options','aioseo_options_dynamic','fs_accounts','_astra_sites_old_customizer_data'). Re-check with `wp option list --autoload=on` first; consider object cache (Redis/APCu)."
+      },
+      {
+        "id": "perf-H-1",
+        "title": "wp_postmeta meta_key index low cardinality — slow meta queries",
+        "severity": "High",
+        "source": "bugs-perf.md",
+        "fix": "SSH: confirm `wp index-mysql status`; if not applied, `wp plugin install index-wp-mysql-for-speed --activate && wp index-mysql enable --all`. Verify wp_postmeta now has the high-perf compound keys."
+      },
+      {
+        "id": "perf-H-4",
+        "title": "Hostinger CDN returns x-hcdn-cache-status: DYNAMIC — edge cache bypassed",
+        "severity": "High",
+        "source": "bugs-perf.md",
+        "fix": "SOLO-server: WP-Optimize > Settings > Advanced enable 'Cache for logged-out users'; set Page Cache lifetime 7d; grep wp-config.php for DONOTCACHEPAGE define; hPanel > CDN confirm enabled. Re-curl homepage to confirm x-hcdn-cache-status flips to HIT."
+      },
+      {
+        "id": "perf-M-1",
+        "title": "PHP max_execution_time = 0 (unlimited) — no script timeout",
+        "severity": "Medium",
+        "source": "bugs-perf.md",
+        "fix": "SOLO-server: add @set_time_limit(120) in wp-config.php (or php_value max_execution_time 120 in .htaccess / .user.ini). Keep set_time_limit(0) exceptions for WC export / WPSynchro paths."
+      },
+      {
+        "id": "perf-M-2",
+        "title": "8+ PHP files in wp-content/uploads/redux/ — code outside its folder",
+        "severity": "Medium",
+        "source": "bugs-perf.md",
+        "fix": "SOLO-server: already mitigated by uploads/.htaccess PHP-exec block (verify 403 on a redux/*.php URL). Optional further cleanup: leave files (harmless once blocked) or evaluate Redux Framework alternative — no urgent action."
+      },
+      {
+        "id": "perf-M-4",
+        "title": "x-powered-by: PHP/8.2.30 header exposes PHP version",
+        "severity": "Medium",
+        "source": "bugs-perf.md",
+        "fix": "SOLO-server: already done (Header unset X-Powered-By + .user.ini expose_php=Off). Verify with `curl -I https://learrnsimply.com` that x-powered-by is absent. No theme change."
+      },
+      {
+        "id": "perf-M-5",
+        "title": "wp-content = 13 GB due to 5.6 GB ai1wm-backups",
+        "severity": "Medium",
+        "source": "bugs-perf.md",
+        "fix": "SOLO-server: already largely done (backup folders removed, wp-content ~3.3GB). Confirm `du -sh wp-content/ai1wm-backups` is gone/empty and ai1wm plugin disabled. Get Omar sign-off before any rm per repo rules."
+      },
+      {
+        "id": "sec-C-2",
+        "title": "wp-content/.htaccess empty (0 bytes) — no protection for .log/.sql/.bak files + dir listing",
+        "severity": "Critical",
+        "source": "bugs-security-deep.md",
+        "fix": "Write wp-content/.htaccess over SSH: FilesMatch deny .log/.sql/.bak/.zip/.tar.gz + Options -Indexes + block PHP outside index/admin-ajax/wp-cron. Already done; verify still live."
+      },
+      {
+        "id": "sec-C-3",
+        "title": "wp-content/uploads/.htaccess empty (0 bytes) — PHP in uploads executable (RCE risk)",
+        "severity": "Critical",
+        "source": "bugs-security-deep.md",
+        "fix": "Write wp-content/uploads/.htaccess over SSH: FilesMatch deny .php/.phtml/.php3-7/.pl/.cgi/.sh/.py; allow index.php. Already done; verify still live."
+      },
+      {
+        "id": "sec-H-1",
+        "title": "19 stray PHP files in wp-content/uploads (redux/, mailpoet/, wpsynchro-<hash>/) — bad smell / potential backdoor",
+        "severity": "High",
+        "source": "bugs-security-deep.md",
+        "fix": "SSH: cat each suspicious index.php (esp wpsynchro-<hash>); if '// Silence is golden' delete safely. With uploads/.htaccess (C-3) now blocking PHP exec, residual risk already mitigated. Server op, not theme."
+      },
+      {
+        "id": "sec-H-2",
+        "title": "xmlrpc.php enabled, responds to system.listMethods (brute-force amplification + pingback DDoS)",
+        "severity": "High",
+        "source": "bugs-security-deep.md",
+        "fix": "Already done server-side (returns 403). Verify: add_filter('xmlrpc_enabled','__return_false') in wp-config OR .htaccess <Files xmlrpc.php> Require all denied. Server, not theme."
+      },
+      {
+        "id": "sec-H-3",
+        "title": "wp-login.php exposed with no rate-limit or 2FA (brute-force surface)",
+        "severity": "High",
+        "source": "bugs-security-deep.md",
+        "fix": "wp-admin/wp-cli: install+activate Limit Login Attempts Reloaded (throttle). 2FA enrollment needs Ahmed for his account. Server/plugin op, not theme."
+      },
+      {
+        "id": "sec-M-1",
+        "title": "X-Powered-By: PHP/8.2.30 header — version disclosure",
+        "severity": "Medium",
+        "source": "bugs-security-deep.md",
+        "fix": "Already done server-side: Header unset X-Powered-By in .htaccess + expose_php=Off in .user.ini. Server, not theme."
+      },
+      {
+        "id": "sec-M-2",
+        "title": "wp-config.php = 644 (readable by group/others) — should be 600",
+        "severity": "Medium",
+        "source": "bugs-security-deep.md",
+        "fix": "Already done: chmod 600 wp-config.php over SSH. Verify WP still loads. Server, not theme."
+      },
+      {
+        "id": "sec-M-3",
+        "title": "No HSTS (Strict-Transport-Security) header",
+        "severity": "Medium",
+        "source": "bugs-security-deep.md",
+        "fix": "Already done: Header always set Strict-Transport-Security in root .htaccess. Server, not theme."
+      },
+      {
+        "id": "sec-M-4",
+        "title": "Weak CSP — only upgrade-insecure-requests, no script-src/style-src/frame-ancestors",
+        "severity": "Medium",
+        "source": "bugs-security-deep.md",
+        "fix": "Root .htaccess: add Content-Security-Policy-Report-Only with default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; then progressively tighten. Server, not theme. Lower priority."
+      }
+    ],
+    "needsAhmed": [
+      {
+        "id": "BUG-007",
+        "title": "صفحة /signup/ عندها title إنجليزي 'signup' من Rank Math",
+        "severity": "High",
+        "source": "bugs-functional.md"
+      },
+      {
+        "id": "BUG-008",
+        "title": "صفحة المتجر /shop-2/ عندها Rank Math title إنجليزي 'Shop'",
+        "severity": "High",
+        "source": "bugs-functional.md"
+      },
+      {
+        "id": "BUG-010",
+        "title": "صفحة /prompt/ فيها 4 مستندات HTML كاملة متداخلة (5 تاغات <title>)",
+        "severity": "Medium",
+        "source": "bugs-functional.md"
+      },
+      {
+        "id": "BUG-016",
+        "title": "sitemap XSL يستخدم // بدل https:// (protocol-relative)",
+        "severity": "Low",
+        "source": "bugs-functional.md"
+      },
+      {
+        "id": "C-1",
+        "title": "كورس \"مشاريع بايثون\" منشور بدون منتج WooCommerce مرتبط",
+        "severity": "Critical",
+        "source": "bugs-data.md"
+      },
+      {
+        "id": "H-1",
+        "title": "7 من 8 منتجات بدون description كامل",
+        "severity": "High",
+        "source": "bugs-data.md"
+      },
+      {
+        "id": "H-2",
+        "title": "4 من 8 منتجات بدون short_description",
+        "severity": "High",
+        "source": "bugs-data.md"
+      },
+      {
+        "id": "H-8",
+        "title": "كورسان draft باسم 'دورة جديدة' بدون محتوى (قديمان)",
+        "severity": "High",
+        "source": "bugs-data.md"
+      },
+      {
+        "id": "M-5",
+        "title": "صفحة Refund and Returns Policy لسه Draft منذ 2023",
+        "severity": "Medium",
+        "source": "bugs-data.md"
+      },
+      {
+        "id": "M-6",
+        "title": "الضرايب معطّلة (calc_taxes=no) على متجر منتجات رقمية",
+        "severity": "Medium",
+        "source": "bugs-data.md"
+      },
+      {
+        "id": "runtime-H-3",
+        "title": "Broken style dependency: edublink-rtl enqueued depending on unregistered edublink-core-main-css",
+        "severity": "High",
+        "source": "bugs-runtime.md"
+      },
+      {
+        "id": "runtime-M-1",
+        "title": "edublink-core widget Undefined array key 'animated_image_color_type' (animation.php:1420)",
+        "severity": "Medium",
+        "source": "bugs-runtime.md"
+      },
+      {
+        "id": "runtime-M-3",
+        "title": "Translation loading too early (_load_textdomain_just_in_time) for tutor / tutor-pro / all-in-one-wp-migration",
+        "severity": "Medium",
+        "source": "bugs-runtime.md"
+      },
+      {
+        "id": "C-2",
+        "title": "High card cancel rate (61% success / 39% cancelled last 30d) on Kashier checkout",
+        "severity": "High",
+        "source": "bugs-integrity.md"
+      },
+      {
+        "id": "C-4",
+        "title": "97% of Tutor courses in Trash (67 trash / 5 publish / 2 draft) — catalog cleanup decision",
+        "severity": "Critical",
+        "source": "bugs-integrity.md"
+      },
+      {
+        "id": "C-5",
+        "title": "admin_email (and pending new_admin_email) = Ahmed's personal Gmail — bus-factor-1 single point of failure",
+        "severity": "High",
+        "source": "bugs-integrity.md"
+      },
+      {
+        "id": "H-2",
+        "title": "Course 'مشاريع بايثون للمبتدئين' (ID 29368) published with NULL/0 _tutor_course_product_id",
+        "severity": "High",
+        "source": "bugs-integrity.md"
+      },
+      {
+        "id": "M-5",
+        "title": "Only 88 customer-role users vs 2399 completed orders — ~96% guest checkout",
+        "severity": "Medium",
+        "source": "bugs-integrity.md"
+      },
+      {
+        "id": "plugins-C-1",
+        "title": "Kashier WooCommerce plugin distributed via GitHub \"-master\" folder (no admin auto-update); real ROI item is payment-recovery / gateway optimization",
+        "severity": "Low",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "plugins-H-1",
+        "title": "wp-file-manager 8.0.4 active — full filesystem access from admin UI (CVE-2020-25213 history); large attack surface if admin compromised",
+        "severity": "High",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "plugins-H-2",
+        "title": "string-locator 2.6.7 active — lets any admin edit any PHP file (bypasses DISALLOW_FILE_EDIT); 3rd arbitrary-code path alongside wp-file-manager + code-snippets",
+        "severity": "High",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "plugins-H-3",
+        "title": "6 Elementor add-on plugins active simultaneously (~188 MB) — editor/frontend slowdown, widget conflicts",
+        "severity": "High",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "plugins-M-1",
+        "title": "conditional-add-to-cart stuck at v1.0.0 — possibly abandoned",
+        "severity": "Medium",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "plugins-M-2",
+        "title": "wp-events-manager 2.2.4 active (tp_event, 29 published events) — is the events feature still used?",
+        "severity": "Medium",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "plugins-M-5",
+        "title": "astra-sites 4.6.0 active (demo-import, 25 MB) — only needed during template imports",
+        "severity": "Medium",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "plugins-M-6",
+        "title": "envato-market 2.0.14 active — only for EduBlink/Envato purchased-item updates (needs Envato API key)",
+        "severity": "Medium",
+        "source": "bugs-plugins.md"
+      },
+      {
+        "id": "perf-M-3",
+        "title": "Parent theme edublink 2.0.8 → 2.0.12 update available",
+        "severity": "Medium",
+        "source": "bugs-perf.md"
+      },
+      {
+        "id": "perf-L-1",
+        "title": "100+ ZIP files in wp-content/uploads/unlimited_elements_cache/",
+        "severity": "Low",
+        "source": "bugs-perf.md"
+      },
+      {
+        "id": "sec-C-1",
+        "title": "SMTP password stored base64 (plain-text equivalent) in wp_options.wp_mail_smtp",
+        "severity": "Critical",
+        "source": "bugs-security-deep.md"
+      },
+      {
+        "id": "sec-L-1",
+        "title": "OpenSSH on Hostinger lacks post-quantum key exchange (store-now-decrypt-later)",
+        "severity": "Low",
+        "source": "bugs-security-deep.md"
+      }
+    ]
+  }
+}

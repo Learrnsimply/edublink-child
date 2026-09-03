@@ -1,0 +1,163 @@
+{
+  "updatedAt": "2026-06-10T16:04:11.120Z",
+  "createdAt": "2026-06-10T16:03:43.138Z",
+  "id": "gC9cPSiTBP3M6DZj",
+  "name": "W3t-order — order_lookup tool (WC orders)",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "o1",
+      "name": "When Called",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "id": "o2",
+      "name": "WC Orders Lookup",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://learrnsimply.com/wp-json/wc/v3/orders?search={{ encodeURIComponent($json.searchTerm || '') }}&per_page=3",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "5k7PIPwao0Vkoczb",
+          "name": "WooCommerce ReadOnly — Learn Simply"
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "When Called": {
+      "main": [
+        [
+          {
+            "node": "WC Orders Lookup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "4b36ee36-96b4-4e62-8982-9a351a68e931",
+  "activeVersionId": "4b36ee36-96b4-4e62-8982-9a351a68e931",
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-10T16:03:43.138Z",
+      "createdAt": "2026-06-10T16:03:43.138Z",
+      "role": "workflow:owner",
+      "workflowId": "gC9cPSiTBP3M6DZj",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-06-10T16:03:43.138Z",
+    "createdAt": "2026-06-10T16:03:43.138Z",
+    "versionId": "4b36ee36-96b4-4e62-8982-9a351a68e931",
+    "workflowId": "gC9cPSiTBP3M6DZj",
+    "nodes": [
+      {
+        "id": "o1",
+        "name": "When Called",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "passthrough"
+        }
+      },
+      {
+        "id": "o2",
+        "name": "WC Orders Lookup",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://learrnsimply.com/wp-json/wc/v3/orders?search={{ encodeURIComponent($json.searchTerm || '') }}&per_page=3",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "options": {}
+        },
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "5k7PIPwao0Vkoczb",
+            "name": "WooCommerce ReadOnly — Learn Simply"
+          }
+        },
+        "onError": "continueRegularOutput"
+      }
+    ],
+    "connections": {
+      "When Called": {
+        "main": [
+          [
+            {
+              "node": "WC Orders Lookup",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Omar Abdelrahman",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-10T16:04:11.367Z",
+        "id": 104,
+        "workflowId": "gC9cPSiTBP3M6DZj",
+        "versionId": "4b36ee36-96b4-4e62-8982-9a351a68e931",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    ]
+  }
+}

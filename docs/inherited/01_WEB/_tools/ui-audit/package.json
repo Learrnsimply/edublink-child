@@ -1,0 +1,15 @@
+{
+  "name": "learn-simply-ui-audit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Headless Playwright audit that catches UI regressions on learrnsimply.com (header overlap, form inconsistencies, JS-overridden layout, missing titles).",
+  "scripts": {
+    "setup": "npm install && npx playwright install chromium",
+    "audit": "node audit.mjs",
+    "audit:url": "node audit.mjs --base-url"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}

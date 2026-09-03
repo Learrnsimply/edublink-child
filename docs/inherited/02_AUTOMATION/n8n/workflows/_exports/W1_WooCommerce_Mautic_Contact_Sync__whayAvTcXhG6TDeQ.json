@@ -1,0 +1,281 @@
+{
+  "updatedAt": "2026-06-01T23:46:28.797Z",
+  "createdAt": "2026-06-01T23:30:52.967Z",
+  "id": "whayAvTcXhG6TDeQ",
+  "name": "W1 — WooCommerce → Mautic Contact Sync",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "wc_webhook",
+      "name": "WC Webhook (order/customer)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wc-mautic-sync-a7f3c19e4b82",
+        "responseMode": "lastNode",
+        "options": {},
+        "responseData": "noData"
+      },
+      "webhookId": "48a9e8d8-f3f8-44e8-93cb-12e57a8308e8"
+    },
+    {
+      "id": "map_code",
+      "name": "Map WC → Mautic fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// W1: map a WooCommerce order/customer webhook payload to a Mautic contact body.\n// Mautic /contacts/new upserts on email (verified 2026-06-02). Keys are Mautic field aliases.\nconst items = $input.all();\nconst results = [];\nfor (const item of items) {\n  const root = item.json || {};\n  // n8n Webhook node nests the HTTP payload under `body`.\n  const b = (root.body && typeof root.body === 'object') ? root.body : root;\n  const billing = b.billing || {};\n  const email = String(b.email || billing.email || '').trim().toLowerCase();\n  // No email => cannot upsert into Mautic. Skip safely (do not error).\n  if (!email) { continue; }\n  const isOrder = Array.isArray(b.line_items);\n  const firstname = b.first_name || billing.first_name || '';\n  const lastname = b.last_name || billing.last_name || '';\n  const phone = billing.phone || b.phone || '';\n  const wcCustomerId = isOrder ? b.customer_id : b.id;\n  const courses = isOrder ? (b.line_items || []).map(li => (li && li.name ? String(li.name).trim() : '')).filter(Boolean) : [];\n  const courseInterest = courses.join(', ');\n  // Mautic datetime fields expect \"Y-m-d H:i:s\".\n  const rawDate = b.date_created || b.date_created_gmt || '';\n  let lastPurchaseDate = '';\n  if (isOrder && rawDate) { lastPurchaseDate = String(rawDate).replace('T', ' ').slice(0, 19); }\n  // Only include non-empty fields so we never blank existing Mautic data on update.\n  // NOTE: source_channel is intentionally NOT set — a purchase does not reveal the\n  // contact's acquisition channel; overwriting it would corrupt attribution.\n  const contact = { email, tags: ['wc-customer'] };\n  if (firstname) contact.firstname = firstname;\n  if (lastname) contact.lastname = lastname;\n  if (phone) contact.phone = phone;\n  const wcIdNum = Number(wcCustomerId);\n  if (Number.isFinite(wcIdNum) && wcIdNum > 0) { contact.wc_customer_id = wcIdNum; }\n  if (courseInterest) contact.course_interest = courseInterest;\n  if (lastPurchaseDate) contact.last_purchase_date = lastPurchaseDate;\n  results.push({ json: contact });\n}\nreturn results;"
+      }
+    },
+    {
+      "id": "mautic_http",
+      "name": "Mautic Upsert Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        720,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://mautic.learrnsimply.com/api/contacts/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "HcKVugtv8k1Yr47c",
+          "name": "Mautic HTTP Basic — Learn Simply"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    }
+  ],
+  "connections": {
+    "WC Webhook (order/customer)": {
+      "main": [
+        [
+          {
+            "node": "Map WC → Mautic fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map WC → Mautic fields": {
+      "main": [
+        [
+          {
+            "node": "Mautic Upsert Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+  "activeVersionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+  "versionCounter": 3,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-06-01T23:30:52.967Z",
+      "createdAt": "2026-06-01T23:30:52.967Z",
+      "role": "workflow:owner",
+      "workflowId": "whayAvTcXhG6TDeQ",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-06-01T23:35:01.710Z",
+    "createdAt": "2026-06-01T23:35:01.710Z",
+    "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+    "workflowId": "whayAvTcXhG6TDeQ",
+    "nodes": [
+      {
+        "id": "wc_webhook",
+        "name": "WC Webhook (order/customer)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          240,
+          300
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "wc-mautic-sync-a7f3c19e4b82",
+          "responseMode": "lastNode",
+          "options": {},
+          "responseData": "noData"
+        },
+        "webhookId": "48a9e8d8-f3f8-44e8-93cb-12e57a8308e8"
+      },
+      {
+        "id": "map_code",
+        "name": "Map WC → Mautic fields",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "// W1: map a WooCommerce order/customer webhook payload to a Mautic contact body.\n// Mautic /contacts/new upserts on email (verified 2026-06-02). Keys are Mautic field aliases.\nconst items = $input.all();\nconst results = [];\nfor (const item of items) {\n  const root = item.json || {};\n  // n8n Webhook node nests the HTTP payload under `body`.\n  const b = (root.body && typeof root.body === 'object') ? root.body : root;\n  const billing = b.billing || {};\n  const email = String(b.email || billing.email || '').trim().toLowerCase();\n  // No email => cannot upsert into Mautic. Skip safely (do not error).\n  if (!email) { continue; }\n  const isOrder = Array.isArray(b.line_items);\n  const firstname = b.first_name || billing.first_name || '';\n  const lastname = b.last_name || billing.last_name || '';\n  const phone = billing.phone || b.phone || '';\n  const wcCustomerId = isOrder ? b.customer_id : b.id;\n  const courses = isOrder ? (b.line_items || []).map(li => (li && li.name ? String(li.name).trim() : '')).filter(Boolean) : [];\n  const courseInterest = courses.join(', ');\n  // Mautic datetime fields expect \"Y-m-d H:i:s\".\n  const rawDate = b.date_created || b.date_created_gmt || '';\n  let lastPurchaseDate = '';\n  if (isOrder && rawDate) { lastPurchaseDate = String(rawDate).replace('T', ' ').slice(0, 19); }\n  // Only include non-empty fields so we never blank existing Mautic data on update.\n  // NOTE: source_channel is intentionally NOT set — a purchase does not reveal the\n  // contact's acquisition channel; overwriting it would corrupt attribution.\n  const contact = { email, tags: ['wc-customer'] };\n  if (firstname) contact.firstname = firstname;\n  if (lastname) contact.lastname = lastname;\n  if (phone) contact.phone = phone;\n  const wcIdNum = Number(wcCustomerId);\n  if (Number.isFinite(wcIdNum) && wcIdNum > 0) { contact.wc_customer_id = wcIdNum; }\n  if (courseInterest) contact.course_interest = courseInterest;\n  if (lastPurchaseDate) contact.last_purchase_date = lastPurchaseDate;\n  results.push({ json: contact });\n}\nreturn results;"
+        }
+      },
+      {
+        "id": "mautic_http",
+        "name": "Mautic Upsert Contact",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          720,
+          300
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://mautic.learrnsimply.com/api/contacts/new",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "json",
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "HcKVugtv8k1Yr47c",
+            "name": "Mautic HTTP Basic — Learn Simply"
+          }
+        },
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000
+      }
+    ],
+    "connections": {
+      "WC Webhook (order/customer)": {
+        "main": [
+          [
+            {
+              "node": "Map WC → Mautic fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Map WC → Mautic fields": {
+        "main": [
+          [
+            {
+              "node": "Mautic Upsert Contact",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Omar Abdelrahman",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-01T23:35:01.801Z",
+        "id": 2,
+        "workflowId": "whayAvTcXhG6TDeQ",
+        "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-01T23:35:01.875Z",
+        "id": 3,
+        "workflowId": "whayAvTcXhG6TDeQ",
+        "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-01T23:36:37.591Z",
+        "id": 4,
+        "workflowId": "whayAvTcXhG6TDeQ",
+        "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-01T23:36:37.604Z",
+        "id": 5,
+        "workflowId": "whayAvTcXhG6TDeQ",
+        "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-01T23:36:37.987Z",
+        "id": 6,
+        "workflowId": "whayAvTcXhG6TDeQ",
+        "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-01T23:46:29.174Z",
+        "id": 7,
+        "workflowId": "whayAvTcXhG6TDeQ",
+        "versionId": "bb382032-3378-4a96-8aeb-b1334a5024a0",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    ]
+  }
+}

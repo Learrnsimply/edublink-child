@@ -7,3 +7,9 @@
 
 # Orphan demo export — never load static HTML in a child theme (perf-H-3)
 /homepage.html
+
+# أرشيف موروث — متتنقلش أسرار تاني
+docs/inherited/**/.env
+docs/inherited/**/*.pem
+docs/inherited/**/*.key
+docs/inherited/**/id_rsa*

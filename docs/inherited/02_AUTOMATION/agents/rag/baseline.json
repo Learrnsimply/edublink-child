@@ -1,0 +1,241 @@
+{
+  "summary": {
+    "facts": {
+      "n": 14,
+      "hit@1": 0.7142857142857143,
+      "hit@5": 0.7142857142857143,
+      "mrr": 0.714
+    },
+    "curriculum": {
+      "n": 10,
+      "hit@1": 1.0,
+      "hit@5": 1.0,
+      "mrr": 1.0
+    },
+    "overall": {
+      "n": 24,
+      "hit@1": 0.8333333333333334,
+      "hit@5": 0.8333333333333334,
+      "mrr": 0.833
+    }
+  },
+  "rows": [
+    {
+      "id": "F01",
+      "group": "facts",
+      "q": "كورس جافا للمبتدئين بكام؟",
+      "rank": 1,
+      "top_similarity": 0.77494746,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F02",
+      "group": "facts",
+      "q": "باقة جافا الكاملة فيها إيه وبكام؟",
+      "rank": 1,
+      "top_similarity": 0.74931085,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F03",
+      "group": "facts",
+      "q": "عايز لينك باقة جافا",
+      "rank": 0,
+      "top_similarity": null,
+      "n_results": 0,
+      "note": "request failed: <urlopen error [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond>"
+    },
+    {
+      "id": "F04",
+      "group": "facts",
+      "q": "باقة هياكل البيانات الكاملة بكام؟",
+      "rank": 1,
+      "top_similarity": 0.7372839,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F05",
+      "group": "facts",
+      "q": "إزاي أدفع من برة مصر؟",
+      "rank": 0,
+      "top_similarity": null,
+      "n_results": 0,
+      "note": "request failed: <urlopen error [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond>"
+    },
+    {
+      "id": "F06",
+      "group": "facts",
+      "q": "رقم فودافون كاش للتحويل اليدوي إيه؟",
+      "rank": 0,
+      "top_similarity": null,
+      "n_results": 0,
+      "note": "request failed: <urlopen error [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond>"
+    },
+    {
+      "id": "F07",
+      "group": "facts",
+      "q": "رقم الإنستاباي إيه؟",
+      "rank": 1,
+      "top_similarity": 0.6686958,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F08",
+      "group": "facts",
+      "q": "سياسة الاسترجاع إيه؟",
+      "rank": 1,
+      "top_similarity": 0.7594275,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F09",
+      "group": "facts",
+      "q": "مواعيد رد الدعم إيه؟",
+      "rank": 0,
+      "top_similarity": null,
+      "n_results": 0,
+      "note": "request failed: <urlopen error [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond>"
+    },
+    {
+      "id": "F10",
+      "group": "facts",
+      "q": "كورس Dart هينزل إمتى وبكام؟",
+      "rank": 1,
+      "top_similarity": 0.6648552,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F11",
+      "group": "facts",
+      "q": "فين جروب التليجرام بتاع الطلاب؟",
+      "rank": 1,
+      "top_similarity": 0.6947324,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F12",
+      "group": "facts",
+      "q": "فين إنستجرام أحمد وكل لينكاته؟",
+      "rank": 1,
+      "top_similarity": 0.74720687,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F13",
+      "group": "facts",
+      "q": "الشهادة معتمدة ولا لأ؟",
+      "rank": 1,
+      "top_similarity": 0.75668854,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "F14",
+      "group": "facts",
+      "q": "كورس هياكل البيانات المستوى الأول بكام؟",
+      "rank": 1,
+      "top_similarity": 0.78220785,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C01",
+      "group": "curriculum",
+      "q": "Linked List موجودة في أنهي وحدة؟",
+      "rank": 1,
+      "top_similarity": 0.7710718,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C02",
+      "group": "curriculum",
+      "q": "بتشرحوا الـ Stack في أنهي وحدة؟",
+      "rank": 1,
+      "top_similarity": 0.80813015,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C03",
+      "group": "curriculum",
+      "q": "فيه شرح للـ Queue؟",
+      "rank": 1,
+      "top_similarity": 0.757966,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C04",
+      "group": "curriculum",
+      "q": "كورس OOP فيه inheritance؟",
+      "rank": 1,
+      "top_similarity": 0.77379054,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C05",
+      "group": "curriculum",
+      "q": "فيه شرح Polymorphism؟",
+      "rank": 1,
+      "top_similarity": 0.784126,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C06",
+      "group": "curriculum",
+      "q": "المتغيرات في جافا بتتشرح فين؟",
+      "rank": 1,
+      "top_similarity": 0.7115102,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C07",
+      "group": "curriculum",
+      "q": "شرح الـ Loops في أنهي وحدة في كورس جافا؟",
+      "rank": 1,
+      "top_similarity": 0.77221024,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C08",
+      "group": "curriculum",
+      "q": "فيه وحدة عن الـ if والـ switch؟",
+      "rank": 1,
+      "top_similarity": 0.8161504,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C09",
+      "group": "curriculum",
+      "q": "الـ Double Linked List متغطية في الكورس؟",
+      "rank": 1,
+      "top_similarity": 0.8051048,
+      "n_results": 5,
+      "note": ""
+    },
+    {
+      "id": "C10",
+      "group": "curriculum",
+      "q": "وحدة الـ Functions في كورس جافا فيها إيه؟",
+      "rank": 1,
+      "top_similarity": 0.7941756,
+      "n_results": 5,
+      "note": ""
+    }
+  ],
+  "k": 5
+}

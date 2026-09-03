@@ -1,0 +1,123 @@
+{
+  "updatedAt": "2026-06-10T00:02:59.104Z",
+  "createdAt": "2026-06-09T23:55:35.675Z",
+  "id": "YktkjLMI12YUGWfc",
+  "name": "W3d — omar-error-handler (إنذار أخطاء Telegram)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "e1",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "e2",
+      "name": "Format Alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// نفس نمط rs-aios Global Error Handler — HTML لـ Telegram\nconst wf = $json.workflow || {};\nconst ex = $json.execution || {};\nconst err = ex.error || {};\nconst esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst level = String(err.level || 'error');\nconst emoji = level === 'warning' ? '⚠️' : '🔴';\nconst msg = esc(String(err.message || '(مفيش رسالة)').slice(0, 300));\nconst desc = esc(String(err.description || '').slice(0, 200));\nconst node = esc(ex.lastNodeExecuted || 'غير معروف');\nconst when = new Date().toLocaleString('sv-SE', { timeZone: 'Africa/Cairo' }).slice(0, 16);\nconst text = `${emoji} <b>خطأ في ورشة Learn Simply</b>\\n\\n` +\n  `📦 <b>Workflow:</b> ${esc(wf.name)}\\n` +\n  `🧭 <b>النود اللي فشل:</b> ${node}\\n` +\n  `🕒 <b>الوقت (القاهرة):</b> ${when}\\n\\n` +\n  `<b>الرسالة:</b>\\n<pre>${msg}</pre>` +\n  (desc ? `\\n<b>تفاصيل:</b> ${desc}` : '') +\n  `\\n\\n🔗 ${esc(ex.url || ('https://n8n.learrnsimply.com/workflow/' + (wf.id || '')))}`;\nreturn { json: { text } };"
+      }
+    },
+    {
+      "id": "e3",
+      "name": "Telegram Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "parameters": {
+        "chatId": "6726176133",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "HTML",
+          "appendAttribution": false,
+          "disable_web_page_preview": true
+        },
+        "resource": "message",
+        "operation": "sendMessage"
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "rvECFnBLZhbV2ADN",
+          "name": "Telegram — GrowthMora Shared Bot"
+        }
+      },
+      "webhookId": "53654f95-b98c-479b-9d5f-ab35560bf00c"
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Format Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Alert": {
+      "main": [
+        [
+          {
+            "node": "Telegram Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "776e5605-db9a-49db-8c8f-c7b7e7304294",
+  "activeVersionId": null,
+  "versionCounter": 2,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-09T23:55:35.675Z",
+      "createdAt": "2026-06-09T23:55:35.675Z",
+      "role": "workflow:owner",
+      "workflowId": "YktkjLMI12YUGWfc",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
