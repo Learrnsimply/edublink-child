@@ -7,5 +7,10 @@ while IFS= read -r f; do
   n=$((n+1))
   out=$("$PHP" -l "$f" 2>&1) || { echo "❌ $f"; echo "$out" | head -3; fail=1; }
 done < <(find . -path ./vendor -prune -o -name '*.php' -print)
-[ "$fail" -eq 0 ] && echo "✅ $n ملف · صفر أخطاء" || echo "⚠️  فيه أخطاء — متعملش commit."
+if [ "$fail" -eq 0 ]; then echo "✅ $n ملف PHP · صفر أخطاء"; else echo "⚠️  أخطاء PHP — متعملش commit."; fi
+
+# مراجع قوالب Twig. Twig بيحل الـinclude وقت التشغيل، فترجمة القالب بتعدّي
+# حتى لو الملف المضمَّن اتمسح — الفاحص ده بيمسك ده قبل ما يوصل السيرفر.
+"$PHP" tools-twig-check.php || fail=1
+
 exit $fail

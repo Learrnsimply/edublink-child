@@ -37,3 +37,6 @@ jobs:
             exit 1
           fi
           echo "كل ملفات PHP سليمة."
+
+      - name: مراجع قوالب Twig
+        run: php tools-twig-check.php
