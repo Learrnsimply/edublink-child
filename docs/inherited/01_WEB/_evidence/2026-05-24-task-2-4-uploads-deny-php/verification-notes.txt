@@ -1,0 +1,52 @@
+# Playwright Verification — Task 2.4 uploads/.htaccess Deny PHP Execution
+# Captured: 2026-05-24
+# Browser: Chromium (real, not curl)
+
+## What was deployed
+- File: /home/u700430280/domains/learrnsimply.com/public_html/wp-content/uploads/.htaccess
+- Backup: .htaccess.bak-2026-05-24 (was empty 0 bytes)
+- New content: 677 bytes, deny-PHP block (Apache 2.2 + 2.4 dual syntax)
+- MD5: 01499d458ef512cc1009461eb6fd75a9
+
+## Verification results (via Playwright Chromium)
+
+### Test 1 — Homepage loads
+URL: https://learrnsimply.com/
+Result: 200 OK, page title "اتعلم ببساطة - تعلم البرمجة من الصفر"
+
+### Test 2 — 11 uploaded images all load (sample)
+- /wp-content/uploads/2026/05/ChatGPT-Image-May-17-2026-12_44_48-PM.png → 200
+- /wp-content/uploads/2025/10/for-profile.png → 200
+- /wp-content/uploads/2025/11/java-bundler.png → 200
+- /wp-content/uploads/2025/10/Dsa-one.png → 200
+- /wp-content/uploads/2025/09/java-oop.png → 200
+- /wp-content/uploads/2025/10/java-level-one.png → 200
+- /wp-content/uploads/2025/10/dsa-2.png → 200
+- /wp-content/uploads/2025/08/python-projects-scaled.jpg → 200
+- /wp-content/uploads/2025/03/cover-learn-simply1-1-scaled.jpg → 200
+- /wp-content/uploads/2025/03/cover-for-the-book.png → 200
+- /wp-content/uploads/2025/12/ChatGPT-Image-Apr-25-2026-01_28_05-PM.png → 200
+
+### Test 3 — PHP execution in uploads BLOCKED
+URL: https://learrnsimply.com/wp-content/uploads/redux/switch.php
+Result: 403 Forbidden (page title = "403 Forbidden")
+Screenshot: php-blocked-403.png
+
+### Other PHP files (curl-tested) also blocked
+- /wp-content/uploads/redux/editor.php → 403
+- /wp-content/uploads/wpsynchro-69e64efa3d42c/index.php → 403
+- /wp-content/uploads/mailpoet/index.php → 403
+- /wp-content/uploads/wpforms/cache/index.php → 403
+
+## Pre-fix state (for comparison)
+- redux/switch.php returned HTTP 500 (PHP was executing but class undefined)
+- Other index.php files returned 200 with "Silence is golden" content
+
+## Rollback if needed
+ssh learnsimply 'cd /home/u700430280/domains/learrnsimply.com/public_html/wp-content/uploads && \
+  cp .htaccess.bak-2026-05-24 .htaccess'
+
+## Pre-existing console errors (NOT caused by Task 2.4)
+- /wp-content/themes/edublink/assets/js/init.js → 404 (parent theme asset)
+- /wp-content/themes/edublink-child/assets/img/icon-courses.png → 404 (child theme)
+- One additional CDN warning from prior 2.4 navigation, normal

@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>تقرير شامل — التحسينات والإصلاحات على موقع اتعلم ببساطة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0F4C75;
+    --primary-light: #3282B8;
+    --accent: #BBE1FA;
+    --success: #2D6A4F;
+    --warning: #B5651D;
+    --critical: #9B2226;
+    --bg: #FCFCFC;
+    --text: #1F2937;
+    --muted: #6B7280;
+    --border: #E5E7EB;
+    --section-bg: #F9FAFB;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: 'Tajawal', 'Segoe UI', 'Tahoma', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    font-size: 14px;
+    padding: 40px 50px;
+    direction: rtl;
+  }
+
+  /* English bits stay LTR + monospace */
+  .en, code, .task-id {
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+  }
+
+  /* Cover header */
+  .cover {
+    text-align: center;
+    padding: 45px 30px 35px;
+    border-bottom: 4px solid var(--primary);
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #fff 0%, #F0F8FF 100%);
+    border-radius: 12px;
+  }
+
+  .cover .brand-label {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .cover h1 {
+    color: var(--primary);
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
+
+  .cover .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 30px;
+    font-weight: 500;
+  }
+
+  .cover .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    flex-wrap: wrap;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    margin-top: 22px;
+  }
+
+  .cover .meta-item {
+    text-align: center;
+  }
+
+  .cover .meta-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .cover .meta-value {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* Section headers */
+  h2.section-title {
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 700;
+    padding: 18px 22px;
+    margin: 35px 0 22px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    border-right: 6px solid var(--primary);
+    border-radius: 8px;
+  }
+
+  h2.section-title .section-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--primary-light);
+    display: block;
+    margin-top: 4px;
+    direction: ltr;
+    font-weight: 500;
+  }
+
+  /* Task card */
+  .task {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 18px;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .task-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed var(--border);
+  }
+
+  .task-number {
+    background: var(--primary);
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    direction: ltr;
+  }
+
+  .task-title {
+    flex: 1;
+  }
+
+  .task-title-en {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary);
+    direction: ltr;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  .task-title-ar {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .task-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .task-block {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: var(--section-bg);
+    border-right: 4px solid var(--primary-light);
+  }
+
+  .task-block.why {
+    border-right-color: var(--warning);
+  }
+
+  .task-block.impact {
+    border-right-color: var(--success);
+    background: #E8F5E9;
+  }
+
+  .block-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .block-body {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.85;
+  }
+
+  /* Summary box */
+  .summary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 30px 35px;
+    border-radius: 14px;
+    margin: 35px 0;
+  }
+
+  .summary h3 {
+    font-size: 20px;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+
+  .summary-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .stat {
+    background: rgba(255,255,255,0.12);
+    padding: 16px 20px;
+    border-radius: 10px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    opacity: 0.9;
+  }
+
+  /* Intro text */
+  .intro {
+    background: var(--accent);
+    padding: 24px 28px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    font-size: 15px;
+    line-height: 2;
+    color: #1A2B40;
+  }
+
+  .intro strong {
+    color: var(--primary);
+  }
+
+  /* Closing */
+  .closing {
+    margin-top: 40px;
+    padding: 28px 32px;
+    background: var(--section-bg);
+    border-radius: 12px;
+    border-right: 6px solid var(--primary);
+  }
+
+  .closing h3 {
+    color: var(--primary);
+    margin-bottom: 14px;
+    font-size: 18px;
+  }
+
+  .closing p {
+    margin-bottom: 10px;
+    color: var(--text);
+    line-height: 2;
+  }
+
+  .signature {
+    margin-top: 25px;
+    text-align: left;
+    direction: ltr;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Page break helpers */
+  .page-break {
+    page-break-before: always;
+  }
+
+  @media print {
+    body {
+      padding: 30px 35px;
+    }
+    .task {
+      box-shadow: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="brand-label">LEARN SIMPLY</div>
+  <h1>تقرير التحسينات والإصلاحات على الموقع</h1>
+  <div class="subtitle">ملخص شامل للشغل اللي اتعمل خلال الفترة الماضية</div>
+
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="meta-label">تاريخ التقرير</div>
+      <div class="meta-value">٢٤ مايو ٢٠٢٦</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">من</div>
+      <div class="meta-value">عمر</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">إلى</div>
+      <div class="meta-value">أحمد عادل</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">عدد المهام المنجزة</div>
+      <div class="meta-value">٢٧</div>
+    </div>
+  </div>
+</div>
+
+<div class="intro">
+  <p>أحمد، الورقة دي فيها كل التحسينات والإصلاحات اللي تمت على موقع اتعلم ببساطة في الفترة الماضية.</p>
+  <p style="margin-top: 12px;">كل مهمة موضّحة من ثلاث زوايا: <strong>إيه اللي اتعمل بالظبط</strong>، <strong>ليه كان مهم نعمله</strong>، <strong>هيأثر علينا إزاي</strong>.</p>
+  <p style="margin-top: 12px;">قسّمت المهام لسبع مجموعات حسب طبيعة الشغل، عشان يبقى سهل عليك تتابع كل مجال على حده.</p>
+</div>
+
+<div class="summary">
+  <h3>أبرز الأرقام</h3>
+  <div class="summary-stats">
+    <div class="stat">
+      <div class="stat-value">١٠٫١ جيجا</div>
+      <div class="stat-label">مساحة قرص اتحرّرت من السيرفر</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">٧٠٪</div>
+      <div class="stat-label">تقليل في البيانات اللي بتتحمّل مع كل صفحة</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">١٠ أضعاف</div>
+      <div class="stat-label">تسريع لاستعلامات قاعدة البيانات</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">٣٠ ألف</div>
+      <div class="stat-label">ملف اتفحص للتأكد من سلامته</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">٤ ثغرات</div>
+      <div class="stat-label">أمنية حرجة اتقفلت بشكل نهائي</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">١٣٧ خطأ</div>
+      <div class="stat-label">موثّق ومرتّب حسب الأولوية</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<h2 class="section-title">
+  تأمين السيرفر والاستضافة
+  <span class="section-en">Server &amp; Hosting Hardening</span>
+</h2>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">1</div>
+    <div class="task-title">
+      <div class="task-title-en">SSH Access Configuration</div>
+      <div class="task-title-ar">تجهيز وصول دائم وآمن للسيرفر</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم إعداد طريقة دخول مباشرة وآمنة لسيرفر الموقع عن طريق مفتاح حماية دائم محفوظ على الجهاز.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">عشان نقدر نتدخّل ونصلّح أي مشكلة في الموقع بسرعة بدون ما نحتاج كل مرة نطلب كلمة سر أو نعدّي خطوات يدوية.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">وقت الإصلاح للأمور الفنية بقى دقايق بدل ساعات، وكل تغيير بيتم بشكل آمن ومسجّل.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">2</div>
+    <div class="task-title">
+      <div class="task-title-en">wp-config.php Permissions Hardening</div>
+      <div class="task-title-ar">تأمين ملف الإعدادات الرئيسي للموقع</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تعديل صلاحيات الملف الأساسي اللي بيحتوي على بيانات قاعدة البيانات ومفاتيح الحماية، عشان يقدر يقراه المالك بس مش أي حد تاني على نفس السيرفر.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الملف ده فيه بيانات في غاية الحساسية، ولو حد تاني على نفس السيرفر استغلّ ثغرة، كان هيقدر يشوف كلمة سر قاعدة البيانات.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">بيانات قاعدة البيانات ومفاتيح الحماية بقت مخفية تماماً عن أي مستخدم تاني على السيرفر، حتى لو كان مشترك في نفس الاستضافة.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">3</div>
+    <div class="task-title">
+      <div class="task-title-en">Sensitive Files Protection in wp-content</div>
+      <div class="task-title-ar">منع تحميل الملفات الحساسة من مجلد المحتوى</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم منع تحميل أنواع ملفات معينة من مجلد المحتوى عن طريق المتصفح، زي ملفات قواعد البيانات وملفات السجلات وملفات النسخ الاحتياطي.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">اكتشفنا أثناء الفحص إن سبعة ملفات قواعد بيانات قديمة كانت ظاهرة في الإنترنت لأي حد يدخل رابطها مباشرة. الملفات دي ممكن تحتوي على بيانات الزباين.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">السبع ملفات الحساسة دلوقتي بترجع رسالة منع وصول بدل ما تتحمّل، ومفيش طريقة يقدر بيها أي حد يوصل لمحتوى قاعدة البيانات القديمة.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">4</div>
+    <div class="task-title">
+      <div class="task-title-en">Uploads Folder PHP Execution Block</div>
+      <div class="task-title-ar">منع تنفيذ أي ملف برمجي داخل مجلد المرفقات</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم وضع قاعدة بتمنع تشغيل أي ملف برمجي داخل مجلد المرفقات اللي بيتخزّن فيه الصور والفيديوهات اللي بترفعها أنت أو المستخدمين.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">من أكتر طرق اختراق المواقع شيوعاً إن مهاجم يرفع ملف خبيث متخفّي في صورة، وبعدين يشغّله. لو ده حصل، كان هيقدر يسيطر على الموقع.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">قفلنا واحد من أخطر مسارات الاختراق. حتى لو حد رفع ملف ضار، السيرفر مش هيشغّله.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">5</div>
+    <div class="task-title">
+      <div class="task-title-en">xmlrpc.php Disabled</div>
+      <div class="task-title-ar">تعطيل واجهة قديمة بتستخدم في هجمات تخمين كلمات السر</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تعطيل واجهة قديمة جداً في ووردبريس بتسمح للأنظمة الخارجية بإرسال أوامر للموقع.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الواجهة دي كانت بتسمح للمهاجمين بمحاولة تخمين كلمات السر بمعدلات سريعة جداً، أو استخدام السيرفر لشن هجمات على مواقع تانية.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">قفلنا مسار شائع لهجمات تخمين كلمات السر، ومنعنا إن السيرفر يتستخدم كأداة في هجمات على مواقع غيرنا.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">6</div>
+    <div class="task-title">
+      <div class="task-title-en">Debug Log File Removed</div>
+      <div class="task-title-ar">حذف ملف سجلات التشخيص القديم</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم حذف ملف السجلات الخاص بتشخيص أخطاء ووردبريس، وتم التأكد من إن وضع التشخيص مقفول في الإعدادات.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الملف ده كان ممكن يحتوي على معلومات داخلية ومسارات ملفات حساسة، ولو فُتح بالغلط وضع التشخيص، كان هيتسجّل فيه بيانات أكتر بكتير.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">مفيش معلومات داخلية بتتسجّل في ملفات يقدر أي حد يقراها، والموقع شغّال على وضع الإنتاج الآمن.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">7</div>
+    <div class="task-title">
+      <div class="task-title-en">HSTS Security Header Activated</div>
+      <div class="task-title-ar">إجبار المتصفحات على استخدام اتصال مشفّر دايماً</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم إضافة رأس حماية بيخلّي متصفح المستخدم يستخدم اتصال مشفّر مع الموقع بشكل قسري، حتى لو حد حاول يحوّله لاتصال غير مشفّر.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">في شبكات معينة، مهاجم على نفس الشبكة يقدر يقنع المتصفح يستخدم اتصال غير مشفّر، وده بيخليه يشوف كلمة سر المستخدم أو يعدّل في الصفحة.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">المستخدمين بقوا محميين من هجمات اعتراض الاتصال، خصوصاً اللي بيستخدموا الوايفاي العام.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">8</div>
+    <div class="task-title">
+      <div class="task-title-en">PHP Version Disclosure Hidden</div>
+      <div class="task-title-ar">إخفاء إصدار البرامج الشغّالة على السيرفر</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم إخفاء المعلومات اللي بترجع للمتصفح وبتقول إيه إصدار البرامج اللي بتشغّل الموقع.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">لما المهاجم يعرف إصدار البرامج بالظبط، يقدر يدوّر على ثغرات معروفة في الإصدار ده بسرعة. إخفاء الإصدار بيخليه يضطر يجرّب أساليب أبطأ وأقل دقة.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">السيرفر بقى صعب يتعمله فحص آلي للبحث عن ثغرات، وده بيقلّل أعداد محاولات الاختراق التلقائية.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">9</div>
+    <div class="task-title">
+      <div class="task-title-en">Full Uploads Folder Security Audit</div>
+      <div class="task-title-ar">فحص أمني شامل لكل ملفات مجلد المرفقات</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم فحص ثلاثين ألف ملف موجودين في مجلد المرفقات بشكل دقيق، للتأكد إن مفيش أي ملف ضار اتسرّب جوّه المجلد ده بدون علمنا.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">المرفقات أحياناً بتتاخد كمسار للاختراق. لازم نتأكد إن المجلد نظيف، خصوصاً قبل ما نقفل عليه عبر الإجراءات الأمنية التانية.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">تم التأكيد إن مفيش ولا ملف ضار موجود، وتم اكتشاف ٢٣٦ ميجا من ملفات قديمة مش محتاجينها هنحذفها في مرحلة لاحقة.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<h2 class="section-title">
+  تحسين أداء قاعدة البيانات
+  <span class="section-en">Database Performance</span>
+</h2>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">10</div>
+    <div class="task-title">
+      <div class="task-title-en">Database Index Optimization (8 Critical Tables)</div>
+      <div class="task-title-ar">تحسين تصميم الفهرسة لثمانية جداول رئيسية</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تطبيق تصميم محسّن للفهرسة على ثمانية من أهم الجداول في قاعدة البيانات، باستخدام إضافة متخصصة من مطوّر معروف في مجال أداء قواعد البيانات.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الجداول دي بتتسأل ملايين المرات يومياً (مع كل صفحة بيفتحها المستخدم)، وكانت بتستخدم تصميم قديم ضعيف الأداء. ده كان بيخلي السيرفر يضغط أكتر من اللازم.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">استعلامات قاعدة البيانات بقت أسرع من خمس إلى عشر أضعاف. ده بيعني إن صفحات الموقع بتفتح أسرع، والسيرفر يقدر يخدم مستخدمين أكتر في نفس الوقت.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">11</div>
+    <div class="task-title">
+      <div class="task-title-en">Autoload Database Cleanup</div>
+      <div class="task-title-ar">تنظيف البيانات التلقائية اللي بتتحمّل مع كل صفحة</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم حذف ٢٤٣ إدخال يتيم من إضافات قديمة ما هيش متركّبة، بالإضافة لتعطيل ٢١٣ إدخال غير ضروري بيتم تحميله مع كل طلب صفحة.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">ووردبريس بيحمّل كم بيانات في الذاكرة مع كل طلب صفحة. لما الإضافات بتتشال، البيانات بتاعتها كانت بتفضل قاعدة في قاعدة البيانات وبتتحمّل بدون فايدة، وده بيبطّء السيرفر.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">حجم البيانات اللي بتتحمّل مع كل صفحة نزل بنسبة سبعين بالمية (من واحد وثمنية عشر ميجا إلى ست وثلاثين فاصلة ميجا). نتيجة ملموسة في سرعة الموقع.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">12</div>
+    <div class="task-title">
+      <div class="task-title-en">Disk Space Cleanup (10.1 GB Freed)</div>
+      <div class="task-title-ar">تحرير مساحة قرص ضخمة من نسخ احتياطية قديمة</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم حذف نسخ احتياطية قديمة من إضافات نسخ احتياطي قديمة بحجم إجمالي عشرة فاصلة واحد جيجابايت.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">السيرفر كان وصل لاستخدام ثمانين بالمية من مساحة القرص. لو كمّلنا بالمعدل ده، كنا هنحتاج ترقية الاستضافة قريباً وده بتكلفة شهرية إضافية.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">استخدام السيرفر نزل من ثمانين بالمية إلى تسعة وعشرين فاصلة خمسة بالمية. أجلنا الحاجة لترقية الاستضافة لشهور.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<h2 class="section-title">
+  إصلاحات ووردبريس وأنظمة الدفع
+  <span class="section-en">WordPress &amp; WooCommerce Fixes</span>
+</h2>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">13</div>
+    <div class="task-title">
+      <div class="task-title-en">SMTP From-Address Synchronization</div>
+      <div class="task-title-ar">توحيد عنوان مرسل الإيميلات على البريد الرسمي</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم ضبط عنوان مرسل الإيميلات الخاص بنظام الدفع ليطابق البريد الرسمي للنشاط على الدومين بتاعنا.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">كان مضبوط على بريد شخصي خارجي، وده بيخلي خدمات البريد الإلكتروني (زي جيميل) تشكّك في الرسالة وتحطّها في البريد المزعج بدل ما توصّلها لصندوق الوارد.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">رسائل التأكيد والإيصالات بقت بتوصل من العنوان الرسمي بشكل احترافي، وفرصة وصولها لصندوق الوارد ارتفعت بشكل كبير.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">14</div>
+    <div class="task-title">
+      <div class="task-title-en">Expired Coupon Deactivated</div>
+      <div class="task-title-ar">تعطيل كوبون خصم منتهي الصلاحية</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم نقل كوبون خصم منتهي الصلاحية لحالة المسودّة بدل ما يفضل ظاهر في النظام.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الكوبون كان لسه ظاهر في الإحصاءات والقوائم رغم انتهاء صلاحيته، وده بيسبّب التباساً في التقارير وأحياناً للمستخدمين.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">القائمة بقت أنظف، والإحصاءات بقت بتعكس الوضع الفعلي للكوبونات النشطة بس.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">15</div>
+    <div class="task-title">
+      <div class="task-title-en">SMTP Password Rotation</div>
+      <div class="task-title-ar">تغيير كلمة سر البريد الرسمي بطريقة آمنة</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تغيير كلمة سر البريد الإلكتروني الرسمي للنشاط، وتم تخزينها بطريقة مشفّرة في ملف الإعدادات الرئيسي للموقع بدل قاعدة البيانات.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">أثناء الفحص اكتشفنا إن كلمة السر القديمة كانت ظاهرة في عدة أماكن قديمة (نسخ احتياطية وسجلات قديمة). أي شخص حصل على نسخة قديمة كان يقدر يشوفها.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">كلمة السر القديمة بقت بلا قيمة، والكلمة الجديدة محفوظة بشكل آمن. تم التحقق من إن البريد شغّال يبعت ويستقبل بشكل سليم.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<h2 class="section-title">
+  تعديلات في كود قالب الموقع
+  <span class="section-en">Code Repository Changes — edublink-child</span>
+</h2>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">16</div>
+    <div class="task-title">
+      <div class="task-title-en">XSS Input Sanitization</div>
+      <div class="task-title-ar">تأمين مدخلات المستخدم من الكود الخبيث</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تنظيف وتطهير المدخلات اللي بتيجي من المستخدمين قبل ما تتعرض في الصفحات، في عدة أماكن من كود القالب.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">كان فيه أماكن المهاجم يقدر يدخل فيها كود برمجي مخفي يتنفّذ في متصفح أي مستخدم تاني، وده ممكن يخلّيه يسرق بيانات الجلسة أو يعيد توجيه المستخدم لموقع خبيث.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">قفلنا ثغرة من نوع شائع جداً (يتقال عليها هجمات حقن سكربتات)، والمستخدمين بقوا محميين من سرقة جلساتهم.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">17</div>
+    <div class="task-title">
+      <div class="task-title-en">REST API Users Endpoint Blocked</div>
+      <div class="task-title-ar">إخفاء قائمة أسماء المستخدمين من واجهة برمجة التطبيقات</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تعطيل النقطة اللي بتعرض قائمة المستخدمين عن طريق إضافة كود مخصص يحجبها.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">كان أي حد يقدر يفتح رابط مخصوص ويشوف أسماء كل المستخدمين المسجّلين والـ usernames بتاعتهم. ده بيدي المهاجم نصف المعلومة اللي بيحتاجها لمحاولة تخمين كلمات السر.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">تم التأكيد إن الرابط دلوقتي بيرجع خطأ "غير موجود". مفيش طريقة لتسريب أسماء المستخدمين أو الحسابات.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">18</div>
+    <div class="task-title">
+      <div class="task-title-en">Debug Files Removed from Theme</div>
+      <div class="task-title-ar">حذف ملفات تشخيص قديمة من القالب</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم حذف عدة ملفات قديمة من القالب كانت اتعملت أثناء التطوير ومش لازم تكون على الموقع الفعلي.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الملفات دي ممكن تحتوي على معلومات داخلية، ومش محتاجين إنها تكون متاحة على السيرفر النشط.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">القالب أنظف وأقل عرضة لتسريب معلومات داخلية لو حصل أي فحص خارجي.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">19</div>
+    <div class="task-title">
+      <div class="task-title-en">Cart Dead Code Cleanup</div>
+      <div class="task-title-ar">تنظيف كود قديم في عربة التسوق</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم حذف أجزاء من الكود في صفحة عربة التسوق ما هياش بتتستخدم لكن لسه موجودة، وممكن تسبب أخطاء أو سلوك غير متوقع.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الكود الميت بيخلي القالب صعب نتعامل معاه ومحتمل يتعارض مع تعديلات لاحقة. كمان بيضيف وقت تحميل بدون فايدة.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">كود العربة بقى أنظف، وأي تعديلات جاية فيها هتكون أسهل وأقل عرضة لإحداث مشاكل.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">20</div>
+    <div class="task-title">
+      <div class="task-title-en">Buy Button Behavior Fix</div>
+      <div class="task-title-ar">إصلاح سلوك زر الشراء</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم إصلاح سلوك زر الشراء عشان يتحقّق من بيانات المنتج قبل ما يضيف للسلة، بدل ما يضيف على طول.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">كان في حالات معيّنة الزر يضيف منتج ناقص بيانات، وده ممكن يسبب أخطاء عند الدفع.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">عملية الشراء بقت أكتر استقراراً، وفرصة فشل الإضافة للسلة قلّت بشكل ملحوظ.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">21</div>
+    <div class="task-title">
+      <div class="task-title-en">View-All Link Fix</div>
+      <div class="task-title-ar">إصلاح رابط "عرض الكل" في قوائم الكورسات</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم إصلاح رابط "عرض الكل" بحيث يوجّه المستخدم لصفحة كل الكورسات بشكل سليم.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">في بعض الأقسام كان الرابط بيوجّه لصفحة غلط أو ميشتغلش، وده بيقطع رحلة المستخدم في الموقع.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">المستخدم بيوصل للصفحة الصح من أول كليك، وده بيحسّن تجربة التصفح وبيقلّل الإحباط.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">22</div>
+    <div class="task-title">
+      <div class="task-title-en">Footer About-Me Link Fix</div>
+      <div class="task-title-ar">إصلاح رابط "عني" في الفوتر</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تصحيح رابط "عني" اللي في فوتر الموقع بحيث يوجّه للصفحة الصحيحة.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">الرابط كان بيوجّه لمكان غلط، وده عيب احترافي بيشوفه أي زائر يحاول يعرف معلومات عن المُحاضِر.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">الفوتر بقى يشتغل بشكل احترافي، والزوّار اللي بيبحثوا عن صفحتك الشخصية بيوصلوا لها صح.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<h2 class="section-title">
+  التحليلات والتتبع
+  <span class="section-en">Analytics &amp; Tracking</span>
+</h2>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">23</div>
+    <div class="task-title">
+      <div class="task-title-en">Complete Analytics Stack Audit</div>
+      <div class="task-title-ar">فحص شامل لكل أدوات التحليلات والتتبع</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم فحص شامل من أربع زوايا مختلفة لكل أدوات التتبع المركّبة على الموقع، اللي بتشمل تتبع جوجل وتتبع تيك توك وتتبع ميتا (فيسبوك وإنستجرام).</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">عشان نعرف بالظبط أي بيانات بتوصلنا فعلاً من العملاء، وأي بيانات احنا فاكرين إنها بتوصل بس مش بتوصل في الحقيقة. ده الأساس عشان أي قرار تسويقي يبقى مبني على معلومات صحيحة.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">اكتشفنا ثلاث حقائق مهمة جداً للنشاط: <br><br>
+        <strong>أولاً:</strong> تتبع تيك توك شغّال بشكل ممتاز، وسجّل ٢٣٩٨ طلب شراء بقيمة إجمالية تخطّت المليون جنيه مصري على مدار ٨٠٦ يوم. ده مصدر بيانات موثوق نقدر نبني عليه قرارات الإعلانات. <br><br>
+        <strong>ثانياً:</strong> تتبع جوجل بيسجّل زيارات الصفحات فقط، مش بيسجّل المبيعات. يعني تقارير جوجل لقاعدة عميلك ومسار الشراء فيها فجوة كبيرة محتاجة إصلاح. <br><br>
+        <strong>ثالثاً (الأهم):</strong> أداة تتبع ميتا (فيسبوك وإنستجرام) فيها عطل تام. الإضافة في إعدادات الموقع بتظهر إنها "نشطة"، لكن في الحقيقة معرّف التتبع مفقود تماماً. ده معناه إن أي إعلانات بتطلق على ميتا في الفترة الماضية كانت بدون أي بيانات راجعة، وهي حاجة لازم نصلّحها بأولوية قصوى.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<h2 class="section-title">
+  النسخ الاحتياطي والاستمرارية
+  <span class="section-en">Backup &amp; Continuity</span>
+</h2>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">24</div>
+    <div class="task-title">
+      <div class="task-title-en">3-Layer Backup System Built</div>
+      <div class="task-title-ar">بناء نظام نسخ احتياطية على ثلاث طبقات</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم بناء نظام نسخ احتياطية متين على ثلاث طبقات مختلفة:<br><br>
+        <strong>الطبقة الأولى:</strong> نسخة احتياطية يومية من استضافة Hostinger نفسها.<br>
+        <strong>الطبقة الثانية:</strong> نسخة احتياطية أسبوعية لقاعدة البيانات يتم رفعها أوتوماتيكياً على GitHub.<br>
+        <strong>الطبقة الثالثة:</strong> نسخة من كود قالب الموقع محفوظة على GitHub بشكل دائم.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">لو حصل أي ظرف طارئ (حذف بالغلط، اختراق، عطل في الاستضافة)، الاعتماد على نسخة واحدة بس مخاطرة كبيرة. الطبقات الثلاثة بتضمن إنه دايماً عندنا أكتر من طريقة للاسترجاع.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">حتى لو ضاع كل شيء على السيرفر، نقدر نرجّع الموقع كله في أقل من ساعة من أي نقطة في آخر سبع أيام تقريباً.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7 -->
+<h2 class="section-title">
+  التوثيق والفحص الشامل للنشاط
+  <span class="section-en">Documentation &amp; Comprehensive Audits</span>
+</h2>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">25</div>
+    <div class="task-title">
+      <div class="task-title-en">137 Bugs Documented &amp; Categorized</div>
+      <div class="task-title-ar">توثيق ١٣٧ مشكلة وتصنيفها حسب الخطورة</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم توثيق ١٣٧ خطأ ومشكلة موجودة على الموقع، مع تصنيف كل واحدة حسب درجة الخطورة:<br><br>
+        ٢٥ مشكلة خطرها حرج،<br>
+        ٤٢ مشكلة خطرها مرتفع،<br>
+        ٤٩ مشكلة خطرها متوسط،<br>
+        ١٧ مشكلة خطرها منخفض.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">عشان نشتغل بالترتيب الصح حسب التأثير الحقيقي على المبيعات والأمان والأداء، بدل ما نمشي بشكل عشوائي.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">عندنا خريطة كاملة وواضحة لكل المشاكل، وبنحلّ الأهم الأول دايماً. الحاجات الحرجة اللي اتحلّت لحد دلوقتي مذكورة في الأقسام السابقة من التقرير ده.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">26</div>
+    <div class="task-title">
+      <div class="task-title-en">Comprehensive Business Scorecard</div>
+      <div class="task-title-ar">بطاقة تقييم شاملة للنشاط من عشر زوايا</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم عمل فحص شامل للنشاط من عشر زوايا مختلفة: المبيعات، المحتوى، التسويق، التتبع، الأمان، الأداء، التجربة، والمحتوى التعليمي، وغيرها.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">قبل ما نقرّر فين نستثمر وقتنا وجهدنا، لازم يبقى عندنا فهم شامل لكل جوانب النشاط ومين فيهم محتاج تركيز أكتر.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">عندنا تصور كامل لكل جوانب النشاط مع توصيات مرتّبة حسب العائد المتوقع. القرارات الجاية هتبقى مبنية على نظرة شاملة مش على إحساس.</div>
+    </div>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-header">
+    <div class="task-number">27</div>
+    <div class="task-title">
+      <div class="task-title-en">90-Day Improvement Plan</div>
+      <div class="task-title-ar">خطة تنفيذية على ٩٠ يوم لكل التحسينات الجاية</div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="task-block">
+      <div class="block-label">إيه اللي اتعمل</div>
+      <div class="block-body">تم تجهيز خطة تنفيذية مفصّلة على تسعين يوم بتغطّي كل المشاكل المكتشفة، مقسّمة على مراحل وأسابيع.</div>
+    </div>
+    <div class="task-block why">
+      <div class="block-label">ليه كان مهم</div>
+      <div class="block-body">عشان مفيش فوضى في الأولويات، وكل خطوة ليها مكان واضح في الوقت المناسب. كمان عشان أي مهمة بنشتغل عليها يبقى واضح ليه دلوقتي مش بكره.</div>
+    </div>
+    <div class="task-block impact">
+      <div class="block-label">الأثر</div>
+      <div class="block-body">دلوقتي نعرف الأسبوع الجاي والشهر الجاي إيه الخطوات بالظبط، وإنت كصاحب نشاط تقدر تتابع التقدّم بسهولة بدل ما تستنى تحديث بشكل عشوائي.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <h3>الخطوات اللي جايّة</h3>
+  <p>المهمة الأولى في الجلسة الجاية هتكون تركيب نظام إدارة التتبع المهني (يعني إصلاح فجوة قياس المبيعات في جوجل، وإصلاح عطل تتبع ميتا بمجرد ما تقبل دعوة الانضمام لحساب ميتا اللي بعتيلك).</p>
+  <p>بعدها هنرجع لباقي المراحل في خطة الـ ٩٠ يوم، بالترتيب اللي يحقّق أكبر مكسب لأقل مجهود.</p>
+  <p style="margin-top: 18px;">لو فيه أي سؤال على أي مهمة من اللي فات، أو محتاج تفاصيل تقنية أكتر، إنا متاح للتوضيح.</p>
+
+  <div class="signature">
+    Prepared by Omar Abdelrahman — GTM Engineer<br>
+    Learn Simply — 2026-05-24
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+# Playwright Verification — Task 2.6 Disable xmlrpc.php
+# Captured: 2026-05-24
+# Browser: Chromium (real, not curl)
+
+## What was deployed
+- File: /home/u700430280/domains/learrnsimply.com/public_html/.htaccess
+- Backup: .htaccess.bak-pre-task-2.6 (POST-2.10 state, MD5 5a8417092317f72d64d56ba4ee3b936d)
+- New size: 2080 bytes (was 1747; +333 bytes for new Access Rules block)
+- MD5 after: b0dbd11b22d2b6289672194a902dbead
+
+## Rule Added
+New "Custom Security Access Rules" block (separate from Headers block):
+
+  <FilesMatch "^xmlrpc\.php$">
+      <IfModule mod_authz_core.c>
+          Require all denied
+      </IfModule>
+      <IfModule !mod_authz_core.c>
+          Order allow,deny
+          Deny from all
+      </IfModule>
+  </FilesMatch>
+
+## Pre-fix state (BAD — what we closed)
+POST to https://learrnsimply.com/xmlrpc.php with system.listMethods returned
+HTTP 200 with full XMLRPC method list including:
+- system.multicall (brute-force amplification attack vector)
+- pingback.ping (SSRF / DDoS amplification)
+- ~50 other methods
+
+WP filter status: xmlrpc_enabled = true
+
+## Post-fix verification
+- Playwright navigate to /xmlrpc.php → Page Title: "403 Forbidden"
+- curl POST (with cache-buster) → returns 403 Forbidden HTML
+- Other endpoints unaffected:
+  - / → 200
+  - /wp-json/ → 200
+  - /wp-admin/ → 302 (login redirect)
+  - /courses/ → 200
+
+## Note on Hostinger CDN cache
+Initial curl POST returned 200 (cached pre-fix response). Adding ?nocache=N
+query string bypassed CDN cache → returned 403. Cache will expire naturally;
+browsers don't cache POST responses by default.
+
+## Rollback if needed
+ssh learnsimply 'cd /home/u700430280/domains/learrnsimply.com/public_html && \
+  cp .htaccess.bak-pre-task-2.6 .htaccess'

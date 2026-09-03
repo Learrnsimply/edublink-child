@@ -1,0 +1,169 @@
+{
+  "updatedAt": "2026-06-10T16:04:14.930Z",
+  "createdAt": "2026-06-10T16:03:56.872Z",
+  "id": "R5xDtKKGSeBchue6",
+  "name": "W3t-mautic — mautic_upsert tool",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "m1",
+      "name": "When Called",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "id": "m2",
+      "name": "Mautic Create Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://mautic.learrnsimply.com/api/contacts/new",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ email: ($json.email || ''), firstname: ($json.name || ''), tags: ['whatsapp-lead', 'course-' + ($json.courseInterest || 'unknown')], source_channel: 'whatsapp' }) }}",
+        "options": {}
+      },
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "HcKVugtv8k1Yr47c",
+          "name": "Mautic HTTP Basic — Learn Simply"
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "When Called": {
+      "main": [
+        [
+          {
+            "node": "Mautic Create Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "37e437d6-ec9d-40a6-a15f-24c5565efa63",
+  "activeVersionId": "37e437d6-ec9d-40a6-a15f-24c5565efa63",
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-10T16:03:56.872Z",
+      "createdAt": "2026-06-10T16:03:56.872Z",
+      "role": "workflow:owner",
+      "workflowId": "R5xDtKKGSeBchue6",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-06-10T16:03:56.872Z",
+    "createdAt": "2026-06-10T16:03:56.872Z",
+    "versionId": "37e437d6-ec9d-40a6-a15f-24c5565efa63",
+    "workflowId": "R5xDtKKGSeBchue6",
+    "nodes": [
+      {
+        "id": "m1",
+        "name": "When Called",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "passthrough"
+        }
+      },
+      {
+        "id": "m2",
+        "name": "Mautic Create Contact",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://mautic.learrnsimply.com/api/contacts/new",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ email: ($json.email || ''), firstname: ($json.name || ''), tags: ['whatsapp-lead', 'course-' + ($json.courseInterest || 'unknown')], source_channel: 'whatsapp' }) }}",
+          "options": {}
+        },
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "HcKVugtv8k1Yr47c",
+            "name": "Mautic HTTP Basic — Learn Simply"
+          }
+        },
+        "onError": "continueRegularOutput"
+      }
+    ],
+    "connections": {
+      "When Called": {
+        "main": [
+          [
+            {
+              "node": "Mautic Create Contact",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Omar Abdelrahman",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-10T16:04:15.184Z",
+        "id": 105,
+        "workflowId": "R5xDtKKGSeBchue6",
+        "versionId": "37e437d6-ec9d-40a6-a15f-24c5565efa63",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    ]
+  }
+}

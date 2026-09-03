@@ -1,0 +1,20 @@
+# Playwright MCP runtime cache — regenerated each session, no need to track
+.playwright-mcp/
+
+# Claude Code local machine settings (per-device tool permissions) — not synced
+.claude/settings.local.json
+
+# DB dumps — contain user emails + hashed passwords + sensitive WP options.
+# Kept LOCAL only as safety net, NEVER pushed to GitHub.
+*.sql
+*.sql.gz
+01_WEB/_evidence/pre-*.sql
+
+# ...EXCEPT the "Omar" agent schema SOURCE files (pure DDL, zero data) — tracked.
+!02_AUTOMATION/agents/postgres-schema.sql
+!02_AUTOMATION/agents/rag/*.sql
+!02_AUTOMATION/agents/deploy/init/*.sql
+
+# Dart scheduler real secrets file (lives at /opt/dart-scheduler/.env on the VPS).
+# Safety net: never commit a local copy. The .env.example template IS tracked.
+02_AUTOMATION/dart-scheduler/.env

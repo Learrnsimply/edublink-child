@@ -1,0 +1,586 @@
+{
+  "updatedAt": "2026-06-10T11:39:25.595Z",
+  "createdAt": "2026-06-09T23:21:43.727Z",
+  "id": "sv6ART3GjO4JUN81",
+  "name": "W3c — omar-kb-search (RAG endpoint)",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "k1",
+      "name": "KB Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "kb-search-4061a4f2df54",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "8b1fc7d1-bdb1-4bbb-96da-97f98c8675ef",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "k2",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// دفاعي — مايرميش. بيطلّع query + k من الـ body.\ntry {\n  const b = $json.body || {};\n  const query = String(b.query || '').trim();\n  let k = parseInt(b.k, 10);\n  if (!Number.isFinite(k) || k < 1) k = 5;\n  if (k > 8) k = 8;\n  return { json: { valid: query.length >= 2, query, k } };\n} catch (e) {\n  return { json: { valid: false, query: '', k: 5 } };\n}"
+      }
+    },
+    {
+      "id": "k3",
+      "name": "Is Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        400,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "k4",
+      "name": "Embed Query",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        -100
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'models/gemini-embedding-001', content: { parts: [{ text: $json.query }] }, taskType: 'RETRIEVAL_QUERY', outputDimensionality: 768 }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ZeYvAf59LZGqkIbU",
+          "name": "Google Gemini — Learn Simply"
+        }
+      }
+    },
+    {
+      "id": "k5",
+      "name": "KB Query",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        800,
+        -100
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, source, heading_path, content, token_count, similarity\nFROM omar.kb_search_hybrid($1::vector, $2::text, $3::int);",
+        "options": {
+          "queryReplacement": "={{ ['[' + (($json.embedding && $json.embedding.values) ? $json.embedding.values.join(',') : '') + ']', $('Validate Input').first().json.query, $('Validate Input').first().json.k] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "zCWs84St5G8Iw8TS",
+          "name": "Postgres — omar_agent"
+        }
+      }
+    },
+    {
+      "id": "k6",
+      "name": "Format Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        -100
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// يجمّع صفوف الـ kb_search في object واحد للأداة. لو الـ embed/query فشل → results فاضية + note.\nconst items = $input.all();\nconst results = [];\nfor (const it of items) {\n  const j = it.json || {};\n  if (j.content && j.heading_path) {\n    results.push({ source: j.source, heading_path: j.heading_path, content: j.content, similarity: j.similarity });\n  }\n}\nconst note = results.length ? undefined : 'قاعدة المعرفة مرجعتش نتايج — استخدم السلوك الآمن (هأكّدلك من الفريق) لو السؤال محتاج معلومة منهج دقيقة.';\nreturn [{ json: { results, ...(note ? { note } : {}) } }];"
+      }
+    },
+    {
+      "id": "k7",
+      "name": "Respond JSON",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1200,
+        -100
+      ],
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "k8",
+      "name": "Respond Invalid",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        600,
+        150
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"results\": [], \"note\": \"invalid query\"}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    }
+  ],
+  "connections": {
+    "KB Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Is Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Valid?": {
+      "main": [
+        [
+          {
+            "node": "Embed Query",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Query": {
+      "main": [
+        [
+          {
+            "node": "KB Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "KB Query": {
+      "main": [
+        [
+          {
+            "node": "Format Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Results": {
+      "main": [
+        [
+          {
+            "node": "Respond JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo",
+    "errorWorkflow": "YktkjLMI12YUGWfc",
+    "callerPolicy": "workflowsFromSameOwner",
+    "saveDataErrorExecution": "all",
+    "executionTimeout": 60
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "7fe739ad-e451-479e-bc0f-2d26a01c24da",
+  "activeVersionId": "7fe739ad-e451-479e-bc0f-2d26a01c24da",
+  "versionCounter": 5,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-06-09T23:21:43.727Z",
+      "createdAt": "2026-06-09T23:21:43.727Z",
+      "role": "workflow:owner",
+      "workflowId": "sv6ART3GjO4JUN81",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-06-10T11:39:25.596Z",
+    "createdAt": "2026-06-10T11:39:25.596Z",
+    "versionId": "7fe739ad-e451-479e-bc0f-2d26a01c24da",
+    "workflowId": "sv6ART3GjO4JUN81",
+    "nodes": [
+      {
+        "id": "k1",
+        "name": "KB Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "kb-search-4061a4f2df54",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "8b1fc7d1-bdb1-4bbb-96da-97f98c8675ef",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "k2",
+        "name": "Validate Input",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          200,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// دفاعي — مايرميش. بيطلّع query + k من الـ body.\ntry {\n  const b = $json.body || {};\n  const query = String(b.query || '').trim();\n  let k = parseInt(b.k, 10);\n  if (!Number.isFinite(k) || k < 1) k = 5;\n  if (k > 8) k = 8;\n  return { json: { valid: query.length >= 2, query, k } };\n} catch (e) {\n  return { json: { valid: false, query: '', k: 5 } };\n}"
+        }
+      },
+      {
+        "id": "k3",
+        "name": "Is Valid?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          400,
+          0
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.valid }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "k4",
+        "name": "Embed Query",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          600,
+          -100
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "onError": "continueRegularOutput",
+        "parameters": {
+          "method": "POST",
+          "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googlePalmApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ model: 'models/gemini-embedding-001', content: { parts: [{ text: $json.query }] }, taskType: 'RETRIEVAL_QUERY', outputDimensionality: 768 }) }}",
+          "options": {
+            "timeout": 15000
+          }
+        },
+        "credentials": {
+          "googlePalmApi": {
+            "id": "ZeYvAf59LZGqkIbU",
+            "name": "Google Gemini — Learn Simply"
+          }
+        }
+      },
+      {
+        "id": "k5",
+        "name": "KB Query",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          800,
+          -100
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true,
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT id, source, heading_path, content, token_count, similarity\nFROM omar.kb_search_hybrid($1::vector, $2::text, $3::int);",
+          "options": {
+            "queryReplacement": "={{ ['[' + (($json.embedding && $json.embedding.values) ? $json.embedding.values.join(',') : '') + ']', $('Validate Input').first().json.query, $('Validate Input').first().json.k] }}"
+          }
+        },
+        "credentials": {
+          "postgres": {
+            "id": "zCWs84St5G8Iw8TS",
+            "name": "Postgres — omar_agent"
+          }
+        }
+      },
+      {
+        "id": "k6",
+        "name": "Format Results",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1000,
+          -100
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// يجمّع صفوف الـ kb_search في object واحد للأداة. لو الـ embed/query فشل → results فاضية + note.\nconst items = $input.all();\nconst results = [];\nfor (const it of items) {\n  const j = it.json || {};\n  if (j.content && j.heading_path) {\n    results.push({ source: j.source, heading_path: j.heading_path, content: j.content, similarity: j.similarity });\n  }\n}\nconst note = results.length ? undefined : 'قاعدة المعرفة مرجعتش نتايج — استخدم السلوك الآمن (هأكّدلك من الفريق) لو السؤال محتاج معلومة منهج دقيقة.';\nreturn [{ json: { results, ...(note ? { note } : {}) } }];"
+        }
+      },
+      {
+        "id": "k7",
+        "name": "Respond JSON",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1200,
+          -100
+        ],
+        "parameters": {
+          "respondWith": "firstIncomingItem",
+          "options": {
+            "responseCode": 200
+          }
+        }
+      },
+      {
+        "id": "k8",
+        "name": "Respond Invalid",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          600,
+          150
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\"results\": [], \"note\": \"invalid query\"}",
+          "options": {
+            "responseCode": 200
+          }
+        }
+      }
+    ],
+    "connections": {
+      "KB Webhook": {
+        "main": [
+          [
+            {
+              "node": "Validate Input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate Input": {
+        "main": [
+          [
+            {
+              "node": "Is Valid?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is Valid?": {
+        "main": [
+          [
+            {
+              "node": "Embed Query",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respond Invalid",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embed Query": {
+        "main": [
+          [
+            {
+              "node": "KB Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "KB Query": {
+        "main": [
+          [
+            {
+              "node": "Format Results",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format Results": {
+        "main": [
+          [
+            {
+              "node": "Respond JSON",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Omar Abdelrahman",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-10T11:39:25.628Z",
+        "id": 69,
+        "workflowId": "sv6ART3GjO4JUN81",
+        "versionId": "7fe739ad-e451-479e-bc0f-2d26a01c24da",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T11:39:25.642Z",
+        "id": 70,
+        "workflowId": "sv6ART3GjO4JUN81",
+        "versionId": "7fe739ad-e451-479e-bc0f-2d26a01c24da",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T11:39:27.737Z",
+        "id": 71,
+        "workflowId": "sv6ART3GjO4JUN81",
+        "versionId": "7fe739ad-e451-479e-bc0f-2d26a01c24da",
+        "event": "deactivated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      },
+      {
+        "createdAt": "2026-06-10T11:39:27.761Z",
+        "id": 72,
+        "workflowId": "sv6ART3GjO4JUN81",
+        "versionId": "7fe739ad-e451-479e-bc0f-2d26a01c24da",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    ]
+  }
+}

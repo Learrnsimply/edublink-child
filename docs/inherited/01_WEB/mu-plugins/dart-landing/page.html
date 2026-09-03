@@ -1,0 +1,484 @@
+<!-- Dart landing FRAGMENT — rendered between the theme's get_header() and get_footer().
+     Styled to match the homepage: dark navy (#0a0f1a), blue accent (#4077f3),
+     IBM Plex Sans Arabic, large type, wide container. ALL CSS scoped under #ls-dart-lp.
+     Form posts to __LS_ENDPOINT__ (injected by the loader). -->
+<div id="ls-dart-lp" dir="rtl">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+  #ls-dart-lp{
+    --bg:#0a0f1a; --bg-2:#0d1322; --surface:rgba(255,255,255,.05); --surface-2:rgba(255,255,255,.08);
+    --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.16);
+    --blue:#4077f3; --blue-2:#2c63df; --blue-soft:rgba(64,119,243,.16); --coral:#f7546a;
+    --text:#ffffff; --muted:rgba(255,255,255,.66); --r:20px;
+    --grad-blue:linear-gradient(135deg,#4d83ff,#2c63df);
+    font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;color:var(--text);line-height:1.8;
+    -webkit-font-smoothing:antialiased;text-align:right;background:var(--bg);font-size:19px;
+  }
+  #ls-dart-lp *{box-sizing:border-box}
+  #ls-dart-lp h1,#ls-dart-lp h2,#ls-dart-lp h3{line-height:1.3;margin:0;font-weight:700;color:#fff}
+  #ls-dart-lp p{margin:0}
+  #ls-dart-lp strong{color:#fff;font-weight:700}
+  #ls-dart-lp a{color:inherit;text-decoration:none}
+  #ls-dart-lp .wrap{width:min(1180px,90vw);margin-inline:auto}
+  #ls-dart-lp .grad-text{background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* scroll-reveal */
+  #ls-dart-lp .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1)}
+  #ls-dart-lp .reveal.is-visible{opacity:1;transform:none}
+  #ls-dart-lp .cards .card:nth-child(2),#ls-dart-lp .feats .feat:nth-child(2){transition-delay:.09s}
+  #ls-dart-lp .cards .card:nth-child(3),#ls-dart-lp .feats .feat:nth-child(3){transition-delay:.18s}
+  #ls-dart-lp .feats .feat:nth-child(4){transition-delay:.27s}
+  @keyframes lsdUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+  /* shared pill badge (matches homepage "اتعلم ببساطة") */
+  #ls-dart-lp .pill-badge{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:16px;color:#fff;
+    padding:7px 18px;border-radius:999px;border:1.5px solid var(--blue);background:var(--blue-soft)}
+
+  /* HERO */
+  #ls-dart-lp .hero{position:relative;overflow:hidden;text-align:center;
+    background:radial-gradient(900px 480px at 50% -8%,rgba(64,119,243,.28),transparent 60%),var(--bg);
+    padding:clamp(60px,8vw,110px) 0 clamp(54px,7vw,90px)}
+  #ls-dart-lp .hero .wrap{position:relative;z-index:2;max-width:910px;animation:lsdUp .8s cubic-bezier(.16,1,.3,1) both}
+  #ls-dart-lp .spark{position:absolute;z-index:1;pointer-events:none;opacity:.9}
+  #ls-dart-lp .spark.s1{top:14%;inset-inline-start:9%;width:34px;fill:var(--coral)}
+  #ls-dart-lp .spark.s2{top:24%;inset-inline-end:11%;width:46px;fill:var(--blue)}
+  #ls-dart-lp .spark.s3{bottom:16%;inset-inline-start:16%;width:24px;fill:var(--blue)}
+  #ls-dart-lp .dart-lockup{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
+  #ls-dart-lp .dart-mark{width:54px;height:54px;border-radius:15px;background:#fff;display:grid;place-items:center;
+    box-shadow:0 12px 28px rgba(0,0,0,.35);flex:0 0 auto}
+  #ls-dart-lp .dart-mark svg{width:32px;height:32px;fill:#0175C2}
+  #ls-dart-lp .dart-word{font-weight:700;font-size:28.8px;color:#fff;letter-spacing:-.01em;line-height:1}
+  #ls-dart-lp .eyebrow{margin-bottom:22px}
+  #ls-dart-lp .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:#7CFFB2;box-shadow:0 0 0 4px rgba(124,255,178,.25)}
+  #ls-dart-lp .hero h1{font-size:clamp(41.6px,6.4vw,75.2px);font-weight:700;color:#fff}
+  #ls-dart-lp .hero h1 .code{background:rgba(64,119,243,.3);color:#fff;
+    box-shadow:inset 0 0 0 1.5px rgba(99,143,255,.6),0 10px 26px rgba(64,119,243,.4);
+    padding:0 16px;border-radius:14px;display:inline-block;transform:rotate(-1.5deg)}
+  #ls-dart-lp .hero .lead{margin:22px auto 0;font-size:clamp(19.2px,2.5vw,24.8px);color:var(--muted);max-width:720px}
+  #ls-dart-lp .offer-chip{display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:6px 10px;
+    max-width:100%;margin-top:28px;padding:15px 26px;text-align:center;
+    border-radius:16px;background:var(--surface);border:1px solid var(--line-2);color:#fff;font-weight:600;font-size:19.2px}
+  #ls-dart-lp .offer-chip s{color:rgba(255,255,255,.45);font-weight:600}
+  #ls-dart-lp .offer-chip b{color:#7ea6ff}
+
+  /* countdown */
+  #ls-dart-lp .countdown{margin-top:30px}
+  #ls-dart-lp .cd-label{display:block;font-size:17.6px;font-weight:600;color:var(--muted);margin-bottom:12px}
+  #ls-dart-lp .cd-units{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  #ls-dart-lp .cd-box{flex:0 0 auto;min-width:84px;padding:16px 14px;border-radius:16px;text-align:center;
+    background:var(--surface);border:1px solid var(--line)}
+  #ls-dart-lp .cd-box b{display:block;font-size:37.6px;font-weight:700;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+  #ls-dart-lp .cd-box span{font-size:14.4px;color:var(--muted)}
+
+  /* form */
+  #ls-dart-lp .signup{margin:32px auto 0;display:flex;gap:12px;flex-wrap:wrap;max-width:580px;justify-content:center}
+  #ls-dart-lp .signup .field{flex:1 1 280px;display:flex}
+  #ls-dart-lp .signup input[type=email]{width:100%;padding:17px 20px;border:1px solid var(--line-2);border-radius:14px;
+    font-family:inherit;font-size:17.3px;color:#fff;background:rgba(255,255,255,.06);text-align:right}
+  #ls-dart-lp .signup input::placeholder{color:rgba(255,255,255,.5)}
+  #ls-dart-lp .signup input:focus{outline:none;border-color:var(--blue);background:rgba(64,119,243,.1);box-shadow:0 0 0 3px rgba(64,119,243,.22)}
+  #ls-dart-lp .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  #ls-dart-lp .btn{appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;font-size:17.9px;
+    color:#fff;background:var(--grad-blue);padding:17px 32px;border-radius:14px;white-space:nowrap;
+    box-shadow:0 12px 28px rgba(64,119,243,.45);transition:transform .18s ease,box-shadow .18s ease}
+  #ls-dart-lp .btn:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(64,119,243,.6)}
+  #ls-dart-lp .btn:active{transform:translateY(0)}
+  #ls-dart-lp .btn[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none}
+  #ls-dart-lp .signup .btn{flex:0 0 auto}
+  #ls-dart-lp .form-msg{flex:1 1 100%;margin:4px 2px 0;font-size:14.7px;font-weight:600;color:#ff9d9d}
+  #ls-dart-lp .fine{margin:16px auto 0;font-size:14.7px;color:var(--muted);max-width:600px}
+  #ls-dart-lp .trust{margin-top:24px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:16px;color:var(--muted)}
+  #ls-dart-lp .trust b{color:#fff}
+  #ls-dart-lp .form-done{margin:28px auto 0;padding:20px 24px;border-radius:16px;background:rgba(64,119,243,.14);
+    border:1px solid rgba(64,119,243,.4);max-width:580px}
+  #ls-dart-lp .form-done h3{color:#fff;font-size:20.8px;margin-bottom:4px}
+  #ls-dart-lp .form-done p{color:var(--muted)}
+
+  /* sections — all dark; "band" = subtle elevated dark (NO light/dark seam) */
+  #ls-dart-lp .sec{padding:clamp(56px,8vw,96px) 0;background:var(--bg)}
+  #ls-dart-lp .sec.band{background:var(--bg-2)}
+  #ls-dart-lp .sec-head{text-align:center;margin-bottom:8px}
+  #ls-dart-lp .kicker{margin-bottom:16px}
+  #ls-dart-lp .sec-title{font-size:clamp(32px,4.3vw,48px);font-weight:700;color:#fff;max-width:24ch;margin-inline:auto;text-align:center}
+
+  #ls-dart-lp .cards{margin-top:42px;display:grid;gap:20px;grid-template-columns:repeat(3,1fr)}
+  #ls-dart-lp .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:32px 28px;
+    transition:transform .25s ease,border-color .25s ease,opacity .7s ease,box-shadow .25s ease}
+  #ls-dart-lp .card:hover{transform:translateY(-5px);border-color:var(--line-2);box-shadow:0 24px 50px rgba(0,0,0,.4)}
+  #ls-dart-lp .card .ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:25.6px;
+    background:var(--blue-soft);border:1px solid rgba(64,119,243,.3);margin-bottom:18px}
+  #ls-dart-lp .card h3{font-size:22.7px;color:#fff;margin-bottom:10px}
+  #ls-dart-lp .card p{color:var(--muted);font-size:17.9px}
+
+  #ls-dart-lp .feats{margin-top:42px;display:grid;gap:18px;grid-template-columns:repeat(2,1fr)}
+  #ls-dart-lp .feat{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;padding:24px 26px}
+  #ls-dart-lp .feat .chk{flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:var(--grad-blue);color:#fff;
+    display:grid;place-items:center;font-weight:700;font-size:16px;margin-top:2px}
+  #ls-dart-lp .feat h3{font-size:20.2px;color:#fff;margin-bottom:4px}
+  #ls-dart-lp .feat p{color:var(--muted);font-size:17.6px}
+
+  /* offer — bright BLUE feature card (homepage signature) */
+  #ls-dart-lp .offer{background:var(--grad-blue);color:#fff;border-radius:28px;padding:clamp(38px,5vw,60px);
+    text-align:center;box-shadow:0 34px 80px rgba(44,99,223,.45);position:relative;overflow:hidden}
+  #ls-dart-lp .offer::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 80% -20%,rgba(255,255,255,.18),transparent 60%);pointer-events:none}
+  #ls-dart-lp .offer h2{font-size:clamp(27.2px,3.8vw,41.6px);font-weight:700;color:#fff;position:relative}
+  #ls-dart-lp .price{margin:24px 0 6px;font-size:clamp(48px,7.6vw,73.6px);font-weight:700;color:#fff;line-height:1.05;position:relative;display:flex;align-items:baseline;justify-content:center;gap:10px;flex-wrap:wrap}
+  #ls-dart-lp .price s{font-size:.42em;color:rgba(255,255,255,.6);font-weight:600}
+  #ls-dart-lp .price .cur{font-size:.4em;font-weight:600;color:rgba(255,255,255,.9)}
+  #ls-dart-lp .price .amt{font-size:1.18em;font-weight:800;color:#ffd84d;letter-spacing:-.01em;text-shadow:0 6px 22px rgba(0,0,0,.28)}
+  #ls-dart-lp .offer .meta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 30px;position:relative}
+  #ls-dart-lp .offer .meta .pill{padding:9px 18px;border-radius:999px;background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.28);font-weight:600;font-size:15.4px}
+  #ls-dart-lp .offer .signup{justify-content:center;margin-inline:auto;position:relative}
+  #ls-dart-lp .offer .signup input[type=email]{background:rgba(255,255,255,.95);color:#0a0f1a;border-color:transparent}
+  #ls-dart-lp .offer .signup input::placeholder{color:#6b7280}
+  #ls-dart-lp .offer .btn{background:#0a0f1a;box-shadow:0 12px 28px rgba(0,0,0,.3)}
+  #ls-dart-lp .offer .btn:hover{box-shadow:0 18px 38px rgba(0,0,0,.45)}
+  #ls-dart-lp .offer .fine{color:rgba(255,255,255,.8)}
+
+  /* instructor */
+  #ls-dart-lp .tutor{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;margin-top:40px;
+    background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(28px,4vw,44px)}
+  #ls-dart-lp .tutor .ava{width:128px;height:128px;border-radius:50%;overflow:hidden;background:var(--grad-blue);
+    display:grid;place-items:center;box-shadow:0 16px 34px rgba(64,119,243,.4)}
+  #ls-dart-lp .tutor .ava img{width:100%;height:100%;object-fit:cover;display:block}
+  #ls-dart-lp .tutor h3{font-size:25.6px;color:#fff}
+  #ls-dart-lp .tutor .role{color:#7ea6ff;font-weight:600;margin:4px 0 12px;font-size:17px}
+  #ls-dart-lp .tutor p{color:var(--muted);font-size:17px}
+  #ls-dart-lp .stats{display:flex;gap:30px;flex-wrap:wrap;margin-top:20px}
+  #ls-dart-lp .stat b{display:block;font-size:27.2px;font-weight:700;color:#fff;line-height:1}
+  #ls-dart-lp .stat span{font-size:14.4px;color:var(--muted)}
+
+  /* faq */
+  #ls-dart-lp .faq{margin:40px auto 0;display:grid;gap:14px;max-width:820px}
+  #ls-dart-lp details{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px 24px}
+  #ls-dart-lp details[open]{border-color:var(--blue)}
+  #ls-dart-lp summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:700;color:#fff;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:18.2px}
+  #ls-dart-lp summary::-webkit-details-marker{display:none}
+  #ls-dart-lp summary::after{content:"+";color:#7ea6ff;font-size:25.6px;font-weight:700;transition:transform .2s}
+  #ls-dart-lp details[open] summary::after{transform:rotate(45deg)}
+  #ls-dart-lp details p{padding:0 0 18px;color:var(--muted);font-size:16.6px}
+
+  /* before / after */
+  #ls-dart-lp .ba-grid{margin-top:42px;display:grid;gap:20px;grid-template-columns:repeat(2,1fr);align-items:start}
+  #ls-dart-lp .ba-col{border-radius:var(--r);padding:30px 28px;border:1px solid var(--line)}
+  #ls-dart-lp .ba-after{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.28)}
+  #ls-dart-lp .ba-before{background:rgba(247,84,106,.07);border-color:rgba(247,84,106,.26)}
+  #ls-dart-lp .ba-head{font-size:21px;font-weight:700;color:#fff;margin-bottom:18px;text-align:center}
+  #ls-dart-lp .ba-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px}
+  #ls-dart-lp .ba-list li{display:flex;align-items:flex-start;gap:12px;font-size:17.6px;line-height:1.6;color:var(--text)}
+  #ls-dart-lp .ba-before li{color:var(--muted)}
+  #ls-dart-lp .ba-ic{flex:0 0 auto;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:15px;margin-top:1px}
+  #ls-dart-lp .ba-after .ba-ic{background:rgba(52,211,153,.18);color:#34d399}
+  #ls-dart-lp .ba-before .ba-ic{background:rgba(247,84,106,.16);color:#f7546a}
+
+  /* sticky CTA */
+  #ls-dart-lp .lsd-sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(13,19,34,.92);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line-2);
+    padding:12px 16px;transform:translateY(115%);transition:transform .35s cubic-bezier(.16,1,.3,1);box-shadow:0 -10px 30px rgba(0,0,0,.4)}
+  #ls-dart-lp .lsd-sticky.is-on{transform:translateY(0)}
+  #ls-dart-lp .lsd-sticky[hidden]{display:none}
+  #ls-dart-lp .lsd-sticky-in{width:min(1180px,94vw);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  #ls-dart-lp .lsd-sticky-price{font-size:19px;font-weight:700;color:#fff;white-space:nowrap}
+  #ls-dart-lp .lsd-sticky-price s{color:rgba(255,255,255,.5);font-weight:600;margin-inline-end:6px}
+  #ls-dart-lp .lsd-sticky-price b{color:#ffd84d;font-size:24px;font-weight:800}
+  #ls-dart-lp .lsd-sticky-btn{flex:0 0 auto;padding:13px 24px;font-size:16.5px}
+
+  @media (max-width:860px){
+    #ls-dart-lp .cards{grid-template-columns:1fr}
+    #ls-dart-lp .feats{grid-template-columns:1fr}
+    #ls-dart-lp .ba-grid{grid-template-columns:1fr}
+    #ls-dart-lp .tutor{grid-template-columns:1fr;text-align:center;justify-items:center}
+    #ls-dart-lp .stats{justify-content:center}
+    #ls-dart-lp .spark{display:none}
+  }
+  @media (max-width:560px){
+    #ls-dart-lp .offer-chip{font-size:15.5px;padding:12px 16px;gap:5px 8px;margin-top:24px}
+    #ls-dart-lp .lsd-sticky{padding:10px 12px}
+    #ls-dart-lp .lsd-sticky-in{gap:10px;width:100%}
+    #ls-dart-lp .lsd-sticky-price{font-size:16px}
+    #ls-dart-lp .lsd-sticky-price b{font-size:21px}
+    #ls-dart-lp .lsd-sticky-btn{flex:1 1 auto;padding:12px 14px;font-size:15px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #ls-dart-lp .hero .wrap{animation:none}
+    #ls-dart-lp .reveal{opacity:1 !important;transform:none !important;transition:none}
+  }
+</style>
+
+<!-- HERO -->
+<header class="hero">
+  <svg class="spark s1" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c.6 6 2.4 9.4 12 12-9.6 2.6-11.4 6-12 12-.6-6-2.4-9.4-12-12C9.6 9.4 11.4 6 12 0z"/></svg>
+  <svg class="spark s2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c.6 6 2.4 9.4 12 12-9.6 2.6-11.4 6-12 12-.6-6-2.4-9.4-12-12C9.6 9.4 11.4 6 12 0z"/></svg>
+  <svg class="spark s3" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c.6 6 2.4 9.4 12 12-9.6 2.6-11.4 6-12 12-.6-6-2.4-9.4-12-12C9.6 9.4 11.4 6 12 0z"/></svg>
+  <div class="wrap">
+    <div class="dart-lockup">
+      <span class="dart-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.105 4.105S9.158 1.58 11.684.316a3.079 3.079 0 0 1 1.481-.315c.766.047 1.677.788 1.677.788L24 9.948v9.789h-4.263V24H9.789l-9-9C.303 14.5 0 13.795 0 13.105c0-.319.18-.818.316-1.105l3.789-7.895zm.679.679v11.787c.002.543.021 1.024.498 1.508L10.204 23h8.533v-4.263L4.784 4.784zm12.055-.678c-.899-.896-1.809-1.78-2.74-2.643-.302-.267-.567-.468-1.07-.462-.37.014-.87.195-.87.195L6.341 4.105l10.498.001z"/></svg></span>
+      <span class="dart-word">Dart</span>
+    </div>
+    <span class="eyebrow pill-badge"><span class="dot"></span> كورس جديد · بنطلق 15 يونيو</span>
+    <h1>اتعلم <span class="code">Dart</span> من الصفر للاحتراف</h1>
+    <p class="lead">اللغة اللي <strong>Flutter</strong> كله مبني عليها — بشرح بسيط، من أول سطر كود لحد ما تكتب بثقة وتبني تطبيقاتك بنفسك.</p>
+
+    <div class="offer-chip">🎁 لأول المسجّلين: خصم الإطلاق <b>50%</b> — <b>350</b> بدل <s>700</s> جنيه</div>
+
+    <div class="countdown" aria-label="الوقت المتبقي على إطلاق الكورس">
+      <span class="cd-label">⏳ الكورس بينزل خلال</span>
+      <div class="cd-units">
+        <div class="cd-box"><b data-cd="days">00</b><span>يوم</span></div>
+        <div class="cd-box"><b data-cd="hours">00</b><span>ساعة</span></div>
+        <div class="cd-box"><b data-cd="mins">00</b><span>دقيقة</span></div>
+        <div class="cd-box"><b data-cd="secs">00</b><span>ثانية</span></div>
+      </div>
+    </div>
+
+    <form class="signup ls-wl-form" novalidate aria-label="التسجيل في قايمة انتظار كورس Dart">
+      <div class="field">
+        <input type="email" name="email" required placeholder="اكتب إيميلك هنا" autocomplete="email" inputmode="email" aria-label="الإيميل">
+      </div>
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" class="btn">احجز أسبقيتي + الخصم 🚀</button>
+      <p class="form-msg" role="alert" hidden></p>
+    </form>
+    <p class="fine">سيب إيميلك بس — هنبعتلك أول ما الكورس ينزل + خصم الإطلاق، إيميل واحد، مفيش إزعاج 🤍</p>
+
+    <div class="form-done" hidden>
+      <h3>🎉 تمام، حجزت مكانك!</h3>
+      <p>هتبقى من أول ناس هتعرف أول ما الكورس ينزل، وليك خصم الإطلاق 50%. استنى مني إيميل قريّب.</p>
+    </div>
+
+    <div class="trust">⭐ انضم لأكتر من <b>369 ألف</b> متابع بيتعلموا برمجة ببساطة</div>
+  </div>
+</header>
+
+<!-- WHY DART -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker pill-badge reveal">ليه تتعلم Dart؟</span>
+      <h2 class="sec-title reveal">الأساس اللي أي مطوّر موبايل محترف بيبدأ منه</h2>
+    </div>
+    <div class="cards">
+      <article class="card reveal"><div class="ico">📱</div><h3>أساس Flutter</h3><p>Flutter كله مكتوب بـ Dart. تمسك Dart كويس = تبني تطبيقات iOS و Android بثقة من غير ما تتلخبط.</p></article>
+      <article class="card reveal"><div class="ico">🚀</div><h3>من الصفر للاحتراف</h3><p>من أول متغيّر لحد ما تكتب كود نضيف ومنظّم — كل درس مثال وتطبيق، مش حفظ نظري.</p></article>
+      <article class="card reveal"><div class="ico">💼</div><h3>مطلوب في سوق الشغل</h3><p>تطبيقات الموبايل من أكتر المجالات طلباً. Dart + Flutter = مهارة عليها شغل فعلي.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="sec band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker pill-badge reveal">ليه «اتعلم ببساطة»؟</span>
+      <h2 class="sec-title reveal">مش بس كورس — مدرّس بتثق فيه ومجتمع بيمشي معاك</h2>
+    </div>
+    <div class="feats">
+      <div class="feat reveal"><span class="chk">✓</span><div><h3>محدّث 2026</h3><p>أحدث كورس Dart عربي مستقل — مش محتوى قديم من 2022.</p></div></div>
+      <div class="feat reveal"><span class="chk">✓</span><div><h3>أبسط شرح ممكن</h3><p>«البرمجة مش صعبة، بس محتاجة حد يعرف يشرحها» — ده كل الفلسفة.</p></div></div>
+      <div class="feat reveal"><span class="chk">✓</span><div><h3>مجتمع ومتابعة</h3><p>مش هتكون لوحدك — مجتمع طلاب نشط تسأل فيه أي وقت.</p></div></div>
+      <div class="feat reveal"><span class="chk">✓</span><div><h3>مظبوط للموبايل</h3><p>تجربة نضيفة من الموبايل، بالعربي، من غير تعقيد.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker pill-badge reveal">الفرق الحقيقي</span>
+      <h2 class="sec-title reveal">من «متلخبط» لـ «بيكتب بثقة»</h2>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-col ba-after reveal">
+        <h3 class="ba-head">بعد الكورس 🚀</h3>
+        <ul class="ba-list">
+          <li><span class="ba-ic">✓</span> بتكتب Dart بثقة من أول سطر</li>
+          <li><span class="ba-ic">✓</span> فاهم الأساس اللي Flutter كله قايم عليه</li>
+          <li><span class="ba-ic">✓</span> عملت أول مشروع بإيدك</li>
+          <li><span class="ba-ic">✓</span> كودك نضيف ومنظّم</li>
+          <li><span class="ba-ic">✓</span> جاهز تكمّل Flutter من غير لخبطة</li>
+        </ul>
+      </div>
+      <div class="ba-col ba-before reveal">
+        <h3 class="ba-head">قبل الكورس 😩</h3>
+        <ul class="ba-list">
+          <li><span class="ba-ic">✗</span> متلخبط في الأساسيات</li>
+          <li><span class="ba-ic">✗</span> بتنسخ كود مش فاهمه</li>
+          <li><span class="ba-ic">✗</span> كل ما تبدأ تسيب في النص</li>
+          <li><span class="ba-ic">✗</span> مش عارف تبدأ منين</li>
+          <li><span class="ba-ic">✗</span> «هبدأ بكره» وبتأجّل</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section class="sec">
+  <div class="wrap">
+    <div class="offer reveal">
+      <h2>خصم الإطلاق — لأول المسجّلين بس</h2>
+      <div class="price"><span class="cur">من</span> <s>700</s> <span class="cur">لـ</span> <span class="amt">350</span> <span class="cur">جنيه</span></div>
+      <div class="meta">
+        <span class="pill">🎟️ خصم 50% بكوبون الإطلاق</span>
+        <span class="pill">⏳ أول 48 ساعة من الإطلاق</span>
+        <span class="pill">♾️ وصول مدى الحياة</span>
+        <span class="pill">🏅 شهادة إتمام</span>
+      </div>
+      <form class="signup ls-wl-form" novalidate aria-label="التسجيل في قايمة الانتظار">
+        <div class="field">
+          <input type="email" name="email" required placeholder="اكتب إيميلك هنا" autocomplete="email" inputmode="email" aria-label="الإيميل">
+        </div>
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="btn">احجز الخصم دلوقتي 🚀</button>
+        <p class="form-msg" role="alert" hidden></p>
+      </form>
+      <div class="form-done" hidden>
+        <h3>🎉 تمام، حجزت مكانك!</h3>
+        <p>هنبعتلك الكوبون أول ما الكورس ينزل. استنى مني إيميل قريّب.</p>
+      </div>
+      <p class="fine">من غير أي التزام — سجّل دلوقتي، وادفع وقت الإطلاق لو حبّيت.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="sec band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker pill-badge reveal">مين هيشرحلك؟</span>
+      <h2 class="sec-title reveal">أحمد عادل</h2>
+    </div>
+    <div class="tutor reveal">
+      <div class="ava"><img src="https://learrnsimply.com/wp-content/uploads/2025/10/for-profile.png" alt="أحمد عادل — مدرّس اتعلم ببساطة" width="128" height="128" loading="lazy"></div>
+      <div>
+        <h3>أحمد عادل</h3>
+        <p class="role">مهندس برمجيات · مطوّر Flutter · مؤسس «اتعلم ببساطة»</p>
+        <p>بشرح البرمجة بالطريقة اللي كنت أنا محتاجها وأنا ببدأ: «مش بحاول أثبت إني عارف — بحاول إنك أنت تفهم». كورسات الموقع وراها آلاف الطلاب وتقييمات 4.9–5.0.</p>
+        <div class="stats">
+          <div class="stat"><b>369K+</b><span>مشترك يوتيوب</span></div>
+          <div class="stat"><b>17M+</b><span>مشاهدة</span></div>
+          <div class="stat"><b>+7 سنين</b><span>خبرة برمجة</span></div>
+          <div class="stat"><b>10K+</b><span>طالب</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker pill-badge reveal">أسئلة سريعة</span>
+      <h2 class="sec-title reveal">اللي بيسأل عنه أغلب الناس</h2>
+    </div>
+    <div class="faq">
+      <details class="reveal" open><summary>أنا مبتدئ خالص، الكورس مناسب ليا؟<span></span></summary><p>أيوه بالظبط. الكورس متبني للي بيبدأ من الصفر — مش محتاج أي خلفية سابقة.</p></details>
+      <details class="reveal"><summary>الدفع مرة واحدة ولا اشتراك؟<span></span></summary><p>مرة واحدة بس، والكورس بيفضل معاك <strong>مدى الحياة</strong> — مفيش رسوم شهرية.</p></details>
+      <details class="reveal"><summary>هاخد شهادة بعد ما أخلّص؟<span></span></summary><p>أيوه، كل كورس بشهادة إتمام تحطها في CV أو LinkedIn.</p></details>
+      <details class="reveal"><summary>الخصم 50% بيشتغل إزاي؟<span></span></summary><p>سجّل إيميلك في قايمة الانتظار دلوقتي — يوم الإطلاق هنبعتلك كوبون <strong>DART50</strong> يخلّي السعر 350 بدل 700، صالح أول 48 ساعة.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- STICKY CTA (mobile + mid-scroll) -->
+<div class="lsd-sticky" hidden aria-hidden="true">
+  <div class="lsd-sticky-in">
+    <span class="lsd-sticky-price"><s>700</s> <b>350</b> جنيه</span>
+    <button type="button" class="btn lsd-sticky-btn">احجز مكانك + خصم 50% 🚀</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('ls-dart-lp'); if (!root) return;
+
+  /* scroll reveal */
+  var els = root.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (e) { e.classList.add('is-visible'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  }
+
+  /* live launch countdown */
+  var cd = root.querySelector('.countdown');
+  if (cd) {
+    var LAUNCH = new Date('2026-06-15T12:00:00+02:00').getTime();
+    var el = { days: cd.querySelector('[data-cd=days]'), hours: cd.querySelector('[data-cd=hours]'),
+      mins: cd.querySelector('[data-cd=mins]'), secs: cd.querySelector('[data-cd=secs]') };
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var t = setInterval(tick, 1000); tick();
+    function tick() {
+      var diff = LAUNCH - Date.now();
+      if (diff <= 0) { clearInterval(t); cd.innerHTML = '<span class="cd-label">🎉 الكورس نزل! سجّل دلوقتي واحجز خصمك</span>'; return; }
+      var s = Math.floor(diff / 1000);
+      el.days.textContent = pad(Math.floor(s / 86400)); el.hours.textContent = pad(Math.floor((s % 86400) / 3600));
+      el.mins.textContent = pad(Math.floor((s % 3600) / 60)); el.secs.textContent = pad(s % 60);
+    }
+  }
+
+  /* waitlist form → same backend as the popup */
+  var ENDPOINT = '__LS_ENDPOINT__';
+  var DONE_KEY = 'ls_dart_signed';
+  var EMAIL_RX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function markAllDone() {
+    root.querySelectorAll('.ls-wl-form').forEach(function (f) { f.hidden = true; });
+    root.querySelectorAll('.form-done').forEach(function (d) { d.hidden = false; });
+  }
+  try { if (localStorage.getItem(DONE_KEY)) markAllDone(); } catch (e) {}
+  root.querySelectorAll('.ls-wl-form').forEach(function (form) {
+    var msg = form.querySelector('.form-msg'), btn = form.querySelector('.btn');
+    function show(t) { if (msg) { msg.textContent = t; msg.hidden = false; } }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); if (msg) msg.hidden = true;
+      var email = (form.email.value || '').trim(), hp = (form.website.value || '');
+      if (!EMAIL_RX.test(email)) { show('اكتب إيميل صح من فضلك.'); return; }
+      var label = btn.textContent; btn.disabled = true; btn.textContent = 'بسجّلك...';
+      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, firstname: '', website: hp }) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (res.ok && res.d && res.d.success) { try { localStorage.setItem(DONE_KEY, '1'); } catch (e) {} markAllDone(); }
+        else { btn.disabled = false; btn.textContent = label; show((res.d && res.d.message) || 'مقدرناش نسجّلك دلوقتي — جرّب تاني.'); }
+      })
+      .catch(function () { btn.disabled = false; btn.textContent = label; show('النت قطع شوية — جرّب كمان مرة.'); });
+    });
+  });
+
+  /* sticky CTA: show in the mid-scroll gap (hero out of view, offer not yet in), hide once signed up */
+  var sticky = root.querySelector('.lsd-sticky');
+  if (sticky) {
+    var heroEl = root.querySelector('.hero'), offerEl = root.querySelector('.offer');
+    var heroVisible = true, offerVisible = false;
+    function isSigned() { try { return !!localStorage.getItem(DONE_KEY); } catch (e) { return false; } }
+    sticky.hidden = false;
+    function updateSticky() {
+      var on = !isSigned() && !heroVisible && !offerVisible;
+      sticky.classList.toggle('is-on', on);
+      sticky.setAttribute('aria-hidden', on ? 'false' : 'true');
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (e) { heroVisible = e.isIntersecting; }); updateSticky(); }, { threshold: 0.01 }).observe(heroEl);
+      if (offerEl) new IntersectionObserver(function (es) { es.forEach(function (e) { offerVisible = e.isIntersecting; }); updateSticky(); }, { threshold: 0.01 }).observe(offerEl);
+    }
+    var sbtn = sticky.querySelector('.lsd-sticky-btn');
+    if (sbtn) sbtn.addEventListener('click', function () {
+      var form = (offerEl && offerEl.querySelector('.ls-wl-form')) || root.querySelector('.ls-wl-form');
+      if (!form) return;
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      var inp = form.querySelector('input[type=email]');
+      if (inp) setTimeout(function () { try { inp.focus(); } catch (e) {} }, 420);
+    });
+  }
+})();
+</script>
+</div>

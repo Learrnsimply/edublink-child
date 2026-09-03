@@ -1,0 +1,78 @@
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+# Task 3.1 — Disk Cleanup Manifest
+# Generated: 2026-05-24
+# Server: 147.93.73.159 (learrnsimply.com)
+# Purpose: Pre-deletion audit trail for ai1wm-backups + wpvividbackups
+
+## DELETION CANDIDATES (33 files, ~9.4 GB)
+
+### ai1wm-backups/ (5.6 GB, 2 .wpress files)
+2026-02-08 16:38 | 3014599924 bytes | ai1wm-backups/learrnsimply-com-20260208-183604-ihjq8tl3fdsf.wpress
+2025-12-25 00:09 | 2966417620 bytes | ai1wm-backups/learrnsimply-com-20251225-020723-z3rp99s80ro9.wpress
+
+### wpvividbackups/ (3.8 GB, 31 files: 28 zip + 1 partial + 2 logs)
+2026-04-20 14:31 |  185025669 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part008.zip
+2026-04-20 14:31 |  190993585 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part007.zip
+2026-04-20 14:30 |   41619466 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part002.zip
+2026-04-20 15:04 |  147724555 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part006.zip
+2026-04-20 15:05 |  192317626 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part007.zip
+2026-04-20 15:04 |  184988059 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part005.zip
+2026-04-20 15:05 |    6031241 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_content.part001.zip
+2026-04-20 14:32 |  161106849 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part012.zip
+2026-04-20 15:01 |   81968548 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_plugin.part002.zip
+2026-04-20 14:31 |  206842719 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part005.zip
+2026-04-20 15:02 |  204953176 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part001.zip
+2026-04-20 15:02 |  207114180 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part003.zip
+2026-04-20 15:01 |    3682258 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_plugin.part004.zip
+2026-04-20 15:02 |  195050057 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part004.zip
+2026-04-20 15:05 |  104002058 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part009.zip
+2026-04-20 15:02 |  204864424 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part002.zip
+2026-04-20 15:00 |   70602524 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_plugin.part001.zip
+2026-04-20 15:05 |  207902942 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_uploads.part008.zip
+2026-04-20 14:30 |  204716281 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part003.zip
+2026-04-20 14:31 |  203684198 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part006.zip
+2026-04-20 14:30 |  185341582 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part001.zip
+2026-04-20 15:01 |   77616923 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_plugin.part003.zip
+2026-04-20 14:29 |    3207168 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_uploads.part008.zip.it6d4d
+2026-04-20 14:30 |  204604204 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part004.zip
+2026-04-20 14:32 |  168196633 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part010.zip
+2026-04-20 14:32 |  203267755 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part011.zip
+2026-04-20 14:31 |  156350543 bytes | wpvividbackups/learrnsimply.com_wpvivid-e201eaaddce8b_2026-04-20-16-25_backup_all.part009.zip
+2026-04-20 14:59 |   31037989 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_db.zip
+2026-04-20 14:59 |   25829527 bytes | wpvividbackups/beta.learrnsimply.com_wpvivid-8b7314625ada9_2026-04-20-16-41_backup_themes.zip
+
+### wpvividbackups/wpvivid_log/ (2 log files referring to deleted backups)
+2026-02-08 16:59 |      30626 bytes | wpvividbackups/wpvivid_log/wpvivid-e24de6178bc3e_backup_log.txt
+2026-04-20 14:32 |      32591 bytes | wpvividbackups/wpvivid_log/wpvivid-e201eaaddce8b_backup_log.txt
+
+## PRESERVED FILES (protective/structural — NOT deleted)
+
+### ai1wm-backups/ protective
+2024-03-10 23:36 |         76 bytes | ai1wm-backups/robots.txt
+2024-03-10 23:36 |         26 bytes | ai1wm-backups/index.html
+2024-03-10 23:36 |         26 bytes | ai1wm-backups/index.php
+2025-09-06 09:54 |        191 bytes | ai1wm-backups/.htaccess
+2025-09-06 09:54 |        356 bytes | ai1wm-backups/web.config
+
+### wpvividbackups/ protective
+2026-02-08 16:53 |          0 bytes | wpvividbackups/index.html
+2026-02-08 16:53 |         79 bytes | wpvividbackups/.htaccess
+2026-02-08 16:53 |          0 bytes | wpvividbackups/wpvivid_log/index.html
+2026-02-08 16:53 |          0 bytes | wpvividbackups/wpvivid_log/error/index.html
+2026-02-08 16:53 |         79 bytes | wpvividbackups/wpvivid_log/error/.htaccess
+2026-02-08 16:53 |         79 bytes | wpvividbackups/wpvivid_log/.htaccess
+
+## TOTAL DISK USAGE BEFORE DELETION
+5.6G	ai1wm-backups/
+3.8G	wpvividbackups/
+
+## REASON FOR DELETION
+- ai1wm-backups: 2 legacy backups from Dec 2025 + Feb 2026 (5+ months and 3+ months old). Redundant with current 3-layer backup system (Hostinger daily + GitHub weekly + theme git).
+- wpvividbackups: 1 production backup + 1 staging backup from 2026-04-20 (>1 month old). The staging backups reference beta.learrnsimply.com which no longer exists (DNS does not resolve). Production backup is redundant.
+
+## POST-DELETION SIDE EFFECTS
+- All-in-One WP Migration plugin admin UI will show empty backup list (DB metadata may persist)
+- WPvivid plugin admin UI will show broken backup entries (DB metadata persists, will need Ahmed to clean via UI later)
+- No effect on site functionality or production data

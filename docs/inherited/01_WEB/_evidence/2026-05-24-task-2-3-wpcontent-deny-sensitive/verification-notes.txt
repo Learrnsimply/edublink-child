@@ -1,0 +1,54 @@
+# Playwright Verification — Task 2.3 wp-content/.htaccess Deny Sensitive Files
+# Captured: 2026-05-24
+
+## What was deployed
+- File: /home/u700430280/domains/learrnsimply.com/public_html/wp-content/.htaccess
+- Backup: .htaccess.bak-2026-05-24 (was empty 0 bytes)
+- New size: 725 bytes
+- MD5: d16f9e33266fb6568cbeacfbec5878d1
+
+## Deny list (FilesMatch regex)
+\.(log|sql|bak|tar|tar\.gz|sql\.gz|tgz|bz2|7z|sh|swp|swo|orig|dat)$
+
+## Intentionally EXCLUDED (would break legitimate functionality)
+- .gz (WP-Optimize page cache; PHP-served, not direct URL)
+- .zip (unlimited_elements_cache widgets, wpforms addons)
+- .txt (readme/license/robots — too common)
+- .html (wpo-cache index.html pages)
+
+## Pre-deploy scan results (wp-content)
+- 819 .log files (now explicitly blocked, was already 403 via Hostinger)
+- 7 .sql files (litespeed-cache templates; **WERE PUBLIC HTTP 200**, now 403)
+- 4 .sh scripts (plugin tests; now blocked)
+- 1 .bak (wp-optimize vendor; now blocked)
+- 2 .dat files (demo customizer + litespeed config; now blocked)
+- 502 .gz files (wpo-cache; were already 403 via Hostinger; my rule doesn't include .gz so safe)
+
+## Verification results
+
+### Denied (all return 403)
+- /wp-content/plugins/litespeed-cache/src/data_structure/crawler_blacklist.sql → 403 (was 200 ⚠️)
+- /wp-content/plugins/wp-events-manager/tests/bin/install.sh → 403
+- /wp-content/plugins/wp-optimize/vendor/rosell-dk/exec-with-fallback/phpunit.xml.dist.bak → 403
+- /wp-content/uploads/wc-logs/.log → 403 (already was, now explicit)
+- Playwright: same .sql URL → Page Title "403 Forbidden"
+
+### Allowed (must remain accessible)
+- / → 200
+- /courses/ → 200
+- /wp-json/ → 200
+- /wp-admin/ → 302 (login redirect)
+- Real image .jpg → 200
+- /wp-content/plugins/woocommerce/readme.txt → 200
+
+## Real security improvement
+The 7 .sql files in litespeed-cache plugin (data_structure/*.sql templates)
+were publicly accessible at HTTP 200. These are CREATE TABLE templates for
+the plugin — not sensitive per se, but exposing them gives an attacker:
+- Knowledge of plugin internals (table structure, column names)
+- Potential reconnaissance for targeted SQL injection attempts
+Now blocked: ✅
+
+## Rollback if needed
+ssh learnsimply 'cd /home/u700430280/domains/learrnsimply.com/public_html/wp-content && \
+  cp .htaccess.bak-2026-05-24 .htaccess'

@@ -1,0 +1,158 @@
+{
+  "updatedAt": "2026-06-10T15:59:54.160Z",
+  "createdAt": "2026-06-10T15:48:35.442Z",
+  "id": "IfIlQ2RsfsubUkHW",
+  "name": "W3t — kb_search tool (wrapper for W3c)",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "When Called",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "inputSource": "passthrough"
+      }
+    },
+    {
+      "id": "t2",
+      "name": "Call W3c KB Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.learrnsimply.com/webhook/kb-search-4061a4f2df54",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: ($json.query || $json.chatInput || ''), k: 5 }) }}",
+        "options": {}
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "When Called": {
+      "main": [
+        [
+          {
+            "node": "Call W3c KB Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true,
+    "callerPolicy": "any"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "da22bc4a-1184-489c-9b6a-8a3a6627e2dd",
+  "activeVersionId": "da22bc4a-1184-489c-9b6a-8a3a6627e2dd",
+  "versionCounter": 2,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-10T15:48:35.442Z",
+      "createdAt": "2026-06-10T15:48:35.442Z",
+      "role": "workflow:owner",
+      "workflowId": "IfIlQ2RsfsubUkHW",
+      "projectId": "LSH9W5vkSOzxPGrT",
+      "project": {
+        "updatedAt": "2026-05-31T23:39:44.460Z",
+        "createdAt": "2026-05-31T23:32:39.274Z",
+        "id": "LSH9W5vkSOzxPGrT",
+        "name": "Omar Abdelrahman <omarabdo385@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-06-10T15:48:35.442Z",
+    "createdAt": "2026-06-10T15:48:35.442Z",
+    "versionId": "da22bc4a-1184-489c-9b6a-8a3a6627e2dd",
+    "workflowId": "IfIlQ2RsfsubUkHW",
+    "nodes": [
+      {
+        "id": "t1",
+        "name": "When Called",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "inputSource": "passthrough"
+        }
+      },
+      {
+        "id": "t2",
+        "name": "Call W3c KB Search",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://n8n.learrnsimply.com/webhook/kb-search-4061a4f2df54",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ query: ($json.query || $json.chatInput || ''), k: 5 }) }}",
+          "options": {}
+        },
+        "onError": "continueRegularOutput"
+      }
+    ],
+    "connections": {
+      "When Called": {
+        "main": [
+          [
+            {
+              "node": "Call W3c KB Search",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Omar Abdelrahman",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-10T15:59:54.449Z",
+        "id": 103,
+        "workflowId": "IfIlQ2RsfsubUkHW",
+        "versionId": "da22bc4a-1184-489c-9b6a-8a3a6627e2dd",
+        "event": "activated",
+        "userId": "a0cd0e22-2097-4b6e-a09f-ef40403bdca5"
+      }
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+===== PRODUCTS (published) =====
+PRODUCT 39043 :: هياكل البيانات الكاملة | Data Structure Level 1 + 2 :: price=900 reg=2200 sale=900 sku= virtual=no
+PRODUCT 33336 :: كورس Java Basics + OOP | من الأساسيات إلى الاحتراف :: price=849 reg=2150 sale=849 sku= virtual=no
+PRODUCT 31580 :: البرمجة الكائنية (OOP) بلغة Java من الصفر للاحتراف :: price=550 reg=1200 sale=550 sku= virtual=yes
+PRODUCT 30895 :: هياكل البيانات المستوي الثاني | Data Structure :: price=499 reg=1200 sale=499 sku= virtual=yes
+PRODUCT 28056 :: كتاب لغة جافا :: price=199 reg=250 sale=199 sku= virtual=no
+PRODUCT 28009 :: كتاب لغة C++ :: price=200 reg=250 sale=200 sku= virtual=no
+PRODUCT 27272 :: كورس جافا للمبتدئين + كتاب هدية 🎁 :: price=450 reg=700 sale=450 sku= virtual=yes
+PRODUCT 11694 :: هياكل البيانات المستوي الاول | Data Structure :: price=550 reg=1000 sale=550 sku= virtual=no
+===== GATEWAY SETTINGS (enabled/title/description) =====
+--- woocommerce_bacs_settings ---
+{"enabled":"no","title":"\u062d\u0648\u0627\u0644\u0629 \u0645\u0635\u0631\u0641\u064a\u0629 \u0645\u0628\u0627\u0634\u0631\u0629","description":"\u0642\u0645 \u0628\u0625\u062c\u0631\u0627\u0621 \u062d\u0648\u0627\u0644\u0629 \u0645\u0628\u0627\u0634\u0631\u0629 \u0644\u0623\u062d\u062f \u062d\u0633\u0627\u0628\u0627\u062a\u0646\u0627 \u0627\u0644\u0645\u0635\u0631\u0641\u064a\u0629. \u0627\u0644\u0631\u062c\u0627\u0621 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0631\u0642\u0645 \u0637\u0644\u0628\u0643 \u0643\u0645\u0631\u062c\u0639 \u0644\u0639\u0645\u0644\u064a\u0629 \u0627\u0644\u062f\u0641\u0639. \u0644\u0646 \u064a\u062a\u0645 \u0634\u062d\u0646 \u0637\u0644\u0628\u0643 \u062d\u062a\u0649 \u064a\u062a\u0645 \u0627\u0644\u062a\u0623\u0643\u062f \u0645\u0646 \u0639\u0645\u0644\u064a\u0629 \u0627\u0644\u062f\u0641\u0639.","instructions":"","account_details":"","account_name":"","account_number":"","sort_code":"","bank_name":"","iban":"","bic":""}
+
+--- woocommerce_cod_settings ---
+{"enabled":"no","title":"\u0627\u0644\u062f\u0641\u0639 \u0639\u0628\u0631 \u0627\u0644\u062a\u0648\u0627\u0635\u0644 \u0639\u0644\u064a \u0648\u0627\u062a\u0633\u0627\u0628","description":"\u0627\u062f\u0641\u0639 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0627\u0644\u0648\u0627\u062a\u0633\u0627\u0628 \u0648\u0633\u064a\u062a\u0645 \u0627\u0644\u062a\u0642\u0639\u064a\u0644 \u0628\u0639\u062f \u0627\u0644\u062f\u0641\u0639","instructions":"\u0633\u064a\u062a\u0645 \u062a\u0641\u0639\u064a\u0644 \u0627\u0644\u062f\u0648\u0631\u0629 \u0628\u0639\u062f \u0627\u0633\u062a\u0644\u0627\u0645 \u0627\u0644\u0641\u0627\u062a\u0648\u0631\u0629 \u0645\u0628\u0627\u0634\u0631\u0629","enable_for_methods":[],"enable_for_virtual":"yes"}
+
+--- woocommerce_cheque_settings ---
+
+--- woocommerce_kashier_card_settings ---
+{"enabled":"yes","title":"\u0627\u0644\u062f\u0641\u0639 \u0645\u0646 \u062e\u0644\u0627\u0644 \u0628\u0637\u0627\u0642\u0629 \u0627\u0644\u0627\u0626\u062a\u0645\u0627\u0646 \u0645\u0646 \u062f\u0627\u062e\u0644 \u0627\u0648 \u062e\u0627\u0631\u062c \u0645\u0635\u0631","description":"\u0627\u062f\u0641\u0639 \u0645\u0646 \u062e\u0644\u0627\u0644 \u0628\u0637\u0627\u0642\u062a\u0643 (Visa, Master)","testmode":"no","merchant_id":"***REDACTED***","test_api_key":"***REDACTED***","api_key":"***REDACTED***","test_secret_key":"***REDACTED***","secret_key":"***REDACTED***","logging":"no","advanced_options":"yes","enforce_egp_payment":"yes","connected_account":"no"}
+
+--- woocommerce_kashier_wallet_settings ---
+{"enabled":"yes","title":"\u0645\u062d\u0627\u0641\u0638 \u0627\u0644\u0643\u062a\u0631\u0648\u0646\u064a\u0629 (\u0641\u0648\u0627\u062f\u0641\u0648\u0646 \u0643\u0627\u0634 , \u0627\u062a\u0635\u0627\u0644\u0627\u062a \u0643\u0627\u0634 , \u0623\u0648\u0631\u0646\u062c \u0643\u0627\u0634 )","description":"\u0625\u062a\u0645\u0627\u0645 \u0627\u0644\u062f\u0641\u0639 \u0639\u0628\u0631 \u0645\u062d\u0641\u0638\u062a\u0643 \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a\u0629\u060c \u0648\u0633\u062a\u0635\u0644 \u0625\u0644\u064a\u0643 \u0631\u0633\u0627\u0644\u0629 \u0639\u0644\u0649 \u0647\u0627\u062a\u0641\u0643 \u062a\u062d\u062a\u0648\u064a \u0639\u0644\u0649 \u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u0644\u0639\u0645\u0644\u064a\u0629 \u0644\u0625\u062a\u0645\u0627\u0645\u0647\u0627 \u0628\u0633\u0647\u0648\u0644\u0629.","testmode":"no","merchant_id":"***REDACTED***","test_api_key":"***REDACTED***","api_key":"***REDACTED***","test_secret_key":"***REDACTED***","secret_key":"***REDACTED***","logging":"no","advanced_options":"yes","enforce_egp_payment":"yes","connected_account":"no"}
+
+--- woocommerce_kashier_valu_settings ---
+{"enabled":"no","title":"ValU","description":"Pay with ValU.","testmode":"no","merchant_id":"***REDACTED***","test_api_key":"***REDACTED***","api_key":"***REDACTED***","test_secret_key":"***REDACTED***","secret_key":"***REDACTED***","logging":"no","advanced_options":"no","enforce_egp_payment":"no","connected_account":"no"}
+
+--- woocommerce_kashier_aman_settings ---
+{"enabled":"no","title":"Aman","description":"Pay with Aman.","testmode":"no","merchant_id":"***REDACTED***","test_api_key":"***REDACTED***","api_key":"***REDACTED***","test_secret_key":"***REDACTED***","secret_key":"***REDACTED***","logging":"no","advanced_options":"no","enforce_egp_payment":"no","connected_account":"no"}
+
+--- woocommerce_kashier_souhoola_settings ---
+
+--- woocommerce_kashier_bank_installments_settings ---
+{"enabled":"no","title":"Bank Installment","description":"Pay with your Bank Installment.","testmode":"yes","merchant_id":"***REDACTED***","test_api_key":"***REDACTED***","api_key":"***REDACTED***","test_secret_key":"***REDACTED***","secret_key":"***REDACTED***","logging":"no","advanced_options":"no","enforce_egp_payment":"no","connected_account":"no"}
+
+--- woocommerce_ppcp-gateway_settings ---
+
+--- woocommerce_ppcp-card-button-gateway_settings ---
+
+===== PAYMOB / PAYPAL-FULLSTACK option discovery =====
+option_name
+option_name
+===== COUPONS (published, first 40) =====
+===== PAGES (published, 57) =====
+ID,post_title,post_name
+38570,"نبذة عنّي",about_me
+38440,"سياسة الخصوصية",privacy-policy
+38439,"الشروط والأحكام",terms-conditions
+32445,signup,signup
+31664,"إتمام الطلب",%d8%a5%d8%aa%d9%85%d8%a7%d9%85-%d8%a7%d9%84%d8%b7%d9%84%d8%a8
+31663,السلة,%d8%a7%d9%84%d8%b3%d9%84%d8%a9
+31662,"Tutor Login",tutor-login-5
+29173,"Tutor Login",tutor-login-4
+29005,"Learn Page",learn-page
+29004,"Password Reset",password-reset
+29003,Courses,courses
+29002,Dashboard,dashboard-2
+28445,"كل عادة تترك اثر",%d9%83%d9%84-%d8%b9%d8%a7%d8%af%d8%a9-%d8%aa%d8%aa%d8%b1%d9%83-%d8%a7%d8%ab%d8%b1
+28021,"كتب برمجية",%d9%83%d8%aa%d8%a8-%d8%a8%d8%b1%d9%85%d8%ac%d9%8a%d8%a9
+27559,"My Account",my-account-4
+27558,"Tutor Login",tutor-login-3
+25083,"Let's Keep In Touch",lets-keep-in-touch
+24313,"كتاب لغه سي بلس بلس",%d9%83%d8%aa%d8%a7%d8%a8-%d9%84%d8%ba%d9%87-%d8%b3%d9%8a-%d8%a8%d9%84%d8%b3-%d8%a8%d9%84%d8%b3
+24049,"شهادة اتعلم ببساطة",%d8%b4%d9%87%d8%a7%d8%af%d8%a9-%d8%a7%d8%aa%d8%b9%d9%84%d9%85-%d8%a8%d8%a8%d8%b3%d8%a7%d8%b7%d8%a9
+24048,"Tutor Login",tutor-login-2
+23901,"طرق الدفع",%d8%b7%d8%b1%d9%82-%d8%a7%d9%84%d8%af%d9%81%d8%b9
+23865,"طرق الدفع",%d8%b7%d8%b1%d9%82-%d8%a7%d9%84%d8%af%d9%81%d8%b9
+23412,"صفحة تسجيل الطالب",%d8%b5%d9%81%d8%ad%d8%a9-%d8%aa%d8%b3%d8%ac%d9%8a%d9%84-%d8%a7%d9%84%d8%b7%d8%a7%d9%84%d8%a8
+23411,"صفحة تسجيل المدرب",%d8%b5%d9%81%d8%ad%d8%a9-%d8%aa%d8%b3%d8%ac%d9%8a%d9%84-%d8%a7%d9%84%d9%85%d8%af%d8%b1%d8%a8
+23410,"Tutor Login",tutor-login
+15383,"User Account",user-account
+15382,"Reset Password",reset-password
+15381,"Forgot Password",forgot-password
+15380,"User Login",user-login
+15379,"User Register",user-register
+23,"My account",my-account
+22,"إتمام الدفع",checkout
+21,"سلة المشتريات",cart-1
+20,Shop,shop
+22692,"Forgot Password",forgot-password-2
+18,"User Account",user-account-2
+17,"Reset Password",reset-password-2
+15,"User Login",user-login-4
+14,"User Register",user-register-3
+8,"Student Registration",student-registration
+6,حسابي,dashboard
+21746,"My account",my-account-3
+21745,Checkout-1,checkout-3
+21744,Cart,cart-3
+21743,Shop,shop-3
+21739,"User Login",user-login-3
+21737,"User Register",user-register-2
+22688,"User Login",user-login-2
+22687,"User Register",user-register-2-2
+21738,"My account",my-account-2
+19540,"جميع الدورات",%d8%a7%d9%84%d8%af%d9%88%d8%b1%d8%a7%d8%aa
+19539,Profile,lp-profile
+22681,"Terms & Condition",terms-condition
+22678,"Instructor Details",instructor-details
+9834,الرئيسية,footer-kindergarten
+2013,Component,component
+22662,Shop,shop-2

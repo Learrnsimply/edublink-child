@@ -1,0 +1,10 @@
+# Never commit PII, secrets, browser sessions, or deps from tooling
+_tmp_users.csv
+*_users.csv
+*.log
+node_modules/
+wc-webhook/node_modules/
+wc-webhook/profile/
+**/profile/
+*.png
+package-lock.json

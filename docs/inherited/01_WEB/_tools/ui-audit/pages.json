@@ -1,0 +1,66 @@
+{
+  "baseUrl": "https://learrnsimply.com",
+  "fixedHeaderSelector": ".learnsimply-header-main-container",
+  "settleAfterLoadMs": 2500,
+
+  "viewports": [
+    { "name": "mobile",  "width": 375,  "height": 667 },
+    { "name": "tablet",  "width": 768,  "height": 1024 },
+    { "name": "desktop", "width": 1440, "height": 900 }
+  ],
+
+  "pages": [
+    {
+      "name": "home",
+      "path": "/",
+      "expectsTitle": false,
+      "expectsForm": false
+    },
+    {
+      "name": "courses-archive",
+      "path": "/courses/",
+      "expectsTitle": false,
+      "expectsForm": false
+    },
+    {
+      "name": "single-course",
+      "path": "/courses/data_structure_level2/",
+      "expectsTitle": true,
+      "expectsForm": false
+    },
+    {
+      "name": "cart",
+      "path": "/cart-1/",
+      "preSteps": [{ "action": "addToCart", "productId": 39043 }],
+      "expectsTitle": true,
+      "expectsForm": false
+    },
+    {
+      "name": "checkout-guest-login-open",
+      "path": "/checkout/",
+      "preSteps": [{ "action": "addToCart", "productId": 39043 }],
+      "openLoginToggle": true,
+      "expectsTitle": true,
+      "expectsForm": true
+    },
+    {
+      "name": "blog",
+      "path": "/blog/",
+      "expectsTitle": false,
+      "expectsForm": false
+    },
+    {
+      "name": "about",
+      "path": "/about_me/",
+      "expectsTitle": false,
+      "expectsForm": false
+    }
+  ],
+
+  "_comments": {
+    "fixedHeaderSelector": "Selector for the fixed/sticky site header. Used by 'no-content-under-fixed-header' check to detect overlap.",
+    "settleAfterLoadMs": "Wait time after networkidle so the checkout nukeCheckoutGaps timeouts (500ms, 1500ms) and any other deferred JS get to run before we measure.",
+    "preSteps.addToCart": "Adds a WooCommerce product to the session cart via ?add-to-cart=. Needed for /cart/ and /checkout/ — otherwise WC redirects away.",
+    "openLoginToggle": "If true, clicks .showlogin on the page so the inline guest-login form is visible (otherwise it's display:none and the form-input check skips it)."
+  }
+}
