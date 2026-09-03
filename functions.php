@@ -1020,6 +1020,16 @@ function learnsimply_no_image_url()
 }
 
 /**
+ * بنية الأكاديمية — الأقسام والمسارات.
+ *
+ * في ملف منفصل عن قصد. functions.php عدّى 3,700 سطر، وأي حاجة جديدة تتحط
+ * جواه بتصعّب قراءته أكتر. الأقسام تعريف بيانات، مكانه ملف بيتقرا لوحده.
+ */
+if (file_exists(__DIR__ . '/inc/academy-structure.php')) {
+	require_once __DIR__ . '/inc/academy-structure.php';
+}
+
+/**
  * Load Composer dependencies
  */
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {

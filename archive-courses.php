@@ -182,17 +182,47 @@ if ( have_posts() ) {
 	wp_reset_postdata();
 }
 
-// Sidebar: course categories for simple filtering/navigation
-$course_categories_raw = get_terms(
-	array(
-		'taxonomy'   => 'course-category',
-		'hide_empty' => true,
-	)
-);
+// Filter row above the grid: the academy's departments.
+//
+// Not every course-category — the site still carries six legacy terms holding
+// one course each (Java Level One, Data Structure level two, and so on), which
+// are course titles duplicated as taxonomy. They stay in the database so old
+// category URLs keep resolving, but showing them here would put nine buttons
+// on the row, six of them noise.
+//
+// Departments are defined in inc/academy-structure.php and ordered by the
+// ls_department_order term meta set there.
+$course_categories_raw = array();
+
+if ( function_exists( 'learnsimply_academy_departments' ) ) {
+	foreach ( array_keys( learnsimply_academy_departments() ) as $dept_slug ) {
+		$dept_term = get_term_by( 'slug', $dept_slug, 'course-category' );
+		// hide_empty behaviour: a department with no published course yet
+		// (الذكاء الاصطناعي, until the AI course ships) is not shown.
+		if ( $dept_term && ! is_wp_error( $dept_term ) && $dept_term->count > 0 ) {
+			$course_categories_raw[] = $dept_term;
+		}
+	}
+}
+
+// Fallback: if the departments have not been created yet — the theme deployed
+// before init ran, or Tutor is inactive — fall back to the old behaviour rather
+// than rendering an empty filter row.
+if ( empty( $course_categories_raw ) ) {
+	$all_terms = get_terms(
+		array(
+			'taxonomy'   => 'course-category',
+			'hide_empty' => true,
+		)
+	);
+	if ( ! is_wp_error( $all_terms ) && ! empty( $all_terms ) ) {
+		$course_categories_raw = $all_terms;
+	}
+}
 
 // Convert to Timber Terms for proper link() method
 $context['course_categories'] = array();
-if ( ! is_wp_error( $course_categories_raw ) && ! empty( $course_categories_raw ) ) {
+if ( ! empty( $course_categories_raw ) ) {
 	foreach ( $course_categories_raw as $term ) {
 		$context['course_categories'][] = Timber::get_term( $term->term_id, 'course-category' );
 	}
