@@ -13,4 +13,9 @@ if [ "$fail" -eq 0 ]; then echo "✅ $n ملف PHP · صفر أخطاء"; else e
 # حتى لو الملف المضمَّن اتمسح — الفاحص ده بيمسك ده قبل ما يوصل السيرفر.
 "$PHP" tools-twig-check.php || fail=1
 
+# اختبارات سلوك — الفحص البنيوي بيقول إن الكود بيترجم، مش إنه بيشتغل صح.
+if [ -f tests/bundles-test.php ]; then
+  "$PHP" tests/bundles-test.php || fail=1
+fi
+
 exit $fail

@@ -131,12 +131,7 @@ if ( class_exists( 'WooCommerce' ) ) {
 				
 				// Get bundle-specific data if it's a bundle
 				if ( $product_cat === 'bundle' && $product->is_type( 'easy_product_bundle' ) ) {
-					global $wpdb;
-					$table_name = $wpdb->prefix . 'asnp_wepb_simple_bundle_items';
-					$bundle_items_count = $wpdb->get_var( $wpdb->prepare(
-						"SELECT COUNT(*) FROM {$table_name} WHERE bundle_id = %d",
-						$product_id
-					) );
+					$bundle_items_count = learnsimply_bundle_item_count( $product_id );
 					$product_data['bundle_items_count'] = intval( $bundle_items_count );
 					$product_data['is_bundle'] = true;
 				}

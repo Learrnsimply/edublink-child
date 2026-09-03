@@ -309,7 +309,9 @@ $context['bundle_items_json'] = '';
 // Check if product type is bundle or has bundle items in database
 if ( $product->get_type() === 'bundle' || $product->get_type() === 'easy_product_bundle' || class_exists( 'AsanaPlugins\WooCommerce\ProductBundles\Plugin' ) ) {
 	global $wpdb;
-	$bundle_items = $wpdb->get_results( $wpdb->prepare(
+	// حارس: الجدول تبع بلجن خارجي. من غيره الاستعلام بيرجّع null بصمت
+	// وعناصر الباقة بتختفي من غير أي رسالة.
+	$bundle_items = ! learnsimply_bundles_table_exists() ? array() : $wpdb->get_results( $wpdb->prepare(
 		"SELECT product_id, quantity FROM {$wpdb->prefix}asnp_wepb_simple_bundle_items WHERE bundle_id = %d",
 		$context['product_id']
 	) );
