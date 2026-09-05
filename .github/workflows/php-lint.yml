@@ -43,3 +43,6 @@ jobs:
 
       - name: اختبارات السلوك
         run: php tests/bundles-test.php
+
+      - name: اختبار تشغيل الرئيسية (front-page.php بـstubs)
+        run: php tests/front-page-smoke.php

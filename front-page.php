@@ -25,6 +25,111 @@ $context = Timber::context();
 $context['theme_uri'] = get_stylesheet_directory_uri();
 
 // ─────────────────────────────────────────────────────────────────────────────
+// دوال مساعدة خاصة بالرئيسية — لازم تتعرّف هنا قبل أي استخدام:
+// التعريف الشرطي (function_exists) مبيتحمّلش مسبقًا زي التعريف العادي، فلو جت في آخر الملف
+// بتبقى غير معرّفة وقت النداء = صفحة بيضا. (ده اللي حصل على السيرفر ٥/٩.)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * إجمالي ساعات الكورس من meta المدة في Tutor (`_course_duration` = hours/minutes/seconds).
+ *
+ * @param int $course_id معرّف الكورس.
+ * @return string مثل "13h" — فاضي لو مفيش مدة. الدقايق بتتجاهل عشان يطابق صفحة الكورس.
+ */
+if ( ! function_exists( 'learnsimply_home_course_hours' ) ) {
+	function learnsimply_home_course_hours( $course_id ) {
+		$duration = get_post_meta( $course_id, '_course_duration', true );
+		if ( ! is_array( $duration ) ) {
+			return '';
+		}
+		// الساعات كما هي من غير تقريب — نفس الرقم اللي صفحة الكورس بتعرضه («13 ساعات»).
+		$hours = isset( $duration['hours'] ) ? (int) $duration['hours'] : 0;
+		return $hours > 0 ? $hours . 'h' : '';
+	}
+}
+
+/**
+ * تسمية المستوى بالعربي. Tutor بيخزّن مفاتيح إنجليزي (beginner/intermediate/expert)
+ * وأحيانًا نص عربي مباشر — الاتنين بيتقبلوا.
+ */
+if ( ! function_exists( 'learnsimply_home_level_label' ) ) {
+	function learnsimply_home_level_label( $level ) {
+		$map = array(
+			'beginner'     => 'مبتدئ',
+			'intermediate' => 'متوسط',
+			'expert'       => 'متقدم',
+			'all_levels'   => 'كل المستويات',
+		);
+		$key = strtolower( trim( (string) $level ) );
+		if ( isset( $map[ $key ] ) ) {
+			return $map[ $key ];
+		}
+		return '' !== $key ? $level : 'مبتدئ';
+	}
+}
+
+/**
+ * مفتاح CSS للمستوى (beginner / intermediate / expert).
+ */
+if ( ! function_exists( 'learnsimply_home_level_key' ) ) {
+	function learnsimply_home_level_key( $level ) {
+		$level = strtolower( trim( (string) $level ) );
+		if ( in_array( $level, array( 'intermediate', 'متوسط' ), true ) ) {
+			return 'intermediate';
+		}
+		if ( in_array( $level, array( 'expert', 'متقدم' ), true ) ) {
+			return 'expert';
+		}
+		return 'beginner';
+	}
+}
+
+/**
+ * خطوات مسار من قسم في الأكاديمية، بترتيب المستوى، مع بيانات الكارت.
+ *
+ * @param string $department_slug سلاج القسم.
+ * @param array  $courses_by_id   كورسات الصفحة مفهرسة بالمعرّف (للساعات والمستوى).
+ * @return array<int,array<string,mixed>>
+ */
+if ( ! function_exists( 'learnsimply_home_path_steps' ) ) {
+	function learnsimply_home_path_steps( $department_slug, $courses_by_id ) {
+		if ( ! function_exists( 'learnsimply_get_department_courses' ) ) {
+			return array();
+		}
+		$steps = array();
+		foreach ( learnsimply_get_department_courses( $department_slug ) as $item ) {
+			$course = isset( $courses_by_id[ $item['id'] ] ) ? $courses_by_id[ $item['id'] ] : null;
+			$meta   = array();
+			if ( $course && $course->hours ) {
+				$meta[] = $course->hours;
+			}
+			if ( $course && $course->level_label ) {
+				$meta[] = $course->level_label;
+			}
+			$steps[] = array(
+				'id'          => $item['id'],
+				'title'       => learnsimply_home_short_title( $item['title'] ),
+				'meta'        => implode( ' · ', $meta ),
+				'url'         => $item['url'],
+				'thumbnail'   => $item['thumbnail'] ? $item['thumbnail'] : ( $course ? $course->thumbnail : '' ),
+				'coming_soon' => false,
+			);
+		}
+		return $steps;
+	}
+}
+
+/**
+ * عنوان مختصر لكارت الخطوة: الجزء قبل أول «|» أو «+» — نفس عنوان الكورس بس من غير اللاحقة.
+ */
+if ( ! function_exists( 'learnsimply_home_short_title' ) ) {
+	function learnsimply_home_short_title( $title ) {
+		$short = preg_split( '/\s[|+]\s/u', (string) $title );
+		return trim( $short[0] );
+	}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // الكورسات — استعلام واحد محدود، وترتيب بمنطق الأكاديمية مش بالتاريخ.
 // الترتيب: الأساسيات (جافا ← OOP ← هياكل ١ ← هياكل ٢) ← تطوير التطبيقات (دارت)
 // ← ابدأ من هنا (بايثون). أي كورس مش في الأقسام بييجي في الآخر بترتيب النشر.
@@ -235,109 +340,3 @@ if ( class_exists( 'WooCommerce' ) ) {
 }
 
 Timber::render( 'front-page.twig', $context );
-
-// ─────────────────────────────────────────────────────────────────────────────
-// دوال مساعدة خاصة بالرئيسية
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * إجمالي ساعات الكورس من meta المدة في Tutor (`_course_duration` = hours/minutes/seconds).
- *
- * @param int $course_id معرّف الكورس.
- * @return string مثل "13h" — فاضي لو مفيش مدة.
- */
-if ( ! function_exists( 'learnsimply_home_course_hours' ) ) {
-	function learnsimply_home_course_hours( $course_id ) {
-		$duration = get_post_meta( $course_id, '_course_duration', true );
-		if ( ! is_array( $duration ) ) {
-			return '';
-		}
-		$hours   = isset( $duration['hours'] ) ? (int) $duration['hours'] : 0;
-		$minutes = isset( $duration['minutes'] ) ? (int) $duration['minutes'] : 0;
-		if ( $minutes >= 30 ) {
-			$hours++;
-		}
-		return $hours > 0 ? $hours . 'h' : '';
-	}
-}
-
-/**
- * تسمية المستوى بالعربي. Tutor بيخزّن مفاتيح إنجليزي (beginner/intermediate/expert)
- * وأحيانًا نص عربي مباشر — الاتنين بيتقبلوا.
- */
-if ( ! function_exists( 'learnsimply_home_level_label' ) ) {
-	function learnsimply_home_level_label( $level ) {
-		$map = array(
-			'beginner'     => 'مبتدئ',
-			'intermediate' => 'متوسط',
-			'expert'       => 'متقدم',
-			'all_levels'   => 'كل المستويات',
-		);
-		$key = strtolower( trim( (string) $level ) );
-		if ( isset( $map[ $key ] ) ) {
-			return $map[ $key ];
-		}
-		return '' !== $key ? $level : 'مبتدئ';
-	}
-}
-
-/**
- * مفتاح CSS للمستوى (beginner / intermediate / expert).
- */
-if ( ! function_exists( 'learnsimply_home_level_key' ) ) {
-	function learnsimply_home_level_key( $level ) {
-		$level = strtolower( trim( (string) $level ) );
-		if ( in_array( $level, array( 'intermediate', 'متوسط' ), true ) ) {
-			return 'intermediate';
-		}
-		if ( in_array( $level, array( 'expert', 'متقدم' ), true ) ) {
-			return 'expert';
-		}
-		return 'beginner';
-	}
-}
-
-/**
- * خطوات مسار من قسم في الأكاديمية، بترتيب المستوى، مع بيانات الكارت.
- *
- * @param string $department_slug سلاج القسم.
- * @param array  $courses_by_id   كورسات الصفحة مفهرسة بالمعرّف (للساعات والمستوى).
- * @return array<int,array<string,mixed>>
- */
-if ( ! function_exists( 'learnsimply_home_path_steps' ) ) {
-	function learnsimply_home_path_steps( $department_slug, $courses_by_id ) {
-		if ( ! function_exists( 'learnsimply_get_department_courses' ) ) {
-			return array();
-		}
-		$steps = array();
-		foreach ( learnsimply_get_department_courses( $department_slug ) as $item ) {
-			$course = isset( $courses_by_id[ $item['id'] ] ) ? $courses_by_id[ $item['id'] ] : null;
-			$meta   = array();
-			if ( $course && $course->hours ) {
-				$meta[] = $course->hours;
-			}
-			if ( $course && $course->level_label ) {
-				$meta[] = $course->level_label;
-			}
-			$steps[] = array(
-				'id'          => $item['id'],
-				'title'       => learnsimply_home_short_title( $item['title'] ),
-				'meta'        => implode( ' · ', $meta ),
-				'url'         => $item['url'],
-				'thumbnail'   => $item['thumbnail'] ? $item['thumbnail'] : ( $course ? $course->thumbnail : '' ),
-				'coming_soon' => false,
-			);
-		}
-		return $steps;
-	}
-}
-
-/**
- * عنوان مختصر لكارت الخطوة: الجزء قبل أول «|» أو «+» — نفس عنوان الكورس بس من غير اللاحقة.
- */
-if ( ! function_exists( 'learnsimply_home_short_title' ) ) {
-	function learnsimply_home_short_title( $title ) {
-		$short = preg_split( '/\s[|+]\s/u', (string) $title );
-		return trim( $short[0] );
-	}
-}
