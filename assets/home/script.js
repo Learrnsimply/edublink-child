@@ -98,42 +98,60 @@
 		return html;
 	}
 
-	var index = 0;
+	// حلقة واحدة بس. كل الحالة هنا (المقطع الحالي · كام حرف اتكتب · المرحلة) عشان لما التاب
+	// يتخفى ويرجع نكمّل من نفس المكان — مش نبدأ حلقة تانية جنب الأولى (كان بيظهر مؤشرين
+	// بيكتبوا مع بعض، لأن visibilitychange كان بينادي play() من غير ما يوقف اللي شغّال).
+	var state = { index: 0, k: 0, phase: 'typing' }; // typing → showing → next
 	var timer = null;
 
-	function play() {
-		var snippet = snippets[index];
-		var n = total(snippet);
-		var k = 0;
-		fileName.textContent = snippet.file;
-		out.innerHTML = '<span style="color:var(--lsh-dim)">$ </span>';
-
-		function step() {
-			k += 1;
-			pre.innerHTML = render(snippet, k) + '<span class="lsh-code__cur"></span>';
-			if (k < n) {
-				timer = setTimeout(step, 18 + Math.random() * 30);
-			} else {
-				timer = setTimeout(function () {
-					out.innerHTML = snippet.out;
-					timer = setTimeout(function () {
-						index = (index + 1) % snippets.length;
-						play();
-					}, 3800);
-				}, 500);
-			}
-		}
-		step();
+	function schedule(fn, ms) {
+		clearTimeout(timer);
+		timer = setTimeout(fn, ms);
 	}
 
-	// وقّف الكتابة لما التاب يبقى مخفي — توفير للبطارية ومفيش لزمة تكتب لمحدش
-	document.addEventListener('visibilitychange', function () {
+	function tick() {
 		if (document.hidden) {
-			clearTimeout(timer);
-		} else {
-			play();
+			return; // بيتكمّل من visibilitychange
+		}
+		var snippet = snippets[state.index];
+		var n = total(snippet);
+
+		if (state.phase === 'typing') {
+			if (state.k === 0) {
+				fileName.textContent = snippet.file;
+				out.innerHTML = '<span style="color:var(--lsh-dim)">$ </span>';
+			}
+			state.k += 1;
+			pre.innerHTML = render(snippet, state.k) + '<span class="lsh-code__cur"></span>';
+			if (state.k < n) {
+				schedule(tick, 18 + Math.random() * 30);
+			} else {
+				state.phase = 'showing';
+				schedule(tick, 500);
+			}
+			return;
+		}
+
+		if (state.phase === 'showing') {
+			out.innerHTML = snippet.out;
+			state.phase = 'next';
+			schedule(tick, 3800);
+			return;
+		}
+
+		state.index = (state.index + 1) % snippets.length;
+		state.k = 0;
+		state.phase = 'typing';
+		schedule(tick, 0);
+	}
+
+	// وقّف لما التاب يتخفى، وكمّل من نفس الحرف لما يرجع — من غير حلقة جديدة
+	document.addEventListener('visibilitychange', function () {
+		clearTimeout(timer);
+		if (!document.hidden) {
+			schedule(tick, 200);
 		}
 	});
 
-	play();
+	tick();
 })();
