@@ -38,6 +38,20 @@ function learnsimply_all_courses_bundle_slugs() {
 }
 
 /**
+ * المنتج ده باقة؟ — عناصر في بلجن الباقات، أو «جميع الدورات» بالسلاج.
+ * القاعدة الواحدة اللي الكونترولر واختيار ملفات CSS (functions.php) لازم يتفقوا عليها —
+ * لما اختلفوا (٥/٩) الصفحة اترندرت بقالب الباقة من غير CSS بتاعه.
+ */
+function learnsimply_is_bundle_product( $post_id ) {
+	$post_id = (int) $post_id;
+	if ( function_exists( 'learnsimply_bundle_item_count' ) && learnsimply_bundle_item_count( $post_id ) > 0 ) {
+		return true;
+	}
+	$slug = urldecode( (string) get_post_field( 'post_name', $post_id ) );
+	return in_array( $slug, learnsimply_all_courses_bundle_slugs(), true );
+}
+
+/**
  * منتجات ووكومرس لكل كورسات الأكاديمية المنشورة، بترتيب الأقسام والمستويات.
  *
  * @return int[]
