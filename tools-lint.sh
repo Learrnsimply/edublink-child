@@ -24,4 +24,14 @@ if [ -f tests/front-page-smoke.php ]; then
   "$PHP" tests/front-page-smoke.php || fail=1
 fi
 
+# محلّل محتوى الكورس — على النصوص الحقيقية للكورسات الستة (كل كورس مبني بشكل مختلف).
+if [ -f tests/course-content-test.php ]; then
+  "$PHP" tests/course-content-test.php || fail=1
+fi
+
+# اختبار تشغيل صفحة الكورس — نفس فكرة اختبار الرئيسية: بيشغّل tutor/single-course.php بـstubs.
+if [ -f tests/single-course-smoke.php ]; then
+  "$PHP" tests/single-course-smoke.php || fail=1
+fi
+
 exit $fail
