@@ -108,6 +108,11 @@
   100% { box-shadow: 0 12px 34px -10px var(--lsh-blue-glow), 0 0 0 0 rgba(64, 119, 243, 0); }
 }
 @media (prefers-reduced-motion: reduce) { .lsh-btn--cta { animation: none; } }
+/* زرار الباقات — لون النجوم (نفس الزرار الثانوي في صفحة الكورس)، بنفس ارتفاع الزرار الأساسي */
+.lsh-btn--bundles { padding: 18px 30px; font-size: 17px; font-weight: 700; background: rgba(255, 184, 77, 0.12); border-color: rgba(255, 184, 77, 0.45); color: #ffd28a; }
+.lsh-btn--bundles:hover { background: rgba(255, 184, 77, 0.2); border-color: var(--lsh-star); color: #fff; transform: translateY(-2px); }
+.lsh-btn--bundles svg { color: var(--lsh-star); }
+.lsh-bundles { scroll-margin-top: 110px; } /* الهيدر العائم ~90px */
 .lsh-trust { display: flex; flex-wrap: wrap; gap: 14px 26px; color: var(--lsh-muted); font-size: 14px; margin: 0; padding: 0; list-style: none; }
 .lsh-trust li::before { content: "✓"; color: var(--lsh-ok); font-weight: 700; margin-inline-end: 7px; }
 .lsh-stats { display: flex; gap: 36px; margin-top: 40px; padding-top: 34px; border-top: 1px solid var(--lsh-line); }
