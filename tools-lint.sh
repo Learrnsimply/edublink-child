@@ -18,4 +18,10 @@ if [ -f tests/bundles-test.php ]; then
   "$PHP" tests/bundles-test.php || fail=1
 fi
 
+# اختبار تشغيل الرئيسية — php -l بيمسك الصياغة بس. ده بيشغّل front-page.php فعليًا بـstubs
+# ويمسك أخطاء وقت التشغيل (دالة غير معرّفة · تضمين مزدوج · شكل الـcontext).
+if [ -f tests/front-page-smoke.php ]; then
+  "$PHP" tests/front-page-smoke.php || fail=1
+fi
+
 exit $fail
