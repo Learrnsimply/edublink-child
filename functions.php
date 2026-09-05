@@ -1322,7 +1322,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260905-4');
+	define('LS_ASSETS_VERSION', '20260905-5');
 }
 
 /**
