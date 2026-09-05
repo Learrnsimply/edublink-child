@@ -6,6 +6,11 @@
       <p class="lsh-hero__lead">ابدأ من الصفر، افهم الأساس صح، واشتغل بإيدك على مشاريع حقيقية من غير تعقيد.</p>
       <div class="lsh-hero__ctas">
         <a class="lsh-btn lsh-btn--primary lsh-btn--cta" href="{{ courses_archive_url|default(site.url ~ '/courses/') }}">ابدأ الآن <span class="lsh-btn__arrow" aria-hidden="true">←</span></a>
+        {# زرار الباقات — بلون مختلف، بينزل لقسم الباقات في نفس الصفحة (#bundle في paths.twig) #}
+        <a class="lsh-btn lsh-btn--bundles" href="#bundle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
+          الباقات
+        </a>
       </div>
       <ul class="lsh-trust">
         <li>ضمان استرداد خلال 7 أيام</li>
