@@ -22,16 +22,27 @@
       </div>
     </div>
 
-    <div class="lsh-code" aria-label="مثال كود بيتكتب لوحده" data-lsh-typewriter>
-      <div class="lsh-code__bar"><i></i><i></i><i></i><span class="lsh-code__file" data-lsh-file>Main.java</span></div>
-      <pre class="lsh-code__pre" data-lsh-pre><span class="lsh-code__c">// أول برنامج Java ليك</span>
-<span class="lsh-code__k">public class </span><span class="lsh-code__t">Main</span> {
-    <span class="lsh-code__k">public static void </span><span class="lsh-code__f">main</span>(String[] args) {
-        String name = <span class="lsh-code__s">"اتعلم ببساطة"</span>;
-        System.out.<span class="lsh-code__f">println</span>(<span class="lsh-code__s">"أهلاً بيك في "</span> + name);
-    }
-}</pre>
-      <div class="lsh-code__out" data-lsh-out><b>▶ أهلاً بيك في اتعلم ببساطة</b></div>
+    <div class="lsh-code" aria-label="درس مصغّر: كود بيتكتب وتحته شرح" data-lsh-typewriter>
+      <div class="lsh-code__bar">
+        <i></i><i></i><i></i>
+        <div class="lsh-code__tabs" role="tablist" aria-label="اختار اللغة">
+          <button type="button" class="lsh-code__tab is-active" role="tab" aria-selected="true" data-lsh-tab="java">Java</button>
+          <button type="button" class="lsh-code__tab" role="tab" aria-selected="false" data-lsh-tab="oop">OOP</button>
+          <button type="button" class="lsh-code__tab" role="tab" aria-selected="false" data-lsh-tab="cpp">C++</button>
+          <button type="button" class="lsh-code__tab" role="tab" aria-selected="false" data-lsh-tab="dart">Dart</button>
+          <button type="button" class="lsh-code__tab" role="tab" aria-selected="false" data-lsh-tab="python">Python</button>
+        </div>
+      </div>
+      <pre class="lsh-code__pre" data-lsh-pre><span class="lsh-code__k">int</span> score = <span class="lsh-code__n">92</span>;
+<span class="lsh-code__k">String</span> grade;
+<span class="lsh-code__k">if</span> (score >= <span class="lsh-code__n">90</span>) {
+    grade = <span class="lsh-code__s">"A"</span>;
+} <span class="lsh-code__k">else</span> {
+    grade = <span class="lsh-code__s">"B"</span>;
+}
+System.out.<span class="lsh-code__f">println</span>(<span class="lsh-code__s">"درجتك: "</span> + grade);</pre>
+      <div class="lsh-code__notes" data-lsh-notes aria-live="polite"><span class="lsh-code__note">الطباعة: الكمبيوتر بيرد عليك في التيرمينال تحت.</span></div>
+      <div class="lsh-code__out" data-lsh-out><b>▶ درجتك: A ✓</b> <span>مبروك، نجحت من أول محاولة</span></div>
     </div>
   </div>
 </section>
