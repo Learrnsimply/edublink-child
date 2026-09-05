@@ -1045,6 +1045,9 @@ if (file_exists(__DIR__ . '/inc/course-content.php')) {
 if (file_exists(__DIR__ . '/inc/course-extras.php')) {
 	require_once __DIR__ . '/inc/course-extras.php';
 }
+if (file_exists(__DIR__ . '/inc/bundle-page.php')) {
+	require_once __DIR__ . '/inc/bundle-page.php';
+}
 
 /**
  * Load Composer dependencies
@@ -1332,7 +1335,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260905-10');
+	define('LS_ASSETS_VERSION', '20260905-11');
 }
 
 /**
@@ -2302,9 +2305,15 @@ function edublink_child_load_page_assets()
 		$js_file = $assets_dir . '/' . $page_type . '/script.js';
 
 		if (file_exists($css_file)) {
+			// صفحة الباقة بتبني على CSS صفحة الكورس (نفس لغة .lsc) — بيتحمّل قبلها بنسخته.
+			$css_deps = array();
+			$course_css = $assets_dir . '/single-course/style.css';
+			if ($page_type === 'single-product-bundle' && file_exists($course_css)) {
+				wp_enqueue_style('edublink-single-course-style', $assets_uri . '/single-course/style.css', array(), filemtime($course_css));
+				$css_deps[] = 'edublink-single-course-style';
+			}
 			// Load with high priority and no dependencies to ensure it loads last and can override everything
-			// Using empty array for dependencies ensures it loads after all other styles
-			wp_enqueue_style('edublink-' . $page_type . '-style', $assets_uri . '/' . $page_type . '/style.css', array(), filemtime($css_file));
+			wp_enqueue_style('edublink-' . $page_type . '-style', $assets_uri . '/' . $page_type . '/style.css', $css_deps, filemtime($css_file));
 		}
 		if (file_exists($js_file)) {
 			wp_enqueue_script('edublink-' . $page_type . '-script', $assets_uri . '/' . $page_type . '/script.js', array('jquery'), filemtime($js_file), true);
