@@ -1,0 +1,37 @@
+{# الهيرو — النص الحالي للمنصة، من غير صور: كارت كود بيتكتب لوحده (assets/home/script.js) #}
+<section class="lsh-hero" aria-labelledby="lsh-hero-title">
+  <div class="lsh-wrap lsh-hero__grid">
+    <div class="lsh-hero__copy">
+      <h1 id="lsh-hero-title" class="lsh-hero__title">البرمجة أسهل ممــا تتخيل...<br>لو اتعلمتها <em>ببساطة</em></h1>
+      <p class="lsh-hero__lead">ابدأ من الصفر، افهم الأساس صح، واشتغل بإيدك على مشاريع حقيقية من غير تعقيد.</p>
+      <div class="lsh-hero__ctas">
+        <a class="lsh-btn lsh-btn--primary lsh-btn--xl" href="{{ courses_archive_url|default(site.url ~ '/courses/') }}">ابدأ الآن</a>
+      </div>
+      <ul class="lsh-trust">
+        <li>ضمان استرداد خلال 7 أيام</li>
+        <li>شهادة إكمال لكل مستوى</li>
+        <li>مشاريع تطبيقية عملية</li>
+        <li>تمارين بعد كل درس</li>
+      </ul>
+      <div class="lsh-stats">
+        <div><span class="lsh-stats__v lsh-num">{{ stats.youtube }}</span><span class="lsh-stats__k">متابع على يوتيوب</span></div>
+        <div><span class="lsh-stats__v lsh-num">{{ stats.students_claim }}</span><span class="lsh-stats__k">طالب من {{ stats.countries_claim }} دولة</span></div>
+        {% if stats.rating_avg %}
+        <div><span class="lsh-stats__v lsh-num">{{ stats.rating_avg }} <span class="lsh-star">★</span></span><span class="lsh-stats__k">متوسط تقييم الكورسات</span></div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="lsh-code" aria-label="مثال كود بيتكتب لوحده" data-lsh-typewriter>
+      <div class="lsh-code__bar"><i></i><i></i><i></i><span class="lsh-code__file" data-lsh-file>Main.java</span></div>
+      <pre class="lsh-code__pre" data-lsh-pre><span class="lsh-code__c">// أول برنامج Java ليك</span>
+<span class="lsh-code__k">public class </span><span class="lsh-code__t">Main</span> {
+    <span class="lsh-code__k">public static void </span><span class="lsh-code__f">main</span>(String[] args) {
+        String name = <span class="lsh-code__s">"اتعلم ببساطة"</span>;
+        System.out.<span class="lsh-code__f">println</span>(<span class="lsh-code__s">"أهلاً بيك في "</span> + name);
+    }
+}</pre>
+      <div class="lsh-code__out" data-lsh-out><b>▶ أهلاً بيك في اتعلم ببساطة</b></div>
+    </div>
+  </div>
+</section>

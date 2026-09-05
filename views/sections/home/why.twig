@@ -1,0 +1,25 @@
+{# ليه اتعلم ببساطة — نصوص قسم المميزات الحالي + الشهادة كنقطة سادسة (بدل قسم مستقل) #}
+{% set features = [
+  { icon: '▶', title: 'مناسب حتى لو أول مرة تسمع عن البرمجة', text: 'هنبدأ من الأساس خالص… خطوة خطوة لحد ما تبقى فاهم بجد.' },
+  { icon: '◎', title: 'شرح واضح وبسيط', text: 'من غير مصطلحات معقدة… نفهم الفكرة كأننا بنتكلم مع بعض.' },
+  { icon: '⌘', title: 'تطبيق عملي على كل فكرة', text: 'مش مجرد شرح نظري… كل مفهوم بنطبقه بكود حقيقي قدامك.' },
+  { icon: '☰', title: 'منهج منظم', text: 'خطوة بخطوة. مش هتتوه ولا هتحس إن في حاجة ناقصة.' },
+  { icon: '✆', title: 'دعم مستمر', text: 'متابع معاك دايمًا، واتس أو على المنصة. مافيش سؤال ملوش إجابة.' },
+  { icon: '✓', title: 'شهادة بعد كل كورس', text: 'أنهِي المحتوى، طبّق عمليًا، وخُد شهادة تثبت مستواك مش مجرد حضور.' }
+] %}
+<section class="lsh-section" id="why" aria-labelledby="lsh-why-title">
+  <div class="lsh-wrap">
+    <p class="lsh-eyebrow">Why us</p>
+    <h2 id="lsh-why-title" class="lsh-h2">لماذا تختار منصة اتعلم ببساطة لتعلم البرمجة؟</h2>
+    <p class="lsh-sub">الفرق بين اللي بيتعلم صح واللي بيضيع وقت… هو البداية الصح.</p>
+    <div class="lsh-features">
+      {% for f in features %}
+      <div class="lsh-feature">
+        <span class="lsh-feature__icon" aria-hidden="true">{{ f.icon }}</span>
+        <h3 class="lsh-feature__title">{{ f.title }}</h3>
+        <p class="lsh-feature__text">{{ f.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

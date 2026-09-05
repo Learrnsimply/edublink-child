@@ -1,121 +1,139 @@
 /**
- * Home Page Scripts
- * 
- * Custom JavaScript for the home page
- * Located in: /assets/home/script.js
- * 
+ * الرئيسية — assets/home/script.js
+ *
+ * كارت الكود في الهيرو: بيكتب ٣ أمثلة بالتتابع (Java ← Java OOP ← C++ Linked List)
+ * وبيعرض نتيجة كل واحد وبيعيد. لو المتصفح طالب حركة أقل، بيسيب الكود اللي في الـHTML كما هو.
+ * الأسئلة الشائعة بـ<details> ومش محتاجة جافاسكريبت.
+ *
  * @package EduBlink_Child
  */
-
-(function() {
+(function () {
 	'use strict';
 
-	// Wait for DOM to be ready
-	document.addEventListener('DOMContentLoaded', function() {
-		// Testimonials Slider (if exists on page)
-		initTestimonialsSlider();
-		
-		// FAQ Accordion (if exists on page)
-		initFAQAccordion();
-	});
-
-	/**
-	 * Initialize Testimonials Slider
-	 */
-	function initTestimonialsSlider() {
-		const grid = document.getElementById("testimonialsGrid");
-		const prevBtn = document.getElementById("prevBtn");
-		const nextBtn = document.getElementById("nextBtn");
-
-		if (!grid || !prevBtn || !nextBtn) return;
-		
-		// Mark as initialized to prevent global script from interfering
-		grid.dataset.sliderInitialized = 'true';
-
-		let currentIndex = 0;
-		const cards = Array.from(
-			grid.querySelectorAll(".learnsimply-new-testimonial-card")
-		);
-		const totalCards = cards.length;
-
-		// Determine cards per view based on screen size
-		function getCardsPerView() {
-			if (window.innerWidth >= 1200) return 3;
-			if (window.innerWidth >= 768) return 2;
-			return 1;
-		}
-
-		function getCardWidth() {
-			if (cards.length === 0) return 0;
-			const cardWidth = cards[0].offsetWidth;
-			const gap = 24; // gap from CSS
-			return cardWidth + gap;
-		}
-
-		function updateSlider() {
-			const cardsPerView = getCardsPerView();
-			const maxIndex = Math.max(0, totalCards - cardsPerView);
-
-			// Clamp current index
-			currentIndex = Math.min(Math.max(0, currentIndex), maxIndex);
-
-			// Calculate and apply transform (positive for RTL)
-			const cardWidth = getCardWidth();
-			const translateX = currentIndex * cardWidth;
-			
-			// Use positive translateX for RTL layout
-			grid.style.transform = `translateX(${translateX}px)`;
-
-			// Update button states with visual feedback
-			prevBtn.disabled = currentIndex === 0;
-			nextBtn.disabled = currentIndex >= maxIndex;
-			
-			// Add/remove disabled class for additional styling
-			prevBtn.classList.toggle('is-disabled', currentIndex === 0);
-			nextBtn.classList.toggle('is-disabled', currentIndex >= maxIndex);
-		}
-
-		// Previous button - go to previous cards (move right in RTL)
-		prevBtn.addEventListener("click", function () {
-			if (currentIndex > 0) {
-				currentIndex--;
-				updateSlider();
-			}
-		});
-
-		// Next button - go to next cards (move left in RTL)
-		nextBtn.addEventListener("click", function () {
-			const cardsPerView = getCardsPerView();
-			const maxIndex = totalCards - cardsPerView;
-			if (currentIndex < maxIndex) {
-				currentIndex++;
-				updateSlider();
-			}
-		});
-
-		// Update on window resize
-		let resizeTimeout;
-		window.addEventListener("resize", function () {
-			clearTimeout(resizeTimeout);
-			resizeTimeout = setTimeout(function () {
-				currentIndex = 0; // Reset to first slide on resize
-				updateSlider();
-			}, 250);
-		});
-
-		// Initial setup
-		updateSlider();
+	var root = document.querySelector('[data-lsh-typewriter]');
+	if (!root) {
+		return;
 	}
-
-	/**
-	 * Initialize FAQ Accordion
-	 * Note: FAQ uses onclick="toggleFaq(this)" in HTML, so no event listeners needed here
-	 * The toggleFaq function is defined globally in assets/global/script.js
-	 */
-	function initFAQAccordion() {
-		// FAQ functionality is handled by window.toggleFaq() via onclick attribute
-		// No additional initialization needed
+	var pre = root.querySelector('[data-lsh-pre]');
+	var out = root.querySelector('[data-lsh-out]');
+	var fileName = root.querySelector('[data-lsh-file]');
+	if (!pre || !out || !fileName) {
 		return;
 	}
 
+	var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (reduceMotion) {
+		return; // الكود الكامل موجود أصلًا في الـHTML — مفيش حاجة تتحرك
+	}
+
+	// كل مقطع: [class, text]. الفئة فاضية = نص عادي. الفئات بتتطابق مع assets/home/style.css
+	var snippets = [
+		{
+			file: 'Main.java',
+			out: '<b>▶ أهلاً بيك في اتعلم ببساطة</b>',
+			code: [
+				['c', '// أول برنامج Java ليك\n'],
+				['k', 'public class '], ['t', 'Main'], ['', ' {\n'],
+				['', '    '], ['k', 'public static void '], ['f', 'main'], ['', '(String[] args) {\n'],
+				['', '        String name = '], ['s', '"اتعلم ببساطة"'], ['', ';\n'],
+				['', '        System.out.'], ['f', 'println'], ['', '('], ['s', '"أهلاً بيك في "'], ['', ' + name);\n'],
+				['', '    }\n}']
+			]
+		},
+		{
+			file: 'Student.java',
+			out: '<b>▶ Ahmed · Level 2 · OOP</b>',
+			code: [
+				['c', '// Encapsulation: البيانات مخفية والوصول بـ getters\n'],
+				['k', 'public class '], ['t', 'Student'], ['', ' {\n'],
+				['', '    '], ['k', 'private '], ['t', 'String'], ['', ' name;\n'],
+				['', '    '], ['k', 'private int'], ['', ' level;\n\n'],
+				['', '    '], ['k', 'public '], ['f', 'Student'], ['', '(String name, int level) {\n'],
+				['', '        '], ['k', 'this'], ['', '.name = name; '], ['k', 'this'], ['', '.level = level;\n'],
+				['', '    }\n'],
+				['', '    '], ['k', 'public '], ['t', 'String'], ['', ' '], ['f', 'getName'], ['', '() { '], ['k', 'return'], ['', ' name; }\n}']
+			]
+		},
+		{
+			file: 'linked_list.cpp',
+			out: '<b>▶ 10 → 20 → 30 → NULL</b>',
+			code: [
+				['c', '// أول Linked List بإيدك\n'],
+				['k', 'struct '], ['t', 'Node'], ['', ' {\n'],
+				['', '    '], ['k', 'int'], ['', ' data;\n'],
+				['', '    '], ['t', 'Node'], ['', '* next;\n};\n\n'],
+				['t', 'Node'], ['', '* head = '], ['k', 'new '], ['t', 'Node'], ['', '{10, '], ['k', 'nullptr'], ['', '};\n'],
+				['', 'head->next = '], ['k', 'new '], ['t', 'Node'], ['', '{20, '], ['k', 'nullptr'], ['', '};\n'],
+				['', 'head->next->next = '], ['k', 'new '], ['t', 'Node'], ['', '{30, '], ['k', 'nullptr'], ['', '};']
+			]
+		}
+	];
+
+	function escapeHtml(s) {
+		return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	}
+
+	function total(snippet) {
+		var n = 0;
+		for (var i = 0; i < snippet.code.length; i++) {
+			n += snippet.code[i][1].length;
+		}
+		return n;
+	}
+
+	function render(snippet, upto) {
+		var html = '';
+		var count = 0;
+		for (var i = 0; i < snippet.code.length; i++) {
+			var cls = snippet.code[i][0];
+			var txt = snippet.code[i][1];
+			var take = Math.max(0, Math.min(txt.length, upto - count));
+			count += txt.length;
+			var piece = escapeHtml(txt.slice(0, take));
+			html += cls ? '<span class="lsh-code__' + cls + '">' + piece + '</span>' : piece;
+			if (take < txt.length) {
+				break;
+			}
+		}
+		return html;
+	}
+
+	var index = 0;
+	var timer = null;
+
+	function play() {
+		var snippet = snippets[index];
+		var n = total(snippet);
+		var k = 0;
+		fileName.textContent = snippet.file;
+		out.innerHTML = '<span style="color:var(--lsh-dim)">$ </span>';
+
+		function step() {
+			k += 1;
+			pre.innerHTML = render(snippet, k) + '<span class="lsh-code__cur"></span>';
+			if (k < n) {
+				timer = setTimeout(step, 18 + Math.random() * 30);
+			} else {
+				timer = setTimeout(function () {
+					out.innerHTML = snippet.out;
+					timer = setTimeout(function () {
+						index = (index + 1) % snippets.length;
+						play();
+					}, 3800);
+				}, 500);
+			}
+		}
+		step();
+	}
+
+	// وقّف الكتابة لما التاب يبقى مخفي — توفير للبطارية ومفيش لزمة تكتب لمحدش
+	document.addEventListener('visibilitychange', function () {
+		if (document.hidden) {
+			clearTimeout(timer);
+		} else {
+			play();
+		}
+	});
+
+	play();
 })();

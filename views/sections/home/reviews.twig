@@ -1,0 +1,43 @@
+{#
+  آراء الطلاب — الثمانية الموجودين في المنصة (تعليقات يوتيوب) كما هم،
+  وفوقهم التقييم المجمّع الحقيقي من Tutor (بيتحدّث لوحده).
+#}
+{% set reviews = [
+  { name: 'Rahaf And alkrim', text: 'احلا خمس ساعات في اليوتيوب ❤ باين المجهود الجبار .. سبت محاضرات الكليه و ذاكرت الفيديو 🎉 شكرا مش كفايه .. بس مافيش غيرها فشكرا 😅' },
+  { name: 'Mouayad MHD Samer Zaweet', text: 'أكبر معاني الشكر لك ❤ مشكووور جدا جدا جدا عنجد انا بعمري ما فهمت البرمجة هيك صح انا بعرف شو هي ومداخلها بس في فرق بين انك تكون حافظ وبين انك تكون فاهم فألف شكر لك وللمجهود الجبار 😊💯👌🏻' },
+  { name: 'Djihad Asma', text: 'بدأت من أيام c++ وبراجع معاك وفرحانة ع الآخر عشان أنت رسخت كل المفاهيم بالتمارين و أسئلتك شكرا' },
+  { name: 'Istabraq Shukr', text: 'حضرتك تستحق لقب افضل استاذ عربي بالبرمجة مع اني مكمله الجزء الاول كله لكن مع ذلك شفت الفيديو كامل مشكورا جداً على التوضيح والشرح الرائع 👍🏻' },
+  { name: 'fatehi alqadasi', text: 'أسلوب رائع لايقارن حتى على مستوى الكورسات المدفوعة ...ماشاء الله تبارك الله ياهندسه ... جزاك الله ...صراحة جهد جبار .. إن الله لا يضيع أجر المحسنين' },
+  { name: 'Nora', text: 'شكرًا استفدت منك كثير بالمذاكره 🤍 الله يكتب اجرك ويجعلها في موازين حسناتك' },
+  { name: 'Mohamed Sahri', text: 'حرفيا انت خليت البرمجة بالنسبالى من اسهل الحاجات بعد م كنت شايفها معقدة بجد انت شخص ممتاز فى توصيل المعلومة و فهمها بسرعة الف شكر ليك يا باشمهندس ❤❤❤' },
+  { name: 'Khaled Ashraf', text: 'شكرا . ❤ عجز لساني عن وصف العظمة ف اكتفيت بقول " شكرا " .' }
+] %}
+<section class="lsh-section" id="reviews" aria-labelledby="lsh-reviews-title">
+  <div class="lsh-wrap">
+    <p class="lsh-eyebrow">Students</p>
+    <h2 id="lsh-reviews-title" class="lsh-h2">آراء الطلاب</h2>
+    <p class="lsh-sub">تجارب حقيقية لطلاب بدأوا من الصفر وتعلّموا معنا.</p>
+
+    {% if stats.rating_avg %}
+    <div class="lsh-rate">
+      <span class="lsh-rate__big lsh-num">{{ stats.rating_avg }}</span>
+      <span class="lsh-rate__stars" aria-hidden="true">★★★★★</span>
+      <span class="lsh-rate__text">متوسط تقييم الكورسات على المنصة · <b class="lsh-num">{{ stats.rating_count }}</b> تقييم من طلاب اشتروا فعلًا</span>
+      <span class="lsh-rate__side"><b class="lsh-num">{{ stats.students_claim }}</b> طالب من {{ stats.countries_claim }} دولة</span>
+    </div>
+    {% endif %}
+
+    <div class="lsh-reviews">
+      {% for review in reviews %}
+      <figure class="lsh-review">
+        <blockquote class="lsh-review__text">{{ review.text }}</blockquote>
+        <figcaption class="lsh-review__who">
+          <span class="lsh-review__avatar lsh-num" aria-hidden="true">{{ review.name|slice(0, 1)|upper }}</span>
+          <span><b>{{ review.name }}</b><small>طالب</small></span>
+          <span class="lsh-review__src">YouTube</span>
+        </figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+{# الكورسات — كارت واحد ثابت: صورة · شارة · عنوان · ساعات · وصف · مستوى · تقييم · دروس · سعر واحد #}
+<section class="lsh-section" id="courses" aria-labelledby="lsh-courses-title">
+  <div class="lsh-wrap">
+    <div class="lsh-head">
+      <div>
+        <p class="lsh-eyebrow">Courses</p>
+        <h2 id="lsh-courses-title" class="lsh-h2">المسارات اللي هتبني أساسك صح</h2>
+        <p class="lsh-sub">ستة كورسات مرتّبة بالمستوى، كل واحد بيبني على اللي قبله.</p>
+      </div>
+      <a class="lsh-btn lsh-btn--ghost lsh-btn--sm" href="{{ courses_archive_url|default(site.url ~ '/courses/') }}">كل الدورات ←</a>
+    </div>
+
+    <div class="lsh-grid">
+      {% for course in courses %}
+      <article class="lsh-card">
+        {% if course.is_free %}
+          <span class="lsh-badge lsh-badge--free">مجاني</span>
+        {% elseif course.is_bestseller %}
+          <span class="lsh-badge">الأكثر مبيعًا</span>
+        {% endif %}
+        <a class="lsh-card__img" href="{{ course.link }}" aria-hidden="true" tabindex="-1">
+          <img src="{{ course.thumbnail }}" alt="" loading="{{ loop.index <= 3 ? 'eager' : 'lazy' }}" width="640" height="360">
+        </a>
+        <div class="lsh-card__body">
+          <div class="lsh-card__row">
+            <h3 class="lsh-card__title"><a href="{{ course.link }}">{{ course.title }}</a></h3>
+            {% if course.hours %}<span class="lsh-hours lsh-num">{{ course.hours }}</span>{% endif %}
+          </div>
+          {% if course.card_text %}
+            <p class="lsh-card__text">{{ course.card_text }}</p>
+          {% endif %}
+          <div class="lsh-card__meta">
+            <span class="lsh-level lsh-level--{{ course.level_key }}">{{ course.level_label }}</span>
+            {% if course.rating_count > 0 %}
+              <span class="lsh-rating"><span class="lsh-star">★</span> <span class="lsh-num">{{ course.rating_avg }}</span> <span class="lsh-num">({{ course.rating_count }})</span></span>
+            {% endif %}
+            <span><span class="lsh-num">{{ course.lesson_count }}</span> درس</span>
+            <span class="lsh-price">
+              {% if course.is_free %}مجاني{% else %}<span class="lsh-num">{{ course.price_label }}</span><small>ج.م</small>{% endif %}
+            </span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
