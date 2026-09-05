@@ -106,9 +106,11 @@ if ( ! function_exists( 'learnsimply_home_path_steps' ) ) {
 			if ( $course && $course->level_label ) {
 				$meta[] = $course->level_label;
 			}
+			$short = learnsimply_home_short_title( $item['title'] );
 			$steps[] = array(
 				'id'          => $item['id'],
-				'title'       => learnsimply_home_short_title( $item['title'] ),
+				'title'       => $short,
+				'label'       => function_exists( 'learnsimply_course_short_label' ) ? learnsimply_course_short_label( $item['id'], $short ) : $short,
 				'meta'        => implode( ' · ', $meta ),
 				'url'         => $item['url'],
 				'thumbnail'   => $item['thumbnail'] ? $item['thumbnail'] : ( $course ? $course->thumbnail : '' ),
@@ -282,6 +284,7 @@ $apps_steps = learnsimply_home_path_steps( 'app-development', $courses_by_id );
 $apps_steps[] = array(
 	'id'          => 0,
 	'title'       => 'Flutter',
+	'label'       => 'Flutter',
 	'meta'        => 'قريبًا',
 	'url'         => '',
 	'thumbnail'   => '',

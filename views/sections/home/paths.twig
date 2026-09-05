@@ -7,30 +7,30 @@
 
     <div class="lsh-paths">
       {% for path in paths %}
-      <div class="lsh-path">
+      <article class="lsh-path{% if path.primary %} lsh-path--primary{% endif %}">
         <div class="lsh-path__head">
-          <div>
-            <p class="lsh-path__label">{{ path.label }}</p>
-            <h3 class="lsh-path__title">{{ path.title }}</h3>
-          </div>
-          <a class="lsh-btn {{ path.primary ? 'lsh-btn--primary' : 'lsh-btn--ghost' }} lsh-btn--sm" href="{{ path.url }}">{{ path.cta }} ←</a>
+          <p class="lsh-path__label">{{ path.label }} · <span class="lsh-num">{{ path.steps|length }}</span> خطوات</p>
+          <h3 class="lsh-path__title">{{ path.title }}</h3>
+          <p class="lsh-path__text">{{ path.text }}</p>
+          <a class="lsh-btn {{ path.primary ? 'lsh-btn--primary' : 'lsh-btn--ghost' }}" href="{{ path.url }}">{{ path.cta }} <span aria-hidden="true">←</span></a>
         </div>
-        <p class="lsh-path__text">{{ path.text }}</p>
-        <ol class="lsh-steps lsh-steps--{{ path.steps|length }}">
+        <ol class="lsh-roadmap" aria-label="خطوات {{ path.label }}">
           {% for step in path.steps %}
-          <li class="lsh-step{% if step.coming_soon %} lsh-step--soon{% endif %}">
-            {% if step.coming_soon %}
-              <span class="lsh-step__img lsh-step__img--soon">{{ step.title }}</span>
-            {% else %}
-              <a href="{{ step.url }}" class="lsh-step__img" aria-hidden="true" tabindex="-1"><img src="{{ step.thumbnail }}" alt="" loading="lazy" width="320" height="180"></a>
-            {% endif %}
-            <span class="lsh-step__n lsh-num">{{ loop.index }}</span>
-            <b class="lsh-step__title">{% if step.url %}<a href="{{ step.url }}">{{ step.title }}</a>{% else %}{{ step.title }}{% endif %}</b>
-            <small class="lsh-step__meta">{{ step.meta }}</small>
+          <li class="lsh-rstep{% if step.coming_soon %} lsh-rstep--soon{% endif %}">
+            <span class="lsh-rstep__n lsh-num" aria-hidden="true">{{ loop.index }}</span>
+            <div class="lsh-rstep__card">
+              {% if step.coming_soon %}
+                <span class="lsh-rstep__img lsh-rstep__img--soon">{{ step.label }}</span>
+              {% else %}
+                <a href="{{ step.url }}" class="lsh-rstep__img" aria-hidden="true" tabindex="-1"><img src="{{ step.thumbnail }}" alt="" loading="lazy" width="320" height="180"></a>
+              {% endif %}
+              <b class="lsh-rstep__title">{% if step.url %}<a href="{{ step.url }}">{{ step.label }}</a>{% else %}{{ step.label }}{% endif %}</b>
+              <small class="lsh-rstep__meta">{{ step.meta }}</small>
+            </div>
           </li>
           {% endfor %}
         </ol>
-      </div>
+      </article>
       {% endfor %}
     </div>
 
