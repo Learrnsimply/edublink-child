@@ -34,4 +34,9 @@ if [ -f tests/single-course-smoke.php ]; then
   "$PHP" tests/single-course-smoke.php || fail=1
 fi
 
+# صفحة الباقة — ترتيب الكورسات بالمستوى · الهدية · الأرقام المجمّعة · التوفير.
+if [ -f tests/bundle-page-test.php ]; then
+  "$PHP" tests/bundle-page-test.php || fail=1
+fi
+
 exit $fail

@@ -300,72 +300,50 @@ if ( function_exists( 'tutor_utils' ) ) {
 	}
 }
 
-// Check if product has bundles
+// ─────────────────────────────────────────────────────────────────────────────
+// الباقة؟ — عناصرها من جدول بلجن الباقات. لو فيه عناصر بنرندر صفحة الباقة
+// (views/single-product-bundle.twig) بالـcontext من inc/bundle-page.php، وبنكمّل
+// آراء ووكومرس وفورم التقييم اللي اتجهّزوا فوق. المنتج العادي (كتاب) بيكمّل زي ما هو.
+// ─────────────────────────────────────────────────────────────────────────────
 $context['has_bundles'] = false;
-$context['bundle_items'] = array();
-$context['bundle_items_count'] = 0;
-$context['bundle_items_json'] = '';
-
-// Check if product type is bundle or has bundle items in database
-if ( $product->get_type() === 'bundle' || $product->get_type() === 'easy_product_bundle' || class_exists( 'AsanaPlugins\WooCommerce\ProductBundles\Plugin' ) ) {
+$bundle_item_ids        = array();
+if ( function_exists( 'learnsimply_bundles_table_exists' ) && learnsimply_bundles_table_exists() ) {
 	global $wpdb;
-	// حارس: الجدول تبع بلجن خارجي. من غيره الاستعلام بيرجّع null بصمت
-	// وعناصر الباقة بتختفي من غير أي رسالة.
-	$bundle_items = ! learnsimply_bundles_table_exists() ? array() : $wpdb->get_results( $wpdb->prepare(
-		"SELECT product_id, quantity FROM {$wpdb->prefix}asnp_wepb_simple_bundle_items WHERE bundle_id = %d",
+	$rows = $wpdb->get_results( $wpdb->prepare(
+		"SELECT product_id FROM {$wpdb->prefix}asnp_wepb_simple_bundle_items WHERE bundle_id = %d ORDER BY id ASC",
 		$context['product_id']
 	) );
-	
-	if ( ! empty( $bundle_items ) ) {
-		$context['has_bundles'] = true;
-		$context['bundle_items_count'] = count( $bundle_items );
-		
-		// Build bundle items JSON for add to cart form (required by bundle plugin)
-		$bundle_items_for_json = array();
-		
-		// Get bundle items details
-		foreach ( $bundle_items as $index => $item ) {
-			$bundle_product = wc_get_product( $item->product_id );
-			if ( $bundle_product && $bundle_product->is_visible() ) {
-				$bundle_item_data = array(
-					'id' => $item->product_id,
-					'title' => $bundle_product->get_name(),
-					'quantity' => $item->quantity,
-					'image' => wp_get_attachment_image_url( $bundle_product->get_image_id(), 'full' ),
-					'link' => get_permalink( $item->product_id ),
-				);
-				
-				// Get course data if linked to Tutor
-				if ( function_exists( 'tutor_utils' ) ) {
-					$course_id = tutor_utils()->get_course_id_by_product( $item->product_id );
-					if ( $course_id ) {
-						$bundle_item_data['duration'] = get_tutor_course_duration_context( $course_id );
-						$bundle_item_data['lesson_count'] = tutor_utils()->get_lesson_count_by_course( $course_id );
-						$bundle_item_data['topics_count'] = $bundle_item_data['lesson_count'];
-					}
-				}
-				
-				$context['bundle_items'][] = $bundle_item_data;
-				
-				// Add to JSON array for bundle plugin
-				// Format: array of {id: product_id, qty: quantity}
-				$bundle_items_for_json[] = array(
-					'id' => absint( $item->product_id ),
-					'qty' => absint( $item->quantity ),
-				);
-			}
-		}
-		
-		// Create JSON string for bundle plugin
-		// Format expected by bundle plugin: JSON array of {id, qty} objects
-		if ( ! empty( $bundle_items_for_json ) ) {
-			$context['bundle_items_json'] = wp_json_encode( $bundle_items_for_json );
+	foreach ( (array) $rows as $row ) {
+		if ( (int) $row->product_id > 0 ) {
+			$bundle_item_ids[] = (int) $row->product_id;
 		}
 	}
 }
 
-// Determine which template to use
-$template_name = $context['has_bundles'] ? 'single-product-bundle.twig' : 'single-product.twig';
+if ( ! empty( $bundle_item_ids ) && function_exists( 'learnsimply_bundle_page_context' ) ) {
+	$bundle = learnsimply_bundle_page_context( $product, $bundle_item_ids );
+	// آراء الباقة نفسها (ووكومرس) الأول، وبعدها آراء الكورسات اللي جواها
+	$reviews = array();
+	foreach ( $context['course_reviews'] as $r ) {
+		$reviews[] = array( 'author' => $r['author'], 'rating' => $r['rating'], 'content' => $r['content'], 'date' => $r['date'], 'source' => 'على الباقة', 'pending' => $r['pending'] );
+	}
+	foreach ( $bundle['course_reviews'] as $r ) {
+		$reviews[] = $r + array( 'pending' => false );
+	}
+	$bundle['reviews'] = $reviews;
 
-// Render the template
-Timber::render( $template_name, $context );
+	$context = array_merge( $context, $bundle );
+	$context['has_bundles']        = true;
+	$context['is_user_logged_in']  = is_user_logged_in();
+	$context['assets_version']     = defined( 'LS_ASSETS_VERSION' ) ? LS_ASSETS_VERSION : '1';
+	$context['buy_url']            = add_query_arg( 'add-to-cart', $context['product_id'], $context['cart_url'] );
+	$context['instructor_name']    = $context['product_author'] ? $context['product_author']->name : 'أحمد عادل';
+	$context['instructor_avatar']  = $context['product_author'] ? get_avatar_url( $context['product_author']->ID, array( 'size' => 120 ) ) : '';
+	$context['stats']              = array( 'youtube' => '403K', 'students' => '+10,000', 'views' => '17M', 'experience' => '+7' );
+
+	Timber::render( 'single-product-bundle.twig', $context );
+	return;
+}
+
+// منتج عادي (كتاب / كورس مفرد) — القالب القديم زي ما هو
+Timber::render( 'single-product.twig', $context );
