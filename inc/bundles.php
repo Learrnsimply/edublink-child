@@ -94,3 +94,44 @@ function learnsimply_bundle_item_count( $bundle_id ) {
 	$counts = learnsimply_bundle_item_counts( array( $bundle_id ) );
 	return isset( $counts[ (int) $bundle_id ] ) ? $counts[ (int) $bundle_id ] : 0;
 }
+
+/**
+ * معرّفات المنتجات جوه كل باقة — **استعلام واحد** لكل المعرّفات، بنفس حارس الجدول.
+ *
+ * الرئيسية بتستخدمها عشان تعرض «إيه اللي جوه الباقة» (أسماء الكورسات ومجموع ساعاتها).
+ *
+ * @param int[] $bundle_ids معرّفات منتجات الباقات.
+ * @return array<int,int[]> معرّف الباقة => معرّفات المنتجات بترتيب الإدخال. الباقة الفاضية مصفوفة فاضية.
+ */
+function learnsimply_bundle_item_product_ids( array $bundle_ids ) {
+	$bundle_ids = array_map( 'intval', $bundle_ids );
+	$bundle_ids = array_values( array_unique( array_filter( $bundle_ids, static function ( $id ) {
+		return $id > 0;
+	} ) ) );
+	$out = array();
+	foreach ( $bundle_ids as $id ) {
+		$out[ $id ] = array();
+	}
+	if ( empty( $bundle_ids ) || ! learnsimply_bundles_table_exists() ) {
+		return $out;
+	}
+
+	global $wpdb;
+	$table        = $wpdb->prefix . 'asnp_wepb_simple_bundle_items';
+	$placeholders = implode( ',', array_fill( 0, count( $bundle_ids ), '%d' ) );
+
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- اسم الجدول والعناصر النائبة مبنيين هنا، والقيم بتعدّي من prepare
+	$rows = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT bundle_id, product_id FROM {$table} WHERE bundle_id IN ({$placeholders}) ORDER BY id ASC",
+			$bundle_ids
+		)
+	);
+	foreach ( (array) $rows as $row ) {
+		$bundle_id = (int) $row->bundle_id;
+		if ( isset( $out[ $bundle_id ] ) && (int) $row->product_id > 0 ) {
+			$out[ $bundle_id ][] = (int) $row->product_id;
+		}
+	}
+	return $out;
+}

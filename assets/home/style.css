@@ -178,23 +178,29 @@
 .lsh-step--soon .lsh-step__n { background: var(--lsh-surface-2); color: var(--lsh-muted); }
 .lsh-step--soon .lsh-step__meta { color: var(--lsh-accent); font-weight: 600; }
 
-/* ── الباقة الكاملة ──────────────────────────────────────────────────────── */
-.lsh-bundle {
-  margin-top: 22px; position: relative; overflow: hidden; border-radius: 14px;
-  border: 1px solid rgba(64, 119, 243, 0.35);
-  background: linear-gradient(135deg, #16213a 0%, #121a2c 55%, var(--lsh-bg-2) 100%);
-  padding: 26px 30px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+/* ── الباقات: ٣ كروت (جافا · هياكل · الكل) ─────────────────────────────────── */
+.lsh-bundles { margin-top: 30px; }
+.lsh-bundles__head { margin-bottom: 18px; }
+.lsh-bundles__title { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+.lsh-bundles__sub { color: var(--lsh-muted); margin: 0; font-size: 15px; max-width: 62ch; }
+.lsh-bundles__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.lsh-bcard {
+  background: var(--lsh-surface); border: 1px solid var(--lsh-line); border-radius: 10px; overflow: hidden;
+  display: flex; flex-direction: column; transition: border-color 0.2s, transform 0.2s;
 }
-.lsh-bundle::before {
-  content: ""; position: absolute; inset: auto -90px -140px auto; width: 360px; height: 360px; border-radius: 50%;
-  background: radial-gradient(closest-side, var(--lsh-blue-glow), rgba(64, 119, 243, 0)); pointer-events: none;
-}
-.lsh-bundle__k { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lsh-blue); font-weight: 600; margin: 0 0 6px; }
-.lsh-bundle__t { font-size: 23px; font-weight: 700; line-height: 1.3; margin: 0; }
-.lsh-bundle__t span { display: block; color: var(--lsh-muted); font-weight: 400; font-size: 15px; margin-top: 4px; max-width: 56ch; }
-.lsh-bundle__buy { display: flex; align-items: center; gap: 18px; position: relative; }
-.lsh-bundle__price .lsh-num { font-size: 34px; font-weight: 800; display: block; line-height: 1; }
-.lsh-bundle__price small { color: var(--lsh-dim); font-size: 12.5px; }
+.lsh-bcard:hover { border-color: var(--lsh-line-strong); transform: translateY(-2px); }
+.lsh-bcard--featured { border-color: rgba(64, 119, 243, 0.45); box-shadow: 0 24px 60px -30px var(--lsh-blue-glow); }
+.lsh-bcard__img { display: block; aspect-ratio: 16 / 9; border-bottom: 1px solid var(--lsh-line); overflow: hidden; background: #0f1628; }
+.lsh-bcard__img img { width: 100%; height: 100%; object-fit: cover; }
+.lsh-bcard__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.lsh-bcard__label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--lsh-blue); font-weight: 600; margin: 0; }
+.lsh-bcard__title { margin: 0; font-size: 17px; line-height: 1.4; font-weight: 600; color: var(--lsh-text) !important; }
+.lsh-bcard__items { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; color: var(--lsh-muted); font-size: 14px; }
+.lsh-bcard__items li::before { content: "✓"; color: var(--lsh-ok); font-weight: 700; margin-inline-end: 8px; }
+.lsh-bcard__meta { color: var(--lsh-dim); font-size: 13px; margin: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+.lsh-bcard__buy { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--lsh-line); }
+.lsh-bcard__price .lsh-num { font-size: 26px; font-weight: 800; line-height: 1; display: block; }
+.lsh-bcard__price small { color: var(--lsh-dim); font-size: 12px; }
 
 /* ── آراء الطلاب ─────────────────────────────────────────────────────────── */
 .lsh-rate {
@@ -254,7 +260,7 @@
   .lsh-grid, .lsh-reviews, .lsh-features { grid-template-columns: repeat(2, 1fr); }
   .lsh-paths { grid-template-columns: 1fr; }
   .lsh-steps { grid-template-columns: repeat(3, 1fr); }
-  .lsh-bundle { flex-direction: column; align-items: flex-start; }
+  .lsh-bundles__grid { grid-template-columns: 1fr; }
   .lsh-about { grid-template-columns: 1fr; }
   .lsh-about__photo { width: 200px; height: 200px; }
   .lsh-head { flex-direction: column; align-items: flex-start; }

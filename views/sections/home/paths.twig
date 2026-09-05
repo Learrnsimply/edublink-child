@@ -34,19 +34,37 @@
       {% endfor %}
     </div>
 
-    {% if all_courses_bundle %}
-    <div class="lsh-bundle" id="bundle">
-      <div>
-        <p class="lsh-bundle__k">الباقة الكاملة</p>
-        <p class="lsh-bundle__t">{{ all_courses_bundle.title }} في باقة واحدة
-          <span>الـ{{ all_courses_bundle.courses }} كورسات كلها، وأي كورس جديد ينزل بيتضاف لك. استرجاع كامل خلال 7 أيام.</span>
-        </p>
+    {% if bundles %}
+    <div class="lsh-bundles" id="bundle">
+      <div class="lsh-bundles__head">
+        <p class="lsh-eyebrow">Bundles</p>
+        <h3 class="lsh-bundles__title">خُد المسار كله في باقة واحدة</h3>
+        <p class="lsh-bundles__sub">كل باقة بتفتحلك كورسات المسار مع بعض، بسعر واحد، واسترجاع كامل خلال 7 أيام.</p>
       </div>
-      <div class="lsh-bundle__buy">
-        {% if all_courses_bundle.price_label %}
-        <div class="lsh-bundle__price"><span class="lsh-num">{{ all_courses_bundle.price_label }}</span><small>ج.م · مرة واحدة</small></div>
-        {% endif %}
-        <a class="lsh-btn lsh-btn--primary" href="{{ all_courses_bundle.url }}">امتلك الباقة</a>
+      <div class="lsh-bundles__grid">
+        {% for bundle in bundles %}
+        <article class="lsh-bcard{% if bundle.featured %} lsh-bcard--featured{% endif %}">
+          <a class="lsh-bcard__img" href="{{ bundle.url }}" aria-hidden="true" tabindex="-1"><img src="{{ bundle.thumbnail }}" alt="" loading="lazy" width="640" height="360"></a>
+          <div class="lsh-bcard__body">
+            <p class="lsh-bcard__label">{{ bundle.label }}</p>
+            <h4 class="lsh-bcard__title"><a href="{{ bundle.url }}">{{ bundle.title }}</a></h4>
+            {% if bundle.items %}
+            <ul class="lsh-bcard__items">
+              {% for name in bundle.items %}<li>{{ name }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            <p class="lsh-bcard__meta">
+              <span><span class="lsh-num">{{ bundle.courses_count }}</span> {{ bundle.courses_count == 2 ? 'كورسين' : 'كورسات' }}</span>
+              {% if bundle.hours_total %}<span>· <span class="lsh-num">{{ bundle.hours_total }}</span> ساعة</span>{% endif %}
+              {% if bundle.lessons_total %}<span>· <span class="lsh-num">{{ bundle.lessons_total }}</span> درس</span>{% endif %}
+            </p>
+            <div class="lsh-bcard__buy">
+              {% if bundle.price_label %}<span class="lsh-bcard__price"><span class="lsh-num">{{ bundle.price_label }}</span><small>ج.م · مرة واحدة</small></span>{% endif %}
+              <a class="lsh-btn {{ bundle.featured ? 'lsh-btn--primary' : 'lsh-btn--ghost' }} lsh-btn--sm" href="{{ bundle.url }}">امتلك الباقة</a>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
       </div>
     </div>
     {% endif %}
