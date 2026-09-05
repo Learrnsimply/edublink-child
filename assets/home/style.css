@@ -32,6 +32,24 @@
 
 .lsh a { color: inherit; text-decoration: none; }
 .lsh img { max-width: 100%; display: block; }
+
+/* ── تحييد قواعد الثيم الأب (edublink main.css) اللي بتكسب على العناصر الخام ─────────
+   الثيم الأب بيلوّن h1–h6 وb/strong بـ--edublink-color-heading (أسود تقريبًا)، وبيدي
+   blockquote خلفية بيضا وpadding 120px بـ!important، وpre لون داكن وهوامش بـ!important.
+   الرئيسية داكنة، فالنص كان بيختفي. (اتلقطت على السيرفر الحي ٥/٩ — المعاينة المحلية
+   مكانتش بتحمّل CSS الثيم الأب.)                                                    */
+.lsh h1, .lsh h2, .lsh h3, .lsh h4, .lsh b, .lsh strong { color: inherit !important; }
+.lsh .lsh-hero__title, .lsh .lsh-h2, .lsh .lsh-card__title, .lsh .lsh-path__title,
+.lsh .lsh-feature__title, .lsh .lsh-step__title, .lsh .lsh-review__who b { color: var(--lsh-text) !important; }
+.lsh blockquote, .lsh .lsh-review__text {
+  background: transparent !important; background-image: none !important;
+  padding: 0 !important; margin: 0 !important; border: 0 !important; quotes: none;
+  font-size: 14.5px !important; color: #e3e6ef !important;
+}
+.lsh blockquote::before, .lsh blockquote::after { content: none !important; display: none !important; }
+.lsh figure { margin: 0 !important; }
+.lsh pre, .lsh .lsh-code__pre { margin: 0 !important; padding: 18px 20px !important; color: #dce3f2 !important; font-size: inherit !important; background: transparent !important; }
+.lsh p { margin-bottom: 0; }
 .lsh-num { font-variant-numeric: tabular-nums; }
 .lsh-star { color: var(--lsh-star); }
 
