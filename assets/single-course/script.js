@@ -1,341 +1,60 @@
 /**
- * Single Course Page JavaScript
- * Handles interactive functionality for the course page
+ * صفحة الكورس — سلوك بسيط: عرض باقي التقييمات، نجوم فورم التقييم، وإرسال التقييم لـTutor.
+ * الأكورديون (المنهج والأسئلة) بـ<details> من غير JS.
  */
+(function () {
+	"use strict";
 
-document.addEventListener("DOMContentLoaded", function () {
-	// Mark body as JS-ready so progressive enhancement rules in the CSS
-	// can safely hide [data-reveal] elements (they stay visible without JS).
-	document.body.classList.add("js-ready");
-
-	// Course Content Card - Week Toggle Functionality
-	const weekHeaders = document.querySelectorAll(".week-header");
-
-	weekHeaders.forEach((header) => {
-		header.addEventListener("click", function () {
-			const weekContainer = this.parentElement;
-			const isOpen = weekContainer.classList.contains("open");
-
-			// Close all weeks first
-			document.querySelectorAll(".week-container").forEach((container) => {
-				container.classList.remove("open");
-			});
-
-			// Open clicked week if it wasn't open
-			if (!isOpen) {
-				weekContainer.classList.add("open");
-			}
-		});
-	});
-
-	// Show More / Show Less for Course Description
-	const showMoreBtn = document.querySelector(".show-more-btn");
-	if (showMoreBtn) {
-		showMoreBtn.addEventListener("click", function () {
-			const card = this.closest(".description-card");
-			if (!card) return;
-
-			const isExpanded = card.classList.toggle("expanded");
-
-			// Update button text and aria attribute
-			this.textContent = isExpanded ? "عرض أقل" : "عرض المزيد";
-			this.setAttribute("aria-expanded", isExpanded ? "true" : "false");
-
-			// If expanded, smoothly scroll to reveal top of card (optional)
-			if (isExpanded) {
-				card.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
+	// كل التقييمات — الأول ٣ ظاهرين والباقي hidden
+	var moreBtn = document.querySelector("[data-more-btn]");
+	if (moreBtn) {
+		moreBtn.addEventListener("click", function () {
+			document.querySelectorAll("[data-more]").forEach(function (el) { el.hidden = false; });
+			moreBtn.hidden = true;
 		});
 	}
 
-	// Show More / Show Less for Learning Card (ماذا ستتعلم)
-	const learningShowMore = document.querySelector(".learning-show-more");
-	if (learningShowMore) {
-		learningShowMore.addEventListener("click", function () {
-			const card = this.closest(".learning-card");
-			if (!card) return;
-
-			const isExpanded = card.classList.toggle("expanded");
-			this.textContent = isExpanded ? "عرض أقل" : "عرض المزيد";
-
-			if (!isExpanded) {
-				card.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
+	// نجوم فورم التقييم
+	var starsBox = document.getElementById("star-rating-input");
+	var ratingInput = document.getElementById("tutor_rating_gen_input");
+	if (starsBox && ratingInput) {
+		var stars = Array.prototype.slice.call(starsBox.querySelectorAll(".lsc-stars-input__s"));
+		var paint = function (n) {
+			stars.forEach(function (s) { s.classList.toggle("is-on", parseInt(s.dataset.rating, 10) <= n); });
+		};
+		stars.forEach(function (s) {
+			s.addEventListener("click", function () { ratingInput.value = s.dataset.rating; paint(parseInt(s.dataset.rating, 10)); });
+			s.addEventListener("mouseenter", function () { paint(parseInt(s.dataset.rating, 10)); });
+			s.addEventListener("mouseleave", function () { paint(parseInt(ratingInput.value, 10) || 0); });
 		});
 	}
 
-	// Replace all lecture-icon SVGs with the Subtract image from the project
-	document.querySelectorAll("svg.lecture-icon").forEach((svg) => {
-		try {
-			const img = document.createElement("img");
-			img.className = "lecture-icon";
-			img.src = window.learnsimplyThemeUri
-				? window.learnsimplyThemeUri + "/assets/img/Subtract.png"
-				: "/wp-content/themes/edublink-child/assets/img/Subtract.png";
-			img.alt = "أيقونة فيديو";
-			svg.parentNode.replaceChild(img, svg);
-		} catch (e) {
-			console.warn("Failed to replace lecture svg icon", e);
-		}
-	});
-
-	// Add to Cart functionality for WooCommerce products
-	// No AJAX - let the link work naturally, PHP redirect will handle it
-	const addToCartButtons = document.querySelectorAll(
-		".add-to-cart-button"
-	);
-	addToCartButtons.forEach((button) => {
-		// Just add loading state, don't prevent default
-		button.addEventListener("click", function (e) {
-			// Show loading state
-			const originalText = this.textContent;
-			this.textContent = "جاري الإضافة...";
-			this.disabled = true;
-			
-			// Let the link work naturally - PHP redirect will handle the redirect
-			// No preventDefault, no AJAX - simple and reliable
-		});
-	});
-});
-
-// Share course function
-function shareCourse() {
-	if (navigator.share) {
-		navigator
-			.share({
-				title: document.title,
-				text: document.querySelector(".course-title")?.textContent || "",
-				url: window.location.href,
-			})
-			.catch((error) => {
-				console.log("Error sharing:", error);
-			});
-	} else {
-		// Fallback: copy to clipboard
-		navigator.clipboard.writeText(window.location.href).then(
-			() => {
-				alert("تم نسخ رابط الكورس!");
-			},
-			() => {
-				alert("فشل نسخ الرابط");
-			}
-		);
-	}
-}
-
-// Enroll course function (for free courses)
-function enrollCourse() {
-	// This will be handled by Tutor LMS enrollment form
-	const form = document.querySelector(".custom-enroll-form");
-	if (form) {
-		form.submit();
-	}
-}
-
-// Load More Reviews functionality
-document.addEventListener("DOMContentLoaded", function () {
-	const loadMoreBtn = document.getElementById("load-more-reviews");
-	if (loadMoreBtn) {
-		let showingAll = false;
-		
-		loadMoreBtn.addEventListener("click", function () {
-			const hiddenReviews = document.querySelectorAll(".review-card.hidden-review");
-			
-			if (!showingAll) {
-				// Show all reviews
-				hiddenReviews.forEach((review, index) => {
-					setTimeout(() => {
-						review.classList.add("show-review");
-					}, index * 100); // Stagger animation
-				});
-				
-				// Update button text
-				this.innerHTML = '<span>إخفاء التقييمات</span>';
-				this.classList.add("hide-reviews");
-				showingAll = true;
-			} else {
-				// Hide reviews
-				hiddenReviews.forEach((review) => {
-					review.classList.remove("show-review");
-				});
-				
-				// Update button text
-				const count = hiddenReviews.length;
-				this.innerHTML = '<span>عرض المزيد من التقييمات</span><span class="reviews-count">(' + count + ' تقييم إضافي)</span>';
-				this.classList.remove("hide-reviews");
-				showingAll = false;
-				
-				// Scroll back to reviews section
-				document.querySelector(".reviews-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
-		});
-	}
-});
-
-// Star Rating Input functionality
-document.addEventListener("DOMContentLoaded", function () {
-	// FAQ Accordion
-	const faqQuestions = document.querySelectorAll(".faq-question");
-	faqQuestions.forEach((question) => {
-		question.addEventListener("click", function () {
-			const faqItem = this.parentElement;
-			const isOpen = faqItem.classList.contains("open");
-
-			// Close all FAQ items first
-			document.querySelectorAll(".faq-item").forEach((item) => {
-				item.classList.remove("open");
-			});
-
-			// Open clicked item if it wasn't open
-			if (!isOpen) {
-				faqItem.classList.add("open");
-			}
-		});
-	});
-});
-
-// Star Rating Input functionality
-document.addEventListener("DOMContentLoaded", function () {
-	const starRatingInput = document.getElementById("star-rating-input");
-	if (!starRatingInput) return;
-	
-	const stars = starRatingInput.querySelectorAll(".star-icon");
-	const ratingInput = document.getElementById("tutor_rating_gen_input");
-	
-	if (!stars.length || !ratingInput) return;
-	
-	let currentRating = parseInt(ratingInput.value) || 0;
-	
-	// Apply initial visual state
-	updateStarsVisual(currentRating);
-	
-	// Hover effect
-	stars.forEach((star) => {
-		star.addEventListener("mouseenter", function () {
-			const rating = parseInt(this.dataset.rating);
-			updateStarsVisual(rating, true);
-		});
-		
-		star.addEventListener("mouseleave", function () {
-			updateStarsVisual(currentRating);
-		});
-		
-		// Click to select rating
-		star.addEventListener("click", function () {
-			currentRating = parseInt(this.dataset.rating);
-			ratingInput.value = currentRating;
-			updateStarsVisual(currentRating);
-		});
-	});
-	
-	function updateStarsVisual(rating, isHover = false) {
-		stars.forEach((star) => {
-			const starRating = parseInt(star.dataset.rating);
-			star.classList.remove("filled", "hovered");
-			
-			if (starRating <= rating) {
-				star.classList.add(isHover ? "hovered" : "filled");
-			}
-		});
-	}
-});
-
-// Review Form Submission via AJAX (Tutor LMS)
-document.addEventListener("DOMContentLoaded", function () {
-	const reviewForm = document.getElementById("tutor-review-form");
-	if (!reviewForm) return;
-	
-	reviewForm.addEventListener("submit", function (e) {
+	// إرسال التقييم — نفس endpoint Tutor (tutor_place_rating) عبر admin-ajax
+	var form = document.getElementById("tutor-review-form");
+	if (!form) return;
+	form.addEventListener("submit", function (e) {
 		e.preventDefault();
-		
-		const submitBtn = reviewForm.querySelector(".submit-review-btn");
-		const messageDiv = document.getElementById("review-message");
-		const ratingInput = document.getElementById("tutor_rating_gen_input");
-		const reviewTextarea = reviewForm.querySelector('textarea[name="review"]');
-		const courseIdInput = reviewForm.querySelector('input[name="course_id"]');
-		const reviewIdInput = reviewForm.querySelector('input[name="review_id"]');
-		
-		// Validate rating
-		if (!ratingInput.value || parseInt(ratingInput.value) < 1) {
-			showMessage(messageDiv, "يرجى اختيار تقييم من النجوم", "error");
-			return;
-		}
-		
-		// Validate review text
-		if (!reviewTextarea.value.trim()) {
-			showMessage(messageDiv, "يرجى كتابة تقييمك", "error");
-			return;
-		}
-		
-		// Disable submit button
-		submitBtn.disabled = true;
-		submitBtn.innerHTML = '<span>جاري الإرسال...</span>';
-		
-		// Prepare form data using FormData from the form itself
-		const formData = new FormData(reviewForm);
-		
-		// Send AJAX request
-		fetch((window.lsCourseAjax && window.lsCourseAjax.url) || window.ajaxurl || "/wp-admin/admin-ajax.php", {
-			method: "POST",
-			body: formData,
-			credentials: "same-origin"
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.success) {
-				showMessage(messageDiv, "تم إرسال تقييمك بنجاح! سيظهر بعد المراجعة.", "success");
-				// Optionally reload after a delay
-				setTimeout(() => {
-					window.location.reload();
-				}, 2000);
-			} else {
-				const errorMsg = data.data?.message || data.message || "حدث خطأ أثناء إرسال التقييم";
-				showMessage(messageDiv, errorMsg, "error");
-				submitBtn.disabled = false;
-				submitBtn.innerHTML = '<span>إرسال التقييم</span>';
-			}
-		})
-		.catch(error => {
-			console.error("Review submission error:", error);
-			showMessage(messageDiv, "حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.", "error");
-			submitBtn.disabled = false;
-			submitBtn.innerHTML = '<span>إرسال التقييم</span>';
-		});
+		var btn = form.querySelector(".submit-review-btn");
+		var msg = document.getElementById("review-message");
+		var say = function (text, ok) { if (!msg) return; msg.textContent = text; msg.hidden = false; msg.classList.toggle("is-ok", !!ok); msg.classList.toggle("is-err", !ok); };
+
+		if (!ratingInput || parseInt(ratingInput.value, 10) < 1) { say("اختار عدد النجوم الأول", false); return; }
+		var text = form.querySelector('textarea[name="review"]');
+		if (!text || !text.value.trim()) { say("اكتب تقييمك", false); return; }
+
+		btn.disabled = true;
+		var url = (window.lsCourseAjax && window.lsCourseAjax.url) || window.ajaxurl || "/wp-admin/admin-ajax.php";
+		fetch(url, { method: "POST", body: new FormData(form), credentials: "same-origin" })
+			.then(function (r) { return r.json(); })
+			.then(function (data) {
+				if (data && data.success) {
+					say("وصل تقييمك، شكرًا. هيظهر بعد المراجعة.", true);
+					setTimeout(function () { window.location.reload(); }, 1800);
+				} else {
+					say((data && data.data && data.data.message) || "حصل خطأ، جرّب تاني.", false);
+					btn.disabled = false;
+				}
+			})
+			.catch(function () { say("مفيش اتصال، جرّب تاني.", false); btn.disabled = false; });
 	});
-	
-	function showMessage(el, message, type) {
-		if (!el) return;
-		el.textContent = message;
-		el.className = "review-message " + type;
-		el.style.display = "block";
-	}
-
-	// ── Reveal-on-scroll animations (UX improvements v2) ──
-	// Uses IntersectionObserver to add .is-revealed when the section enters
-	// the viewport. Falls back to "show all immediately" if the API is
-	// unsupported (very old browsers) or the user prefers reduced motion.
-	const revealEls = document.querySelectorAll("[data-reveal]");
-	if (revealEls.length) {
-		const reduceMotion =
-			window.matchMedia &&
-			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-		if (!("IntersectionObserver" in window) || reduceMotion) {
-			revealEls.forEach((el) => el.classList.add("is-revealed"));
-		} else {
-			const io = new IntersectionObserver(
-				(entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							entry.target.classList.add("is-revealed");
-							io.unobserve(entry.target);
-						}
-					});
-				},
-				{ rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
-			);
-			revealEls.forEach((el) => io.observe(el));
-		}
-	}
-});
-
+})();

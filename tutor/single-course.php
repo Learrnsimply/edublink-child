@@ -1,8 +1,14 @@
 <?php
 /**
- * Template for displaying single course - Custom HTML Structure
- * 
- * Custom template with different HTML elements and classes (not using Tutor default structure)
+ * صفحة الكورس — الكونترولر.
+ *
+ * بنية Code with Mosh (MOSH-BLUEPRINT.md · الموجة د): عمود واحد، ١٣ كتلة بترتيب ثابت،
+ * والسعر في ٣ أماكن بس (الهيرو · الـCTA الختامي · الشريط اللاصق على الموبايل).
+ * الكلام كله من حقول Tutor عبر inc/course-content.php (المحلّل اللي بيستحمل اختلاف
+ * الكورسات)، ومكان الكورس في مساره من inc/academy-structure.php.
+ *
+ * الملف ده بيحضّر الـcontext بس — مفيش تعريف دوال هنا (درس ٥/٩: التعريف الشرطي في
+ * آخر الملف وقّع الرئيسية). الدوال في inc/ وبتتحمّل من functions.php.
  *
  * @package EduBlink_Child
  */
@@ -11,761 +17,286 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Check if Timber is available
 if ( ! class_exists( 'Timber\Timber' ) ) {
 	echo 'Timber plugin is not installed.';
 	return;
 }
-
-// Check if Tutor LMS is active
 if ( ! function_exists( 'tutor_utils' ) ) {
 	echo 'Tutor LMS is not active';
 	exit;
 }
 
+$course_id = (int) get_the_ID();
+$context   = Timber::context();
+$user_id   = (int) get_current_user_id();
 
-$course_id = get_the_ID();
+$context['theme_uri']      = get_stylesheet_directory_uri();
+$context['assets_version'] = defined( 'LS_ASSETS_VERSION' ) ? LS_ASSETS_VERSION : '1';
 
-// Get Timber context
-$context = Timber::context();
+$cart_page_id        = function_exists( 'wc_get_page_id' ) ? wc_get_page_id( 'cart' ) : 0;
+$context['cart_url'] = ( $cart_page_id > 0 ) ? get_permalink( $cart_page_id ) : ( function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '/cart-1/' );
 
-// Add theme directory URI to context
-$context['theme_uri'] = get_stylesheet_directory_uri();
+$course                = Timber::get_post( $course_id );
+$context['course']     = $course;
+$context['course_id']  = $course_id;
+$context['title']      = get_the_title( $course_id );
+$context['course_url'] = get_permalink( $course_id );
 
-// Add cart URL for JavaScript redirects
-$cart_page_id = function_exists( 'wc_get_page_id' ) ? wc_get_page_id( 'cart' ) : 0;
-if ( $cart_page_id && $cart_page_id > 0 ) {
-	$context['cart_url'] = get_permalink( $cart_page_id );
-} else {
-	$context['cart_url'] = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '/cart-1/';
-}
-
-// Get course post using Timber
-$course = Timber::get_post( $course_id );
-$context['course'] = $course;
-
-// Get course basic data
-$context['course_title'] = get_the_title( $course_id );
-$context['course_content'] = get_the_content( null, false, $course_id );
-$context['course_excerpt'] = get_the_excerpt( $course_id );
-// Editor-formatted description (paragraphs, lists, headings) for the description card
-$context['course_description_html'] = apply_filters( 'the_content', get_the_content( null, false, $course_id ) );
-
-// Get course rating
-$course_rating = tutor_utils()->get_course_rating( $course_id );
-$context['course_rating'] = $course_rating;
-$context['rating_avg'] = $course_rating ? number_format( $course_rating->rating_avg, 1 ) : 0;
-$context['rating_count'] = $course_rating ? $course_rating->rating_count : 0;
-
-// Get enrollment status
-$context['is_enrolled'] = tutor_utils()->is_enrolled( $course_id, get_current_user_id() );
-$context['is_public'] = get_post_meta( $course_id, '_tutor_is_public_course', true ) == 'yes';
-$context['is_purchasable'] = tutor_utils()->is_course_purchasable( $course_id );
-$context['tutor_course_sell_by'] = apply_filters( 'tutor_course_sell_by', null );
-$context['lesson_url'] = tutor_utils()->get_course_first_lesson( $course_id );
-
-// Get course price (raw prices for proper formatting)
-$price_info = tutor_utils()->get_raw_course_price( $course_id );
-$context['regular_price'] = $price_info->regular_price ? floatval( $price_info->regular_price ) : null;
-$context['sale_price'] = $price_info->sale_price ? floatval( $price_info->sale_price ) : null;
-$context['display_price'] = $price_info->display_price;
-
-// Format prices for display
-if ( $context['regular_price'] ) {
-	$context['regular_price_formatted'] = number_format( $context['regular_price'], 0, '.', ',' );
-} else {
-	$context['regular_price_formatted'] = null;
-}
-
-if ( $context['sale_price'] ) {
-	$context['sale_price_formatted'] = number_format( $context['sale_price'], 0, '.', ',' );
-} else {
-	$context['sale_price_formatted'] = null;
-}
-
-// Calculate discount percentage
-if ( $context['sale_price'] && $context['regular_price'] && $context['regular_price'] > 0 ) {
-	$context['discount_percent'] = round( ( ( $context['regular_price'] - $context['sale_price'] ) / $context['regular_price'] ) * 100 );
-} else {
-	$context['discount_percent'] = 0;
-}
-
-// Check if course is free
-$price_type = tutor_utils()->price_type( $course_id );
-$context['is_free'] = ( $price_type === 'free' || ( ! $context['regular_price'] && ! $context['sale_price'] ) );
-
-// Get course meta data
-$context['course_duration'] = get_tutor_course_duration_context( $course_id );
-$context['lesson_count'] = tutor_utils()->get_lesson_count_by_course( $course_id );
-$context['quiz_count'] = tutor_utils()->get_quiz_count_by_course( $course_id );
-$context['assignment_count'] = tutor_utils()->get_assignment_count_by_course( $course_id );
-$context['course_level'] = get_tutor_course_level( $course_id );
-if ( empty( $context['course_level'] ) ) {
-	$context['course_level'] = 'مبتدئ';
-}
-
-// Get instructors
-$instructors = tutor_utils()->get_instructors_by_course( $course_id );
-$context['instructors'] = array();
-if ( ! empty( $instructors ) ) {
-	foreach ( $instructors as $instructor ) {
-		if ( isset( $instructor->ID ) ) {
-			$context['instructors'][] = Timber::get_user( $instructor->ID );
-		}
-	}
-}
-
-// Get students count
-$context['students_count'] = tutor_utils()->count_enrolled_users_by_course( $course_id );
-
-// Get enrolled students data (first 3 for avatars display)
-$enrolled_students = tutor_utils()->get_students_data_by_course_id( $course_id, 'ID', true );
-$context['students_avatars'] = array();
-if ( ! empty( $enrolled_students ) && is_array( $enrolled_students ) ) {
-	// Get first 3 students
-	$students_to_show = array_slice( $enrolled_students, 0, 3 );
-	foreach ( $students_to_show as $student ) {
-		// Get student ID - it might be in ID property or as the object itself
-		$student_id = isset( $student->ID ) ? $student->ID : ( is_object( $student ) ? $student->ID : $student );
-		if ( $student_id ) {
-			$avatar_url = get_avatar_url( $student_id, array( 'size' => 40 ) );
-			$display_name = isset( $student->display_name ) ? $student->display_name : '';
-			if ( $avatar_url ) {
-				$context['students_avatars'][] = array(
-					'id' => $student_id,
-					'avatar' => $avatar_url,
-					'name' => $display_name,
-				);
-			}
-		}
-	}
-}
-
-// Get course topics and content
-$topics = tutor_utils()->get_topics( $course_id );
-$context['topics'] = array();
-$context['first_five_contents'] = array(); // First 5 content items for features list
-$content_count = 0;
-if ( $topics && $topics->have_posts() ) {
-	while ( $topics->have_posts() ) {
-		$topics->the_post();
-		$topic_id = get_the_ID();
-		$topic_contents = tutor_utils()->get_course_contents_by_topic( $topic_id, -1 );
-		
-		$topic_data = array(
-			'id' => $topic_id,
-			'title' => get_the_title(),
-			'content' => get_the_content(),
-			'contents' => array(),
-		);
-		
-		if ( $topic_contents && $topic_contents->have_posts() ) {
-			while ( $topic_contents->have_posts() ) {
-				$topic_contents->the_post();
-				$content_type = get_post_type();
-				$content_id = get_the_ID();
-				$content_duration = '';
-				
-				if ( 'lesson' === $content_type || 'tutor_lesson' === $content_type ) {
-					$content_duration = get_post_meta( $content_id, '_video_duration', true );
-				}
-				
-				// Check if lesson is a free preview
-				$is_preview = get_post_meta( $content_id, '_is_preview', true );
-				
-				// Lesson permalink — used by the twig for the enrolled "go to lesson" link
-				// and the non-enrolled preview link. Non-enrolled LOCKED rows never render
-				// it (they link to #course-buy), so no paid-content URL is exposed.
-				$content_url = get_permalink( $content_id );
-
-				$content_item = array(
-					'id' => $content_id,
-					'type' => $content_type,
-					'title' => get_the_title(),
-					'duration' => $content_duration,
-					'is_preview' => (bool) $is_preview,
-					'url' => $content_url,
-				);
-				
-				$topic_data['contents'][] = $content_item;
-				
-				// Collect first 5 content items for features list
-				if ( $content_count < 5 ) {
-					$context['first_five_contents'][] = $content_item;
-					$content_count++;
-				}
-			}
-			wp_reset_postdata();
-		}
-		
-		$context['topics'][] = $topic_data;
-	}
-	wp_reset_postdata();
-}
-
-// Get course reviews (include current user's review even if pending, so they see "قيد المراجعة")
-$current_user_id_for_reviews = get_current_user_id();
-$course_reviews = tutor_utils()->get_course_reviews( $course_id, 0, 10, false, array( 'approved' ), $current_user_id_for_reviews );
-$context['course_reviews'] = array();
-if ( $course_reviews && is_array( $course_reviews ) ) {
-	foreach ( $course_reviews as $review ) {
-		$context['course_reviews'][] = array(
-			'id' => $review->comment_ID,
-			'author' => $review->display_name,
-			'rating' => $review->rating,
-			'content' => $review->comment_content,
-			'date' => $review->comment_date,
-			'avatar' => get_avatar_url( $review->user_id, array( 'size' => 40 ) ),
-			'pending' => isset( $review->comment_status ) && $review->comment_status === 'hold',
-		);
-	}
-}
-
-// Check if user can write a review (enrolled users only)
-$context['can_write_review'] = false;
-$context['user_review'] = null;
+// ─────────────────────────────────────────────────────────────────────────────
+// الحالة: مشترك؟ مجاني؟ بيتباع بووكومرس؟
+// ─────────────────────────────────────────────────────────────────────────────
 $context['is_user_logged_in'] = is_user_logged_in();
-
-// Add Tutor nonce for review form
-$context['tutor_nonce'] = wp_create_nonce( tutor()->nonce_action );
+$context['is_enrolled']       = (bool) tutor_utils()->is_enrolled( $course_id, $user_id );
+$context['is_public']         = 'yes' === get_post_meta( $course_id, '_tutor_is_public_course', true );
+$context['is_purchasable']    = (bool) tutor_utils()->is_course_purchasable( $course_id );
+$context['lesson_url']        = tutor_utils()->get_course_first_lesson( $course_id );
+$context['tutor_nonce']       = wp_create_nonce( tutor()->nonce_action );
 $context['tutor_nonce_field'] = tutor()->nonce;
 
-if ( $context['is_enrolled'] && is_user_logged_in() ) {
-	$context['can_write_review'] = true;
-	
-	// Check if user already has a review
-	$current_user_id = get_current_user_id();
-	$my_rating = tutor_utils()->get_reviews_by_user( 0, 0, 150, false, $course_id, array( 'approved', 'hold' ) );
-	
-	if ( $my_rating && ! empty( $my_rating->rating ) ) {
+$price_info    = tutor_utils()->get_raw_course_price( $course_id );
+$regular_price = ! empty( $price_info->regular_price ) ? (float) $price_info->regular_price : 0;
+$sale_price    = ! empty( $price_info->sale_price ) ? (float) $price_info->sale_price : 0;
+$price         = $sale_price > 0 ? $sale_price : $regular_price;
+$context['is_free']     = ( 'free' === tutor_utils()->price_type( $course_id ) ) || $price <= 0;
+$context['price_label'] = $context['is_free'] ? '' : number_format( $price, 0, '.', ',' );
+
+$context['product_id'] = null;
+$sell_by               = apply_filters( 'tutor_course_sell_by', null );
+if ( 'woocommerce' === $sell_by && class_exists( 'WooCommerce' ) ) {
+	$product_id            = tutor_utils()->get_course_product_id( $course_id );
+	$context['product_id'] = $product_id ? (int) $product_id : null;
+}
+$context['checkout_url'] = $context['product_id'] ? home_url( '/checkout/?add-to-cart=' . $context['product_id'] ) : '';
+$context['can_buy']      = ! $context['is_enrolled'] && $context['is_purchasable'] && ! $context['is_free'] && $context['product_id'];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// الأرقام — من Tutor زي ما هي
+// ─────────────────────────────────────────────────────────────────────────────
+$rating                  = tutor_utils()->get_course_rating( $course_id );
+$context['rating_avg']   = ( $rating && $rating->rating_count > 0 ) ? number_format( (float) $rating->rating_avg, 1 ) : '';
+$context['rating_count'] = $rating ? (int) $rating->rating_count : 0;
+$context['students']     = (int) tutor_utils()->count_enrolled_users_by_course( $course_id );
+$context['lesson_count'] = (int) tutor_utils()->get_lesson_count_by_course( $course_id )
+	+ (int) tutor_utils()->get_quiz_count_by_course( $course_id )
+	+ (int) tutor_utils()->get_assignment_count_by_course( $course_id );
+$context['hours']        = learnsimply_course_hours( $course_id );
+$level                   = learnsimply_course_level( $course_id );
+$context['level']        = $level['label'];
+$context['level_key']    = $level['key'];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// الصورة أو الفيديو التعريفي
+// ─────────────────────────────────────────────────────────────────────────────
+$context['image'] = get_the_post_thumbnail_url( $course_id, 'full' );
+if ( ! $context['image'] ) {
+	$context['image'] = learnsimply_no_image_url();
+}
+
+$context['video'] = null;
+$video_info       = get_post_meta( $course_id, '_video', true );
+if ( is_array( $video_info ) && ! empty( $video_info['source'] ) ) {
+	// كل المفاتيح موجودة دايمًا — القالب بيسأل عن embed_url/embed_code/url من غير ما يتأكد.
+	$v = array( 'source' => $video_info['source'], 'url' => null, 'embed_url' => null, 'embed_code' => null, 'poster' => null );
+	switch ( $video_info['source'] ) {
+		case 'html5':
+			if ( ! empty( $video_info['source_video_id'] ) ) {
+				$v['url'] = wp_get_attachment_url( $video_info['source_video_id'] );
+			}
+			break;
+		case 'external_url':
+			if ( ! empty( $video_info['source_external_url'] ) ) {
+				$v['url'] = $video_info['source_external_url'];
+			}
+			break;
+		case 'youtube':
+			if ( ! empty( $video_info['source_youtube'] ) && preg_match( '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $video_info['source_youtube'], $m ) ) {
+				$v['embed_url'] = 'https://www.youtube.com/embed/' . $m[1];
+			}
+			break;
+		case 'vimeo':
+			if ( ! empty( $video_info['source_vimeo'] ) && preg_match( '/vimeo\.com\/(?:video\/)?(\d+)/', $video_info['source_vimeo'], $m ) ) {
+				$v['embed_url'] = 'https://player.vimeo.com/video/' . $m[1];
+			}
+			break;
+		case 'embedded':
+			if ( ! empty( $video_info['source_embedded'] ) ) {
+				$v['embed_code'] = $video_info['source_embedded'];
+			}
+			break;
+	}
+	if ( ! empty( $video_info['poster'] ) ) {
+		$v['poster'] = wp_get_attachment_url( $video_info['poster'] );
+	}
+	if ( ! empty( $v['url'] ) || ! empty( $v['embed_url'] ) || ! empty( $v['embed_code'] ) ) {
+		$context['video'] = $v;
+	}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// المنهج — الوحدات ودروسها. بنقرا من posts مباشرة بدل حلقة the_post() عشان
+// منلمسش الـglobal query.
+// ─────────────────────────────────────────────────────────────────────────────
+$context['topics']            = array();
+$context['preview_count']     = 0;
+$context['first_preview_url'] = '';
+$topics_query                 = tutor_utils()->get_topics( $course_id );
+$topic_posts                  = ( $topics_query && ! empty( $topics_query->posts ) ) ? $topics_query->posts : array();
+foreach ( $topic_posts as $topic ) {
+	$contents_query = tutor_utils()->get_course_contents_by_topic( $topic->ID, -1 );
+	$content_posts  = ( $contents_query && ! empty( $contents_query->posts ) ) ? $contents_query->posts : array();
+	$contents       = array();
+	foreach ( $content_posts as $item ) {
+		$is_preview = (bool) get_post_meta( $item->ID, '_is_preview', true );
+		$url        = get_permalink( $item->ID );
+		$contents[] = array(
+			'id'         => $item->ID,
+			'title'      => $item->post_title,
+			'type'       => in_array( $item->post_type, array( 'tutor_quiz', 'quiz' ), true ) ? 'quiz' : ( in_array( $item->post_type, array( 'tutor_assignments', 'assignment' ), true ) ? 'assignment' : 'lesson' ),
+			'duration'   => 'lesson' === $item->post_type || 'tutor_lesson' === $item->post_type ? (string) get_post_meta( $item->ID, '_video_duration', true ) : '',
+			'is_preview' => $is_preview,
+			'url'        => $url,
+		);
+		if ( $is_preview ) {
+			$context['preview_count']++;
+			if ( '' === $context['first_preview_url'] && $url ) {
+				$context['first_preview_url'] = $url;
+			}
+		}
+	}
+	// وحدة من غير دروس (زي «بيتم تحديث الكويزات ⏳») مش وحدة — مبتتعرضش.
+	if ( empty( $contents ) ) {
+		continue;
+	}
+	$context['topics'][] = array(
+		'id'       => $topic->ID,
+		'title'    => learnsimply_course_text_clean( $topic->post_title ),
+		'count'    => count( $contents ),
+		'contents' => $contents,
+	);
+}
+$context['units_count'] = count( $context['topics'] );
+
+// ─────────────────────────────────────────────────────────────────────────────
+// الأقسام النصية — المحلّل + الحقول الأصلية (inc/course-content.php)
+// ─────────────────────────────────────────────────────────────────────────────
+$context['sections'] = learnsimply_course_sections( $course_id );
+$context['tagline']  = learnsimply_course_tagline( $course_id, $context['sections'] );
+
+$course_slug       = $course ? urldecode( $course->post_name ) : '';
+$context['extras'] = function_exists( 'learnsimply_get_course_extras' ) ? learnsimply_get_course_extras( $course_slug ) : array( 'build_items' => array(), 'faq_items' => array() );
+
+// ─────────────────────────────────────────────────────────────────────────────
+// المسار — مكان الكورس، اللي قبله، اللي بعده، كمّل المسار
+// ─────────────────────────────────────────────────────────────────────────────
+$context['path'] = learnsimply_course_path_context( $course_id );
+
+// كروت «كمّل المسار»: بيانات الكارت الموحّد (نفس كارت الرئيسية) — سعر واحد وعدد الدروس.
+foreach ( $context['path']['rest'] as $i => $step ) {
+	$p       = tutor_utils()->get_raw_course_price( $step['id'] );
+	$reg     = ! empty( $p->regular_price ) ? (float) $p->regular_price : 0;
+	$sale    = ! empty( $p->sale_price ) ? (float) $p->sale_price : 0;
+	$sprice  = $sale > 0 ? $sale : $reg;
+	$is_free = ( 'free' === tutor_utils()->price_type( $step['id'] ) ) || $sprice <= 0;
+	$context['path']['rest'][ $i ]['price_label']  = $is_free ? '' : number_format( $sprice, 0, '.', ',' );
+	$context['path']['rest'][ $i ]['is_free']      = $is_free;
+	$context['path']['rest'][ $i ]['lesson_count'] = (int) tutor_utils()->get_lesson_count_by_course( $step['id'] );
+	$context['path']['rest'][ $i ]['position']     = $context['path']['position'] ? $context['path']['position'] + $i + 1 : $i + 1;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// تلميح الباقة — لو الكورس جوه باقة من باقات المسارات (منتج ووكومرس + جدول البلجن)
+// ─────────────────────────────────────────────────────────────────────────────
+$context['bundle'] = null;
+if ( $context['product_id'] && class_exists( 'WooCommerce' ) && function_exists( 'learnsimply_bundle_item_product_ids' ) ) {
+	$bundle_slugs = array(
+		'java-basics-oop-bundle',
+		rawurlencode( 'هياكل-البيانات-الكاملة-data-structure-level-1-2' ),
+		'هياكل-البيانات-الكاملة-data-structure-level-1-2',
+	);
+	$bundle_posts = array();
+	foreach ( $bundle_slugs as $slug ) {
+		$post = get_page_by_path( $slug, OBJECT, 'product' );
+		if ( $post && 'publish' === $post->post_status ) {
+			$bundle_posts[ $post->ID ] = $post;
+		}
+	}
+	if ( ! empty( $bundle_posts ) ) {
+		$items_by_bundle = learnsimply_bundle_item_product_ids( array_keys( $bundle_posts ) );
+		foreach ( $items_by_bundle as $bundle_id => $product_ids ) {
+			if ( ! in_array( (int) $context['product_id'], $product_ids, true ) ) {
+				continue;
+			}
+			$product = wc_get_product( $bundle_id );
+			if ( ! $product ) {
+				continue;
+			}
+			$names = array();
+			foreach ( $product_ids as $pid ) {
+				$cid = tutor_utils()->get_course_id_by_product( $pid );
+				if ( $cid ) {
+					$names[] = function_exists( 'learnsimply_course_short_label' ) ? learnsimply_course_short_label( $cid, get_the_title( $cid ) ) : get_the_title( $cid );
+				}
+			}
+			$bprice            = (float) $product->get_price();
+			$context['bundle'] = array(
+				'title'       => $product->get_name(),
+				'url'         => get_permalink( $bundle_id ),
+				'items'       => $names,
+				'count'       => count( $product_ids ),
+				'price_label' => $bprice > 0 ? number_format( $bprice, 0, '.', ',' ) : '',
+			);
+			break;
+		}
+	}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// المدرّس — نفس الأرقام التسويقية اللي في الرئيسية
+// ─────────────────────────────────────────────────────────────────────────────
+$context['instructor'] = null;
+$instructors           = tutor_utils()->get_instructors_by_course( $course_id );
+if ( ! empty( $instructors ) && isset( $instructors[0]->ID ) ) {
+	$context['instructor'] = array(
+		'name'   => $instructors[0]->display_name,
+		'avatar' => get_avatar_url( $instructors[0]->ID, array( 'size' => 120 ) ),
+		'url'    => home_url( '/about_me/' ),
+	);
+}
+$context['stats'] = array(
+	'youtube'    => '403K',
+	'students'   => '+10,000',
+	'views'      => '17M',
+	'experience' => '+7',
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// التقييمات — المعتمدة كلها (أول ٣ ظاهرين والباقي بزرار)، وتقييم المستخدم لو مشترك
+// ─────────────────────────────────────────────────────────────────────────────
+$context['reviews'] = array();
+$reviews            = tutor_utils()->get_course_reviews( $course_id, 0, 30, false, array( 'approved' ), $user_id );
+if ( is_array( $reviews ) ) {
+	foreach ( $reviews as $review ) {
+		$context['reviews'][] = array(
+			'id'      => $review->comment_ID,
+			'author'  => $review->display_name,
+			'rating'  => (int) $review->rating,
+			'content' => stripslashes( (string) $review->comment_content ),
+			'date'    => $review->comment_date,
+			'pending' => isset( $review->comment_status ) && 'hold' === $review->comment_status,
+		);
+	}
+}
+$context['can_write_review'] = $context['is_enrolled'] && $context['is_user_logged_in'];
+$context['user_review']      = null;
+if ( $context['can_write_review'] ) {
+	$mine = tutor_utils()->get_reviews_by_user( 0, 0, 150, false, $course_id, array( 'approved', 'hold' ) );
+	if ( $mine && ! empty( $mine->rating ) ) {
 		$context['user_review'] = array(
-			'id' => $my_rating->comment_ID,
-			'rating' => $my_rating->rating,
-			'content' => stripslashes( $my_rating->comment_content ),
+			'id'      => $mine->comment_ID,
+			'rating'  => (int) $mine->rating,
+			'content' => stripslashes( (string) $mine->comment_content ),
 		);
 	}
 }
 
-// Get course categories and tags
-$categories = get_the_terms( $course_id, 'course-category' );
-$context['categories'] = $categories && ! is_wp_error( $categories ) ? $categories : array();
-
-$tags = get_the_terms( $course_id, 'course-tag' );
-$context['tags'] = $tags && ! is_wp_error( $tags ) ? $tags : array();
-
-// Get course meta fields
-// Use tutor_course_benefits() function which returns an array of benefits
-if ( function_exists( 'tutor_course_benefits' ) ) {
-	$benefits_array = tutor_course_benefits( $course_id );
-	// Convert array back to string with newlines for Twig template compatibility
-	$context['course_benefits'] = ! empty( $benefits_array ) ? implode( "\n", $benefits_array ) : '';
-} else {
-$context['course_benefits'] = get_post_meta( $course_id, '_tutor_course_benefits', true );
-}
-$context['course_requirements'] = get_post_meta( $course_id, '_tutor_course_requirements', true );
-
-// Target audience + material includes: same normalization as benefits above —
-// Tutor may store these as arrays, and the twig splits them on newlines.
-if ( function_exists( 'tutor_course_target_audience' ) ) {
-	$audience_array = tutor_course_target_audience( $course_id );
-	$context['course_target_audience'] = ! empty( $audience_array ) ? implode( "\n", (array) $audience_array ) : '';
-} else {
-	$audience_raw = get_post_meta( $course_id, '_tutor_course_target_audience', true );
-	$context['course_target_audience'] = is_array( $audience_raw ) ? implode( "\n", $audience_raw ) : $audience_raw;
-}
-
-if ( function_exists( 'tutor_course_material_includes' ) ) {
-	$materials_array = tutor_course_material_includes( $course_id );
-	$context['course_material_includes'] = ! empty( $materials_array ) ? implode( "\n", (array) $materials_array ) : '';
-} else {
-	$materials_raw = get_post_meta( $course_id, '_tutor_course_material_includes', true );
-	$context['course_material_includes'] = is_array( $materials_raw ) ? implode( "\n", $materials_raw ) : $materials_raw;
-}
-
-// Get course image
-$context['course_image'] = get_the_post_thumbnail_url( $course_id, 'full' );
-if ( ! $context['course_image'] ) {
-	$context['course_image'] = learnsimply_no_image_url(); // Fallback image
-}
-
-// Get course intro video (if available)
-$context['course_video'] = null;
-$video_info = get_post_meta( $course_id, '_video', true );
-if ( $video_info && is_array( $video_info ) && ! empty( $video_info['source'] ) ) {
-	$video_data = array(
-		'source' => $video_info['source'],
-	);
-	
-	switch ( $video_info['source'] ) {
-		case 'html5':
-			// HTML5 video - get attachment URL
-			if ( ! empty( $video_info['source_video_id'] ) ) {
-				$video_data['url'] = wp_get_attachment_url( $video_info['source_video_id'] );
-				$video_data['type'] = 'video/mp4';
-			}
-			// Get poster image
-			if ( ! empty( $video_info['poster'] ) ) {
-				$video_data['poster'] = wp_get_attachment_url( $video_info['poster'] );
-			}
-			break;
-			
-		case 'external_url':
-			// External URL video
-			if ( ! empty( $video_info['source_external_url'] ) ) {
-				$video_data['url'] = $video_info['source_external_url'];
-				$video_data['type'] = 'video/mp4';
-			}
-			// Get poster image
-			if ( ! empty( $video_info['poster'] ) ) {
-				$video_data['poster'] = wp_get_attachment_url( $video_info['poster'] );
-			}
-			break;
-			
-		case 'youtube':
-			// YouTube video
-			if ( ! empty( $video_info['source_youtube'] ) ) {
-				// Extract video ID from YouTube URL
-				$youtube_url = $video_info['source_youtube'];
-				$video_id = '';
-				
-				// Match various YouTube URL formats
-				if ( preg_match( '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $youtube_url, $matches ) ) {
-					$video_id = $matches[1];
-				}
-				
-				if ( $video_id ) {
-					$video_data['video_id'] = $video_id;
-					$video_data['embed_url'] = 'https://www.youtube.com/embed/' . $video_id;
-				}
-			}
-			break;
-			
-		case 'vimeo':
-			// Vimeo video
-			if ( ! empty( $video_info['source_vimeo'] ) ) {
-				// Extract video ID from Vimeo URL
-				$vimeo_url = $video_info['source_vimeo'];
-				$video_id = '';
-				
-				if ( preg_match( '/vimeo\.com\/(?:video\/)?(\d+)/', $vimeo_url, $matches ) ) {
-					$video_id = $matches[1];
-				}
-				
-				if ( $video_id ) {
-					$video_data['video_id'] = $video_id;
-					$video_data['embed_url'] = 'https://player.vimeo.com/video/' . $video_id;
-				}
-			}
-			break;
-			
-		case 'embedded':
-			// Embedded code
-			if ( ! empty( $video_info['source_embedded'] ) ) {
-				$video_data['embed_code'] = $video_info['source_embedded'];
-			}
-			break;
-	}
-	
-	// Only set video if we have valid data
-	if ( isset( $video_data['url'] ) || isset( $video_data['embed_url'] ) || isset( $video_data['embed_code'] ) ) {
-		$context['course_video'] = $video_data;
-	}
-}
-
-// Get course updated date
-$context['course_updated'] = get_the_modified_date( 'F j, Y', $course_id );
-
-// Check if course has certificate
-// Tutor Pro Certificate addon uses 'tutor_course_certificate_template' meta field
-$certificate_template = get_post_meta( $course_id, 'tutor_course_certificate_template', true );
-$context['has_certificate'] = ! empty( $certificate_template );
-
-// Get WooCommerce product ID if course is sold via WooCommerce
-$context['product_id'] = null;
-if ( $context['tutor_course_sell_by'] === 'woocommerce' && class_exists( 'WooCommerce' ) ) {
-	$context['product_id'] = tutor_utils()->get_course_product_id( $course_id );
-}
-
-// Get course content count (lessons + quizzes + assignments)
-$context['content_count'] = $context['lesson_count'] + $context['quiz_count'] + $context['assignment_count'];
-
-// Count preview lessons and get first preview URL
-$preview_count = 0;
-$first_preview_url = '';
-if ( ! empty( $context['topics'] ) ) {
-	foreach ( $context['topics'] as $topic ) {
-		if ( ! empty( $topic['contents'] ) ) {
-			foreach ( $topic['contents'] as $content ) {
-				if ( ! empty( $content['is_preview'] ) ) {
-					$preview_count++;
-					if ( empty( $first_preview_url ) && ! empty( $content['url'] ) ) {
-						$first_preview_url = $content['url'];
-					}
-				}
-			}
-		}
-	}
-}
-$context['preview_count'] = $preview_count;
-$context['first_preview_url'] = $first_preview_url;
-
-/* ==========================================================================
-   COURSE-SPECIFIC EXTRAS — "What you'll build" + FAQ per course
-   --------------------------------------------------------------------------
-   The "what-you-build" and "course-faq" sections in single-course.twig are
-   driven from here. Each course has its own copy (Java ≠ Dart ≠ Python).
-   The map is keyed by the course SLUG (post_name). Unknown courses fall
-   back to a sensible default so a new course never shows wrong content.
-   ========================================================================== */
-// WordPress stores non-Latin slugs percent-encoded (post_name for the Python
-// course is '%d9%85%d8%b4...', not 'مشاريع-بايثون-للمبتدئين'), so decode before
-// matching against the Arabic keys in the map below.
-$course_slug = $course ? urldecode( $course->post_name ) : '';
-
-/**
- * @param string $slug  Course slug (post_name).
- * @return array{build_items: array, faq_items: array}
- *   build_items[].kind = 'code' | 'oop' | 'flutter' | 'backend' | 'mobile' | 'python'
- *   build_items[].tag  = small label shown above the card title
- *   build_items[].title, .desc = card body
- *   faq_items[].q, .a   = question and answer
- */
-function learnsimply_get_course_extras( $slug ) {
-	$map = array(
-
-		// ───────────────────────────────────────────────
-		// DART — Flutter / Mobile focus
-		// ───────────────────────────────────────────────
-		'dart' => array(
-			'build_items' => array(
-				array(
-					'kind'  => 'code',
-					'code'  => '<span class="lvc-kw">void</span> main() {\n  print(<span class="lvc-str">\'Hello, Dart!\'</span>);\n  <span class="lvc-kw">for</span> (<span class="lvc-kw">var</span> i = <span class="lvc-num">0</span>; i &lt; <span class="lvc-num">5</span>; i++) {\n    print(i);\n  }\n}',
-					'tag'   => 'تطبيقي',
-					'title' => 'أول Dart app ليك',
-					'desc'  => 'هنكتب أول برنامج ليك من الصفر — variables, loops, functions.',
-				),
-				array(
-					'kind'  => 'oop',
-					'tag'   => 'OOP',
-					'title' => 'Class + Inheritance',
-					'desc'  => 'هنبني class كامل بـ inheritance و polymorphism — وهنفهم ليه OOP مهم قبل ما تدخل Flutter.',
-				),
-				array(
-					'kind'  => 'flutter',
-					'tag'   => 'جاهزية',
-					'title' => 'مستعد لـ Flutter',
-					'desc'  => 'لما تخلص الكورس، هتكون جاهز تبدأ رحلتك في Flutter — ودي الخطوة الطبيعية الجاية.',
-				),
-			),
-			'faq_items' => array(
-				array(
-					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
-					'a' => 'أيوه، الكورس معمول للمبتدئين تماماً. بنبدأ من "إيه هو البرمجة" ونوصل لحد إنك تبني تطبيقات Dart كاملة. مش محتاج أي خلفية برمجية.',
-				),
-				array(
-					'q' => 'إيه الفرق بين الكورس ده وكورسات Java اللي عندكم؟',
-					'a' => 'Java للتطبيقات العامة (Backend, Android Enterprise, Big Data). Dart/Flutter للموبايل والويب الحديث. لو هدفك الموبايل، ابدأ بـ Dart. لو هدفك Backend، ابدأ بـ Java. الاتنين في الباقة لو حابب تجرب الاتنين.',
-				),
-				array(
-					'q' => 'هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟',
-					'a' => 'أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Dart. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة، من غير أي مصاريف إضافية.',
-				),
-				array(
-					'q' => 'لو مش فهمت درس، فيه دعم؟',
-					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
-				),
-				array(
-					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
-					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
-				),
-			),
-		),
-
-		// ───────────────────────────────────────────────
-		// JAVA — Backend / general-purpose focus
-		// ───────────────────────────────────────────────
-		'java-course-level1' => array(
-			'build_items' => array(
-				array(
-					'kind'  => 'code',
-					'code'  => '<span class="lvc-kw">public class</span> Main {\n  <span class="lvc-kw">public static void</span> main(String[] args) {\n    System.out.<span class="lvc-kw">println</span>(<span class="lvc-str">"Hello, Java!"</span>);\n    <span class="lvc-kw">for</span> (<span class="lvc-kw">int</span> i = <span class="lvc-num">0</span>; i &lt; <span class="lvc-num">5</span>; i++) {\n      System.out.<span class="lvc-kw">println</span>(i);\n    }\n  }\n}',
-					'tag'   => 'تطبيقي',
-					'title' => 'أول Java app ليك',
-					'desc'  => 'هنكتب أول Java program من الصفر — variables, loops, methods, الـ main class.',
-				),
-				array(
-					'kind'  => 'oop',
-					'tag'   => 'OOP',
-					'title' => 'Class + Inheritance',
-					'desc'  => 'Java = لغة OOP من الطراز الأول. هنغطي encapsulation, inheritance, polymorphism, interfaces بالتفصيل.',
-				),
-				array(
-					'kind'  => 'backend',
-					'tag'   => 'جاهزية',
-					'title' => 'مستعد لـ Backend',
-					'desc'  => 'لما تخلص الكورس، هتكون جاهز تتعلم Spring Boot أو أي framework تاني.',
-				),
-			),
-			'faq_items' => array(
-				array(
-					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
-					'a' => 'أيوه، الكورس معمول للمبتدئين تماماً. Java لغة ممتازة كأول لغة لأنها بتعلمك الـ fundamentals بشكل صارم.',
-				),
-				array(
-					'q' => 'إيه اللي أقدر أعمله بعد ما أخلص الكورس؟',
-					'a' => 'تقدر تتقدم لشغل Junior Java Developer، تتعلم Spring Boot للـ Backend، أو تدخل مجال الـ Android بـ Java.',
-				),
-				array(
-					'q' => 'هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟',
-					'a' => 'أيوه، الكورس بيتحدث بشكل دوري مع كل إصدار جديد من Java. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة.',
-				),
-				array(
-					'q' => 'لو مش فهمت درس، فيه دعم؟',
-					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
-				),
-				array(
-					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
-					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
-				),
-			),
-		),
-
-		// ───────────────────────────────────────────────
-
-		// ───────────────────────────────────────────────
-		// JAVA OOP — Object-Oriented Programming focus
-		// ───────────────────────────────────────────────
-		'javaoop' => array(
-			'build_items' => array(
-				array(
-					'kind'  => 'oop',
-					'tag'   => 'OOP',
-					'title' => 'تعلم OOP Java',
-					'desc'  => 'هتفهم الـ classes, objects, inheritance, polymorphism, encapsulation — كل اللي محتاجه عشان تبني Java code محترف.',
-				),
-				array(
-					'kind'  => 'python',  // projects card style (gradient icon)
-					'tag'   => 'مشاريع',
-					'title' => 'مشاريع OOP',
-					'desc'  => 'مشاريع تطبيقية بتحاكي مشاكل حقيقية — هنبني banking system, employee management, game characters.',
-				),
-				array(
-					'kind'  => 'backend',
-					'tag'   => 'الخطوة التانية',
-					'title' => 'جاهز للـ Backend',
-					'desc'  => 'بعد ما تتقن OOP، هتكون جاهز تتعلم Spring Boot أو تدخل مجال الـ software development بشكل احترافي.',
-				),
-			),
-			'faq_items' => array(
-				array(
-					'q' => 'هل لازم أكون خلصت كورس Java الأساسي قبل ما أبدأ OOP؟',
-					'a' => 'الأفضل تكون عارف أساسيات Java (variables, loops, methods, if/else). لو مش عارفهم، كورس "جافا للمبتدئين" هيكون أحسن بداية ليك.',
-				),
-				array(
-					'q' => 'استرداد الفلوس خلال 7 أيام من شراء الكورس — إزاي بيشتغل؟',
-					'a' => 'بعد ما تشترك في الكورس، عندك 7 أيام كاملة تجربه براحتك. لو خلالهم حسيت إن الكورس مش مناسبك لأي سبب، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة أو شروط معقدة. كل اللي محتاجه رسالة واحدة وبس.',
-				),
-				array(
-					'q' => 'هل الكورس ده نظري ولا تطبيقي؟',
-					'a' => 'الكورس تطبيقي 100%. كل درس بينتهي بمشروع صغير أو تمرين تطبقه بنفسك. مش هنقعد نقرأ theory بس — هنبني حاجات فعلية.',
-				),
-				array(
-					'q' => 'إيه اللي يقدر يعمله بعد الكورس ده؟',
-					'a' => 'هتقدر تتقدم لشغل Junior Backend Developer، تكمل على Spring Boot، أو تاخد أي interview OOP-related بثقة.',
-				),
-				array(
-					'q' => 'هل الكورس بيتجدد؟ ولو اشتريت، هاخد التحديثات ببلاش؟',
-					'a' => 'أيوه، الكورس يتحدث مع كل إصدار جديد من Java. أي تحديث بنضيفه بيكون متاح لكل اللي اشتروا الكورس — مدى الحياة، من غير أي مصاريف إضافية.',
-				),
-				array(
-					'q' => 'ضمان استرداد الفلوس شغال إزاي عملياً؟',
-					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا من خلال صفحة "تواصل معنا" أو الإيميل، وهنرد عليك في أقل من 24 ساعة ونرجعلك فلوسك بالكامل.',
-				),
-			),
-		),
-		// PYTHON PROJECTS — Free / project-focused
-		// ───────────────────────────────────────────────
-		'مشاريع-بايثون-للمبتدئين' => array(
-			'build_items' => array(
-				array(
-					'kind'  => 'code',
-					'code'  => '<span class="lvc-kw">def</span> greet(name):\n    <span class="lvc-kw">return</span> <span class="lvc-str">f\'Hello, {name}!\'</span>\n\n<span class="lvc-kw">for</span> i <span class="lvc-kw">in</span> <span class="lvc-kw">range</span>(<span class="lvc-num">5</span>):\n    print(greet(<span class="lvc-str">f\'World {i}\'</span>))',
-					'tag'   => 'تطبيقي',
-					'title' => 'أول Python script',
-					'desc'  => 'هنكتب أول Python script من الصفر — functions, loops, string formatting.',
-				),
-				array(
-					'kind'  => 'python',
-					'tag'   => 'مشاريع',
-					'title' => 'مشاريع حقيقية',
-					'desc'  => 'مشاريع تطبيقية بتحاكي مشاكل حقيقية — to-do list, calculator, simple game.',
-				),
-				array(
-					'kind'  => 'backend',
-					'tag'   => 'جاهزية',
-					'title' => 'مستعد لـ Flask / Django',
-					'desc'  => 'لما تخلص، هتكون جاهز تتعلم أي web framework أو حتى تدخل مجال الـ data science.',
-				),
-			),
-			'faq_items' => array(
-				array(
-					'q' => 'هل الكورس ده مناسب لو عمري ما برمجت قبل كده؟',
-					'a' => 'أيوه! Python هي أسهل لغة تبدأ بيها. الكورس معمول خصيصاً للمبتدئين — هنبدأ من الصفر.',
-				),
-				array(
-					'q' => 'إيه الفرق بين الكورس ده وباقي كورسات Python على اليوتيوب؟',
-					'a' => 'الفرق إن الكورس ده مبني على مشاريع تطبيقية. مش بس syntax — كل درس بينتهي بمشروع صغير تضيفه للـ Portfolio بتاعك.',
-				),
-				array(
-					'q' => 'هل الكورس مجاني فعلاً؟',
-					'a' => 'أيوه، الكورس مجاني تماماً. من غير اشتراك، من غير بطاقة ائتمان. كل اللي محتاجه إنك تسجل في الموقع.',
-				),
-				array(
-					'q' => 'لو مش فهمت درس، فيه دعم؟',
-					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب.',
-				),
-				array(
-					'q' => 'إيه الكورس المناسب اللي بعده؟',
-					'a' => 'بعد ما تخلص، أنصحك بـ "أساسيات Dart" لو هدفك الموبايل، أو "جافا" لو هدفك Backend متكامل.',
-				),
-			),
-		),
-
-		// ───────────────────────────────────────────────
-		// DATA STRUCTURE — المستوى الأول (arrays → linked list → stack → queue)
-		// ───────────────────────────────────────────────
-		'data-structure-c' => array(
-			'build_items' => array(
-				array(
-					'kind'  => 'code',
-					'code'  => '<span class="lvc-kw">struct</span> Node {\n    <span class="lvc-kw">int</span> data;\n    <span class="lvc-kw">struct</span> Node* next;\n};\n\n<span class="lvc-cmt">// أول linked list بإيدك</span>\nhead-&gt;next = newNode;',
-					'tag'   => 'تطبيقي',
-					'title' => 'أول Linked List بإيدك',
-					'desc'  => 'هنبدأ من المصفوفة ومشاكلها، وبعدين نبني linked list من الصفر بـ struct و pointers — insert و delete و display خطوة بخطوة.',
-				),
-				array(
-					'kind'  => 'oop',
-					'tag'   => 'هياكل',
-					'title' => 'Stack + Queue',
-					'desc'  => 'هنعمل الـ stack والـ queue بطريقتين — بالمصفوفة وبالـ linked list — مع push و pop و enqueue و dequeue و peek كاملين.',
-				),
-				array(
-					'kind'  => 'backend',
-					'tag'   => 'جاهزية',
-					'title' => 'مستعد للمستوى التاني',
-					'desc'  => 'لما تخلص، هتكون فاهم الـ pointers والـ double linked list كويس — وجاهز تدخل على الـ trees والـ BST في المستوى التاني.',
-				),
-			),
-			'faq_items' => array(
-				array(
-					'q' => 'هل الكورس ده مناسب لو عمري ما اتعاملت مع هياكل البيانات قبل كده؟',
-					'a' => 'أيوه. بنبدأ من "ما هي هياكل البيانات" و"ليه محتاجين المصفوفة" ونمشي بالتدريج لحد الـ double linked list. مش محتاج أي خلفية في الموضوع.',
-				),
-				array(
-					'q' => 'محتاج أعرف إيه قبل ما أبدأ الكورس؟',
-					'a' => 'محتاج بس أساسيات البرمجة — المتغيرات، الشروط، اللوبات، والدوال. الكورس بيشرح المصفوفات والمؤشرات (pointers) من الصفر جواه.',
-				),
-				array(
-					'q' => 'إيه اللي هتغطيه بالظبط في المستوى الأول؟',
-					'a' => 'المصفوفات والمؤشرات، الـ linked list (single و double) بكل عملياتها، الـ stack بالمصفوفة وبالـ linked list، والـ queue بالمصفوفة وبالـ linked list — 76 درس تطبيقي.',
-				),
-				array(
-					'q' => 'الكورس نظري ولا فيه كود فعلي؟',
-					'a' => 'كل عملية بنكتبها كود كامل قدامك ونتتبعها خطوة بخطوة — insert node، delete node، display، push، pop، enqueue، dequeue. مش شرح نظري على السبورة.',
-				),
-				array(
-					'q' => 'لو مش فهمت درس، فيه دعم؟',
-					'a' => 'أكيد. أي سؤال يجيلك، تقدر تبعت من خلال جروب الـ Telegram المخصص للطلاب — وغالباً بيرد عليك المدرب نفسه (أحمد) أو حد من المساعدين في أقل من 24 ساعة.',
-				),
-				array(
-					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
-					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
-				),
-			),
-		),
-
-		// ───────────────────────────────────────────────
-		// DATA STRUCTURE — المستوى الثاني (circular, stack apps, trees, BST)
-		// ───────────────────────────────────────────────
-		'data_structure_level2' => array(
-			'build_items' => array(
-				array(
-					'kind'  => 'code',
-					'code'  => '<span class="lvc-kw">if</span> (value &lt; root-&gt;data)\n    root-&gt;left  = insert(root-&gt;left, value);\n<span class="lvc-kw">else</span>\n    root-&gt;right = insert(root-&gt;right, value);\n\n<span class="lvc-cmt">// Binary Search Tree</span>',
-					'tag'   => 'تطبيقي',
-					'title' => 'Binary Search Tree كامل',
-					'desc'  => 'هنبني BST من الصفر — create node، insert، search، find min و max، وdelete بكل حالاتها.',
-				),
-				array(
-					'kind'  => 'oop',
-					'tag'   => 'أشجار',
-					'title' => 'الشجر والـ Traversal',
-					'desc'  => 'مصطلحات الشجرة، أنواعها (full، perfect، complete)، والـ traversals الثلاثة — inorder و preorder و postorder بالشرح والكود.',
-				),
-				array(
-					'kind'  => 'backend',
-					'tag'   => 'مسائل',
-					'title' => 'مسائل الـ interviews',
-					'desc'  => 'تطبيقات الـ stack الحقيقية — balanced parentheses، تحويل infix لـ postfix، وحساب الـ postfix expression خطوة بخطوة.',
-				),
-			),
-			'faq_items' => array(
-				array(
-					'q' => 'لازم أخلص المستوى الأول قبل ما أبدأ ده؟',
-					'a' => 'الأفضل أيوه. المستوى ده بيبني على الـ linked list والـ stack والـ queue. فيه مراجعة سريعة عليهم في أول الكورس، بس لو مش عارفهم خالص ابدأ بالمستوى الأول.',
-				),
-				array(
-					'q' => 'إيه الفرق بين المستوى الأول والتاني؟',
-					'a' => 'الأول بيغطي الأساسيات: المصفوفات، الـ linked list، الـ stack، والـ queue. التاني بيدخل على الـ circular linked list والـ circular queue، تطبيقات الـ stack، والأشجار بأنواعها والـ Binary Search Tree.',
-				),
-				array(
-					'q' => 'إيه اللي هتغطيه بالظبط في المستوى التاني؟',
-					'a' => 'circular linked list و circular queue، تطبيقات الـ stack (balanced parentheses و infix/postfix/prefix)، مصطلحات الشجر وأنواعه، الـ traversals، والـ Binary Search Tree كامل — 87 درس.',
-				),
-				array(
-					'q' => 'الكورس ده هيفيدني في الـ interviews؟',
-					'a' => 'أيوه. أسئلة الـ trees والـ BST والـ traversals وتحويل الـ expressions من أكتر الأسئلة اللي بتتسأل في interviews الشركات — والكورس بيغطيها بالكود مش بالنظري.',
-				),
-				array(
-					'q' => 'فيه تمارين وواجبات؟',
-					'a' => 'أيوه. فيه أسئلة على أنواع الشجر، اختبار على المصطلحات، حل واجب، وأمثلة متعددة على infix to postfix — كل جزء بينتهي بتطبيق.',
-				),
-				array(
-					'q' => 'ضمان استرداد الفلوس شغال إزاي؟',
-					'a' => 'لو خلال أول 7 أيام من الاشتراك حسيت إن الكورس مش مناسبك، ابعتلنا وهنرجعلك فلوسك بالكامل — من غير أي أسئلة.',
-				),
-			),
-		),
-
-	);
-
-	// Fallback: use the Dart content for any course we haven't mapped yet.
-	// This way a new course never shows wrong content — it shows the most
-	// useful default. You can add a real entry above for each new course.
-	$fallback = isset( $map['dart'] ) ? $map['dart'] : array(
-		'build_items' => array(),
-		'faq_items'   => array(),
-	);
-
-	$extras = isset( $map[ $slug ] ) ? $map[ $slug ] : $fallback;
-
-	// The 'code' snippets above are single-quoted, so their \n stays a literal
-	// backslash-n. Turn it into a real line break so the <pre> mockup renders
-	// the snippet on multiple lines instead of one long line.
-	if ( ! empty( $extras['build_items'] ) ) {
-		foreach ( $extras['build_items'] as $i => $item ) {
-			if ( isset( $item['code'] ) ) {
-				$extras['build_items'][ $i ]['code'] = str_replace( '\n', "\n", $item['code'] );
-			}
-		}
-	}
-
-	return $extras;
-}
-
-$context['course_extras'] = learnsimply_get_course_extras( $course_slug );
-$context['course_slug']   = $course_slug;
-
-// Render the template
 Timber::render( 'single-course.twig', $context );

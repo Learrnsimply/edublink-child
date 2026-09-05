@@ -1036,6 +1036,16 @@ if (file_exists(__DIR__ . '/inc/bundles.php')) {
 	require_once __DIR__ . '/inc/bundles.php';
 }
 
+// محتوى صفحة الكورس: المحلّل اللي بيستخرج الأقسام من حقول Tutor + مكان الكورس في مساره،
+// وكروت «هتبني إيه» والأسئلة لكل كورس. بيتحمّلوا هنا (مرة واحدة) مش في القالب —
+// درس ٥/٩: تعريف دوال جوه ملف القالب وقّع الرئيسية.
+if (file_exists(__DIR__ . '/inc/course-content.php')) {
+	require_once __DIR__ . '/inc/course-content.php';
+}
+if (file_exists(__DIR__ . '/inc/course-extras.php')) {
+	require_once __DIR__ . '/inc/course-extras.php';
+}
+
 /**
  * Load Composer dependencies
  */
@@ -1322,7 +1332,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260905-8');
+	define('LS_ASSETS_VERSION', '20260905-9');
 }
 
 /**
