@@ -20,7 +20,7 @@
           <a href="{{ site.url }}/courses/">الدورات</a>
           <span class="lsc-crumbs__sep">/</span><a href="{{ site.url }}/shop-2/?product_cat=bundle">الباقات</a>
           <span class="lsc-crumbs__sep">/</span>
-          <span class="lsc-step lsb-step">باقة · {{ courses|length }} كورس{% if gifts|length > 0 %} + كتاب{% endif %}{% if positions|length > 0 and path_label %} · الخطوات {{ positions|join(' و') }} في {{ path_label }}{% endif %}</span>
+          <span class="lsc-step lsb-step">{% if is_all %}الباقة الكاملة · كل كورسات المنصة ({{ courses|length }}){% else %}باقة · {{ courses|length }} كورس{% if gifts|length > 0 %} + كتاب{% endif %}{% if positions|length > 0 and path_label %} · الخطوات {{ positions|join(' و') }} في {{ path_label }}{% endif %}{% endif %}</span>
         </nav>
 
         <h1 class="lsc-hero__title">{{ title }}{% if subtitle %}<span class="lsb-subtitle">{{ subtitle }}</span>{% endif %}</h1>
@@ -64,7 +64,7 @@
     <div class="lsc-wrap">
       <p class="lsc-eyebrow">Courses in this bundle</p>
       <h2 class="lsc-h2" id="lsb-inside-title">الكورسات جوه الباقة</h2>
-      <p class="lsc-lead">{{ courses|length }} كورسات مرتّبة بالترتيب اللي تتعلم بيه. كل كورس بيبني على اللي قبله{% if gifts|length > 0 %}، والكتاب معاهم هدية{% endif %}.</p>
+      <p class="lsc-lead">{% if is_all %}كل كورسات المنصة، مرتّبة بالترتيب اللي تتعلم بيه: الأساسيات الأول، وبعدها التطبيقات.{% else %}{{ courses|length }} كورسات مرتّبة بالترتيب اللي تتعلم بيه. كل كورس بيبني على اللي قبله{% if gifts|length > 0 %}، والكتاب معاهم هدية{% endif %}.{% endif %}</p>
       <div class="lsb-inside">
         {% for c in courses %}
         <article class="lsb-icard">
