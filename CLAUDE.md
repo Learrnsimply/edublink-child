@@ -18,7 +18,7 @@ functions.php      ~3,600 سطر — قلب الثيم (توجيه القوال�
 views/             قوالب Twig
   layouts/base.twig    القالب الأساسي
   components/          header, footer, whatsapp-button
-  sections/home/       13 سكشن للهوم بيدج
+  sections/home/       8 سكاشن للهوم بيدج (بنية Mosh، سبتمبر ٢٠٢٦)
 assets/            CSS/JS بفولدر لكل صفحة — بيتحمّلوا أوتوماتيك حسب نوع الصفحة
   global/tokens.css    ⭐ مصدر الحقيقة لكل قيم التصميم
 woocommerce/       override لقوالب WooCommerce

@@ -1,26 +1,26 @@
-﻿{% extends "layouts/base.twig" %}
+{% extends "layouts/base.twig" %}
 
 {% block title %}اتعلم ببساطة - تعلم البرمجة من الصفر{% endblock %}
 
 {% block styles %}
     <link rel="stylesheet" href="{{ theme_uri }}/assets/home/style.css?v={{ assets_version }}" />
 {% endblock %}
-    
+
 {% block content %}
-    {# رحلة الزائر: هيرو مختصر ← الكورسات فورًا ← عرض ← طريق واضح ← باقي المنتجات ← دليل اجتماعي ← CTA نهائي #}
-    {% include 'sections/home/hero-section.twig' %}
-    {% include 'sections/home/featured-courses-section.twig' %}
-    {% include 'sections/home/roadmap-section.twig' %}
-    {% include 'sections/home/bundles-section.twig' %}
-    {% include 'sections/home/books-section.twig' %}
-    {% include 'sections/shared/partners-section.twig' %}
-    {% include 'sections/home/marquee-section.twig' %}
-    {% include 'sections/home/features-section.twig' %}
-    {% include 'sections/home/certificate-section.twig' %}
-    {% include 'sections/shared/testimonials-section.twig' %}
-    {% include 'sections/home/about-me-section.twig' %}
-    {% include 'sections/home/articles-section.twig' %}
-    {% include 'sections/shared/faq-section.twig' %}
+    {#
+      الرئيسية على بنية Code with Mosh — ٨ كتل وH1 واحد:
+      هيرو ← الكورسات ← المسارات + الباقة الكاملة ← الآراء ← ليه إحنا ← المدرّس ← الأسئلة ← CTA
+    #}
+    <div class="lsh">
+        {% include 'sections/home/hero.twig' %}
+        {% include 'sections/home/courses.twig' %}
+        {% include 'sections/home/paths.twig' %}
+        {% include 'sections/home/reviews.twig' %}
+        {% include 'sections/home/why.twig' %}
+        {% include 'sections/home/instructor.twig' %}
+        {% include 'sections/home/faq.twig' %}
+        {% include 'sections/home/cta.twig' %}
+    </div>
 {% endblock %}
 
 {% block body_extra %}
@@ -28,5 +28,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ theme_uri }}/assets/home/script.js?v={{ assets_version }}"></script>
+    <script src="{{ theme_uri }}/assets/home/script.js?v={{ assets_version }}" defer></script>
 {% endblock %}

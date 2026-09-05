@@ -1,461 +1,343 @@
 <?php
 /**
- * Template Name: Front Page
- * 
- * Front page template for the home page
- * Uses Timber Twig template
- * 
+ * Front Page Template — الرئيسية
+ *
+ * إعادة بناء الرئيسية على بنية Code with Mosh (سبتمبر ٢٠٢٦):
+ * هيرو ← الكورسات ← المسارات + الباقة الكاملة ← آراء الطلاب ← ليه اتعلم ببساطة
+ * ← المدرّس ← الأسئلة ← CTA. راجع docs/MOSH-BLUEPRINT.md في ورشة التوثيق.
+ *
+ * كل النصوص من المنصة نفسها، وكل الأرقام من Tutor وWooCommerce وقت الطلب.
+ *
  * @package EduBlink_Child
  */
 
-// Prevent direct access
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Check if Timber is available
 if ( ! class_exists( 'Timber\Timber' ) ) {
 	echo 'Timber plugin is not installed.';
 	return;
 }
 
-// Get Timber context
-$context = Timber::get_context();
+$context = Timber::context();
 
-// Add theme directory URI to context
 $context['theme_uri'] = get_stylesheet_directory_uri();
 
-// Add cart URL for JavaScript redirects
-$cart_page_id = function_exists( 'wc_get_page_id' ) ? wc_get_page_id( 'cart' ) : 0;
-if ( $cart_page_id && $cart_page_id > 0 ) {
-	$context['cart_url'] = get_permalink( $cart_page_id );
-} else {
-	$context['cart_url'] = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '/cart-1/';
-}
-
-// Get featured courses from Tutor LMS
+// ─────────────────────────────────────────────────────────────────────────────
+// الكورسات — استعلام واحد محدود، وترتيب بمنطق الأكاديمية مش بالتاريخ.
+// الترتيب: الأساسيات (جافا ← OOP ← هياكل ١ ← هياكل ٢) ← تطوير التطبيقات (دارت)
+// ← ابدأ من هنا (بايثون). أي كورس مش في الأقسام بييجي في الآخر بترتيب النشر.
+// ─────────────────────────────────────────────────────────────────────────────
 $context['courses'] = array();
-if ( function_exists( 'tutor_utils' ) ) {
-	$course_post_type = tutor()->course_post_type;
-	
-	// Get featured courses (limit to 6)
-	// كان -1 والتعليق بيقول 6 — التعليق بيوصف النية والكود كان بيجيب كل كورس
-	// على الموقع. مع نمو الكتالوج ده استعلام غير محدود على أعلى صفحة في الترافيك.
-	$args = array(
-		'post_type'      => $course_post_type,
-		'post_status'    => 'publish',
-		'posts_per_page' => 6,
-		'orderby'        => 'date',
-		'order'          => 'DESC',
-	);
-	
-	$courses_query = new WP_Query( $args );
-	
-	if ( $courses_query->have_posts() ) {
-		while ( $courses_query->have_posts() ) {
-			$courses_query->the_post();
-			$course_id = get_the_ID();
-			
-			// Get course data using Timber::get_post()
-			$course = Timber::get_post( $course_id );
-			
-			if ( $course ) {
-				// Get course rating
-				$course_rating = tutor_utils()->get_course_rating( $course_id );
-				$course->rating_avg = $course_rating ? number_format( $course_rating->rating_avg, 1 ) : 0;
-				$course->rating_count = $course_rating ? $course_rating->rating_count : 0;
-				
-				// Get course price (raw prices for proper formatting)
-				$price_info = tutor_utils()->get_raw_course_price( $course_id );
-				$course->regular_price = $price_info->regular_price ? floatval( $price_info->regular_price ) : null;
-				$course->sale_price = $price_info->sale_price ? floatval( $price_info->sale_price ) : null;
-				$course->price = $price_info->sale_price ? floatval( $price_info->sale_price ) : ( $price_info->regular_price ? floatval( $price_info->regular_price ) : 0 );
-				
-				// Calculate discount percentage
-				if ( $course->sale_price && $course->regular_price && $course->regular_price > 0 ) {
-					$course->discount_percent = round( ( ( $course->regular_price - $course->sale_price ) / $course->regular_price ) * 100 );
-				} else {
-					$course->discount_percent = 0;
-				}
-				
-				// Check if course is free
-				$price_type = tutor_utils()->price_type( $course_id );
-				$course->is_free = ( $price_type === 'free' || ( ! $course->regular_price && ! $course->sale_price ) );
-				
-				// Get course duration
-				$course->duration = get_tutor_course_duration_context( $course_id );
-				
-				// Get lesson count
-				$course->lesson_count = tutor_utils()->get_lesson_count_by_course( $course_id );
-				
-				// Get students count
-				$course->students_count = tutor_utils()->count_enrolled_users_by_course( $course_id );
-				
-				// Get instructors
-				$instructors = tutor_utils()->get_instructors_by_course( $course_id );
-				if ( ! empty( $instructors ) && isset( $instructors[0]->ID ) ) {
-					$course->instructor = Timber::get_user( $instructors[0]->ID );
-				} else {
-					$course->instructor = null;
-				}
-				
-				// Get course level
-				$course->level = get_post_meta( $course_id, '_tutor_course_level', true );
-				if ( empty( $course->level ) ) {
-					$course->level = 'مبتدئ';
-				}
-				
-				// Get course image
-				$course->thumbnail = get_the_post_thumbnail_url( $course_id, 'full' );
-				if ( ! $course->thumbnail ) {
-					$course->thumbnail = learnsimply_no_image_url();
-				}
-				
-				// Get WooCommerce product ID if course is monetized by WooCommerce
-				$monetize_by = tutor_utils()->get_option( 'monetize_by' );
-				if ( $monetize_by === 'wc' && class_exists( 'WooCommerce' ) ) {
-					$product_id = tutor_utils()->get_course_product_id( $course_id );
-					if ( $product_id ) {
-						$course->product_id = $product_id;
-						$course->product_url = get_permalink( $product_id );
-					} else {
-						$course->product_id = null;
-						$course->product_url = null;
-					}
-				} else {
-					$course->product_id = null;
-					$course->product_url = null;
-				}
-				// Check if current user is enrolled in this course
-				$course->is_enrolled = is_user_logged_in() && tutor_utils()->is_enrolled( $course_id, get_current_user_id() );
-				// Get first lesson URL for enrolled students
-if ( $course->is_enrolled ) {
-    $topics = tutor_utils()->get_topics( $course_id );
-    if ( $topics && $topics->have_posts() ) {
-        $topics->the_post();
-        $topic_id = get_the_ID();
-        $lessons = tutor_utils()->get_course_contents_by_topic( $topic_id, -1 );
-        if ( ! empty( $lessons ) && isset( $lessons->posts[0] ) ) {
-            $first_lesson = $lessons->posts[0];
-            $course->first_lesson_url = get_permalink( $first_lesson->ID );
-        }
-        wp_reset_postdata();
-    }
-    if ( empty( $course->first_lesson_url ) ) {
-        $course->first_lesson_url = $course->link;
-    }
-}
-				
-				$context['courses'][] = $course;
-			}
+
+$academy_order = array();
+if ( function_exists( 'learnsimply_academy_departments' ) ) {
+	$departments = learnsimply_academy_departments();
+	uasort(
+		$departments,
+		function ( $a, $b ) {
+			return $a['order'] - $b['order'];
 		}
-		wp_reset_postdata();
+	);
+	$position = 0;
+	foreach ( $departments as $department ) {
+		foreach ( $department['courses'] as $course_id ) {
+			$academy_order[ (int) $course_id ] = $position++;
+		}
 	}
 }
 
-// Get books (WooCommerce products with category "book")
-$context['books'] = array();
-if ( class_exists( 'WooCommerce' ) ) {
-	// Get book category term
-	$book_term = get_term_by( 'slug', 'book', 'product_cat' );
-	
-	if ( $book_term && ! is_wp_error( $book_term ) ) {
-		// Get products with book category
-		$books_args = array(
-			'post_type'      => 'product',
+if ( function_exists( 'tutor_utils' ) ) {
+	$courses_query = new WP_Query(
+		array(
+			'post_type'      => tutor()->course_post_type,
 			'post_status'    => 'publish',
-			'posts_per_page' => 8, // Limit to 8 books
+			'posts_per_page' => 6,
 			'orderby'        => 'date',
 			'order'          => 'DESC',
-			'tax_query'      => array(
-				array(
-					'taxonomy' => 'product_cat',
-					'field'    => 'slug',
-					'terms'    => 'book',
-				),
-			),
-		);
-		
-		$books_query = new WP_Query( $books_args );
-		
-		if ( $books_query->have_posts() ) {
-			while ( $books_query->have_posts() ) {
-				$books_query->the_post();
-				$product_id = get_the_ID();
-				
-				// Get product using Timber::get_post()
-				$product = Timber::get_post( $product_id );
-				
-				if ( $product ) {
-					// Get WooCommerce product object
-					$wc_product = wc_get_product( $product_id );
-					
-					if ( $wc_product ) {
-						// Get product price (formatted)
-						$regular_price = $wc_product->get_regular_price();
-						$sale_price = $wc_product->get_sale_price();
-						$price = $wc_product->get_price();
-						
-						$product->regular_price = $regular_price ? floatval( $regular_price ) : null;
-						$product->sale_price = $sale_price ? floatval( $sale_price ) : null;
-						$product->price = $price ? floatval( $price ) : 0;
-						
-						// Check if product is free
-						$product->is_free = ( $product->price == 0 && ! $product->regular_price && ! $product->sale_price );
-						
-						// Calculate discount percentage
-						if ( $sale_price && $regular_price && $regular_price > 0 ) {
-							$product->discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
-						} else {
-							$product->discount_percent = 0;
-						}
-						
-						// Get product image
-						$product->thumbnail = get_the_post_thumbnail_url( $product_id, 'full' );
-						if ( ! $product->thumbnail ) {
-							$product->thumbnail = learnsimply_no_image_url();
-						}
-						
-						// Get stock quantity (use custom field if available, otherwise use WooCommerce stock)
-						$book_available_count = get_post_meta( $product_id, '_book_available_count', true );
-						if ( $book_available_count !== '' && $book_available_count !== false ) {
-							$product->stock_quantity = intval( $book_available_count );
-						} else {
-							$product->stock_quantity = $wc_product->get_stock_quantity();
-						}
-						$product->stock_status = $wc_product->get_stock_status();
-						
-						// Get product URL
-						$product->product_url = get_permalink( $product_id );
-						
-						// Get product author/instructor (if available)
-						$author_id = get_post_field( 'post_author', $product_id );
-						if ( $author_id ) {
-							$product->author = Timber::get_user( $author_id );
-						} else {
-							$product->author = null;
-						}
-						
-						// Get custom fields (pages)
-						$product->pages = get_post_meta( $product_id, '_book_pages', true );
-						
-						$context['books'][] = $product;
-					}
-				}
-			}
-			wp_reset_postdata();
-		}
-	}
-}
-
-// Get products with bundles using asnp-product-bundles plugin
-$context['bundles'] = array();
-if ( class_exists( 'WooCommerce' ) && class_exists( 'AsanaPlugins\WooCommerce\ProductBundles\Plugin' ) ) {
-	// Get all products of type 'easy_product_bundle'
-	// حد أعلى بدل -1. المتجر بيعرض ٣ باقات، والرقم ده واسع جدًا عليها — الغرض
-	// منه إن الاستعلام يفضل محدود مهما اتضاف باقات، مش إخفاء أي حاجة موجودة.
-	$args = array(
-		'post_type'      => 'product',
-		'post_status'    => 'publish',
-		'posts_per_page' => 12,
-		'orderby'        => 'date',
-		'order'          => 'DESC',
-		'tax_query'      => array(
-			array(
-				'taxonomy' => 'product_type',
-				'field'    => 'slug',
-				'terms'    => 'easy_product_bundle',
-			),
-		),
+		)
 	);
-	
-	$bundles_query = new WP_Query( $args );
 
-	// عدد عناصر كل الباقات في **استعلام واحد** قبل الحلقة. قبل كده كان فيه
-	// استعلام $wpdb منفصل لكل باقة جوه الحلقة (N+1) على أعلى صفحة في الترافيك.
-	$bundle_counts = learnsimply_bundle_item_counts( wp_list_pluck( $bundles_query->posts, 'ID' ) );
+	$monetize_by_wc = ( 'wc' === tutor_utils()->get_option( 'monetize_by' ) ) && class_exists( 'WooCommerce' );
 
-	if ( $bundles_query->have_posts() ) {
-		while ( $bundles_query->have_posts() ) {
-			$bundles_query->the_post();
-			$bundle_product_id = get_the_ID();
-			$product = wc_get_product( $bundle_product_id );
-			
-			// Verify it's actually a bundle product
-			if ( $product && $product->is_type( 'easy_product_bundle' ) ) {
-				// من الاستعلام الواحد اللي فوق — مفيش استعلام جوه الحلقة
-				$has_bundles = isset( $bundle_counts[ $bundle_product_id ] ) ? $bundle_counts[ $bundle_product_id ] : 0;
-				
-				if ( $has_bundles > 0 ) {
-					// Get bundle items count
-					$bundle_items_count = intval( $has_bundles );
-					
-					// Get product data
-					$bundle_data = array(
-						'id' => $bundle_product_id,
-						'title' => $product->get_name(),
-						'link' => get_permalink( $bundle_product_id ),
-						'thumbnail' => get_the_post_thumbnail_url( $bundle_product_id, 'full' ) ?: learnsimply_no_image_url(),
-						'bundle_items_count' => $bundle_items_count,
-					);
-					
-					// Get product prices
-					$regular_price = $product->get_regular_price();
-					$sale_price = $product->get_sale_price();
-					$price = $product->get_price();
-					
-					$bundle_data['regular_price'] = $regular_price ? floatval( $regular_price ) : null;
-					$bundle_data['sale_price'] = $sale_price ? floatval( $sale_price ) : null;
-					$bundle_data['price'] = $price ? floatval( $price ) : 0;
-					
-					// Calculate discount percentage
-					if ( $bundle_data['sale_price'] && $bundle_data['regular_price'] && $bundle_data['regular_price'] > 0 ) {
-						$bundle_data['discount_percent'] = round( ( ( $bundle_data['regular_price'] - $bundle_data['sale_price'] ) / $bundle_data['regular_price'] ) * 100 );
-					} else {
-						$bundle_data['discount_percent'] = 0;
-					}
-					
-					// Check if product is free
-					$bundle_data['is_free'] = ( ! $bundle_data['regular_price'] && ! $bundle_data['sale_price'] ) || $bundle_data['price'] == 0;
-					
-					// Get product rating
-					$average_rating = $product->get_average_rating();
-					$rating_count = $product->get_rating_count();
-					$bundle_data['rating_avg'] = $average_rating ? number_format( $average_rating, 1 ) : 0;
-					$bundle_data['rating_count'] = $rating_count;
-					
-					// Get bundle author/instructor
-					$author_id = get_post_field( 'post_author', $bundle_product_id );
-					if ( $author_id ) {
-						$author = Timber::get_user( $author_id );
-						$bundle_data['author'] = $author;
-						$bundle_data['author_name'] = $author ? $author->display_name : '';
-						$bundle_data['author_avatar'] = $author ? get_avatar_url( $author_id, array( 'size' => 40 ) ) : '';
-					} else {
-						$bundle_data['author'] = null;
-						$bundle_data['author_name'] = '';
-						$bundle_data['author_avatar'] = '';
-					}
-					
-					$context['bundles'][] = $bundle_data;
-				}
-			}
+	foreach ( $courses_query->posts as $course_post ) {
+		$course_id = $course_post->ID;
+		$course    = Timber::get_post( $course_id );
+		if ( ! $course ) {
+			continue;
 		}
-		wp_reset_postdata();
-	}
-}
 
-// Ensure bundles is always set (even if empty)
-if ( ! isset( $context['bundles'] ) ) {
-	$context['bundles'] = array();
-}
+		$rating               = tutor_utils()->get_course_rating( $course_id );
+		$course->rating_avg   = ( $rating && $rating->rating_count > 0 ) ? round( (float) $rating->rating_avg, 1 ) : 0;
+		$course->rating_count = $rating ? (int) $rating->rating_count : 0;
 
-// Featured homepage bundle — pinned to the "Java Basics + OOP" bundle by slug so the
-// card's price / buy-link / avatar always track THAT specific live WC product, instead of
-// "whichever bundle is newest" (bundles[0], which now resolves to the Data Structures bundle).
-// The template keeps the current literals (849 / 2,150 / 61% / id 33336) as a safe fallback.
-$context['featured_bundle'] = null;
-foreach ( $context['bundles'] as $ls_bundle ) {
-	if ( ! empty( $ls_bundle['link'] ) && false !== strpos( $ls_bundle['link'], 'java-basics-oop-bundle' ) ) {
-		$context['featured_bundle'] = $ls_bundle;
-		break;
-	}
-}
+		// السعر: رقم واحد. الرئيسية الجديدة مبتعرضش «بدل» ولا شارة خصم (قرار أحمد ٥/٩).
+		$price_info    = tutor_utils()->get_raw_course_price( $course_id );
+		$regular_price = $price_info->regular_price ? (float) $price_info->regular_price : 0;
+		$sale_price    = $price_info->sale_price ? (float) $price_info->sale_price : 0;
+		$course->price = $sale_price > 0 ? $sale_price : $regular_price;
+		$course->is_free = ( 'free' === tutor_utils()->price_type( $course_id ) ) || $course->price <= 0;
+		$course->price_label = $course->is_free ? '' : number_format( $course->price, 0, '.', ',' );
 
-// Java "full path" bundle — 4 courses presented as one package before the featured
-// courses section. The "before discount" total is summed from each course's REGULAR
-// price (never the sale price) so the strikethrough total and the savings stay accurate
-// against the live products even when individual courses go on sale.
-$java_bundle_slugs = function_exists( 'learnsimply_programming_bundle_slugs' )
-	? learnsimply_programming_bundle_slugs()
-	: array( 'java-course-level1', 'javaoop', 'data-structure-c', 'data_structure_level2', 'dart', 'مشاريع-بايثون-للمبتدئين' );
-$java_bundle_items       = array();
-$java_bundle_regular_total = 0;
-$java_bundle_product_ids = array();
+		$course->hours          = learnsimply_home_course_hours( $course_id );
+		$course->lesson_count   = (int) tutor_utils()->get_lesson_count_by_course( $course_id );
+		$course->students_count = (int) tutor_utils()->count_enrolled_users_by_course( $course_id );
+		$course->level_label    = learnsimply_home_level_label( get_post_meta( $course_id, '_tutor_course_level', true ) );
+		$course->level_key      = learnsimply_home_level_key( get_post_meta( $course_id, '_tutor_course_level', true ) );
 
-// Preserve the requested display order by looping slugs first, then matching courses.
-foreach ( $java_bundle_slugs as $jb_slug ) {
-	foreach ( $context['courses'] as $jb_course ) {
-		if ( isset( $jb_course->slug ) && $jb_course->slug === $jb_slug ) {
-			// Always use the regular (pre-discount) price for the bundle math.
-			$jb_regular = $jb_course->regular_price ? floatval( $jb_course->regular_price ) : floatval( $jb_course->price );
-			$java_bundle_regular_total += $jb_regular;
+		// جملة الكارت: مقتطف الكورس من ووردبريس (نص المنصة نفسه)، مقصوص لـ١٨ كلمة.
+		$excerpt = has_excerpt( $course_id ) ? get_the_excerpt( $course_id ) : '';
+		$course->card_text = $excerpt ? wp_trim_words( wp_strip_all_tags( $excerpt ), 18, '…' ) : '';
 
-			if ( $jb_course->product_id ) {
-				$java_bundle_product_ids[] = $jb_course->product_id;
-			}
-
-			$java_bundle_items[] = array(
-				'title'         => $jb_course->title,
-				'slug'          => $jb_slug,
-				'regular_price' => $jb_regular,
-				'thumbnail'     => $jb_course->thumbnail,
-				'product_id'    => $jb_course->product_id,
-				'link'          => $jb_course->link,
-			);
-			break;
+		$course->thumbnail = get_the_post_thumbnail_url( $course_id, 'large' );
+		if ( ! $course->thumbnail ) {
+			$course->thumbnail = learnsimply_no_image_url();
 		}
-	}
-}
 
-$java_bundle_price = 1900; // Bundle price in EGP
-$context['java_bundle'] = array(
-	'items'           => $java_bundle_items,
-	'regular_total'   => $java_bundle_regular_total,
-	'price'           => $java_bundle_price,
-	'savings'         => max( 0, $java_bundle_regular_total - $java_bundle_price ),
-	'savings_percent' => $java_bundle_regular_total > 0
-		? round( ( ( $java_bundle_regular_total - $java_bundle_price ) / $java_bundle_regular_total ) * 100 )
-		: 0,
-	'product_ids'     => $java_bundle_product_ids,
-);
-
-// Get articles (WordPress posts)
-$context['articles'] = array();
-$articles_args = array(
-	'post_type'      => 'post',
-	'post_status'    => 'publish',
-	'posts_per_page' => 6,
-	'orderby'        => 'date',
-	'order'          => 'DESC',
-);
-
-$articles_query = new WP_Query( $articles_args );
-
-if ( $articles_query->have_posts() ) {
-	while ( $articles_query->have_posts() ) {
-		$articles_query->the_post();
-		$post_id = get_the_ID();
-		
-		$article = Timber::get_post( $post_id );
-		
-		if ( $article ) {
-			// Get featured image
-			$article->thumbnail = get_the_post_thumbnail_url( $post_id, 'full' );
-			if ( ! $article->thumbnail ) {
-				$article->thumbnail = learnsimply_no_image_url();
-			}
-			
-			// Get author
-			$author_id = get_post_field( 'post_author', $post_id );
-			if ( $author_id ) {
-				$article->author = Timber::get_user( $author_id );
-			} else {
-				$article->author = null;
-			}
-			
-			// Get excerpt (short description) - always limit to few words for card display
-			$raw = get_the_excerpt( $post_id );
-			if ( empty( trim( $raw ) ) ) {
-				$raw = get_the_content( null, false, $post_id );
-			}
-			$article->description = wp_trim_words( wp_strip_all_tags( $raw ), 18, '...' );
-			
-			$context['articles'][] = $article;
+		$course->product_id = null;
+		if ( $monetize_by_wc ) {
+			$product_id = tutor_utils()->get_course_product_id( $course_id );
+			$course->product_id = $product_id ? (int) $product_id : null;
 		}
+
+		$course->is_enrolled = is_user_logged_in() && tutor_utils()->is_enrolled( $course_id, get_current_user_id() );
+
+		// موضعه في مسار الأكاديمية — بيتحكم في الترتيب على الصفحة.
+		$course->academy_position = isset( $academy_order[ $course_id ] ) ? $academy_order[ $course_id ] : 1000;
+
+		$context['courses'][] = $course;
 	}
 	wp_reset_postdata();
+
+	usort(
+		$context['courses'],
+		function ( $a, $b ) {
+			if ( $a->academy_position === $b->academy_position ) {
+				return 0;
+			}
+			return $a->academy_position < $b->academy_position ? -1 : 1;
+		}
+	);
+}
+
+// «الأكثر مبيعًا» = أعلى كورس مدفوع في عدد المشتركين. قاعدة من الداتا مش اسم مكتوب بالإيد.
+$bestseller_id = 0;
+$bestseller_students = 0;
+foreach ( $context['courses'] as $course ) {
+	if ( ! $course->is_free && $course->students_count > $bestseller_students ) {
+		$bestseller_students = $course->students_count;
+		$bestseller_id       = $course->ID;
+	}
+}
+foreach ( $context['courses'] as $course ) {
+	$course->is_bestseller = ( $course->ID === $bestseller_id );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// أرقام الثقة في الهيرو وقسم الآراء.
+// التقييم والطلاب المشتركين محسوبين من Tutor. يوتيوب و«+10,000 طالب من 15 دولة»
+// أرقام تسويقية من نص أحمد في قسم «عني» — مكانها الوحيد هنا عشان تتعدّل من سطر واحد.
+// ─────────────────────────────────────────────────────────────────────────────
+$rating_weighted = 0;
+$rating_total    = 0;
+$students_total  = 0;
+foreach ( $context['courses'] as $course ) {
+	$rating_weighted += $course->rating_avg * $course->rating_count;
+	$rating_total    += $course->rating_count;
+	$students_total  += $course->students_count;
+}
+$context['stats'] = array(
+	'rating_avg'      => $rating_total > 0 ? number_format( $rating_weighted / $rating_total, 1 ) : '',
+	'rating_count'    => number_format( $rating_total ),
+	'students_total'  => number_format( $students_total ),
+	'youtube'         => '403K',
+	'students_claim'  => '+10,000',
+	'countries_claim' => '15',
+	'views_claim'     => '17M',
+	'experience'      => '7+',
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// المسارات — «تايه مش عارف تبدأ إزاي؟»
+// مسار الأساسيات: كورسات قسم الأساسيات ثم أول كورس في تطوير التطبيقات (دارت خطوة ٥).
+// مسار التطبيقات: كورسات تطوير التطبيقات + كارت Flutter «قريبًا».
+// الكورس الواحد ممكن يظهر في أكتر من مسار — ده مقصود (قرار أحمد ٥/٩).
+// ─────────────────────────────────────────────────────────────────────────────
+$courses_by_id = array();
+foreach ( $context['courses'] as $course ) {
+	$courses_by_id[ $course->ID ] = $course;
+}
+
+$foundations_steps = array_merge(
+	learnsimply_home_path_steps( 'foundations', $courses_by_id ),
+	learnsimply_home_path_steps( 'app-development', $courses_by_id )
+);
+$apps_steps = learnsimply_home_path_steps( 'app-development', $courses_by_id );
+$apps_steps[] = array(
+	'id'          => 0,
+	'title'       => 'Flutter',
+	'meta'        => 'قريبًا',
+	'url'         => '',
+	'thumbnail'   => '',
+	'coming_soon' => true,
+);
+
+$context['paths'] = array(
+	array(
+		'key'      => 'foundations',
+		'label'    => 'مسار الأساسيات',
+		'title'    => 'ابدأ بـ Java من الصفر ☕ وبعدها هياكل البيانات 🧠',
+		'text'     => 'هنا هتتعلم أساسيات البرمجة صح، وبعدها تدخل على OOP بشكل عملي. الهدف مش إنك تحفظ Syntax، الهدف إنك تفهم إزاي تفكر كمبرمج. وبعد ما تفهم الأساسيات، هياكل البيانات هي المرحلة اللي هتنقل مستواك بجد.',
+		'cta'      => 'ابدأ مسار الأساسيات',
+		'url'      => get_term_link( 'foundations', 'course-category' ),
+		'primary'  => true,
+		'steps'    => $foundations_steps,
+	),
+	array(
+		'key'      => 'app-development',
+		'label'    => 'مسار تطوير التطبيقات',
+		'title'    => 'من Dart لـ Flutter 📱',
+		'text'     => 'الأساس اللي أي مطوّر موبايل محترف بيبدأ منه. Dart هي لغة Flutter، فبنتقنها الأول وبعدين ندخل على بناء التطبيقات.',
+		'cta'      => 'ابدأ مسار التطبيقات',
+		'url'      => get_term_link( 'app-development', 'course-category' ),
+		'primary'  => false,
+		'steps'    => $apps_steps,
+	),
+);
+foreach ( $context['paths'] as &$path ) {
+	if ( is_wp_error( $path['url'] ) || empty( $path['url'] ) ) {
+		$path['url'] = home_url( '/courses/' );
+	}
+}
+unset( $path );
+
+// ─────────────────────────────────────────────────────────────────────────────
+// باقة «جميع الدورات» — منتج ووكومرس بالسلاج all_in_one (ID 40754 على السيرفر).
+// السعر بييجي من المنتج نفسه، مش مكتوب هنا.
+// ─────────────────────────────────────────────────────────────────────────────
+$context['all_courses_bundle'] = null;
+if ( class_exists( 'WooCommerce' ) ) {
+	$bundle_post = get_page_by_path( 'all_in_one', OBJECT, 'product' );
+	if ( $bundle_post && 'publish' === $bundle_post->post_status ) {
+		$bundle_product = wc_get_product( $bundle_post->ID );
+		if ( $bundle_product ) {
+			$bundle_price = (float) $bundle_product->get_price();
+			$context['all_courses_bundle'] = array(
+				'id'          => $bundle_post->ID,
+				'title'       => $bundle_product->get_name(),
+				'url'         => get_permalink( $bundle_post->ID ),
+				'price_label' => $bundle_price > 0 ? number_format( $bundle_price, 0, '.', ',' ) : '',
+				'courses'     => count( $context['courses'] ),
+			);
+		}
+	}
 }
 
 Timber::render( 'front-page.twig', $context );
 
+// ─────────────────────────────────────────────────────────────────────────────
+// دوال مساعدة خاصة بالرئيسية
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * إجمالي ساعات الكورس من meta المدة في Tutor (`_course_duration` = hours/minutes/seconds).
+ *
+ * @param int $course_id معرّف الكورس.
+ * @return string مثل "13h" — فاضي لو مفيش مدة.
+ */
+if ( ! function_exists( 'learnsimply_home_course_hours' ) ) {
+	function learnsimply_home_course_hours( $course_id ) {
+		$duration = get_post_meta( $course_id, '_course_duration', true );
+		if ( ! is_array( $duration ) ) {
+			return '';
+		}
+		$hours   = isset( $duration['hours'] ) ? (int) $duration['hours'] : 0;
+		$minutes = isset( $duration['minutes'] ) ? (int) $duration['minutes'] : 0;
+		if ( $minutes >= 30 ) {
+			$hours++;
+		}
+		return $hours > 0 ? $hours . 'h' : '';
+	}
+}
+
+/**
+ * تسمية المستوى بالعربي. Tutor بيخزّن مفاتيح إنجليزي (beginner/intermediate/expert)
+ * وأحيانًا نص عربي مباشر — الاتنين بيتقبلوا.
+ */
+if ( ! function_exists( 'learnsimply_home_level_label' ) ) {
+	function learnsimply_home_level_label( $level ) {
+		$map = array(
+			'beginner'     => 'مبتدئ',
+			'intermediate' => 'متوسط',
+			'expert'       => 'متقدم',
+			'all_levels'   => 'كل المستويات',
+		);
+		$key = strtolower( trim( (string) $level ) );
+		if ( isset( $map[ $key ] ) ) {
+			return $map[ $key ];
+		}
+		return '' !== $key ? $level : 'مبتدئ';
+	}
+}
+
+/**
+ * مفتاح CSS للمستوى (beginner / intermediate / expert).
+ */
+if ( ! function_exists( 'learnsimply_home_level_key' ) ) {
+	function learnsimply_home_level_key( $level ) {
+		$level = strtolower( trim( (string) $level ) );
+		if ( in_array( $level, array( 'intermediate', 'متوسط' ), true ) ) {
+			return 'intermediate';
+		}
+		if ( in_array( $level, array( 'expert', 'متقدم' ), true ) ) {
+			return 'expert';
+		}
+		return 'beginner';
+	}
+}
+
+/**
+ * خطوات مسار من قسم في الأكاديمية، بترتيب المستوى، مع بيانات الكارت.
+ *
+ * @param string $department_slug سلاج القسم.
+ * @param array  $courses_by_id   كورسات الصفحة مفهرسة بالمعرّف (للساعات والمستوى).
+ * @return array<int,array<string,mixed>>
+ */
+if ( ! function_exists( 'learnsimply_home_path_steps' ) ) {
+	function learnsimply_home_path_steps( $department_slug, $courses_by_id ) {
+		if ( ! function_exists( 'learnsimply_get_department_courses' ) ) {
+			return array();
+		}
+		$steps = array();
+		foreach ( learnsimply_get_department_courses( $department_slug ) as $item ) {
+			$course = isset( $courses_by_id[ $item['id'] ] ) ? $courses_by_id[ $item['id'] ] : null;
+			$meta   = array();
+			if ( $course && $course->hours ) {
+				$meta[] = $course->hours;
+			}
+			if ( $course && $course->level_label ) {
+				$meta[] = $course->level_label;
+			}
+			$steps[] = array(
+				'id'          => $item['id'],
+				'title'       => learnsimply_home_short_title( $item['title'] ),
+				'meta'        => implode( ' · ', $meta ),
+				'url'         => $item['url'],
+				'thumbnail'   => $item['thumbnail'] ? $item['thumbnail'] : ( $course ? $course->thumbnail : '' ),
+				'coming_soon' => false,
+			);
+		}
+		return $steps;
+	}
+}
+
+/**
+ * عنوان مختصر لكارت الخطوة: الجزء قبل أول «|» أو «+» — نفس عنوان الكورس بس من غير اللاحقة.
+ */
+if ( ! function_exists( 'learnsimply_home_short_title' ) ) {
+	function learnsimply_home_short_title( $title ) {
+		$short = preg_split( '/\s[|+]\s/u', (string) $title );
+		return trim( $short[0] );
+	}
+}
