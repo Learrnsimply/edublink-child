@@ -1,7 +1,7 @@
 {% extends "layouts/base.twig" %}
 
 {#
-  صفحة الباقة — نفس لغة صفحة الكورس (assets/single-course/style.css عبر @import) + قسم
+  صفحة الباقة — نفس لغة صفحة الكورس (assets/single-course/style.css بيتحمّل قبله) + قسم
   «الكورسات جوه الباقة» مرتّب بالمستوى. ٩ كتل:
   هيرو ← الكورسات جوه الباقة ← عن الباقة ← هتتعلم إيه ← لمين ← وبعد الباقة ← الآراء + فورم
   ← الأسئلة ← CTA. كل الأرقام من ووكومرس وTutor وقت العرض.
@@ -23,7 +23,7 @@
           <span class="lsc-step lsb-step">باقة · {{ courses|length }} كورس{% if gifts|length > 0 %} + كتاب{% endif %}{% if positions|length > 0 and path_label %} · الخطوات {{ positions|join(' و') }} في {{ path_label }}{% endif %}</span>
         </nav>
 
-        <h1 class="lsc-hero__title">{{ title }}</h1>
+        <h1 class="lsc-hero__title">{{ title }}{% if subtitle %}<span class="lsb-subtitle">{{ subtitle }}</span>{% endif %}</h1>
         {% if tagline %}<p class="lsc-hero__sub">{{ tagline }}</p>{% endif %}
 
         <div class="lsc-meta">
@@ -101,6 +101,21 @@
         <span><b class="lsc-num">{{ lessons }}</b> درس</span>
         {% if students > 0 %}<span><b class="lsc-num">{{ students|number_format(0, '.', ',') }}</b> طالب في الكورسات</span>{% endif %}
         <span class="lsb-sum__ok">وصول مدى الحياة للكل</span>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ══ ٢ب · ليه الباقة؟ ══ #}
+  {% if why|length > 0 %}
+  <section class="lsc-sec lsb-why" aria-labelledby="lsb-why-title">
+    <div class="lsc-wrap">
+      <p class="lsc-eyebrow">Why the bundle</p>
+      <h2 class="lsc-h2" id="lsb-why-title">ليه الباقة أحسن من كورس كورس؟</h2>
+      <div class="lsb-why__grid">
+        {% for w in why %}
+        <div class="lsb-why__item">{% include 'components/icons/check.twig' %}<div><b>{{ w.h }}</b><p>{{ w.p }}</p></div></div>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -208,7 +223,9 @@
       <div class="lsc-review-form add-review-section" id="add-review">
         <h3>شاركنا رأيك في الباقة</h3>
         {% if is_user_logged_in %}
-          {{ reviews_form|safe_html }}
+          {# فورم ووكومرس نفسه (comment_form) — |raw مقصود: wp_kses_post بيشيل <script> بتاع
+             ووردبريس ويسيب محتواه كنص ظاهر في الصفحة (اتلقطت ٥/٩). المصدر ووردبريس مش المستخدم. #}
+          {{ reviews_form|raw }}
         {% else %}
           <p class="lsb-login-note">سجّل دخولك الأول عشان تقدر تكتب تقييم. <a class="lsc-link" href="{{ site.url }}/dashboard/">تسجيل الدخول ←</a></p>
         {% endif %}
