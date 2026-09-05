@@ -83,7 +83,7 @@
 .lsh-head .lsh-sub { margin-bottom: 0; }
 
 /* ── الهيرو ──────────────────────────────────────────────────────────────── */
-.lsh-hero { padding: 40px 0 44px; }
+.lsh-hero { padding: 56px 0 44px; } /* الهيدر ثابت وعائم (main بياخد 100px) — مسافة إضافية عشان العنوان ميلمسه على الشاشات الواسعة */
 .lsh-hero__grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
 .lsh-hero__title {
   font-weight: 800; font-size: 54px; line-height: 1.18; margin: 0 0 18px;
