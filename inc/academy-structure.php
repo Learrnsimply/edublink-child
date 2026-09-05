@@ -200,3 +200,25 @@ function learnsimply_get_department_courses($slug)
 
 	return $out;
 }
+
+/**
+ * تسمية قصيرة للكورس تتقرا في كارت صغير (خطوة في مسار). العنوان الكامل طويل
+ * («البرمجة الكائنية (OOP) بلغة Java من الصفر للاحتراف») ومبينفعش في مربع 150px.
+ * المعرّفات نفسها المستخدمة في learnsimply_academy_departments().
+ *
+ * @param int    $course_id معرّف الكورس.
+ * @param string $fallback  لو مفيش تسمية قصيرة.
+ * @return string
+ */
+function learnsimply_course_short_label($course_id, $fallback = '')
+{
+	$labels = array(
+		24443 => 'جافا للمبتدئين',
+		31578 => 'Java OOP',
+		11287 => 'هياكل البيانات ١',
+		30816 => 'هياكل البيانات ٢',
+		39654 => 'أساسيات Dart',
+		29368 => 'مشاريع بايثون',
+	);
+	return isset($labels[(int) $course_id]) ? $labels[(int) $course_id] : $fallback;
+}
