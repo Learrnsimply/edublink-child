@@ -51,9 +51,26 @@ namespace {
 		if ( '_tutor_course_level' === $key ) { return 31578 === $id ? 'intermediate' : 'beginner'; }
 		return '';
 	}
-	function get_page_by_path( $slug, $output, $type ) { $p = new stdClass(); $p->ID = 40754; $p->post_status = 'publish'; return $p; }
+	function get_page_by_path( $slug, $output, $type ) {
+		$map = array( 'java-basics-oop-bundle' => 33336, 'all_in_one' => 40754 );
+		$map[ rawurlencode( 'هياكل-البيانات-الكاملة-data-structure-level-1-2' ) ] = 39043;
+		if ( ! isset( $map[ $slug ] ) ) { return null; }
+		$p = new stdClass(); $p->ID = $map[ $slug ]; $p->post_status = 'publish'; return $p;
+	}
+	function learnsimply_bundle_item_product_ids( array $ids ) {
+		// جافا = منتجات كورسي جافا (24443+1 · 31578+1) · هياكل = (11287+1 · 30816+1) — نفس قاعدة الـstub: product = course + 1
+		$all = array( 33336 => array( 24444, 31579 ), 39043 => array( 11288, 30817 ) );
+		$out = array(); foreach ( $ids as $id ) { $out[ $id ] = isset( $all[ $id ] ) ? $all[ $id ] : array(); } return $out;
+	}
 	function wc_get_product( $id ) {
-		return new class() { public function get_price() { return '2500'; } public function get_name() { return 'جميع الدورات'; } };
+		$names = array( 33336 => 'كورس Java Basics + OOP', 39043 => 'هياكل البيانات الكاملة', 40754 => 'جميع الدورات' );
+		$prices = array( 33336 => '1000', 39043 => '1000', 40754 => '2500' );
+		return new class( $names[ $id ], $prices[ $id ] ) {
+			private $n; private $p;
+			public function __construct( $n, $p ) { $this->n = $n; $this->p = $p; }
+			public function get_price() { return $this->p; }
+			public function get_name() { return $this->n; }
+		};
 	}
 
 	class WP_Query {
@@ -72,6 +89,7 @@ namespace {
 		public function get_lesson_count_by_course( $id ) { return 80; }
 		public function count_enrolled_users_by_course( $id ) { return 11287 === $id ? 1646 : 100; }
 		public function get_course_product_id( $id ) { return $id + 1; }
+		public function get_course_id_by_product( $pid ) { return $pid - 1; }
 		public function is_enrolled( $a, $b ) { return false; }
 	}
 	function tutor_utils() { return new LS_Tutor_Utils_Stub(); }
@@ -99,7 +117,10 @@ namespace {
 	ls_check( 2 === count( $ctx['paths'] ) && 5 === count( $ctx['paths'][0]['steps'] ) && 2 === count( $ctx['paths'][1]['steps'] ), 'مسارين: الأساسيات ٥ خطوات · التطبيقات ٢ (دارت + Flutter قريبًا)' );
 	ls_check( true === $ctx['paths'][1]['steps'][1]['coming_soon'], 'Flutter كارت «قريبًا»' );
 	ls_check( 'أساسيات Dart من الصفر لـ OOP' === $ctx['paths'][0]['steps'][4]['title'], 'عنوان الخطوة مختصر قبل «|»' );
-	ls_check( '2,500' === $ctx['all_courses_bundle']['price_label'], 'باقة جميع الدورات بسعرها من ووكومرس' );
+	ls_check( 3 === count( $ctx['bundles'] ), '٣ باقات: جافا · هياكل · الكل' );
+	ls_check( '1,000' === $ctx['bundles'][0]['price_label'] && 2 === $ctx['bundles'][0]['courses_count'] && 26 === $ctx['bundles'][0]['hours_total'], 'باقة جافا: كورسين · 26 ساعة · السعر من ووكومرس' );
+	ls_check( array( 'Course 11287', 'Course 30816' ) === $ctx['bundles'][1]['items'], 'باقة هياكل: عناصرها من جدول البلجن بترتيبه' );
+	ls_check( true === $ctx['bundles'][2]['featured'] && 6 === $ctx['bundles'][2]['courses_count'] && '2,500' === $ctx['bundles'][2]['price_label'], 'جميع الدورات: مميزة · ٦ كورسات · 2,500' );
 	ls_check( '4.9' === $ctx['stats']['rating_avg'], 'التقييم المجمّع محسوب' );
 
 	echo $fail ? "  اختبار الرئيسية فشل\n" : "  اختبار تشغيل الرئيسية عدّى\n";

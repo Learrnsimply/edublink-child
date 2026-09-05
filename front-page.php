@@ -318,24 +318,95 @@ foreach ( $context['paths'] as &$path ) {
 unset( $path );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// باقة «جميع الدورات» — منتج ووكومرس بالسلاج all_in_one (ID 40754 على السيرفر).
-// السعر بييجي من المنتج نفسه، مش مكتوب هنا.
+// الباقات — ٣ كروت: باقة جافا (كورسين) · باقة هياكل البيانات (كورسين) · جميع الدورات.
+// المنتجات بتتجاب بالسلاج، والسعر من ووكومرس، والكورسات اللي جوه الباقة من جدول بلجن
+// الباقات (استعلام واحد محروس في inc/bundles.php). «جميع الدورات» مش من نوع البلجن،
+// فمحتواها = كل كورسات الصفحة.
 // ─────────────────────────────────────────────────────────────────────────────
-$context['all_courses_bundle'] = null;
+$context['bundles'] = array();
 if ( class_exists( 'WooCommerce' ) ) {
-	$bundle_post = get_page_by_path( 'all_in_one', OBJECT, 'product' );
-	if ( $bundle_post && 'publish' === $bundle_post->post_status ) {
-		$bundle_product = wc_get_product( $bundle_post->ID );
-		if ( $bundle_product ) {
-			$bundle_price = (float) $bundle_product->get_price();
-			$context['all_courses_bundle'] = array(
-				'id'          => $bundle_post->ID,
-				'title'       => $bundle_product->get_name(),
-				'url'         => get_permalink( $bundle_post->ID ),
-				'price_label' => $bundle_price > 0 ? number_format( $bundle_price, 0, '.', ',' ) : '',
-				'courses'     => count( $context['courses'] ),
-			);
+	$bundle_specs = array(
+		// السلاج العربي متخزّن في ووردبريس مشفّر (percent-encoded) — بنجرّب الاتنين.
+		array( 'slugs' => array( 'java-basics-oop-bundle' ), 'label' => 'باقة مسار Java', 'featured' => false, 'all' => false ),
+		array( 'slugs' => array( rawurlencode( 'هياكل-البيانات-الكاملة-data-structure-level-1-2' ), 'هياكل-البيانات-الكاملة-data-structure-level-1-2' ), 'label' => 'باقة مسار هياكل البيانات', 'featured' => false, 'all' => false ),
+		array( 'slugs' => array( 'all_in_one' ), 'label' => 'الباقة الكاملة', 'featured' => true, 'all' => true ),
+	);
+
+	$bundle_posts = array();
+	foreach ( $bundle_specs as $i => $spec ) {
+		foreach ( $spec['slugs'] as $slug ) {
+			$post = get_page_by_path( $slug, OBJECT, 'product' );
+			if ( $post && 'publish' === $post->post_status ) {
+				$bundle_posts[ $i ] = $post;
+				break;
+			}
 		}
+	}
+
+	// كورسات الصفحة مفهرسة بمعرّف منتج ووكومرس بتاعها — عشان نربط عناصر الباقة بالكورسات
+	$courses_by_product = array();
+	foreach ( $context['courses'] as $course ) {
+		if ( ! empty( $course->product_id ) ) {
+			$courses_by_product[ (int) $course->product_id ] = $course;
+		}
+	}
+
+	$plugin_bundle_ids = array();
+	foreach ( $bundle_specs as $i => $spec ) {
+		if ( ! $spec['all'] && isset( $bundle_posts[ $i ] ) ) {
+			$plugin_bundle_ids[] = $bundle_posts[ $i ]->ID;
+		}
+	}
+	$items_by_bundle = ( ! empty( $plugin_bundle_ids ) && function_exists( 'learnsimply_bundle_item_product_ids' ) )
+		? learnsimply_bundle_item_product_ids( $plugin_bundle_ids )
+		: array();
+
+	foreach ( $bundle_specs as $i => $spec ) {
+		if ( ! isset( $bundle_posts[ $i ] ) ) {
+			continue;
+		}
+		$post    = $bundle_posts[ $i ];
+		$product = wc_get_product( $post->ID );
+		if ( ! $product ) {
+			continue;
+		}
+
+		$items = array();
+		if ( $spec['all'] ) {
+			$items = $context['courses'];
+		} else {
+			$product_ids = isset( $items_by_bundle[ $post->ID ] ) ? $items_by_bundle[ $post->ID ] : array();
+			foreach ( $product_ids as $pid ) {
+				if ( isset( $courses_by_product[ $pid ] ) ) {
+					$items[] = $courses_by_product[ $pid ];
+				}
+			}
+		}
+
+		$hours = 0;
+		$lessons = 0;
+		$names = array();
+		foreach ( $items as $item ) {
+			$hours   += (int) $item->hours; // "13h" → 13
+			$lessons += (int) $item->lesson_count;
+			$names[]  = learnsimply_home_short_title( $item->title );
+		}
+
+		$price = (float) $product->get_price();
+		$thumb = get_the_post_thumbnail_url( $post->ID, 'large' );
+		$context['bundles'][] = array(
+			'id'            => $post->ID,
+			'label'         => $spec['label'],
+			'title'         => $product->get_name(),
+			'url'           => get_permalink( $post->ID ),
+			'thumbnail'     => $thumb ? $thumb : ( ! empty( $items ) ? $items[0]->thumbnail : learnsimply_no_image_url() ),
+			'price_label'   => $price > 0 ? number_format( $price, 0, '.', ',' ) : '',
+			'items'         => $names,
+			'courses_count' => count( $items ),
+			'hours_total'   => $hours,
+			'lessons_total' => $lessons,
+			'featured'      => $spec['featured'],
+		);
 	}
 }
 
