@@ -69,6 +69,40 @@ function learnsimply_bundle_faq( array $names, $has_gift ) {
 }
 
 /**
+ * منتج ووكومرس → الكورس المربوط بيه.
+ *
+ * `tutor_utils()->get_course_id_by_product()` رجّعت صفر على السيرفر (٥/٩) مع إن الربط موجود،
+ * فبنبني الخريطة بالاتجاه اللي الرئيسية بتستخدمه وشغّال: لكل كورس في الأكاديمية →
+ * `_tutor_course_product_id`. الدالة الأصلية بتتجرّب الأول.
+ *
+ * @return int معرّف الكورس أو 0.
+ */
+function learnsimply_course_id_for_product( $product_id ) {
+	static $map = null;
+	$product_id = (int) $product_id;
+	if ( function_exists( 'tutor_utils' ) ) {
+		$cid = (int) tutor_utils()->get_course_id_by_product( $product_id );
+		if ( $cid ) {
+			return $cid;
+		}
+	}
+	if ( null === $map ) {
+		$map = array();
+		if ( function_exists( 'learnsimply_academy_departments' ) ) {
+			foreach ( learnsimply_academy_departments() as $dept ) {
+				foreach ( $dept['courses'] as $cid ) {
+					$pid = (int) get_post_meta( $cid, '_tutor_course_product_id', true );
+					if ( $pid ) {
+						$map[ $pid ] = (int) $cid;
+					}
+				}
+			}
+		}
+	}
+	return isset( $map[ $product_id ] ) ? $map[ $product_id ] : 0;
+}
+
+/**
  * وصف المنتج → فقرات نضيفة. سطور السعر بتتشال لأن السعر بيتقرا من ووكومرس
  * (وصف باقة جافا فيه «850 بدل 2150» قديم).
  *
@@ -76,7 +110,8 @@ function learnsimply_bundle_faq( array $names, $has_gift ) {
  */
 function learnsimply_bundle_about( $description ) {
 	$text  = wp_strip_all_tags( (string) $description );
-	$lines = preg_split( '/\r\n|\r|\n/', $text );
+	// الوصف على السيرفر سطر واحد وجمله مفصولة بإيموجي مكسورة `????` — بنقسم عليها كمان.
+	$lines = preg_split( '/\r\n|\r|\n|\?{2,}/u', $text );
 	$out   = array();
 	foreach ( $lines as $line ) {
 		$line = learnsimply_course_text_clean( $line );
@@ -123,7 +158,7 @@ function learnsimply_bundle_page_context( $product, array $item_ids ) {
 		if ( ! $item ) {
 			continue;
 		}
-		$course_id = function_exists( 'tutor_utils' ) ? (int) tutor_utils()->get_course_id_by_product( $pid ) : 0;
+		$course_id = learnsimply_course_id_for_product( $pid );
 		$image     = wp_get_attachment_image_url( $item->get_image_id(), 'large' );
 
 		if ( ! $course_id || 'publish' !== get_post_status( $course_id ) ) {
@@ -277,17 +312,37 @@ function learnsimply_bundle_page_context( $product, array $item_ids ) {
 		}
 	}
 
-	$names    = array_map( function ( $c ) { return $c['label']; }, $courses );
-	$tagline  = wp_strip_all_tags( $product->get_short_description() );
-	$about    = learnsimply_bundle_about( $product->get_description() );
-	if ( '' === $tagline ) {
-		$tagline = ! empty( $about ) ? wp_trim_words( $about[0], 24, '…' ) : implode( ' + ', $names );
+	$names = array_map( function ( $c ) { return $c['label']; }, $courses );
+	$about = learnsimply_bundle_about( $product->get_description() );
+	$short = learnsimply_bundle_about( $product->get_short_description() );
+	// جملة الهيرو: أول سطر نضيف من المقتطف، وإلا أول سطر من الوصف، وإلا أسماء الكورسات.
+	$tagline = ! empty( $short ) ? $short[0] : ( ! empty( $about ) ? $about[0] : implode( ' + ', $names ) );
+	$tagline = wp_trim_words( $tagline, 26, '…' );
+
+	// العنوان: «كورس Java Basics + OOP | من الأساسيات إلى الاحتراف» → عنوان + سطر تحته.
+	$title_parts = preg_split( '/\s[|–—-]\s/u', (string) $product->get_name(), 2 );
+	$title       = trim( $title_parts[0] );
+	$subtitle    = isset( $title_parts[1] ) ? trim( $title_parts[1] ) : '';
+
+	// ليه الباقة؟ — من الداتا نفسها، مش نص تسويقي جديد.
+	$why = array();
+	if ( $save > 0 ) {
+		$why[] = array( 'h' => 'بتوفّر ' . number_format( $save, 0, '.', ',' ) . ' ج.م', 'p' => 'الكورسات لوحدها بـ' . number_format( $separate, 0, '.', ',' ) . ' ج.م، والباقة بـ' . number_format( $price, 0, '.', ',' ) . ' ج.م.' );
 	}
+	if ( count( $courses ) > 1 ) {
+		$why[] = array( 'h' => 'الترتيب الصح جاهز', 'p' => implode( ' ← ', $names ) . '. كل كورس بيبني على اللي قبله، مش هتحتار تبدأ منين.' );
+	}
+	if ( ! empty( $gifts ) ) {
+		$why[] = array( 'h' => $gifts[0]['title'] . ' هدية', 'p' => 'بيتضاف لحسابك مع الباقة من غير أي مصاريف.' );
+	}
+	$why[] = array( 'h' => 'مرة واحدة، مدى الحياة', 'p' => ( $hours > 0 ? $hours . ' ساعة و' : '' ) . $lessons . ' درس بكل التحديثات الجاية، وضمان استرداد خلال 7 أيام.' );
 
 	return array(
 		'bundle_id'      => $bundle_id,
-		'title'          => $product->get_name(),
+		'title'          => $title,
+		'subtitle'       => $subtitle,
 		'tagline'        => $tagline,
+		'why'            => $why,
 		'image'          => wp_get_attachment_image_url( $product->get_image_id(), 'full' ) ?: learnsimply_no_image_url(),
 		'price'          => $price,
 		'price_label'    => $price > 0 ? number_format( $price, 0, '.', ',' ) : '',

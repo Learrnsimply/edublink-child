@@ -35,6 +35,7 @@ function get_post_meta( $id, $key, $single ) {
 	if ( '_course_duration' === $key ) { return array( 'hours' => 13 ); }
 	if ( '_tutor_course_level' === $key ) { return 31578 === $id ? 'intermediate' : 'beginner'; }
 	if ( '_tutor_course_benefits' === $key ) { return implode( "\n", $GLOBALS['ls_fixtures'][ 24443 === $id ? 'java' : 'oop' ] ); }
+	if ( '_tutor_course_product_id' === $key ) { return $id + 1; } // course 24443 → product 24444
 	if ( 'ls_department' === $key ) { return in_array( $id, array( 24443, 31578, 11287, 30816 ), true ) ? 'foundations' : 'app-development'; }
 	return '';
 }
@@ -66,7 +67,7 @@ function wc_get_product( $id ) {
 	return isset( $map[ $id ] ) ? new LS_WC_Product_Stub( $map[ $id ] ) : null;
 }
 class LS_Tutor_Utils_Stub {
-	public function get_course_id_by_product( $pid ) { return 28056 === $pid ? 0 : $pid - 1; }
+	public function get_course_id_by_product( $pid ) { return 0; } // زي السيرفر ٥/٩: بترجّع صفر
 	public function get_course_rating( $id ) { $r = new stdClass(); $r->rating_avg = 24443 === $id ? 5.0 : 4.9; $r->rating_count = 24443 === $id ? 57 : 34; return $r; }
 	public function get_raw_course_price( $id ) { $p = new stdClass(); $prices = array( 24443 => 550, 31578 => 700, 11287 => 650, 30816 => 499 ); $p->regular_price = isset( $prices[ $id ] ) ? $prices[ $id ] : 600; $p->sale_price = 0; return $p; }
 	public function get_lesson_count_by_course( $id ) { return 24443 === $id ? 81 : 96; }
@@ -85,7 +86,12 @@ function ls_check( $ok, $label ) { global $fail; echo ( $ok ? '  ✅ ' : '  ❌ 
 // ترتيب الإدخال في جدول البلجن عن قصد: جافا · الكتاب · OOP
 $ctx = learnsimply_bundle_page_context( wc_get_product( 33336 ), array( 24444, 28056, 31579 ) );
 
-ls_check( array( 24443, 31578 ) === array_column( $ctx['courses'], 'id' ), 'الكورسات مرتّبة بالمستوى: جافا ← OOP' );
+ls_check( array( 24443, 31578 ) === array_column( $ctx['courses'], 'id' ), 'الكورسات مرتّبة بالمستوى: جافا ← OOP (والربط من meta الكورس لما دالة Tutor ترجّع صفر)' );
+ls_check( 'كورس Java Basics + OOP' === $ctx['title'] && '' === $ctx['subtitle'], 'العنوان من غير «|»' );
+$ctx3 = learnsimply_bundle_page_context( new LS_WC_Product_Stub( array( 'id' => 6, 'name' => 'كورس Java Basics + OOP | من الأساسيات إلى الاحتراف', 'price' => '999', 'img' => 0, 'slug' => 'x', 'short' => '???? حزمة الجافا الكاملة ???? السعر بعد الخصم: 850 جنيه بدل 2150???? ???? شرح مبسط.' ) ), array( 24444, 31579 ) );
+ls_check( 'كورس Java Basics + OOP' === $ctx3['title'] && 'من الأساسيات إلى الاحتراف' === $ctx3['subtitle'], 'العنوان اتقسم عند «|» لعنوان وسطر تحته' );
+ls_check( 'حزمة الجافا الكاملة' === $ctx3['tagline'], 'جملة الهيرو من المقتطف: من غير `????` ومن غير سطر السعر' );
+ls_check( 4 === count( $ctx['why'] ) && 0 === mb_strpos( $ctx['why'][0]['h'], 'بتوفّر 251' ) && false !== mb_strpos( $ctx['why'][1]['p'], 'جافا للمبتدئين ← Java OOP' ), '«ليه الباقة»: توفير · ترتيب · هدية · مدى الحياة — من الداتا' );
 ls_check( 1 === count( $ctx['gifts'] ) && 'كتاب لغة جافا' === $ctx['gifts'][0]['title'], 'الكتاب بقى هدية مش كورس' );
 ls_check( 26 === $ctx['hours'] && 177 === $ctx['lessons'] && 1152 === $ctx['students'], 'الأرقام المجمّعة: 26 ساعة · 177 درس · 1,152 طالب' );
 ls_check( '5.0' === $ctx['rating_avg'] && 91 === $ctx['rating_count'], 'التقييم المجمّع مرجّح: 5.0 من 91' );

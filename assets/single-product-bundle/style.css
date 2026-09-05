@@ -7,6 +7,14 @@
 
 .lsb-step { background: linear-gradient(90deg, rgba(64, 119, 243, 0.18), rgba(194, 122, 255, 0.18)); color: #c9d6ff; border: 1px solid rgba(120, 150, 255, 0.25); }
 .lsb-arrow { color: var(--lsc-dim); }
+.lsb-subtitle { display: block; color: var(--lsc-muted); font-weight: 500; font-size: 0.6em; margin-top: 8px; line-height: 1.5; }
+
+/* ليه الباقة؟ */
+.lsb-why__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 920px; }
+.lsb-why__item { display: flex; gap: 12px; padding: 18px 20px; background: var(--lsc-surface); border: 1px solid var(--lsc-line); border-radius: 12px; }
+.lsb-why__item svg { flex: none; margin-top: 4px; }
+.lsb-why__item b { display: block; font-size: 16px; margin-bottom: 4px; }
+.lsc .lsb-why__item p { color: var(--lsc-muted); font-size: 14px; line-height: 1.75; margin: 0; }
 
 /* التوفير */
 .lsc .lsb-save { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; color: var(--lsc-text-2); font-size: 14.5px; margin: 0 0 10px; }
@@ -67,7 +75,10 @@
 .lsc .lsc-review-form .form-submit { margin: 0; }
 .lsc .lsc-review-form .form-submit input[type="submit"], .lsc .lsc-review-form .submit { display: inline-flex; align-items: center; border-radius: 999px; padding: 12px 26px; font-weight: 600; font-size: 15.5px; background: var(--lsc-blue); color: #fff; border: 0; cursor: pointer; font-family: inherit; }
 .lsc .lsc-review-form .form-submit input[type="submit"]:hover { background: var(--lsc-blue-hover); }
-.lsc .lsc-review-form p.stars { display: none; }
+.lsc .lsc-review-form p.stars, .lsc .lsc-review-form .logged-in-as, .lsc .lsc-review-form select#rating, .lsc .lsc-review-form .comment-notes { display: none !important; }
+.lsc .lsc-review-form .star-rating-input .star-icon { display: block; }
+.lsc .lsc-review-form .star-rating-input .star-icon path { fill: inherit; }
+.lsc .lsc-review-form .required { color: var(--ls-danger, #f96a7b); }
 
 @media (max-width: 980px) {
   .lsb-learn { grid-template-columns: 1fr 1fr; }
@@ -76,7 +87,7 @@
   .lsb-icard__price { display: none; }
 }
 @media (max-width: 640px) {
-  .lsb-learn, .lsb-reviews { grid-template-columns: 1fr; }
+  .lsb-learn, .lsb-reviews, .lsb-why__grid { grid-template-columns: 1fr; }
   .lsb-icard, .lsb-icard--gift { grid-template-columns: 36px 1fr; gap: 12px; }
   .lsb-icard__img, .lsb-icard__body { grid-column: 2; }
   .lsb-icard__img--book { margin: 0; }
