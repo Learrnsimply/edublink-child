@@ -30,6 +30,38 @@ function learnsimply_bundle_next_map() {
 }
 
 /**
+ * «جميع الدورات» (`all_in_one`) مش باقة في بلجن الباقات (صفر عناصر) — بس هي باقة فعلًا:
+ * كل كورسات الأكاديمية. هنا بنعرّفها بالسلاج، وعناصرها = منتجات كل الكورسات المنشورة بترتيب المسار.
+ */
+function learnsimply_all_courses_bundle_slugs() {
+	return array( 'all_in_one' );
+}
+
+/**
+ * منتجات ووكومرس لكل كورسات الأكاديمية المنشورة، بترتيب الأقسام والمستويات.
+ *
+ * @return int[]
+ */
+function learnsimply_all_courses_product_ids() {
+	$out = array();
+	if ( ! function_exists( 'learnsimply_academy_departments' ) ) {
+		return $out;
+	}
+	foreach ( learnsimply_academy_departments() as $dept ) {
+		foreach ( $dept['courses'] as $cid ) {
+			if ( 'publish' !== get_post_status( $cid ) ) {
+				continue;
+			}
+			$pid = (int) get_post_meta( $cid, '_tutor_course_product_id', true );
+			if ( $pid && ! in_array( $pid, $out, true ) ) {
+				$out[] = $pid;
+			}
+		}
+	}
+	return $out;
+}
+
+/**
  * أسئلة الباقة — نفس أجوبة الكورسات (الضمان · التحديثات) + سؤالين عن الباقة نفسها.
  *
  * @param string[] $names أسماء الكورسات بالترتيب.
@@ -312,11 +344,15 @@ function learnsimply_bundle_page_context( $product, array $item_ids ) {
 		}
 	}
 
-	$names = array_map( function ( $c ) { return $c['label']; }, $courses );
-	$about = learnsimply_bundle_about( $product->get_description() );
-	$short = learnsimply_bundle_about( $product->get_short_description() );
+	$names  = array_map( function ( $c ) { return $c['label']; }, $courses );
+	$about  = learnsimply_bundle_about( $product->get_description() );
+	$short  = learnsimply_bundle_about( $product->get_short_description() );
+	$is_all = in_array( urldecode( (string) $product->get_slug() ), learnsimply_all_courses_bundle_slugs(), true );
 	// جملة الهيرو: أول سطر نضيف من المقتطف، وإلا أول سطر من الوصف، وإلا أسماء الكورسات.
-	$tagline = ! empty( $short ) ? $short[0] : ( ! empty( $about ) ? $about[0] : implode( ' + ', $names ) );
+	$fallback = $is_all
+		? 'كل كورسات المنصة (' . count( $courses ) . ' كورسات) بسعر واحد: ' . implode( '، ' , $names ) . '.'
+		: implode( ' + ', $names );
+	$tagline = ! empty( $short ) ? $short[0] : ( ! empty( $about ) ? $about[0] : $fallback );
 	$tagline = wp_trim_words( $tagline, 26, '…' );
 
 	// العنوان: «كورس Java Basics + OOP | من الأساسيات إلى الاحتراف» → عنوان + سطر تحته.
@@ -341,6 +377,7 @@ function learnsimply_bundle_page_context( $product, array $item_ids ) {
 		'bundle_id'      => $bundle_id,
 		'title'          => $title,
 		'subtitle'       => $subtitle,
+		'is_all'         => $is_all,
 		'tagline'        => $tagline,
 		'why'            => $why,
 		'image'          => wp_get_attachment_image_url( $product->get_image_id(), 'full' ) ?: learnsimply_no_image_url(),

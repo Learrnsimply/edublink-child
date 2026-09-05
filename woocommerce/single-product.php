@@ -320,6 +320,12 @@ if ( function_exists( 'learnsimply_bundles_table_exists' ) && learnsimply_bundle
 	}
 }
 
+// «جميع الدورات» مش في جدول البلجن — عناصرها كل كورسات الأكاديمية (inc/bundle-page.php).
+if ( empty( $bundle_item_ids ) && function_exists( 'learnsimply_all_courses_bundle_slugs' )
+	&& in_array( urldecode( (string) $product->get_slug() ), learnsimply_all_courses_bundle_slugs(), true ) ) {
+	$bundle_item_ids = learnsimply_all_courses_product_ids();
+}
+
 if ( ! empty( $bundle_item_ids ) && function_exists( 'learnsimply_bundle_page_context' ) ) {
 	$bundle = learnsimply_bundle_page_context( $product, $bundle_item_ids );
 	// آراء الباقة نفسها (ووكومرس) الأول، وبعدها آراء الكورسات اللي جواها

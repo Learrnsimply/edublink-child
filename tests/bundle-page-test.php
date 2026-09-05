@@ -112,6 +112,12 @@ $ctx2 = learnsimply_bundle_page_context( new LS_WC_Product_Stub( array( 'id' => 
 ls_check( empty( $ctx2['gifts'] ) && empty( $ctx2['about'] ) && null === $ctx2['next_bundle'] && '' === $ctx2['save_label'], 'باقة أغلى من الكورسات لوحدها: مفيش «بتوفّر» · مفيش هدية · مفيش وصف' );
 ls_check( 5 === count( $ctx2['faq'] ), 'من غير كتاب = ٥ أسئلة' );
 
+// «جميع الدورات» — مش في البلجن، عناصرها كل كورسات الأكاديمية
+$all_ids = learnsimply_all_courses_product_ids();
+ls_check( array( 24444, 31579, 11288, 30817, 39655, 29369 ) === $all_ids, 'جميع الدورات: ٦ منتجات بترتيب المسار (جافا ← OOP ← هياكل ١ ← هياكل ٢ ← دارت ← بايثون)' );
+$ctx4 = learnsimply_bundle_page_context( new LS_WC_Product_Stub( array( 'id' => 40754, 'name' => 'جميع الدورات', 'price' => '2500', 'img' => 0, 'slug' => 'all_in_one' ) ), array( 24444, 31579 ) );
+ls_check( true === $ctx4['is_all'] && 0 === mb_strpos( $ctx4['tagline'], 'كل كورسات المنصة' ) && null === $ctx4['next_bundle'], 'جميع الدورات: is_all · جملة الهيرو من الأسماء · مفيش باقة بعدها' );
+
 if ( getenv( 'LS_DUMP_CTX' ) ) {
 	file_put_contents( getenv( 'LS_DUMP_CTX' ) . '/ctx-bundle.ser', serialize( $ctx ) );
 }
