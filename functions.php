@@ -1335,7 +1335,7 @@ if (!defined('LS_ASSETS_VERSION')) {
 	 * Exposed to Twig as `assets_version` and appended as `?v=...` to
 	 * every custom CSS/JS link we ship in page templates.
 	 */
-	define('LS_ASSETS_VERSION', '20260905-14');
+	define('LS_ASSETS_VERSION', '20260905-15');
 }
 
 /**
@@ -2250,8 +2250,9 @@ function edublink_child_load_page_assets()
 		$page_type = 'signup';
 	elseif (is_product()) {
 		// Check if product has bundles
-		$has_bundles = learnsimply_bundle_item_count(get_the_ID());
-		$page_type = ($has_bundles > 0) ? 'single-product-bundle' : 'single-product';
+		// نفس قاعدة الكونترولر (inc/bundle-page.php): عناصر في البلجن أو «جميع الدورات»
+		$is_bundle = function_exists('learnsimply_is_bundle_product') ? learnsimply_is_bundle_product(get_the_ID()) : (learnsimply_bundle_item_count(get_the_ID()) > 0);
+		$page_type = $is_bundle ? 'single-product-bundle' : 'single-product';
 	} elseif (is_shop() || is_product_category() || is_product_tag())
 		$page_type = 'product_archive';
 	elseif (is_cart() || is_page('cart-1'))
@@ -2361,8 +2362,9 @@ function edublink_child_add_page_css_late()
 	elseif (is_page('signup'))
 		$page_type = 'signup';
 	elseif (is_product()) {
-		$has_bundles = learnsimply_bundle_item_count(get_the_ID());
-		$page_type = ($has_bundles > 0) ? 'single-product-bundle' : 'single-product';
+		// نفس قاعدة الكونترولر (inc/bundle-page.php): عناصر في البلجن أو «جميع الدورات»
+		$is_bundle = function_exists('learnsimply_is_bundle_product') ? learnsimply_is_bundle_product(get_the_ID()) : (learnsimply_bundle_item_count(get_the_ID()) > 0);
+		$page_type = $is_bundle ? 'single-product-bundle' : 'single-product';
 	} elseif (is_shop() || is_product_category() || is_product_tag())
 		$page_type = 'product_archive';
 	elseif (is_cart() || is_page('cart-1'))

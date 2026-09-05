@@ -28,7 +28,8 @@ function wp_get_attachment_image_url( $id, $size ) { return $id ? "https://x/att
 function learnsimply_no_image_url() { return 'https://x/none.png'; }
 function has_excerpt( $id ) { return false; }
 function get_the_excerpt( $id ) { return ''; }
-function get_post_field( $f, $id ) { return ''; }
+function get_post_field( $f, $id ) { return ( 'post_name' === $f && 40754 === $id ) ? 'all_in_one' : ''; }
+function learnsimply_bundle_item_count( $id ) { return 33336 === $id ? 3 : 0; }
 function apply_filters( $tag, $v ) { return $v; }
 $GLOBALS['ls_fixtures'] = require __DIR__ . '/course-content-fixtures.php';
 function get_post_meta( $id, $key, $single ) {
@@ -117,6 +118,8 @@ $all_ids = learnsimply_all_courses_product_ids();
 ls_check( array( 24444, 31579, 11288, 30817, 39655, 29369 ) === $all_ids, 'جميع الدورات: ٦ منتجات بترتيب المسار (جافا ← OOP ← هياكل ١ ← هياكل ٢ ← دارت ← بايثون)' );
 $ctx4 = learnsimply_bundle_page_context( new LS_WC_Product_Stub( array( 'id' => 40754, 'name' => 'جميع الدورات', 'price' => '2500', 'img' => 0, 'slug' => 'all_in_one' ) ), array( 24444, 31579 ) );
 ls_check( true === $ctx4['is_all'] && 0 === mb_strpos( $ctx4['tagline'], 'كل كورسات المنصة' ) && null === $ctx4['next_bundle'], 'جميع الدورات: is_all · جملة الهيرو من الأسماء · مفيش باقة بعدها' );
+
+ls_check( true === learnsimply_is_bundle_product( 33336 ) && true === learnsimply_is_bundle_product( 40754 ) && false === learnsimply_is_bundle_product( 28056 ), 'is_bundle_product: باقة البلجن ✓ · جميع الدورات ✓ · الكتاب ✗ (نفس القاعدة للكونترولر والـCSS)' );
 
 if ( getenv( 'LS_DUMP_CTX' ) ) {
 	file_put_contents( getenv( 'LS_DUMP_CTX' ) . '/ctx-bundle.ser', serialize( $ctx ) );
