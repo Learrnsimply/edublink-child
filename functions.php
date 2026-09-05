@@ -1326,6 +1326,34 @@ if (!defined('LS_ASSETS_VERSION')) {
 }
 
 /**
+ * امسح كاش صفحات WP-Optimize أوتوماتيك أول ما نسخة الملفات تتغيّر.
+ *
+ * ليه: بعد كل deploy، الزائر اللي مش مسجّل دخول كان بيشوف النسخة القديمة من الصفحة
+ * (WP-Optimize بيقدّم HTML متكاش)، بينما المسجّل بيشوف الجديدة لأن الكاش بيتخطاه.
+ * حصلت ٥/٩/٢٠٢٦ مع كروت الباقات: الكود نازل، والكاش لسه بيقدّم النسخة اللي قبله.
+ * الحل: نخزّن آخر نسخة اتمسح عندها الكاش، ولما LS_ASSETS_VERSION تتغيّر نمسح مرة واحدة.
+ */
+add_action('init', 'learnsimply_flush_page_cache_on_new_assets', 5);
+function learnsimply_flush_page_cache_on_new_assets()
+{
+	if (!defined('LS_ASSETS_VERSION')) {
+		return;
+	}
+	if (get_option('ls_assets_version_flushed') === LS_ASSETS_VERSION) {
+		return;
+	}
+	// سجّل الأول عشان لو المسح رمى خطأ مانفضلش نحاول مع كل طلب
+	update_option('ls_assets_version_flushed', LS_ASSETS_VERSION, false);
+
+	if (function_exists('wpo_cache_flush')) {
+		wpo_cache_flush(); // WP-Optimize page cache
+	}
+	if (function_exists('wp_cache_flush')) {
+		wp_cache_flush(); // object cache لو موجود
+	}
+}
+
+/**
  * Set the `.js-ready` class on <body> as early as possible so the CSS
  * progressive-enhancement rules (`.js-ready [data-reveal] { opacity: 0 }`)
  * can take effect before the page paints — prevents a flash where content
